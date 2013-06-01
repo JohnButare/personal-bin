@@ -1,0 +1,17 @@
+#!/bin/bash
+pause
+
+. function.sh
+
+text2='hello  world\
+foo\bar
+'
+
+text1=$(cat <<'EOF'
+ hello  world\
+foo\bar
+EOF
+)
+
+printf '%s\n' "$text1" |
+  while IFS= read -r line; do printf '%s\n' "[$line]"; done

@@ -1,0 +1,5 @@
+@echo off
+
+REM Load personal aliases and functions
+alias /r "%@BatchDir[]\alias.tc" 
+function /r "%@BatchDir[]\function.tc"

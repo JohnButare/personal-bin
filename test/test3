@@ -1,0 +1,4 @@
+#!/bin/bash
+. function.sh
+
+( [[ 0 == 1 ]] || [[ 1 == 1 ]] ) && echo y || echo n

@@ -1,0 +1,33 @@
+[alias]
+	# dcw: git dcw to see the changes on the same line instead of two lines
+	dcw = diff --color-words
+	lo = log --oneline
+[color] # always for Cygwin mintty terminal
+		ui = always
+		status = always
+		branch = always
+		diff = always
+		interactive = always
+[merge]
+	tool = BeyondCompare3
+[push]
+#	default = simple
+[diff]
+	guitool = beyondcompare3
+[core]
+	# editor: Sublime (multi-platform), Notepad++ (Windows Only, better macro support)
+	editor = \"C:/Program Files/Sublime Text 2/sublime_text.exe\"
+	autocrlf = false
+[credential]
+	helper = !\"C:/Program Files (x86)/GitExtensions/GitCredentialWinStore/git-credential-winstore.exe\"
+[difftool "BeyondCompare3"] # Beyond Compare (merge output clear, easy to merge)
+	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
+[user]
+	name = jjbutare
+	email = john.butare.s@gmail.com
+[difftool "beyondcompare3"]
+	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
+	cmd = \"C:/Program Files (x86)/Beyond Compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\"
+[mergetool "BeyondCompare3"]
+	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
+	cmd = \"C:/Program Files (x86)/Beyond Compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"

@@ -3,11 +3,11 @@
 	dcw = diff --color-words
 	lo = log --oneline
 [color] # always for Cygwin mintty terminal
-		ui = always
-		status = always
-		branch = always
-		diff = always
-		interactive = always
+	ui = always
+	status = always
+	branch = always
+	diff = always
+	interactive = always
 [merge]
 	tool = BeyondCompare3
 [push]
@@ -18,6 +18,7 @@
 	# editor: Sublime (multi-platform), Notepad++ (Windows Only, better macro support)
 	editor = \"C:/Program Files/Sublime Text 2/sublime_text.exe\"
 	autocrlf = false
+	filemode = false
 [credential]
 	helper = !\"C:/Program Files (x86)/GitExtensions/GitCredentialWinStore/git-credential-winstore.exe\"
 [difftool "BeyondCompare3"] # Beyond Compare (merge output clear, easy to merge)

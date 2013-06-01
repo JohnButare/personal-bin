@@ -289,6 +289,9 @@ alias gith='tc GitHelper.btm'
 alias ge='gith extensions'
 alias gi='{ ! IsFunction __git_ps1; } && source /etc/bash_completion && SetPrompt'
 
+alias gg='tc GitHelper gui'
+alias ggc='tc GitHelper gui commit'
+
 # git Test
 alias gt:='gi; cd "$code/test/git"'
 

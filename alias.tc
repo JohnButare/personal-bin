@@ -38,7 +38,6 @@ c call chrome
 CloneDvd call app CloneDvd
 CopyDvd `call app AnyDvd & call app CloneDvd`
 CcTray call CruiseControlTray.btm
-d drive
 dba call DBartisan
 dr drive list | egrep -i removable
 dbg debugging
@@ -56,9 +55,6 @@ speedfan call app speedfan
 va call VisionApp
 vm call VMware.btm
 remote call VisionApp
-rdesk start /pgm mstsc /f /v:%1
-rdeskadmin start /pgm mstsc /admin /f /v:%1
-rdesks "%UserData\replicate\Remote Desktops.msc"
 ssh call pu run
 scp call pscp
 soapui "%programs32\SoapUI\bin\soapui.bat"
@@ -70,40 +66,8 @@ vscan call VirusScan
 wmp call WindowsMediaPlayer
 wmc call WindowsMediaCenter
 
-::
-:: Windows OS
-::
-
-cm call os ComputerManagement
-dm call os DeviceManager
-fc call firewall console
-prog call os programs 
-prop call os SystemProperties
-ResourceMonitor call os ResourceMonitor
-SystemRestore call vss
-
 :: Windows System Resource Manager - part of the Windows Server administration toolkit
 wsrmc "%system32\Windows System Resource Manager\bin\wsrmc.exe"
-
-::
-:: Media
-::
-
-gp call media.btm  get
-ms call media.btm sync
-
-::
-:: Portable / Backup
-::
-
-sp call portable sync
-mp call portable merge
-ep call portable eject
-
-b call WigginBackup
-be call WigginBackup eject
-
-eject `be && ep`
 
 ::
 :: XML
@@ -116,8 +80,6 @@ XmlShow xml sel -t -c
 :: Find
 ::
 
-fa ffind /s
-fcd cde %@quote[%@path[%@ExecStr[ffind /s /f %$]]]
 fclip clip %@quote[%@ExecStr[ffind /s /f %$]]
 fe ShellEdit %@quote[%@ExecStr[ffind /s /f %$]]
 
@@ -131,15 +93,6 @@ fdel `fa %$ & call ask "Do you want to delete these files?" & if %? == 1 del /e 
 :: File System
 ::
 
-ls ls.exe -FC %@PosixPath[%$]
-dirst dir /od
-dirss dir /os
-dirsct dir /t:c /od
-
-RoboCopyAll RoboCopy /z /ndl /e /w:3 /r:3
-RoboCopyDir `RoboCopyAll %@quote[%1] %@quote[%@UnQuote[%2]\%@FileName[%1]]
-rc RoboCopyAll
-rcd RoboCopyDir
 
 CopyAll xcopy /e /v /k /r /h /x /o /c
 
@@ -395,41 +348,6 @@ ab as adb
 :: Intel
 ::
 
-PersonalBridge call lync PersonalBridge
-mb PersonalBridge
-
-mdl: \\jjbutare-mobl\John\Documents\data\download
-ihome: \\jjbutare-mobl\john\documents
-igroup: ihome:\group
-iproj: ihome:\project
-
-vpn call intel vpn
-VpnOn call intel vpn on
-VpnOff call intel vpn off
-icon VpnOn
-iss call intel iss
-ml cde "\\oversoul\john\documents\group\intel\project\My Learning"
-econn call EmployeeContent
-
-mdl: \\jjbutare-mobl\c$\Users\jjbutare\Documents\data\download
-MoblBoot host boot jjbutare-mobl
-MoblConnect host connect jjbutare-mobl
-MoblSleep slp jjbutare-mobl
-MoblSync slf jjbutare-mobl
-
-:: Software Solutions Group
-sst: ihome:\group\Software Solutions
-SstSoftware: \\VMSPFSFSCH09\DEV_RNDAZ\Software
-software: SstSoftware:
-
-::
-:: Magellan
-::
-
-mc: code:\Magellan
-mb build Magellan\Source\Magellan.sln
-mst svns Magellan
-
 ::
 :: Profile Manager
 ::
@@ -459,6 +377,32 @@ ast svns Antidote
 
 auf `pushd & ac:\SolutionItems\Libraries\UpdateFramework.cmd & ab & popd`
 aum `pushd & ac:\SolutionItems\Libraries\UpdateMagellan.cmd & ab & popd`
+
+::
+:: FaSTr
+::
+
+fr: code:\RPIAD
+frc: fr:\Source
+frs: fr:\DataScripts
+
+frlb call sudo antidote `App=Rpiad` `BuildType=LocalBuild`
+frb build RPIAD\Source\RPIAD.sln
+frbc BuildClean RPIAD\Source\RPIAD.sln
+frs svns RPIAD
+frc svnc RPIAD
+frr svnr RPIAD
+frsw svnsw RPIAD
+
+fru svnu RPIAD
+frum `pushd & mb & if %? == 0 fr:\Libraries\UpdateMagellan.cmd & if %? == 0 frb & popd`
+
+frp ProfileManager Rpiad
+frpu copy fr:\Profiles\Rpiad.profile profiles:\Rpiad.profile
+frput copy fr:\Profiles\DevProfiles\Test\Rpiad.profile profiles:
+frpc copy profiles:\Rpiad.profile fr:\Profiles
+
+frt frc:\Test\WebServiceTest\bin\Debug\WebServiceTest.exe
 
 ::
 :: SCADA Portal Code
@@ -569,34 +513,3 @@ dhdbTD1 dhdbp SqlServers=RASBK1SQLS,3180:TD1
 dwp deploy Web Environment=Production
 DwpDl dwp Servers=shsprsps
 
-::
-:: FaSTr
-::
-
-fr: code:\RPIAD
-frc: fr:\Source
-frs: fr:\DataScripts
-
-frlb call sudo antidote `App=Rpiad` `BuildType=LocalBuild`
-frb build RPIAD\Source\RPIAD.sln
-frbc BuildClean RPIAD\Source\RPIAD.sln
-frs svns RPIAD
-frc svnc RPIAD
-frr svnr RPIAD
-frsw svnsw RPIAD
-
-fru svnu RPIAD
-frum `pushd & mb & if %? == 0 fr:\Libraries\UpdateMagellan.cmd & if %? == 0 frb & popd`
-
-frp ProfileManager Rpiad
-frpu copy fr:\Profiles\Rpiad.profile profiles:\Rpiad.profile
-frput copy fr:\Profiles\DevProfiles\Test\Rpiad.profile profiles:
-frpc copy profiles:\Rpiad.profile fr:\Profiles
-
-frt frc:\Test\WebServiceTest\bin\Debug\WebServiceTest.exe
-
-::
-:: test
-:: 
-
-test: code:\test

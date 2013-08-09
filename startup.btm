@@ -3,22 +3,16 @@ SetLocal
 on break cancel 1
 
 REM Common applications
-iff "%ComputerName" == "jjbutare-mobl" .or. "%ComputerName" == "oversoul" then	
-	call app %command WinSplit VistaSwitcher
-else
-	call app %command AutoHotkey WinSplit VistaSwitcher
-endiff	
+call app %command AutoHotkey WinSplit VistaSwitcher
 
 REM Host specific applications
 switch %ComputerName
 
 case oversoul
-	call app %command word EverNote PowerMixer PowerPanel DropBox ^
-		GoogleDrive SnagIt iCloud ShairPort4W pu
+	call app %command word EverNote pu DropBox PowerMixer SnagIt iCloud GoogleDrive PowerPanel
 
 case jjbutare-mobl
-	call app %command PowerMixer hp DropBox iCloud SideBar ^
-		SnagIt EverNote word CruiseControlTray pu
+	call app %command word EverNote pu DropBox PowerMixer SnagIt iCloud SideBar hp 
 	call intel %command
 	
 case dune

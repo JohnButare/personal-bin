@@ -2,6 +2,11 @@
 	# dcw: git dcw to see the changes on the same line instead of two lines
 	dcw = diff --color-words
 	lo = log --oneline
+	logg = log --graph --oneline --all --decorate --abbrev-commit
+	co = checkout
+	ci = commit
+	df=diff
+	dfs=diff --staged
 [color] # always for Cygwin mintty terminal
 	ui = always
 	status = always

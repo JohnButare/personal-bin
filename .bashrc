@@ -1,7 +1,7 @@
 # ~/.bashrc bash interactive shell intialization, from /etc/defaults/etc/skel/.bashrc
 # "mintty" and "ssh <script>" do not call .bash_profile, so most setup is here
 
-[[ "$-" == *i* ]] && echo "Running ~/.bashrc..."
+#[[ "$-" == *i* ]] && echo "Running ~/.bashrc..."
 
 #
 # debug
@@ -11,16 +11,16 @@
 [[ "$-" != *i* && $BASH_DEBUG ]] && echo 'BASH_DEBUG: in  ~/.bashrc'
 
 #
-# Variables
+# Global Variables (available in child processes and scripts)
 #
 
 set -a
-users="/home"
-pub="$users/Public"
-BIN="$pub/Documents/data/bin"
-p32="/Program Files (x86)"
-p64="/Program Files"
-p="$p64"
+USERS="/home"
+PUB="$USERS/Public"
+BIN="$PUB/Documents/data/bin"
+P="$P64"
+P32="/Program Files (x86)"
+P64="/Program Files"
 set +a
 
 #
@@ -56,31 +56,45 @@ PathAdd "/usr/bin" "front"
 PathAdd "/usr/local/bin" "front"
 
 #
-# Interactive Shells
+# Interactive Shell Initialization
 #
 
+# Return if not interactive
 [[ "$-" != *i* ]] && return
+
 [[ $BASH_DEBUG ]] && BASH_STATUS_INTERACTIVE_SHELL="true"
 
 HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars extglob
 
 #
-# Variables
-#
-
-home="$HOME"
-doc="$home/Documents"
-data="$doc/data"
-ubin="$data/bin"
-cloud="$home/Dropbox"
-
-code="/Projects"
-
-#
 # Functions
 #
 [[ -n "$BIN" && -f "$BIN/function.sh" ]] && . "$BIN/function.sh"
+
+#
+# Local Variables (not avalable to child processes or scripts)
+#
+
+# locations - cd'able variables ($<var><return or tab>) 
+bin="$BIN"
+p="$P"
+p64="$P64"
+p32="$P32"
+
+home="$HOME"
+cloud="$home/Dropbox"
+code="/Projects"
+desktop="$home/desktop"
+doc="$home/Documents"
+data="$doc/data"
+dl="$data/download"
+ubin="$data/bin"
+#wintmp="$(wtu $tmp)" # tmp not defined in ssh
+
+i="$PUB/Documents/data/install"
+pp="/cygdrive/c/ProgramData/Microsoft/Windows/Start Menu/Programs"
+up="/cygdrive/c/Users/jjbutare/AppData/Roaming/Microsoft/Windows/Start Menu/Programs"
 
 #
 # SSH
@@ -110,7 +124,7 @@ SetPrompt()
 	local clear='\[\e[0m\]'
 	local dir='$(GetPrompt)'
 	#local dir='\[\e[33m\]\w\[\e[0m\]'
-	local user=''; [[ "$USER" != "jjbutare" ]] && user='\u '
+	local user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '
 	local host="${user}"; IsSsh && host="${user//[[:space:]]/}@\h "
 	local git=''; IsFunction __git_ps1 && git='$(__git_ps1 " (%s)")'
 	local elevated=''; IsElevated && elevated='*'
@@ -119,6 +133,7 @@ SetPrompt()
 }
 
 SetPrompt
+[[ "$PWD" == "/cygdrive/c" ]] && cd ~
 
 #
 # completion
@@ -137,71 +152,96 @@ alias te='TextEdit'
 alias slf='tcc /c SyncLocalFiles.btm'
 alias unexport='unset'
 alias update='tc os.btm update'
+alias llv='declare -p | egrep -v "\-x"' # ListLocalVars
+alias lev='export' # ListExportVars
 
 #
 # applications
 #
 
 alias chrome='/opt/google/chrome/google-chrome'
+alias i='tc install.btm'
+alias rdesk='mstsc /f /v:'
 
 #
-# directory and file management
+# media
 #
-alias l='explorer .'
+
+alias gp='tc media.btm get'
+alias ms='tc media.btm sync'
+
+#
+# portable and backup
+#
+
+alias b='tc sudo WigginBackup'
+alias be='tc WigginBackup eject'
+
+alias sp='tc portable sync'
+alias mp='tc portable merge'
+alias ep='tc portable eject'
+
+alias eject='be; ep;'
+
+#
+# file management
+#
+
+FindAll()
+{
+	[ $# == 0 ] && { echo No file specified; return; }
+	find . -iname $*
+}
+
+FindCd()
+{
+	local dir=$(FindAll $* | head -1)
+
+	if [ -z "$dir" ]; then
+		echo Could not find $*
+	else
+		cde "$dir"
+	fi;
+}
+
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias cc='cd ~; cls'
 alias cde='CdEcho'
 alias del='rm'
-alias la='ls -QAl'
-alias ll='ls -Ql'
-alias ls='ls -Q --color'
-alias lt='ls -QAh --full-time'
+alias l='explorer .'
 alias md='MkDir'
 alias rd='RmDir'
 
+alias d='tc drive'
+
+alias fa='FindAll'
+alias fcd='FindCd'
+
+alias dir='cmd /c dir'
 alias dirss="ls -1s --sort=size --reverse --human-readable -l" # sort by size
 alias dirst='ls -l --sort=time --reverse' # sort by last modification time
 alias dirsct='ls -l --time=ctime --sort=time --reverse' # sort by creation  time
  #-l | awk '{ print \$5 \"\t\" \$9 }'
 
+alias la='ls -QAl'
+alias ll='ls -Ql'
+alias ls='ls -Q --color'
+alias lt='ls -QAh --full-time'
 alias lsh='file * | egrep "Bourne-Again shell script"'
 
-
-#
-# locations
-#
-
-alias dl:='cd $data/download'
-alias p:='cd "$p"'
-alias p32:='cd "$p32"'
-alias bin:='cd $BIN'
-alias mbin:='cd "$BIN/mac"'
-alias lbin:='cd $BIN/linux'
-alias w32:='cd "$BIN/win32"'
-alias w64:='cd $BIN/win64'
-
-alias pub:='cd $users/Public'
-alias doc:='cd $doc'
-alias home:='cd $home'
-alias ubin:='cd $ubin'
-alias desktop:='cd "$home/desktop"'
-alias cloud:='cd "$cloud"'
-
-alias code:='cd "$code"'
-
-alias pp:='cd "/cygdrive/c/ProgramData/Microsoft/Windows/Start Menu/Programs"'
-alias up:='cd "/cygdrive/c/Users/jjbutare/AppData/Roaming/Microsoft/Windows/Start Menu/Programs"'
-
-alias WinTmp:='cd $(wtu $tmp)'
+RoboCopyAll() { RoboCopy /z /ndl /e /w:3 /r:3 "$(utw $1)" "$(utw $2)"; }
+RoboCopyDir() { RoboCopyAll "$1" "$2/$(basename "$1")"; }
+alias rc='RoboCopyAll'
+alias rcd='RoboCopyDir'
 
 #
 # edit
 #
 
-alias ei='te $BIN/install.sh $BIN/win32/install.btm'
-alias es='te $BIN/setup.sh $BIN/win32/setup.btm'
+alias ei='te $BIN/win32/install.btm' # $BIN/install.sh 
+alias es='te $BIN/win32/setup.btm' # $BIN/setup.sh 
 
 # Bash
 alias sa='. ~/.bashrc'
@@ -226,12 +266,6 @@ alias st='startup.sh'
 alias es='te $BIN/startup.sh'
 
 #
-# find
-#
-alias fa='FindAll'
-alias fcd='FindCd'
-
-#
 # archive
 #
 
@@ -252,16 +286,34 @@ alias sk='SshKey'
 alias rs='RemoteServer'
 
 #
+# Windows
+#
+
+alias cm='tc os ComputerManagement'
+alias dm='tc os DeviceManager'
+alias prog='tc os programs'
+alias prop='tc os SystemProperties'
+alias ResourceMonitor='tc os ResourceMonitor'
+alias SystemRestore='tc vss'
+
+#
 # wiggin
 #
 
 alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
 alias house='start "$cloud/House/House Notes.docx"'
+alias w='start "$cloud/other/wedding/Wedding Notes.docx"'
 
 NasDrive='//butare.net@ssl@5006/DavWWWRoot'
 NasDrive() { net use n: '\\butare.net@ssl@5006\DavWWWRoot' /user:jjbutare; }
 alias nas:='cd $NasDrive'
 alias n:='cd /cygdrive/n'
+
+#
+# Development
+#
+
+test="$code/test"
 
 #
 # .NET Development
@@ -284,6 +336,7 @@ alias svnl='tsvn code log'
 alias svnc='tsvn code commit'
 alias svns='tsvn code status'
 
+alias g='git'
 alias gith='tc GitHelper.btm'
 #alias git='gith git'
 alias ge='gith extensions'
@@ -299,12 +352,27 @@ alias gt:='gi; cd "$code/test/git"'
 # Intel
 #
 
+# phone
+alias pb="tc lync PersonalBridge"
+
+# locations
+ihome="//jjbutare-mobl/john/documents"
+ss="$ihome/group/Software\ Solutions"
+SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
+
+# primary laptop
 alias MoblBoot="tc host boot jjbutare-mobl"
 alias MoblConnect="tc host connect jjbutare-mobl"
 alias MoblSleep="slp jjbutare-mobl"
 alias MoblSync="slf jjbutare-mobl"
+mdl="//jjbutare-mobl/John/Documents/data/download"
 
-# Software Solutions Group
+# vpn
+alias vpn="tc intel vpn"
+alias von="vpn on"
+alias voff="vpn off"
+
+# Source Control
 alias ssu='mu;au;fru;'
 alias ssc='mc;ac;frc;'
 
@@ -313,9 +381,15 @@ alias fru='svnu RPIAD'
 alias frc='svnc RPIAD'
 
 # Magellan
+mc="$code/Magellan"
 alias mu='svnu Magellan'
 alias mc='svnc Magellan'
+alias mb='build Magellan/Source/Magellan.sln'
+alias mst='svns Magellan'
 
 # Antidote
 alias au='svnu Antidote'
 alias ac='svnc Antidote'
+
+# Tablet POC
+alias albert='rdesk asmadrid-mobl2'

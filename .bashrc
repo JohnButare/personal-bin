@@ -22,6 +22,7 @@ P32="/cygdrive/c/Program Files (x86)"
 P64="/cygdrive/c/Program Files"
 P="$P64"
 DOC="$HOME/Documents"
+GREP_OPTIONS='--color=auto'
 set +a
 
 #
@@ -78,7 +79,6 @@ ManPathAdd "$PUB/documents/data/man"
 
 [[ $BASH_DEBUG ]] && BASH_STATUS_INTERACTIVE_SHELL="true"
 
-GREP_OPTIONS='--color=auto'
 HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars extglob
 
@@ -343,8 +343,13 @@ alias uhosts='tc host file update'
 # scripts
 #
 
-alias bfind="file * | egrep \"Bourne-Again shell script|.sh:\" | cut -d: -f1 | xargs egrep -i"
+alias scripts='file * | egrep "Bourne-Again shell script|.sh:" | cut -d: -f1'
+alias bfind='scripts | xargs egrep -i'
 bfindl() { bfind --color=always "$1" | less -R; }
+
+alias bfindapp='scripts | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
+alias beditapp='bfindapp | xargs cygstart "$P64/Sublime Text 2/sublime_text.exe"'
+
 bcommit() { pushd "$bin"; git status; git add -u; git commit -m "script changes"; git push; popd; pushd "$ubin"; git status; git add -u; git commit -m "script changes"; git push; popd; }
 
 #

@@ -345,7 +345,7 @@ alias uhosts='tc host file update'
 
 alias bfind="file * | egrep \"Bourne-Again shell script|.sh:\" | cut -d: -f1 | xargs egrep -i"
 bfindl() { bfind --color=always "$1" | less -R; }
-bcommit() { pushd "$bin"; git add -u; git commit -m "script changes"; git push; popd; pushd "$ubin"; git add -u; git commit -m "script changes"; git push; popd; }
+bcommit() { pushd "$bin"; git status; git add -u; git commit -m "script changes"; git push; popd; pushd "$ubin"; git status; git add -u; git commit -m "script changes"; git push; popd; }
 
 #
 # archive

@@ -78,6 +78,7 @@ ManPathAdd "$PUB/documents/data/man"
 
 [[ $BASH_DEBUG ]] && BASH_STATUS_INTERACTIVE_SHELL="true"
 
+GREP_OPTIONS='--color=auto'
 HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars extglob
 
@@ -337,6 +338,13 @@ alias es='te $BIN/startup.sh'
 # host file
 alias ehosts='tc host file edit'
 alias uhosts='tc host file update'
+
+#
+# scripts
+#
+
+alias bfind="file * | egrep \"Bourne-Again shell script|.sh:\" | cut -d: -f1 | xargs egrep -i"
+bfindl() { bfind --color=always "$1" | less -R; }
 
 #
 # archive

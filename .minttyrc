@@ -15,3 +15,7 @@ Transparency=off
 Scrollbar=none
 ConfirmExit=no
 RightClickAction=paste
+WindowShortcuts=yes
+SwitchShortcuts=yes
+ZoomShortcuts=yes
+AltFnShortcuts=yes

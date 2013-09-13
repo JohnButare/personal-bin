@@ -10,4 +10,4 @@ SshAgent startup
 [[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
 
 # Non-login startup script (BASH runtime control)
-[[ -f "${HOME}/.bashrc" ]] && . "${HOME}/.bashrc"
+[[ -f "$HOME/.bashrc" ]] && . "$HOME/.bashrc"

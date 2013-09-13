@@ -1,107 +1,45 @@
-# interactive shell intialization, from /etc/defaults/etc/skel/.bashrc, 
+# user specific interactive shell intialization, from /etc/defaults/etc/skel/.bashrc, 
 # non-interactive setup for "mintty" and "ssh <script>" 
 
-#[[ "$-" == *i* ]] && echo "Running ~/.bashrc..."
+# sytem-wide configuration - if not done in /etc/bash.bashrc
+if [[ ! $BIN ]]; then
+	echo "System configuration was not set in /etc/bash.bashrc" > /dev/stderr
+	[[ -d "/cygdrive/d/users" ]] && export USERS="/cygdrive/d/users" || export USERS="/cygdrive/c/users"
+	[[ -f "$USERS/Public/Documents/data/bin/bash.bashrc" ]] && . "$USERS/Public/Documents/data/bin/bash.bashrc"
+fi
 
-#
-# debug
-#
-
-#export BASH_DEBUG="yes"
-[[ "$-" != *i* && $BASH_DEBUG ]] && echo 'BASH_DEBUG: in  ~/.bashrc'
-
-#
-# Global Variables (available from child processes and scripts)
-#
-
+# non-interactive initialization (available from child processes and scripts)
 set -a
-[[ -d "/cygdrive/d/users" ]] && USERS="/cygdrive/d/users" || USERS="/cygdrive/c/users"
-PUB="$USERS/Public"
-BIN="$PUB/Documents/data/bin"
-P32="/cygdrive/c/Program Files (x86)"
-P64="/cygdrive/c/Program Files"
-P="$P64"
-DOC="$HOME/Documents"
 GREP_OPTIONS='--color=auto'
+LESS='-R'
+LESSOPEN='|~/.lessfilter %s'
 set +a
 
-#
-# TEMP Directory
-#
-
-# Set temp directory to correct format for unix (TMP/TEMP) or Windows (tmp/temp).  
-
-if [[ "$TMP" != "/tmp"  ]]; then
-	export tmp=$(cygpath -w "$TMP" 2> /dev/null)
-	export temp=$(cygpath -w "$TEMP" 2> /dev/null)
-	export TMP="/tmp"
-	export TEMP="/tmp"
-	export appdata="$APPDATA"
-	export APPDATA=$(cygpath -u "$appdata" 2> /dev/null)
-fi;
-
-#
-# Path
-#
-
-PathAdd() # PathAdd <path> [front], front adds to front and drops duplicates in middle
-{
-	if [[ "$2" == "front" ]]; then
-		PATH=$1:${PATH//:$1:/:}
-	elif [[ ! $PATH =~ (^|:)$1(:|$) ]]; then
-    PATH+=:$1
-  fi
-}
-
-# /usr/bin and /usr/local/bin must be first in the path so Cygwin utilities are used
-# before Microsoft utilities, /etc/profile adds them first, but profile is not
-# called by "ssh <script>.sh
-PathAdd "/usr/bin" "front"
-PathAdd "/usr/local/bin" "front"
-
-ManPathAdd() # ManPathAdd <path> [front], front adds to front and drops duplicates in middle
-{
-	if [[ "$2" == "front" ]]; then
-		MANPATH=$1:${MANPATH//:$1:/:}
-	elif [[ ! $MANPATH =~ (^|:)$1(:|$) ]]; then
-    MANPATH+=:$1
-  fi
-}
-
-ManPathAdd "$PUB/documents/data/man"
-
-#
-# Interactive Shell Initialization
-#
-
-# Return if not interactive - remainder not avalable to child processes or scripts
+# interactive initialization - remainder not needed in child processes or scripts
 [[ "$-" != *i* ]] && return
 
-[[ $BASH_DEBUG ]] && BASH_STATUS_INTERACTIVE_SHELL="true"
-
 HISTCONTROL=erasedups
-shopt -s autocd cdspell cdable_vars extglob
+shopt -s autocd cdspell cdable_vars
 
-# functions
+# common functions
 [[ -n "$BIN" && -f "$BIN/function.sh" ]] && . "$BIN/function.sh"
 
 #
-# locations - cd'able variables ($<var><return or tab>) 
+# locations - lower case (not exported), for cd'able variables ($<var><return or tab>) 
 #
 
 # system
-bin="$BIN"
-i="$PUB/Documents/data/install"
 p="$P"
 p64="$P64"
 p32="$P32"
-#wintmp="$(wtu $tmp)" # problem: tmp not defined in ssh
 
 # public
 pub="$PUB"
-pdata="$pub/Documents/data"
+bin="$BIN"
+data="$pub/Documents/data"
 psm="$ProgramData\Microsoft\Windows\Start Menu" # PublicStartMenu
 pp="$psm\Programs" # PublicPrograms
+i="$PUB/Documents/data/install"
 
 # user
 home="$HOME"
@@ -122,13 +60,20 @@ alias pp='"$pp"'
 alias up='"$up"'
 
 #
-# Process
+# temporary
+#
+
+a="$PUB/Documents/data/archive"
+
+#
+# process
 #
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
 
 #
-# SSH
+# ssh
 #
+
 RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
 IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
 ShowSsh() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
@@ -165,64 +110,63 @@ SetPrompt()
 	PS1="${elevated}${green}${host}${yellow}${dir}${clear}${git}\$ "
 }
 
-SetPrompt
+[[ "$PS1" != *GetPrompt* ]] && SetPrompt
 [[ "$PWD" == "/cygdrive/c" ]] && cd ~
 
 #
 # aliases
 #
 
-alias cf='tc CleanupFiles.btm'
+alias cf='CleanupFiles'
 alias cls=clear
 alias e='TextEdit'
 alias EnableCompletion='source /etc/bash_completion; SetPrompt'
-function FileInfo() { file $1; tc FileInfo.btm $1; }
-alias i='tc install.btm'
+function FileInfo() { file $1; FileInfo "$1"; }
+alias i='install'
 alias llv='declare -p | egrep -v "\-x"' # ListLocalVars
 alias lev='export' # ListExportVars
-alias os='tc os'
-alias slf='tcc /c SyncLocalFiles.btm'
 alias t='time pause'
 alias te='TextEdit'
 alias telnet='putty'
-alias update='tc os.btm update'
+alias update='os update'
 alias unexport='unset'
 alias unfunction='unset -f'
-alias update='tc os update'
+alias update='os update'
 
 #
 # applications
 #
 
 alias AutoItDoc="start $pdata/doc/AutoIt.chm"
-alias bc='tc BeyondCompare'
-alias chrome='tc chrome' # /opt/google/chrome/google-chrome
-alias ew='tc expression web'
-alias f='tc firefox'
-alias ie='tc InternetExplorer'
-alias m='tc merge.btm'
+alias bc='BeyondCompare'
+alias chrome='chrome' # /opt/google/chrome/google-chrome
+alias ew='expression web'
+alias f='firefox'
+alias ie='InternetExplorer'
+alias m='merge'
 alias rdesk='cygstart mstsc /f /v:'
-alias vm='tc VMware.btm'
-alias wmp='tc WindowsMediaPlayer'
-alias wmc='tc WindowsMediaCenter'
+alias vm='VMware'
+alias wmp='WindowsMediaPlayer'
+alias wmc='WindowsMediaCenter'
+alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 
 #
 # media
 #
 
-alias gp='tc media.btm get'
-alias ms='tc media.btm sync'
+alias gp='media get'
+alias ms='media sync'
 
 #
 # portable and backup
 #
 
-alias b='tc sudo WigginBackup'
-alias be='tc WigginBackup eject'
+alias b='sudo WigginBackup'
+alias be='WigginBackup eject'
 
-alias sp='tc portable sync'
-alias mp='tc portable merge'
-alias ep='tc portable eject'
+alias sp='portable sync'
+alias mp='portable merge'
+alias ep='portable eject'
 
 alias eject='be; ep;'
 
@@ -247,22 +191,21 @@ FindCd()
 	fi;
 }
 
-ecd() { eval "$("$@")"; } # EvaluateCd <script> - run a script and change to the directory it outputs 
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias cc='cd ~; cls'
 alias del='rm'
-#fpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath $1)"; echo "$arg"; clipw "$arg"; }
-fpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath $1)"; echo "$(utw "$arg")"; utw "$arg" > /dev/clipboard; }
+fpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath $1)"; echo "$arg"; clipw "$arg"; }
+wfpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath $1)"; echo "$(utw "$arg")"; utw "$arg" > /dev/clipboard; }
 alias md='MkDir'
 alias rd='RmDir'
 
 # explorer
 alias l='explorer .'
-alias l32='tc explorer 32  /e,/root,/select,"$(utw $PWD)"'
-alias l64='tc explorer 64  /e,/root,/select,"$(utw $PWD)"'
+#alias l32='explorer 32  /e,/root,/select,"$(utw $PWD)"'
+#alias l64='explorer 64  /e,/root,/select,"$(utw $PWD)"'
 
 # list
 alias la='ls -QAl'
@@ -292,65 +235,64 @@ alias rc='RoboCopyAll'
 alias rcd='RoboCopyDir'
 
 # drives
-alias d='tc drive'
-alias de='tc drive eject'
-alias dl='tc drive list'
-alias dr='tc drive list | egrep -i removable'
+alias d='drive'
+alias de='drive eject'
+alias dl='drive list'
+alias dr='drive list | egrep -i removable'
 
 # disk usage
 alias duh='du --human-readable'
-alias ds='tc DirSize m'
-alias dsu='tc DiskSpaceUsage'
-alias dus='tc DiskUsage summary'
+alias ds='DirSize m'
+alias dsu='DiskSpaceUsage'
+alias dus='DiskUsage summary'
 
 #
-# edit
+# edit/set
 #
 
-alias se='tc ShellEdit' # ShellEdit
-alias ei='te $BIN/win32/install.btm' # $BIN/install.sh 
-alias esetup='te $BIN/win32/setup.btm' # $BIN/setup.sh 
+alias se='ShellEdit'
+alias ei='te $bin/install'
+alias esetup='te $bin/setup'
 alias ehp='se $(utw "$udata/replicate/default.htm")'
 
-# Bash
+# Bash (aliases, functions, startup, other)
 alias sa='. ~/.bashrc'
 alias ea='te $ubin/.bashrc'
 
-alias sf='. ~/.bashrc'
-alias ef='te $BIN/function.sh'
+alias ef='te $bin/function.sh'
+alias sf='. function.sh'
 
-alias bstart='source ~/.bash_profile; bind -f ~/.inputrc;'
-alias estart='te /etc/profile /etc/bash.bashrc $ubin/.bash_profile $ubin/.bashrc'
+alias bstart='source "$bin/bash.bashrc"; source ~/.bash_profile; bind -f ~/.inputrc;'
+alias estart='te /etc/profile /etc/bash.bashrc "$bin/bash.bashrc" "$ubin/.bash_profile" "$ubin/.bashrc"'
 
 alias ebo='te $ubin/.minttyrc $ubin/.inputrc /etc/bash.bash_logout $ubin/.bash_logout'
 
-alias e4a='te $ubin/alias.tc'
-alias e4f='te $bin/win32/function.tc'
-
 # Autohotkey
 alias ek='te $ubin/keys.ahk'
-alias sk='tc AutoHotKey.btm restart'
+alias sk='AutoHotKey restart'
 
 # Startup
 alias st='startup'
-alias es='te $BIN/startup.sh'
+alias es='te $ubin/startup.sh'
 
 # host file
-alias ehosts='tc host file edit'
-alias uhosts='tc host file update'
+alias ehosts='host file edit'
+alias uhosts='host file update'
 
 #
 # scripts
 #
 
-alias scripts='file * | egrep "Bourne-Again shell script|.sh:" | cut -d: -f1'
-alias bfind='scripts | xargs egrep -i'
-bfindl() { bfind --color=always "$1" | less -R; }
+alias scd='ScriptCd'
 
-alias bfindapp='scripts | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
-alias beditapp='bfindapp | xargs cygstart "$P64/Sublime Text 2/sublime_text.exe"'
+alias slist='file * | egrep "Bourne-Again shell script|.sh:" | cut -d: -f1'
+alias sfind='slist | xargs egrep'
+sfindl() { sfind --color=always "$1" | less -R; }
+alias sedit='slist | xargs RunFunction.sh TextEdit'
+alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
+alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
-bcommit() { pushd "$bin"; git status; git add -u; git commit -m "script changes"; git push; popd; pushd "$ubin"; git status; git add -u; git commit -m "script changes"; git push; popd; }
+scommit() { pushd "$bin"; git status; git add -u; git commit -m "script changes"; git push; popd; pushd "$ubin"; git status; git add -u; git commit -m "script changes"; git push; popd; }
 
 #
 # archive
@@ -369,38 +311,35 @@ alias zll='7z.exe l -slt'
 # power management
 #
 
-alias boot='tc host boot'
-alias bw='tc host boot wait'
-alias hib='tc power hibernate'
-alias down='tc power shutdown'
-alias reb='tc power reboot'
-alias slp='tc power sleep'
+alias boot='host boot'
+alias bw='host boot wait'
+alias hib='power hibernate'
+alias down='power shutdown'
+alias reb='power reboot'
+alias slp='psshutdown -d' #'power sleep'
 
 #
 # network
 #
 
-alias ipc='tc network ipc'
+alias ipc='network ipc'
 alias SshKey='ssh-add ~/.ssh/id_dsa'
 alias sk='SshKey'
 alias rs='RemoteServer'
-
-alias slf='tc SyncLocalFiles'
-alias SlfSo='slf SrcOlder'
-alias SlfSoNb='slf SrcOlder NoBak'
-alias SlfDo='slf DestOlder'
-alias SlfDoNb='slf DestOlder NoBak'
+alias slf='SyncLocalFiles'
+alias slfdo='SyncLocalFiles -do'
+alias slfdonb='SyncLocalFiles -do -nb'
 
 #
 # windows
 #
 
-alias cm='tc os ComputerManagement'
-alias dm='tc os DeviceManager'
-alias prog='tc os programs'
-alias prop='tc os SystemProperties'
-alias ResourceMonitor='tc os ResourceMonitor'
-alias SystemRestore='tc vss'
+alias cm='os ComputerManagement'
+alias dm='os DeviceManager'
+alias prog='product gui'
+alias prop='os SystemProperties'
+alias ResourceMonitor='os ResourceMonitor'
+alias SystemRestore='vss'
 
 alias ws='wscript /nologo'
 alias cs='cscript /nologo'
@@ -410,7 +349,7 @@ alias cs='cscript /nologo'
 #
 
 playsound() { cat "$1" > /dev/dsp; }
-alias sound='tc os sound'
+alias sound='os sound'
 alias ts='playsound "$ubin/test/test.wav"'
 
 #
@@ -419,14 +358,16 @@ alias ts='playsound "$ubin/test/test.wav"'
 
 opub="//oversoul/Public"
 ohome="//oversoul/John"
+oi="$opub/Documents/data/install"
 odl="$ohome/Documents/data/download"
 
 alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
 alias house='start "$cloud/House/House Notes.docx"'
 alias w='start "$cloud/other/wedding/Wedding Notes.docx"'
 
-NasDrive='//butare.net@ssl@5006/DavWWWRoot'
-NasDrive() { net use n: '\\butare.net@ssl@5006\DavWWWRoot' /user:jjbutare; }
+nas='//nas/public'
+nasr='//butare.net@ssl@5006/DavWWWRoot'
+NasDrive() { net use n: "$(utw $nasr)" /user:jjbutare "$@"; }
 
 #
 # XML
@@ -442,35 +383,35 @@ alias XmlShow='xml sel -t -c'
 test="$code/test"
 www="/cygdrive/c/inetpub/wwwroot"
 
-alias ss='tc SqlServer'
-alias ssp='tc SqlServer profiler express'
+alias ss='SqlServer'
+alias ssp='SqlServer profiler express'
 
 #
 # JAVA Development
 #
 
-alias j='tc JavaUtil'
+alias j='JavaUtil'
 alias jd='j decompile'
 alias jdp='j decompile progress'
 alias jrun='j run'
 
-alias ec='tc eclipse'
+alias ec='eclipse'
 
 #
 # Android Development
 #
 
-alias as='tc AndroidUtil.btm sdk'
+alias as='AndroidUtil sdk'
 alias ab='as adb'
 
 #
 # .NET Development
 #
 
-alias n='tc .net.btm'
+alias n='.net'
 build() { n MsBuild /verbosity:minimal /m "$(utw $code/$1)"; }
 BuildClean() { n MsBuild /t:Clean /m "$(utw $code/$1)"; }
-alias vs='tc VisualStudio.btm'
+alias vs='VisualStudio'
 
 #
 # Source Control
@@ -478,7 +419,7 @@ alias vs='tc VisualStudio.btm'
 
 gt="$code/test/git" # GitTest
 
-alias tsvn='tc TortoiseSVN.btm'
+alias tsvn='TortoiseSVN'
 alias svn='tsvn svn'
 alias svnu='tsvn code update'
 alias svnsw='tsvn code switch'
@@ -487,20 +428,20 @@ alias svnc='tsvn code commit'
 alias svns='tsvn code status'
 
 alias g='git'
-alias gith='tc GitHelper.btm'
+alias gith='GitHelper'
 #alias git='gith git'
 alias ge='gith extensions'
 alias gi='{ ! IsFunction __git_ps1; } && source /etc/bash_completion && SetPrompt'
 
-alias gg='tc GitHelper gui'
-alias ggc='tc GitHelper gui commit'
+alias gg='GitHelper gui'
+alias ggc='GitHelper gui commit'
 
 #
 # Intel
 #
 
 # phone
-alias pb="tc lync PersonalBridge"
+alias pb="lync PersonalBridge"
 
 # locations
 ihome="//jjbutare-mobl/john/documents"
@@ -508,14 +449,14 @@ ss="$ihome/group/Software\ Solutions"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
 
 # primary laptop
-alias MoblBoot="tc host boot jjbutare-mobl"
-alias MoblConnect="tc host connect jjbutare-mobl"
+alias MoblBoot="host boot jjbutare-mobl"
+alias MoblConnect="host connect jjbutare-mobl"
 alias MoblSleep="slp jjbutare-mobl"
 alias MoblSync="slf jjbutare-mobl"
 mdl="//jjbutare-mobl/John/Documents/data/download"
 
 # vpn
-alias vpn="tc intel vpn"
+alias vpn="intel vpn"
 alias von="vpn on"
 alias voff="vpn off"
 
@@ -537,12 +478,6 @@ ProfileManager()
 		start "$p"
 	fi
 } 
-
-s()
-{
-	echo ${#1}
-	echo "1=$1"
-}
 
 alias pm='ProfileManager'
 alias ProfileManagerConfig='TextEdit C:\winnt\system32\ProfileManager.xml'
@@ -571,8 +506,8 @@ alias au='svnu Antidote'
 alias ac='svnc Antidote'
 
 #antidote "C:\Projects\Antidote\Antidote\bin\Debug\Antidote.exe"
-#AntidoteSetup call sudo.btm \\azscsisweb998\f$\Software\AntidoteSetup\AntidoteSetup.cmd
-#AntidoteUpdate call sudo.btm copy "C:\Projects\Antidote\Antidote\bin\Debug\*" "C:\Program Files\Antidote"
+#AntidoteSetup call sudo \\azscsisweb998\f$\Software\AntidoteSetup\AntidoteSetup.cmd
+#AntidoteUpdate call sudo copy "C:\Projects\Antidote\Antidote\bin\Debug\*" "C:\Program Files\Antidote"
 
 #ac: code:\Antidote
 #as: ac:\SolutionItems\DataScripts\MigrationScripts
@@ -641,7 +576,7 @@ alias frc='svnc RPIAD'
 
 # logs
 
-#ssl call explorer.btm "\\%1\d$\Program Files\Scada\ScadaService\log"
+#ssl call explorer "\\%1\d$\Program Files\Scada\ScadaService\log"
 #SslSiPr ssl rasSI1prsqls
 #SslSiBk ssl rasSI1bksqls
 #SslPpPr ssl rasPPprsqls

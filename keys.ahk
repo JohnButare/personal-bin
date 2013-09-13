@@ -8,7 +8,6 @@ CommonInit()
 ;TimerInit()
 OfficeInit()
 BashInit()
-TakeCommandInit()
 
 Init()
 
@@ -20,7 +19,6 @@ Init()
 #Include music.ahk
 ; #Include timer.ahk
 #Include bash.ahk
-#Include TakeCommand.ahk
 #Include VMware.ahk
 
 Test()
@@ -67,8 +65,6 @@ IdleEvent()
 ^#3::NewElevatedBash()
 #3::OpenBash()
 #!3::NewBash()
-#6::NewPowerShell()
-#!6::NewTakeCommandPowerShell()
 
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenChrome()
@@ -82,7 +78,7 @@ IdleEvent()
 ^#i::run "%PROGRAMS64%\Internet Explorer\iexplore.exe" ; x64
 #!i::run "%PROGRAMS32%\Internet Explorer\iexplore.exe" ; x86
 #j::run eclipse.btm,,min
-#m::run "%tcc%" /c os.btm MobilityCenter,min
+#m::run "mblctr.exe"
 #!m::RunWindowsMediaPlayer()
 #!n::RunOneNote()
 #n::OpenEverNote()
@@ -91,12 +87,13 @@ IdleEvent()
 #!p::run "procexp.exe"
 #!q::run quicken.btm,,min
 +#s::PowerDownMonitor()
-^#s::run "%tcc%" /c power.btm sleep force,,min
+^#s::run "%bash%" %BashArgs% power sleep force,,min
+; "%bash%" power sleep force,,min
 #!s::RunSonos()
 ^#t::Test()
 #t::OpenTextEditor()
 #!t::RuniTunes()
-^#v::run "%tcc%" /c VisualStudio.btm start new,,min
+^#v::run "%bash%" VisualStudio start new,,min
 #v::run VisualStudio.btm,,min
 #!v::OpenVmWare()
 ^#w::NewWordDocument()

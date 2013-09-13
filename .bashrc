@@ -64,6 +64,7 @@ alias up='"$up"'
 #
 
 a="$PUB/Documents/data/archive"
+alias eoi='te $a/install.btm'
 
 #
 # process
@@ -316,7 +317,7 @@ alias bw='host boot wait'
 alias hib='power hibernate'
 alias down='power shutdown'
 alias reb='power reboot'
-alias slp='psshutdown -d' #'power sleep'
+alias slp='power sleep'
 
 #
 # network

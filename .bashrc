@@ -64,7 +64,7 @@ alias up='"$up"'
 #
 
 a="$PUB/Documents/data/archive"
-alias eoi='te $a/install.btm'
+alias eoi='te "$a/install.btm"'
 
 #
 # process
@@ -121,6 +121,7 @@ SetPrompt()
 alias cf='CleanupFiles'
 alias cls=clear
 alias e='TextEdit'
+alias c='EnableCompletion'; 
 alias EnableCompletion='source /etc/bash_completion; SetPrompt'
 function FileInfo() { file $1; FileInfo "$1"; }
 alias i='install'

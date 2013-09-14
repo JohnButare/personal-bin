@@ -1,13 +1,11 @@
 [alias]
-	# dcw: git dcw to see the changes on the same line instead of two lines
 	dcw = diff --color-words
 	lo = log --oneline
 	logg = log --graph --oneline --all --decorate --abbrev-commit
 	co = checkout
 	ci = commit
-	df=diff
-	dfs=diff --staged
-[color] # always for Cygwin mintty terminal
+	df = diff
+	dfs = diff --staged
 	ui = always
 	status = always
 	branch = always
@@ -15,18 +13,14 @@
 	interactive = always
 [merge]
 	tool = BeyondCompare3
-[push]
-#	default = simple
 [diff]
 	guitool = beyondcompare3
 [core]
-	# editor: Sublime (multi-platform), Notepad++ (Windows Only, better macro support)
 	editor = \"C:/Program Files/Sublime Text 2/sublime_text.exe\"
 	autocrlf = false
 	filemode = false
 [credential]
 	helper = !\"C:/Program Files (x86)/GitExtensions/GitCredentialWinStore/git-credential-winstore.exe\"
-[difftool "BeyondCompare3"] # Beyond Compare (merge output clear, easy to merge)
 	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
 [user]
 	name = jjbutare
@@ -37,3 +31,8 @@
 [mergetool "BeyondCompare3"]
 	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
 	cmd = \"C:/Program Files (x86)/Beyond Compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+[difftool "BeyondCompare3"]
+	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
+[difftool "tmerge"]
+	path = C:/Program Files/TortoiseGit/bin/TortoiseGitMerge.exe
+	cmd = \"C:/Program Files/TortoiseGit/bin/TortoiseGitMerge.exe\" \"$LOCAL\" \"$REMOTE\"

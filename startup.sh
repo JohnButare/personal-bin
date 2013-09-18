@@ -1,6 +1,6 @@
 
 # Common applications
-app -q $command AutoHotKey WinSplit VistaSwitcher
+app -q $command AutoHotKey WinSplit
 
 # Host specific applications
 case "${COMPUTERNAME,,}" in

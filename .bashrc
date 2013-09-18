@@ -21,6 +21,9 @@ set +a
 HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars
 
+# ssh
+[[ -f "~/.ssh/environment" ]] && . "~/.ssh/environment"
+
 # common functions
 [[ -n "$BIN" && -f "$BIN/function.sh" ]] && . "$BIN/function.sh"
 
@@ -37,8 +40,9 @@ p32="$P32"
 pub="$PUB"
 bin="$BIN"
 data="$pub/Documents/data"
-psm="$ProgramData\Microsoft\Windows\Start Menu" # PublicStartMenu
-pp="$psm\Programs" # PublicPrograms
+psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
+pp="$psm/Programs" # PublicPrograms
+pd="$pub/Desktop" # PublicDesktop
 i="$PUB/Documents/data/install"
 
 # user
@@ -49,8 +53,9 @@ cloud="$home/Dropbox"
 code="/cygdrive/c/Projects"
 dl="$udata/download"
 ubin="$udata/bin"
-usm="$APPDATA\Microsoft\Windows\Start Menu" #UserStartMenu
-up="$usm\Programs" #UserPrograms
+usm="$APPDATA/Microsoft/Windows/Start Menu" #UserStartMenu
+up="$usm/Programs" # UserPrograms
+ud="$home/Desktop" # UserDesktop
 
 # shortcuts
 alias p='"$p"'
@@ -124,7 +129,7 @@ alias e='TextEdit'
 alias c='EnableCompletion'; 
 alias EnableCompletion='source /etc/bash_completion; SetPrompt'
 function FileInfo() { file $1; FileInfo "$1"; }
-alias i='install'
+i() { [[ $# == 0 ]] && { ScriptCd inst cd "$@"; return; } || inst "$@"; }
 alias llv='declare -p | egrep -v "\-x"' # ListLocalVars
 alias lev='export' # ListExportVars
 alias t='time pause'
@@ -199,8 +204,8 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias cc='cd ~; cls'
 alias del='rm'
-fpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath $1)"; echo "$arg"; clipw "$arg"; }
-wfpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath $1)"; echo "$(utw "$arg")"; utw "$arg" > /dev/clipboard; }
+fpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath "$1")"; echo "$arg"; clipw "$arg"; }
+wfpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath "$1")"; echo "$(utw "$arg")"; utw "$arg" > /dev/clipboard; }
 alias md='MkDir'
 alias rd='RmDir'
 
@@ -253,8 +258,7 @@ alias dus='DiskUsage summary'
 #
 
 alias se='ShellEdit'
-alias ei='te $bin/install'
-alias esetup='te $bin/setup'
+alias ei='te $bin/inst'
 alias ehp='se $(utw "$udata/replicate/default.htm")'
 
 # Bash (aliases, functions, startup, other)
@@ -315,6 +319,7 @@ alias zll='7z.exe l -slt'
 
 alias boot='host boot'
 alias bw='host boot wait'
+alias connect='host connect'
 alias hib='power hibernate'
 alias down='power shutdown'
 alias reb='power reboot'
@@ -329,8 +334,6 @@ alias SshKey='ssh-add ~/.ssh/id_dsa'
 alias sk='SshKey'
 alias rs='RemoteServer'
 alias slf='SyncLocalFiles'
-alias slfdo='SyncLocalFiles -do'
-alias slfdonb='SyncLocalFiles -do -nb'
 
 #
 # windows

@@ -145,6 +145,7 @@ alias update='os update'
 # applications
 #
 
+alias s="start"
 alias AutoItDoc="start $pdata/doc/AutoIt.chm"
 alias bc='BeyondCompare'
 alias chrome='chrome' # /opt/google/chrome/google-chrome
@@ -468,11 +469,11 @@ m1dl="//jjbutare-mobl/John/Documents/data/download"
 
 alias m7b="host boot jjbutare-mobl7"
 alias m7c="host connect jjbutare-mobl7"
-alias m7slp="slf jjbutare-mobl7"
+alias m7slf="slf jjbutare-mobl7"
 alias m7slp="slp jjbutare-mobl7"
+m7s() { m7slf || return; m m7s; }
 m7dl="//jjbutare-mobl7/John/Documents/data/download"
 
-m7s() { slf jjbutare-mobl7 || return; pause "TODO: make m7s session"; m "$udoc" "//jjbutare-mobl7/c$/Users/jjbutare/Documents" "/filters=-data\\Visual Studio 2012\\;-data\\profile\\;-data\\templates\\;-IISExpress\\;-*.lnk;-.*_sync.txt;-data\\VMware\\;-data\\mail\\"; }
 PrepKey() { local k="/cygdrive/e/mobl"; mkdir -p "$k/bin" "$k/doc"; }
 SyncKey() { local k="/cygdrive/e/mobl" f="/filters=-.*_sync.txt"; m "$bin" "$k/bin" "$f"; m "$udoc" "$k/doc" "/filters=-data\\VMware\\;-data\\mail\\"; }
 

@@ -94,7 +94,7 @@ IdleEvent()
 #t::OpenTextEditor()
 #!t::RuniTunes()
 ^#v::run "%bash%" VisualStudio start new,,min
-#v::run VisualStudio.btm,,min
+#v::run "%bash%" VisualStudio start new,,min
 #!v::OpenVmWare()
 ^#w::NewWordDocument()
 #!w::NewWordDocument()

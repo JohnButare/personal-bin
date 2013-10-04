@@ -48,9 +48,10 @@ i="$PUB/Documents/data/install"
 # user
 home="$HOME"
 doc="$DOC"
-udata="$doc/data"
+udoc="$DOC"
+udata="$udoc/data"
 cloud="$home/Dropbox"
-code="/cygdrive/c/Projects"
+code="$CODE"
 dl="$udata/download"
 ubin="$udata/bin"
 usm="$APPDATA/Microsoft/Windows/Start Menu" #UserStartMenu
@@ -163,6 +164,8 @@ alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 
 alias gp='media get'
 alias ms='media sync'
+alias si='merge "$pdoc/data/install" "//nas/public/documents/data/install"'
+alias sk='SyncKey'
 
 #
 # portable and backup
@@ -181,23 +184,6 @@ alias eject='be; ep;'
 # file management
 #
 
-FindAll()
-{
-	[[ $# == 0 ]] && { echo No file specified; return; }
-	find . -iname $*
-}
-
-FindCd()
-{
-	local dir=$(FindAll $* | head -1)
-
-	if [ -z "$dir" ]; then
-		echo Could not find $*
-	else
-		"$dir"
-	fi;
-}
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -208,18 +194,18 @@ fpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath "$1")"; echo "$arg"; clip
 wfpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath "$1")"; echo "$(utw "$arg")"; utw "$arg" > /dev/clipboard; }
 alias md='MkDir'
 alias rd='RmDir'
+alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
 
 # explorer
-alias l='explorer .'
-#alias l32='explorer 32  /e,/root,/select,"$(utw $PWD)"'
-#alias l64='explorer 64  /e,/root,/select,"$(utw $PWD)"'
+alias l='start explorer "$PWD"'
 
 # list
-alias la='ls -QAl'
-alias ll='ls -Ql'
 alias ls='ls -Q --color'
-alias lt='ls -QAh --full-time'
-alias lsh='file * | egrep "Bourne-Again shell script"'
+alias la='ls -Al'
+alias ll='ls -l'
+alias llh='ll -d .*'
+alias lh='ls -d .*'
+alias lt='ls -Ah --full-time'
 
 alias dir='cmd /c dir'
 alias dirss="ls -1s --sort=size --reverse --human-readable -l" # sort by size
@@ -233,6 +219,23 @@ alias fcd='FindCd'
 fclip() { file=$(FindAll $1 | head -1) && clipw "$file"; } # FindClip
 fe() { file=$(FindAll $1 | head -1) && TextEdit "$file"; } # FindEdit
 ft() { grep --color -i -r -e "$1" --include=$2 ${@:3}; } # FindText <text to find> '<file pattern>'
+
+FindAll()
+{
+	[[ $# == 0 ]] && { echo "No file specified"; return; }
+	find . -iname "$@"
+}
+
+FindCd()
+{
+	local dir="$(FindAll "$@" | head -1)"
+
+	if [ -z "$dir" ]; then
+		echo Could not find "$@"
+	else
+		"$dir"
+	fi;
+}
 
 # copy
 alias CopyAll='xcopy /e /v /k /r /h /x /o /c'
@@ -257,7 +260,6 @@ alias dus='DiskUsage summary'
 # edit/set
 #
 
-alias se='ShellEdit'
 alias ei='te $bin/inst'
 alias ehp='se $(utw "$udata/replicate/default.htm")'
 
@@ -274,8 +276,8 @@ alias estart='te /etc/profile /etc/bash.bashrc "$bin/bash.bashrc" "$ubin/.bash_p
 alias ebo='te $ubin/.minttyrc $ubin/.inputrc /etc/bash.bash_logout $ubin/.bash_logout'
 
 # Autohotkey
-alias ek='te $ubin/keys.ahk'
-alias sk='AutoHotKey restart'
+alias EditKey='te $ubin/keys.ahk'
+alias SetKey='AutoHotKey restart'
 
 # Startup
 alias st='startup'
@@ -290,6 +292,7 @@ alias uhosts='host file update'
 #
 
 alias scd='ScriptCd'
+alias se='ScriptEval'
 
 alias slist='file * | egrep "Bourne-Again shell script|.sh:" | cut -d: -f1'
 alias sfind='slist | xargs egrep'
@@ -331,7 +334,6 @@ alias slp='power sleep'
 
 alias ipc='network ipc'
 alias SshKey='ssh-add ~/.ssh/id_dsa'
-alias sk='SshKey'
 alias rs='RemoteServer'
 alias slf='SyncLocalFiles'
 
@@ -371,8 +373,9 @@ alias house='start "$cloud/House/House Notes.docx"'
 alias w='start "$cloud/other/wedding/Wedding Notes.docx"'
 
 nas='//nas/public'
-nasr='//butare.net@ssl@5006/DavWWWRoot'
-NasDrive() { net use n: "$(utw $nasr)" /user:jjbutare "$@"; }
+ni="$nas/documents/data/install"
+nr='//butare.net@ssl@5006/DavWWWRoot'
+NasDrive() { net use n: "$(utw "$nr")" /user:jjbutare "$@"; }
 
 #
 # XML
@@ -406,16 +409,17 @@ alias ec='eclipse'
 # Android Development
 #
 
-alias as='AndroidUtil sdk'
 alias ab='as adb'
 
 #
 # .NET Development
 #
 
-alias n='.net'
-build() { n MsBuild /verbosity:minimal /m "$(utw $code/$1)"; }
-BuildClean() { n MsBuild /t:Clean /m "$(utw $code/$1)"; }
+alias n='DotNet'
+alias ncd='scd DotNet cd'
+alias gcd='scd DotNet GacCd'
+build() { n build /verbosity:minimal /m "$code/$1"; }
+BuildClean() { n build /t:Clean /m "$code/$1"; }
 alias vs='VisualStudio'
 
 #
@@ -426,15 +430,17 @@ gt="$code/test/git" # GitTest
 
 alias tsvn='TortoiseSVN'
 alias svn='tsvn svn'
-alias svnu='tsvn code update'
-alias svnsw='tsvn code switch'
-alias svnl='tsvn code log'
+alias code='tsvn code'
 alias svnc='tsvn code commit'
+alias svnl='tsvn code log'
+alias svnr='tsvn code revert'
 alias svns='tsvn code status'
+alias svnsw='tsvn code switch'
+alias svnu='tsvn code update'
 
 alias g='git'
-alias gith='GitHelper'
-#alias git='gith git'
+alias gh='GitHelper'
+alias ghgit='gith git'
 alias ge='gith extensions'
 alias gi='{ ! IsFunction __git_ps1; } && source /etc/bash_completion && SetPrompt'
 
@@ -453,12 +459,22 @@ ihome="//jjbutare-mobl/john/documents"
 ss="$ihome/group/Software\ Solutions"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
 
-# primary laptop
-alias MoblBoot="host boot jjbutare-mobl"
-alias MoblConnect="host connect jjbutare-mobl"
-alias MoblSleep="slp jjbutare-mobl"
-alias MoblSync="slf jjbutare-mobl"
-mdl="//jjbutare-mobl/John/Documents/data/download"
+# laptop
+alias m1b="host boot jjbutare-mobl"
+alias m1c="host connect jjbutare-mobl"
+alias m1slf="slf jjbutare-mobl"
+alias m1slp="slp jjbutare-mobl"
+m1dl="//jjbutare-mobl/John/Documents/data/download"
+
+alias m7b="host boot jjbutare-mobl7"
+alias m7c="host connect jjbutare-mobl7"
+alias m7slp="slf jjbutare-mobl7"
+alias m7slp="slp jjbutare-mobl7"
+m7dl="//jjbutare-mobl7/John/Documents/data/download"
+
+m7s() { slf jjbutare-mobl7 || return; pause "TODO: make m7s session"; m "$udoc" "//jjbutare-mobl7/c$/Users/jjbutare/Documents" "/filters=-data\\Visual Studio 2012\\;-data\\profile\\;-data\\templates\\;-IISExpress\\;-*.lnk;-.*_sync.txt;-data\\VMware\\;-data\\mail\\"; }
+PrepKey() { local k="/cygdrive/e/mobl"; mkdir -p "$k/bin" "$k/doc"; }
+SyncKey() { local k="/cygdrive/e/mobl" f="/filters=-.*_sync.txt"; m "$bin" "$k/bin" "$f"; m "$udoc" "$k/doc" "/filters=-data\\VMware\\;-data\\mail\\"; }
 
 # vpn
 alias vpn="intel vpn"
@@ -466,8 +482,8 @@ alias von="vpn on"
 alias voff="vpn off"
 
 # Source Control
-alias ssu='mu;au;fru;'
-alias ssc='mc;ac;frc;'
+alias ssu='mu;au;fru;spu;'
+alias ssc='mc;ac;frc;spu;'
 
 # Profile Manager
 profiles="$P/ITBAS/Profiles"
@@ -507,151 +523,141 @@ alias mst='svns Magellan'
 # Antidote
 #
 
+ac="$code/Antidote"
+as="$ac/SolutionItems/DataScripts/MigrationScripts"
+
 alias au='svnu Antidote'
 alias ac='svnc Antidote'
+alias as='svns Antidote'
+alias ar='svnr Antidote'
 
-#antidote "C:\Projects\Antidote\Antidote\bin\Debug\Antidote.exe"
-#AntidoteSetup call sudo \\azscsisweb998\f$\Software\AntidoteSetup\AntidoteSetup.cmd
-#AntidoteUpdate call sudo copy "C:\Projects\Antidote\Antidote\bin\Debug\*" "C:\Program Files\Antidote"
+alias ab='build Antidote/Antidote.sln'
+alias abc='BuildClean Antidote/Antidote.sln'
+alias alb='"$ac/SolutionItems/BuildConfiguration/RunLocalBuild.cmd"'
 
-#ac: code:\Antidote
-#as: ac:\SolutionItems\DataScripts\MigrationScripts
-#ap ProfileManager Antidote
-#alb ac:\SolutionItems\BuildConfiguration\RunLocalBuild.cmd
-#ab build Antidote\Antidote.sln
-#ast svns Antidote
+alias ap='ProfileManager Antidote'
 
-#auf `pushd & ac:\SolutionItems\Libraries\UpdateFramework.cmd & ab & popd`
-#aum `pushd & ac:\SolutionItems\Libraries\UpdateMagellan.cmd & ab & popd`
+alias aum='pushd .; mb && { "$ac/SolutionItems/Libraries/UpdateMagellan.cmd" && ab; }; popd'
+alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"'
 
 #
 # FaSTr
 #
 
+fr="$code/RPIAD"
+frc="$fr/Source"
+frs="$fr/DataScripts"
+
 alias fru='svnu RPIAD'
 alias frc='svnc RPIAD'
+alias frs='svns RPIAD'
+alias frr='svnr RPIAD'
+alias frsw='svnsw RPIAD'
 
-#fr: code:\RPIAD
-#frc: fr:\Source
-#frs: fr:\DataScripts
+alias frb='build RPIAD/Source/RPIAD.sln'
+alias frbc='BuildClean RPIAD/Source/RPIAD.sln'
+alias frlb='sudo antidote App=Rpiad BuildType=LocalBuild'
 
-#frlb call sudo antidote `App=Rpiad` `BuildType=LocalBuild`
-#frb build RPIAD\Source\RPIAD.sln
-#frbc BuildClean RPIAD\Source\RPIAD.sln
-#frs svns RPIAD
-#frc svnc RPIAD
-#frr svnr RPIAD
-#frsw svnsw RPIAD
+alias frp="ProfileManager Rpiad"
+alias frpu='cp "$fr/Profiles/Rpiad.profile" "$profiles/Rpiad.profile"'
+alias frput='cp "$fr/Profiles/DevProfiles/Test/Rpiad.profile" "$profiles"'
+alias frpc='cp "$profiles/Rpiad.profile" "$fr/Profiles"'
 
-#fru svnu RPIAD
-#frum `pushd & mb & if %? == 0 fr:\Libraries\UpdateMagellan.cmd & if %? == 0 frb & popd`
-
-#frp ProfileManager Rpiad
-#frpu copy fr:\Profiles\Rpiad.profile profiles:\Rpiad.profile
-#frput copy fr:\Profiles\DevProfiles\Test\Rpiad.profile profiles:
-#frpc copy profiles:\Rpiad.profile fr:\Profiles
-
-#frt frc:\Test\WebServiceTest\bin\Debug\WebServiceTest.exe
+alias frt='$frc/Test/WebServiceTest/bin/Debug/WebServiceTest.exe'
 
 #
 # SCADA Portal
 #
 
-# code
+sp="$code/ScadaPortal"
+sps="$sp/DataScripts"
+spc="$sp/Source"
 
-#sp: code:\ScadaPortal
-#sps: code:\ScadaPortal\DataScripts
-#spc: code:\ScadaPortal\Source
+alias spu='svnu ScadaPortal'
+alias spc='svnc ScadaPortal'
+alias sps='svns ScadaPortal'
+alias spr='svnr ScadaPortal'
+alias spsw='svnsw ScadaPortal'
 
-#spb build ScadaPortal\Source\ScadaPortal.sln
-#spbc BuildClean ScadaPortal\Source\ScadaPortal.sln
-#sps svns ScadaPortal
-#spc svnc ScadaPortal
-#spr svnr ScadaPortal
-#spsw svnsw ScadaPortal 
+alias spb='build ScadaPortal/Source/ScadaPortal.sln'
+alias spbc='BuildClean ScadaPortal/Source/ScadaPortal.sln'
 
-#spu svnu ScadaPortal
-#spua `pushd & ab & if %? == 0 sp:\Libraries\UpdateAntidote.cmd & if %? == 0 spb & popd`
-#spum `pushd & mb & if %? == 0 sp:\Libraries\UpdateMagellan.cmd & if %? == 0 spb & popd`
+alias spua='pushd .; ab && { "$sp/Libraries/UpdateAntidote.cmd" && spb; }; popd'
+alias spum='pushd .; mb && { "$ac/SolutionItems/Libraries/UpdateMagellan.cmd" && spb; }; popd'
 
-# programs
-
-#pm `pushd spc:\PointManagementUtility\PointManagement\bin\Debug & PointManagement.exe & popd` # PointManagement
-#sac `spc:\ScadaAlerts\ScadaAlertChecker\bin\Debug\ScadaAlertChecker.exe` # ScadaAlertChecker
+alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/null; start PointManagement.exe; popd > /dev/null'
 
 # logs
-
-#ssl call explorer "\\%1\d$\Program Files\Scada\ScadaService\log"
-#SslSiPr ssl rasSI1prsqls
-#SslSiBk ssl rasSI1bksqls
-#SslPpPr ssl rasPPprsqls
-#SslPpBk ssl rasPPbksqls
+ssl() { start explorer "//$1/d$/Program Files/Scada/ScadaService/log"; }
+alias sslSiPr='ssl rasSI1prsqls'
+alias sslSiBk='ssl rasSI1bksqls'
+alias sslPpPr='ssl rasPPprsqls'
+alias sslPpBk='ssl rasPPbksqls'
 
 # deployment
-
-#deploy `pushd C:\Projects\ScadaPortal\Source\Setup\Deploy\Deploy\bin\Debug && Deploy.exe %$ && popd`
-#DeployLocal `deploy LogDirectory=c:\temp\ScadaPortalDeployment\log`
+deploy() { pushd $spc/Setup/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
+alias DeployLocal='deploy LogDirectory=/tmp/ScadaPortalDeployment/log'
 
 # deployment log
-#dlog deploy log
-#dll DeployLocal log
-#dlt TextEdit \\vmspwbld001\d$\temp\ScadaPortalDeployment\log\Test.Log.vmspwbld001.txt
-#dlpp TextEdit \\vmspwbld001\d$\temp\ScadaPortalDeployment\log\PreProduction.Log.vmspwbld001.txt
-#dlp TextEdit \\vmspwbld001\d$\temp\ScadaPortalDeployment\log\Production.Log.vmspwbld001.txt
+alias dlog='deploy log'
+alias dll='DeployLocal log'
+alias dlt='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/Test.Log.vmspwbld001.txt'
+alias dlpp='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/PreProduction.Log.vmspwbld001.txt'
+alias dlp='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/Production.Log.vmspwbld001.txt'
 
 # deployment test CI
-#DpmTestAll dpmp test=true force=false
-#DpmTest dpmp Servers=RAC2FMSF-CIM;RAC2FMSC-CIM;RAPB1FMSAA-CIM test=true force=true
+alias dpmTestAll='dpmp test=true force=false'
+alias dpmTest='dpmp Servers=RAC2FMSF-CIM;RAC2FMSC-CIM;RAPB1FMSAA-CIM test=true force=true'
 
 # deploy to test
-#dra DeployLocal RelayAgent force=true
-#dss DeployLocal ScadaService force=true
-#dhdb DeployLocal HistorianDb force=true DeployClr=true NoSecondary=false
-#ddl DeployLocal DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true
-#dac DeployLocal AlertChecker force=true
-#dpm DeployLocal PointManagement force=true
-#dw DeployLocal Web force=true
+alias dra='DeployLocal RelayAgent force=true'
+alias dss='DeployLocal ScadaService force=true'
+alias dhdb='DeployLocal HistorianDb force=true DeployClr=true NoSecondary=false'
+alias ddl='DeployLocal DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true'
+alias dac='DeployLocal AlertChecker force=true'
+alias dpm='DeployLocal PointManagement force=true'
+alias dw='DeployLocal Web force=true'
 
 # deploy to pre-production
-#drapp DeployLocal RelayAgent force=true environment=PreProduction
-#dwpp DeployLocal web force=true environment=PreProduction
-#dacpp DeployLocal AlertChecker force=true environment=PreProduction
-#dsspp DeployLocal ScadaService force=true environment=PreProduction
-#dhdbpp DeployLocal HistorianDb force=true environment=PreProduction
+alias draPP='DeployLocal RelayAgent force=true environment=PreProduction'
+alias dwPP='DeployLocal web force=true environment=PreProduction'
+alias dacPP='DeployLocal AlertChecker force=true environment=PreProduction'
+alias dssPP='DeployLocal ScadaService force=true environment=PreProduction'
+alias dhdbPP='DeployLocal HistorianDb force=true environment=PreProduction'
 
 # deploy production
-#drap deploy deploy Environment=Production force=true
-#DraRa drap SqlServers=RASBK1SQLS,3180:CB3
-#DraRr drap SqlServers=RRSBK1SQLS,3180:CUB
+alias drap='deploy deploy Environment=Production force=true'
+alias draRA='drap SqlServers=RASBK1SQLS,3180:CB3'
+alias draRR='drap SqlServers=RRSBK1SQLS,3180:CUB'
 
-#dpmp deploy PointManagement Environment=Production DeployOutsideFirewall=false
-#DpmAl dpmp SqlServers=ALSBK1SQLS,3180:AFO
-#DpmHd dpmp SqlServers=HDSBK1SQLS,3180:F17_FMS
-#DpmJr dpmp SqlServers=JRSBK1SQLS.ger.corp.intel.com,3180:IDPJ
-#DpmLc dpmp SqlServers=LCSBK1SQLS,3180:EPMS
-#DpmOc dpmp SqlServers=OCSBK1SQLS,3180:F22_HPM
-#DpmRa dpmp SqlServers=RASBK1SQLS,3180:CB3
-#DpmRr dpmp SqlServers=RRSBK1SQLS,3180:CUB
-#DpmIr dpmp SqlServers=IRsbk1sqls,3180:F10
+alias dpmp='deploy PointManagement Environment=Production DeployOutsideFirewall=false'
+alias dpmAL='dpmp SqlServers=ALSBK1SQLS,3180:AFO'
+alias dpmHD='dpmp SqlServers=HDSBK1SQLS,3180:F17_FMS'
+alias dpmJR='dpmp SqlServers=JRSBK1SQLS.ger.corp.intel.com,3180:IDPJ'
+alias dpmLC='dpmp SqlServers=LCSBK1SQLS,3180:EPMS'
+alias dpmOC='dpmp SqlServers=OCSBK1SQLS,3180:F22_HPM'
+alias dpmRA='dpmp SqlServers=RASBK1SQLS,3180:CB3'
+alias dpmRR='dpmp SqlServers=RRSBK1SQLS,3180:CUB'
+alias dpmIR='dpmp SqlServers=IRsbk1sqls,3180:F10'
 
-#dssp deploy ScadaService Environment=Production DeployOutsideFirewall=false
-#DssJr dssp SqlServers=JRSBK1SQLS.ger.corp.intel.com,3180:IDPJ
-#DssRa dssp SqlServers=RASBK1SQLS,3180:CB3 servers=RAsbk1sqls;RAspr1sqls
-#DssRr dssp SqlServers=RRSBK1SQLS,3180:F11X servers=RRsbk1sqls;RRspr1sqls 
-#DssIr dss Environment=PreProduction SqlServers=IRsbk1sqls,3180:F10 servers=IRsbk1sqls;IRspr1sqls
+alias dssp='deploy ScadaService Environment=Production DeployOutsideFirewall=false'
+alias dssJR='dssp SqlServers=JRSBK1SQLS.ger.corp.intel.com,3180:IDPJ'
+alias dssRA='dssp SqlServers=RASBK1SQLS,3180:CB3 servers=RAsbk1sqls;RAspr1sqls'
+alias dssRR='dssp SqlServers=RRSBK1SQLS,3180:F11X servers=RRsbk1sqls;RRspr1sqls '
+alias dssIR='dss Environment=PreProduction SqlServers=IRsbk1sqls,3180:F10 servers=IRsbk1sqls;IRspr1sqls'
 
-#dacp deploy AlertChecker Environment=Production DeployOutsideFirewall=false
-#DacRa dacp SqlServers=RASBK1SQLS,3180:CB3 Servers=rasD1Bprcimf
-#DacRr dacp SqlServers=RRsbk1sqls,3180:CUB
+alias dacp='deploy AlertChecker Environment=Production DeployOutsideFirewall=false'
+alias DacRA='dacp SqlServers=RASBK1SQLS,3180:CB3 Servers=rasD1Bprcimf'
+alias DacRR='dacp SqlServers=RRsbk1sqls,3180:CUB'
 
-#ddlp deploy DataLogger Environment=Production InstallDataLogger=false DeployOutsideFirewall=false
-#DdlIr deploy DataLogger SqlServers=IRsbk1sqls,3180:F10 Environment=PreProduction InstallDataLogger=true ConfigureDataLogger=false PopPoints=false
+alias ddlp='deploy DataLogger Environment=Production InstallDataLogger=false DeployOutsideFirewall=false'
+alias DdlIr='deploy DataLogger SqlServers=IRsbk1sqls,3180:F10 Environment=PreProduction InstallDataLogger=true ConfigureDataLogger=false PopPoints=false'
 
-#dhdbp deploy HistorianDb Environment=Production DeployClr=true
-#dhdbIDPJ dhdbp SqlServers=JRSBK1SQLS.ger.corp.intel.com,3180:IDPJ;JRSPR1SQLS.ger.corp.intel.com,3180:IDPJ
-#dhddLC dhdbp SqlServers=LCSBK1SQLS.ger.corp.intel.com,3180:EPMS;LCSBK1SQLS.ger.corp.intel.com,3180:F28;LCSBK1SQLS.ger.corp.intel.com,3180:LC12;LCSBK1SQLS.ger.corp.intel.com,3180:LCC2;LCSBK1SQLS.ger.corp.intel.com,3180:MBR
-#dhdbD1D dhdbp SqlServers=RASBK1SQLS,3180:D1D
-#dhdbTD1 dhdbp SqlServers=RASBK1SQLS,3180:TD1
+alias dhdbp='deploy HistorianDb Environment=Production DeployClr=true'
+alias dhdbIDPJ='dhdbp SqlServers=JRSBK1SQLS.ger.corp.intel.com,3180:IDPJ;JRSPR1SQLS.ger.corp.intel.com,3180:IDPJ'
+alias dhddLC='dhdbp SqlServers=LCSBK1SQLS.ger.corp.intel.com,3180:EPMS;LCSBK1SQLS.ger.corp.intel.com,3180:F28;LCSBK1SQLS.ger.corp.intel.com,3180:LC12;LCSBK1SQLS.ger.corp.intel.com,3180:LCC2;LCSBK1SQLS.ger.corp.intel.com,3180:MBR'
+alias dhdbD1D='dhdbp SqlServers=RASBK1SQLS,3180:D1D'
+alias dhdbTD1='dhdbp SqlServers=RASBK1SQLS,3180:TD1'
 
-#dwp deploy Web Environment=Production
-#DwpDl dwp Servers=shsprsps
+alias dwp='deploy Web Environment=Production'
+alias dwpDL='dwp Servers=shsprsps'

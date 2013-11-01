@@ -1,4 +1,4 @@
-# ~/.bash_profile login shell initialization, from /etc/defaults/etc/skel/.bash_profile
+# ~/.bash_profile, user specific login initialization, template /etc/defaults/etc/skel/.bash_profile
 
 #export BASH_DEBUG="yes"
 [[ $BASH_DEBUG ]] && export BASH_STATUS_LOGIN_SHELL_CHILD="true"

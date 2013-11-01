@@ -47,18 +47,6 @@ IdleEvent()
 ^Numpad7::MusicEqualizer()
 ^Numpad9::MusicOther()
 
-;!Numpad0::PhoneActivate() 
-;!NumpadDot::PhoneHeadset() 
-;!NumpadSub::PhoneMute()
-;!NumpadAdd::PhoneHangup()
-
-!Numpad1::PhoneDefaultSpeakers()
-!Numpad2::PhoneDefaultPhone()
-;!Numpad3::PhoneSpeed(3)
-;!Numpad4::PhoneSpeed(4)
-;!Numpad5::PhoneSpeed(5)
-;!Numpad6::PhoneSpeed(6)
-
 ; Win
 #1::WinClose A ; Close active window
 #2::WinMinimize A ; Close active window

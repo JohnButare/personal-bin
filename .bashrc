@@ -1,5 +1,5 @@
-# user specific interactive shell intialization, from /etc/defaults/etc/skel/.bashrc, 
-# non-interactive setup for "mintty" and "ssh <script>" 
+# ~/.bashrc, user specific interactive intialization and non-interactive initialization for "mintty"
+# and "ssh <script>", template /etc/defaults/etc/skel/.bashrc, executed from ~/.bash_profile
 
 # sytem-wide configuration - if not done in /etc/bash.bashrc
 if [[ ! $BIN ]]; then
@@ -21,9 +21,6 @@ set +a
 HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars
 
-# ssh
-[[ -f "~/.ssh/environment" ]] && . "~/.ssh/environment"
-
 # common functions
 [[ -n "$BIN" && -f "$BIN/function.sh" ]] && . "$BIN/function.sh"
 
@@ -37,6 +34,7 @@ p64="$P64"
 p32="$P32"
 
 # public
+sys="/cygdrive/c"
 pub="$PUB"
 bin="$BIN"
 data="$pub/Documents/data"
@@ -66,62 +64,13 @@ alias pp='"$pp"'
 alias up='"$up"'
 
 #
-# temporary
+# temporary aliases
 #
 
 a="$PUB/Documents/data/archive"
-alias eoi='te "$a/install.btm"'
 
 #
-# process
-#
-ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
-
-#
-# ssh
-#
-
-RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
-IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
-ShowSsh() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
-[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-
-#
-# prompt
-#
-
-GetPrompt()
-{
-	if [[ "$PWD" == "$HOME" ]]; then
-		echo '~'
-	elif [[ ${#PWD} > 20 ]]; then
-		local tmp=${PWD%/*/*};
-		[ ${#tmp} -gt 0 -a "$tmp" != "$PWD" ] && echo ${PWD:${#tmp}+1} || echo $PWD;
-	else
-		echo $PWD
-	fi;
-}
-
-SetPrompt() 
-{
-	local green='\[\e]0;\w\a\]\[\e[32m\]'
-	local yellow='\[\e[33m\]'
-	local clear='\[\e[0m\]'
-	local dir='$(GetPrompt)'
-	#local dir='\[\e[33m\]\w\[\e[0m\]'
-	local user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '
-	local host="${user}"; IsSsh && host="${user//[[:space:]]/}@\h "
-	local git=''; IsFunction __git_ps1 && git='$(__git_ps1 " (%s)")'
-	local elevated=''; IsElevated && elevated='*'
-
-	PS1="${elevated}${green}${host}${yellow}${dir}${clear}${git}\$ "
-}
-
-[[ "$PS1" != *GetPrompt* ]] && SetPrompt
-[[ "$PWD" == "/cygdrive/c" ]] && cd ~
-
-#
-# aliases
+# misc
 #
 
 alias cf='CleanupFiles'
@@ -131,8 +80,8 @@ alias c='EnableCompletion';
 alias EnableCompletion='source /etc/bash_completion; SetPrompt'
 function FileInfo() { file $1; FileInfo "$1"; }
 i() { [[ $# == 0 ]] && { ScriptCd inst cd "$@"; return; } || inst "$@"; }
-alias llv='declare -p | egrep -v "\-x"' # ListLocalVars
-alias lev='export' # ListExportVars
+alias ListVars='declare -p | egrep -v "\-x"'
+alias ListExportVars='export'
 alias t='time pause'
 alias te='TextEdit'
 alias telnet='putty'
@@ -146,6 +95,7 @@ alias update='os update'
 #
 
 alias s="start"
+alias autoruns='start autoruns.exe'
 alias AutoItDoc="start $pdata/doc/AutoIt.chm"
 alias bc='BeyondCompare'
 alias chrome='chrome' # /opt/google/chrome/google-chrome
@@ -160,26 +110,16 @@ alias wmc='WindowsMediaCenter'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 
 #
-# media
+# archive
 #
 
-alias gp='media get'
-alias ms='media sync'
-alias si='merge "$pdoc/data/install" "//nas/public/documents/data/install"'
-alias sk='SyncKey'
-
-#
-# portable and backup
-#
-
-alias b='sudo WigginBackup'
-alias be='WigginBackup eject'
-
-alias sp='portable sync'
-alias mp='portable merge'
-alias ep='portable eject'
-
-alias eject='be; ep;'
+alias fm='start "$p/7-Zip/7zFM.exe"'
+7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
+alias untar='tar -v -x --atime-preserve <'
+zbak() { [[ $# == 1  ]] && 7z a "$1.zip" "$1" || 7z a "$1" "${@:2}"; }
+alias zrest='7z.exe x'
+alias zls='7z.exe l'
+alias zll='7z.exe l -slt'
 
 #
 # file management
@@ -262,7 +202,7 @@ alias dus='DiskUsage summary'
 #
 
 alias ei='te $bin/inst'
-alias ehp='se $(utw "$udata/replicate/default.htm")'
+alias ehp='ShellEdit "$udata/replicate/default.htm"'
 
 # Bash (aliases, functions, startup, other)
 alias sa='. ~/.bashrc'
@@ -289,6 +229,78 @@ alias ehosts='host file edit'
 alias uhosts='host file update'
 
 #
+# media
+#
+
+alias gp='media get'
+alias ms='media sync'
+alias sm='merge "$pub/Music" "//nas/music"'
+alias si='merge "$data/install" "//nas/public/documents/data/install"'
+alias sk='SyncKey'
+
+#
+# network
+#
+
+ScriptEval SshAgent initialize
+
+alias ipc='network ipc'
+alias rs='RemoteServer'
+alias slf='SyncLocalFiles'
+alias SshKey='ssh-add ~/.ssh/id_dsa'
+
+IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
+RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
+ShowSsh() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
+
+#
+# portable and backup
+#
+
+alias b='sudo WigginBackup'
+alias be='WigginBackup eject'
+
+alias sp='portable sync'
+alias mp='portable merge'
+alias ep='portable eject'
+
+alias eject='be; ep;'
+
+#
+# prompt
+#
+
+GetPrompt()
+{
+	if [[ "$PWD" == "$HOME" ]]; then
+		echo '~'
+	elif (( ${#PWD} > 20 )); then
+		local tmp="${PWD%/*/*}";
+		(( ${#tmp} > 0 )) && [[ "$tmp" != "$PWD" ]] && echo "${PWD:${#tmp}+1}" || echo "$PWD";
+	else
+		echo "$PWD"
+	fi;
+}
+
+SetPrompt() 
+{
+	local green='\[\e]0;\w\a\]\[\e[32m\]'
+	local yellow='\[\e[33m\]'
+	local clear='\[\e[0m\]'
+	local dir='$(GetPrompt)'
+	#local dir='\[\e[33m\]\w\[\e[0m\]'
+	local user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '
+	local host="${user}"; IsSsh && host="${user//[[:space:]]/}@\h "
+	local git=''; IsFunction __git_ps1 && git='$(__git_ps1 " (%s)")'
+	local elevated=''; IsElevated && elevated='*'
+
+	PS1="${elevated}${green}${host}${yellow}${dir}${clear}${git}\$ "
+}
+
+[[ "$PS1" != *GetPrompt* ]] && SetPrompt
+[[ "$PWD" == "/cygdrive/c" ]] && cd ~
+
+#
 # scripts
 #
 
@@ -305,19 +317,6 @@ alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 scommit() { pushd "$bin"; git status; git add -u; git commit -m "script changes"; git push; popd; pushd "$ubin"; git status; git add -u; git commit -m "script changes"; git push; popd; }
 
 #
-# archive
-#
-
-alias fm='start "$p/7-Zip/7zFM.exe"'
-7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
-alias untar='tar -v -x --atime-preserve <'
-zbak() { [[ $# == 1  ]] && 7z a "$1.zip" "$1" || 7z a "$1" "${@:2}"; }
-alias zrest='7z.exe x'
-alias zls='7z.exe l'
-alias zll='7z.exe l -slt'
-
-
-#
 # power management
 #
 
@@ -330,13 +329,18 @@ alias reb='power reboot'
 alias slp='power sleep'
 
 #
-# network
+# process
 #
 
-alias ipc='network ipc'
-alias SshKey='ssh-add ~/.ssh/id_dsa'
-alias rs='RemoteServer'
-alias slf='SyncLocalFiles'
+ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
+
+#
+# sound
+#
+
+playsound() { cat "$1" > /dev/dsp; }
+alias sound='os sound'
+alias ts='playsound "$ubin/test/test.wav"'
 
 #
 # windows
@@ -351,14 +355,6 @@ alias SystemRestore='vss'
 
 alias ws='wscript /nologo'
 alias cs='cscript /nologo'
-
-#
-# sound
-#
-
-playsound() { cat "$1" > /dev/dsp; }
-alias sound='os sound'
-alias ts='playsound "$ubin/test/test.wav"'
 
 #
 # wiggin
@@ -377,6 +373,8 @@ nas='//nas/public'
 ni="$nas/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 NasDrive() { net use n: "$(utw "$nr")" /user:jjbutare "$@"; }
+alias nslf='slf nas'
+alias nrslf='slf butare.net'
 
 #
 # XML
@@ -393,6 +391,7 @@ test="$code/test"
 www="/cygdrive/c/inetpub/wwwroot"
 
 alias ss='SqlServer'
+alias sscd='ScriptCd SqlServer cd'
 alias ssp='SqlServer profiler express'
 
 #
@@ -461,18 +460,17 @@ ss="$ihome/group/Software\ Solutions"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
 
 # laptop
-alias m1b="host boot jjbutare-mobl"
-alias m1c="host connect jjbutare-mobl"
-alias m1slf="slf jjbutare-mobl"
-alias m1slp="slp jjbutare-mobl"
-m1dl="//jjbutare-mobl/John/Documents/data/download"
-
-alias m7b="host boot jjbutare-mobl7"
-alias m7c="host connect jjbutare-mobl7"
-alias m7slf="slf jjbutare-mobl7"
-alias m7slp="slp jjbutare-mobl7"
-m7s() { m7slf || return; m m7s; }
-m7dl="//jjbutare-mobl7/John/Documents/data/download"
+SetMobileAliases() 
+{
+	local m="$1" h="$1"; (( h == 1 )) && h=""
+	alias m${m}b="host boot jjbutare-mobl${h}"
+	alias m${m}c="host connect jjbutare-mobl${h}"
+	alias m${m}slf="slf jjbutare-mobl${h}"
+	alias m${m}slp="slp jjbutare-mobl${h}"
+	eval "m${m}s() { m${m}slf || return; m m${m}s; }"	
+	eval m${m}dl='//jjbutare-mobl${h}/John/Documents/data/download'
+}
+SetMobileAliases 1; SetMobileAliases 7; SetMobileAliases 9;
 
 PrepKey() { local k="/cygdrive/e/mobl"; mkdir -p "$k/bin" "$k/doc"; }
 SyncKey() { local k="/cygdrive/e/mobl" f="/filters=-.*_sync.txt"; m "$bin" "$k/bin" "$f"; m "$udoc" "$k/doc" "/filters=-data\\VMware\\;-data\\mail\\"; }
@@ -484,11 +482,15 @@ alias voff="vpn off"
 
 # Source Control
 alias ssu='mu;au;fru;spu;'
-alias ssc='mc;ac;frc;spu;'
+alias ssc='mc;ac;frc;spc;'
 
 # Profile Manager
 profiles="$P/ITBAS/Profiles"
 alias profiles='"$profiles"'
+alias pm='ProfileManager'
+alias pcd='"$profiles"'
+alias ProfileManagerConfig='TextEdit C:\winnt\system32\ProfileManager.xml'
+
 ProfileManager() 
 {
 	local p="$P/ITBAS/ProfileManager/ProfileManager.exe"
@@ -501,24 +503,11 @@ ProfileManager()
 	fi
 } 
 
-alias pm='ProfileManager'
-alias ProfileManagerConfig='TextEdit C:\winnt\system32\ProfileManager.xml'
-
 #
 # Tablet POC
 #
 
 alias albert='rdesk asmadrid-mobl2'
-
-#
-# Magellan
-#
-
-mc="$code/Magellan"
-alias mu='svnu Magellan'
-alias mc='svnc Magellan'
-alias mb='build Magellan/Source/Magellan.sln'
-alias mst='svns Magellan'
 
 #
 # Antidote
@@ -539,7 +528,23 @@ alias alb='"$ac/SolutionItems/BuildConfiguration/RunLocalBuild.cmd"'
 alias ap='ProfileManager Antidote'
 
 alias aum='pushd .; mb && { "$ac/SolutionItems/Libraries/UpdateMagellan.cmd" && ab; }; popd'
-alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"'
+alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
+alias aub='RoboCopy "$(utw "$code/Antidote/Antidote/bin/Debug")" "$(utw "//vmspwbld001/d$/Program Files/Antidote")"' # Antidote Update BuildServer
+
+#
+# Magellan
+#
+
+mc="$code/Magellan"
+
+alias mu='svnu Magellan'
+alias mc='svnc Magellan'
+alias mst='svns Magellan'
+alias mr='svnr Magellan'
+
+alias mb='build Magellan/Source/Magellan.sln'
+alias mbc='BuildClean Magellan/Source/Magellan.sln'
+alias mlb='antidote App=Magellan BuildType=LocalBuild CacheBrokerAddress=@DatabaseServer@' #  CacheBrokerAddress=@DestinationComputer@
 
 #
 # FaSTr
@@ -583,30 +588,35 @@ alias spsw='svnsw ScadaPortal'
 alias spb='build ScadaPortal/Source/ScadaPortal.sln'
 alias spbc='BuildClean ScadaPortal/Source/ScadaPortal.sln'
 
-alias spua='pushd .; ab && { "$sp/Libraries/UpdateAntidote.cmd" && spb; }; popd'
-alias spum='pushd .; mb && { "$ac/SolutionItems/Libraries/UpdateMagellan.cmd" && spb; }; popd'
+alias spua='ab && { start "$sp/Libraries/UpdateAntidote.cmd" && spb; }'
+alias spum='mb && { start "$sp/Libraries/UpdateMagellan.cmd" && spb; }'
 
 alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/null; start PointManagement.exe; popd > /dev/null'
 
+# service
+alias sstStop='service stop ScadaService RASSI1PRSQLS'
+alias sstStart='service start ScadaService RASSI1PRSQLS'
+
 # logs
 ssl() { start explorer "//$1/d$/Program Files/Scada/ScadaService/log"; }
+alias ssll='start explorer "$P/Scada/ScadaService/Log"'
 alias sslSiPr='ssl rasSI1prsqls'
 alias sslSiBk='ssl rasSI1bksqls'
 alias sslPpPr='ssl rasPPprsqls'
 alias sslPpBk='ssl rasPPbksqls'
 
-# deployment
+# deploy
 deploy() { pushd $spc/Setup/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
 alias DeployLocal='deploy LogDirectory=/tmp/ScadaPortalDeployment/log'
 
-# deployment log
+# deploy log
 alias dlog='deploy log'
 alias dll='DeployLocal log'
 alias dlt='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/Test.Log.vmspwbld001.txt'
 alias dlpp='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/PreProduction.Log.vmspwbld001.txt'
 alias dlp='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/Production.Log.vmspwbld001.txt'
 
-# deployment test CI
+# deploy - test CI
 alias dpmTestAll='dpmp test=true force=false'
 alias dpmTest='dpmp Servers=RAC2FMSF-CIM;RAC2FMSC-CIM;RAPB1FMSAA-CIM test=true force=true'
 

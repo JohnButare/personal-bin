@@ -316,6 +316,32 @@ SetPrompt()
 [[ "$PWD" == "/cygdrive/c" ]] && cd ~
 
 #
+# Source Control
+# 
+
+gt="$code/test/git" # GitTest
+
+alias cdc='code commit --gui'
+alias cdl='code log'
+alias cdr='code revert --gui'
+alias cds='code status'
+alias cdco='code checkout'
+alias cdu='code update'
+
+alias g='git'
+alias ge='"$P32/Git/bin/git"' # Git Extensions
+alias gg='GitHelper gui'
+alias gh='GitHelper'
+alias tgg='GitHelper tgui'
+
+alias gi='{ ! IsFunction __git_ps1; } && source /etc/bash_completion && SetPrompt'
+alias gd="gh down"
+alias gu="gh up"
+
+alias tsvn='TortoiseSVN'
+alias svn='tsvn svn'
+
+#
 # scripts
 #
 
@@ -328,7 +354,7 @@ sfindl() { sfind --color=always "$1" | less -R; }
 alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
-sup() { GitUp "$bin" "script changes" || return; GitUp "$ubin" "script changes"; }
+sup() { echo "bin..."; gu "$bin" "script changes" || return; echo "user bin..."; gu "$ubin" "script changes"; }
 
 #
 # power management
@@ -435,31 +461,6 @@ alias gcd='scd DotNet GacCd'
 build() { n build /verbosity:minimal /m "$code/$1"; }
 BuildClean() { n build /t:Clean /m "$code/$1"; }
 alias vs='VisualStudio'
-
-#
-# Source Control
-# 
-
-gt="$code/test/git" # GitTest
-
-alias cdc='code commit --gui'
-alias cdl='code log'
-alias cdr='code revert --gui'
-alias cds='code status'
-alias cdco='code checkout'
-alias cdu='code update'
-
-GitChanges() { ! { g status | grep "nothing to commit (working directory clean)" > /dev/null; }; }
-GitDown() { (( $# == 1 )) && { pushd "$1"; return; shift; }; g pull; }
-GitUp() { (( $# == 2 )) && { pushd "$1" || return; shift; }; GitChanges || return 0; g add --all || return ; g commit -m "$1" || return; g push || return; }
-alias g='git'
-alias ge='"$P32/Git/bin/git"'
-alias gi='{ ! IsFunction __git_ps1; } && source /etc/bash_completion && SetPrompt'
-alias gg='GitHelper gui'
-alias tgg='GitHelper tgui'
-
-alias tsvn='TortoiseSVN'
-alias svn='tsvn svn'
 
 #
 # Intel

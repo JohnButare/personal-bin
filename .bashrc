@@ -354,7 +354,7 @@ sfindl() { sfind --color=always "$1" | less -R; }
 alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
-sup() { echo "bin..."; gu "$bin" "script changes" || return; echo "user bin..."; gu "$ubin" "script changes"; }
+sup() { gu "$bin" "script changes" || return; echo; gu "$ubin" "script changes"; }
 
 #
 # power management

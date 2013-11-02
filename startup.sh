@@ -4,7 +4,7 @@ app -q $command AutoHotKey WinSplit
 
 # Host specific applications
 case "${COMPUTERNAME,,}" in
-	oversoul) app -q $command word EverNote DropBox PowerMixer SnagIt iCloud PowerPanel;;
+	oversoul) app -q $command pu word EverNote DropBox PowerMixer SnagIt iCloud PowerPanel;;
 	minime) app -q $command word EverNote DropBox PowerMixer SnagIt iCloud;;
 	jjbutare-mobl) app -q $command word EverNote DropBox PowerMixer SnagIt CruiseControlTray hp; intel $command;;
 	jjbutare-mobl7) app -q $command word EverNote DropBox PowerMixer SnagIt CruiseControlTray; intel $command;;

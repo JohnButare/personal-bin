@@ -67,7 +67,7 @@ alias up='"$up"'
 # temporary aliases
 #
 
-a="$PUB/Documents/data/archive"
+a="$PUB/Documents/data/archive/bin"
 
 #
 # misc
@@ -78,8 +78,6 @@ alias cls=clear
 alias e='TextEdit'
 alias c='EnableCompletion'; 
 alias EnableCompletion='source /etc/bash_completion; SetPrompt'
-function FileInfo() { file $1; FileInfo "$1"; }
-i() { [[ $# == 0 ]] && { ScriptCd inst cd "$@"; return; } || inst "$@"; }
 alias ListVars='declare -p | egrep -v "\-x"'
 alias ListExportVars='export'
 alias t='time pause'
@@ -89,6 +87,22 @@ alias update='os update'
 alias unexport='unset'
 alias unfunction='unset -f'
 alias update='os update'
+
+#
+# install
+#
+
+alias ifind='ScriptEval FindInstallFile --eval && echo Installation Location is $InstallDir'
+
+i() 
+{ 
+	local hint=( ${InstallDir:+--hint "$InstallDir"} )
+	if [[ $# == 0 ]]; then
+		ScriptCd inst cd "${hint[@]}" "$@"
+	else
+		inst "${hint[@]}" "$@"
+	fi
+}
 
 #
 # applications
@@ -236,6 +250,7 @@ alias gp='media get'
 alias ms='media sync'
 alias sm='merge "$pub/Music" "//nas/music"'
 alias si='merge "$data/install" "//nas/public/documents/data/install"'
+alias spi='merge "$data/install" "/cygdrive/k/data/install"'
 alias sk='SyncKey'
 
 #
@@ -428,31 +443,30 @@ alias vs='VisualStudio'
 
 gt="$code/test/git" # GitTest
 
-alias tsvn='TortoiseSVN'
-alias svn='tsvn svn'
-alias code='tsvn code'
-alias svnc='tsvn code commit'
-alias svnl='tsvn code log'
-alias svnr='tsvn code revert'
-alias svns='tsvn code status'
-alias svnsw='tsvn code switch'
-alias svnu='tsvn code update'
+alias cdc='code commit --gui'
+alias cdl='code log'
+alias cdr='code revert --gui'
+alias cds='code status'
+alias cdco='code checkout'
+alias cdu='code update'
 
 alias g='git'
-alias gh='GitHelper'
-alias ghgit='gith git'
-alias ge='gith extensions'
+alias ge='"$P32/Git/bin/git"'
 alias gi='{ ! IsFunction __git_ps1; } && source /etc/bash_completion && SetPrompt'
-
 alias gg='GitHelper gui'
-alias ggc='GitHelper gui commit'
+alias tgg='GitHelper tgui'
+
+alias tsvn='TortoiseSVN'
+alias svn='tsvn svn'
 
 #
 # Intel
 #
 
-# phone
+alias hs='m CsisBuild; m m7s; m7slf; bslf;' # HomeSync
 alias pb="lync PersonalBridge"
+alias bslf="slf CsisBuild.intel.com"
+bs() { bslf || return; merge CsisBuild; }
 
 # locations
 ihome="//jjbutare-mobl/john/documents"
@@ -467,7 +481,7 @@ SetMobileAliases()
 	alias m${m}c="host connect jjbutare-mobl${h}"
 	alias m${m}slf="slf jjbutare-mobl${h}"
 	alias m${m}slp="slp jjbutare-mobl${h}"
-	eval "m${m}s() { m${m}slf || return; m m${m}s; }"	
+	eval "m${m}s() { m m${m}s; m${m}slf; }"	
 	eval m${m}dl='//jjbutare-mobl${h}/John/Documents/data/download'
 }
 SetMobileAliases 1; SetMobileAliases 7; SetMobileAliases 9;
@@ -481,8 +495,8 @@ alias von="vpn on"
 alias voff="vpn off"
 
 # Source Control
-alias ssu='mu;au;fru;spu;'
-alias ssc='mc;ac;frc;spc;'
+alias ssu='mu;au;fru;spu;inu'
+alias ssc='mc;ac;frc;spc;inc'
 
 # Profile Manager
 profiles="$P/ITBAS/Profiles"
@@ -504,6 +518,13 @@ ProfileManager()
 } 
 
 #
+# IntelNuGet
+#
+
+alias inu='code update IntelNuGet'
+alias inc='code commit IntelNuGet'
+
+#
 # Tablet POC
 #
 
@@ -516,10 +537,10 @@ alias albert='rdesk asmadrid-mobl2'
 ac="$code/Antidote"
 as="$ac/SolutionItems/DataScripts/MigrationScripts"
 
-alias au='svnu Antidote'
-alias ac='svnc Antidote'
-alias as='svns Antidote'
-alias ar='svnr Antidote'
+alias au='cdu Antidote'
+alias ac='cdc Antidote'
+alias as='cds Antidote'
+alias ar='cdr Antidote'
 
 alias ab='build Antidote/Antidote.sln'
 alias abc='BuildClean Antidote/Antidote.sln'
@@ -537,10 +558,10 @@ alias aub='RoboCopy "$(utw "$code/Antidote/Antidote/bin/Debug")" "$(utw "//vmspw
 
 mc="$code/Magellan"
 
-alias mu='svnu Magellan'
-alias mc='svnc Magellan'
-alias mst='svns Magellan'
-alias mr='svnr Magellan'
+alias mu='cdu Magellan'
+alias mc='cdc Magellan'
+alias mst='cds Magellan'
+alias mr='cdr Magellan'
 
 alias mb='build Magellan/Source/Magellan.sln'
 alias mbc='BuildClean Magellan/Source/Magellan.sln'
@@ -554,11 +575,11 @@ fr="$code/RPIAD"
 frc="$fr/Source"
 frs="$fr/DataScripts"
 
-alias fru='svnu RPIAD'
-alias frc='svnc RPIAD'
-alias frs='svns RPIAD'
-alias frr='svnr RPIAD'
-alias frsw='svnsw RPIAD'
+alias fru='cdu RPIAD'
+alias frc='cdc RPIAD'
+alias frs='cds RPIAD'
+alias frr='cdr RPIAD'
+alias frco='cdco RPIAD'
 
 alias frb='build RPIAD/Source/RPIAD.sln'
 alias frbc='BuildClean RPIAD/Source/RPIAD.sln'
@@ -579,11 +600,11 @@ sp="$code/ScadaPortal"
 sps="$sp/DataScripts"
 spc="$sp/Source"
 
-alias spu='svnu ScadaPortal'
-alias spc='svnc ScadaPortal'
-alias sps='svns ScadaPortal'
-alias spr='svnr ScadaPortal'
-alias spsw='svnsw ScadaPortal'
+alias spu='cdu ScadaPortal'
+alias spc='cdc ScadaPortal'
+alias sps='cds ScadaPortal'
+alias spr='cdr ScadaPortal'
+alias spco='cdco ScadaPortal'
 
 alias spb='build ScadaPortal/Source/ScadaPortal.sln'
 alias spbc='BuildClean ScadaPortal/Source/ScadaPortal.sln'
@@ -594,20 +615,20 @@ alias spum='mb && { start "$sp/Libraries/UpdateMagellan.cmd" && spb; }'
 alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/null; start PointManagement.exe; popd > /dev/null'
 
 # service
-alias sstStop='service stop ScadaService RASSI1PRSQLS'
+alias sstStop='service stop ScadaService RASSI1PRSQLS; echo "Disable AlertChecker to prevent automatic service start"'
 alias sstStart='service start ScadaService RASSI1PRSQLS'
 
 # logs
 ssl() { start explorer "//$1/d$/Program Files/Scada/ScadaService/log"; }
 alias ssll='start explorer "$P/Scada/ScadaService/Log"'
-alias sslSiPr='ssl rasSI1prsqls'
-alias sslSiBk='ssl rasSI1bksqls'
-alias sslPpPr='ssl rasPPprsqls'
-alias sslPpBk='ssl rasPPbksqls'
+alias ssltpr='ssl rasSI1prsqls'
+alias ssltbk='ssl rasSI1bksqls'
+alias sslpppr='ssl rasPPprsqls'
+alias sslppbk='ssl rasPPbksqls'
 
 # deploy
 deploy() { pushd $spc/Setup/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
-alias DeployLocal='deploy LogDirectory=/tmp/ScadaPortalDeployment/log'
+alias DeployLocal='deploy LogDirectory="$(utw "$sys/temp/ScadaPortalDeployment/log")"'
 
 # deploy log
 alias dlog='deploy log'

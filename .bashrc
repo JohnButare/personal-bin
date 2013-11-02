@@ -328,8 +328,7 @@ sfindl() { sfind --color=always "$1" | less -R; }
 alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
-
-scommit() { pushd "$bin"; git status; git add -all; git commit -m "script changes"; git push; popd; pushd "$ubin"; git status; git add -all; git commit -m "script changes"; git push; popd; }
+sup() { GitUp "$bin" "script changes" || return; GitUp "$ubin" "script changes"; }
 
 #
 # power management
@@ -450,6 +449,9 @@ alias cds='code status'
 alias cdco='code checkout'
 alias cdu='code update'
 
+GitChanges() { ! { g status | grep "nothing to commit (working directory clean)" > /dev/null; }; }
+GitDown() { (( $# == 1 )) && { pushd "$1"; return; shift; }; g pull; }
+GitUp() { (( $# == 2 )) && { pushd "$1" || return; shift; }; GitChanges || return 0; g add --all || return ; g commit -m "$1" || return; g push || return; }
 alias g='git'
 alias ge='"$P32/Git/bin/git"'
 alias gi='{ ! IsFunction __git_ps1; } && source /etc/bash_completion && SetPrompt'

@@ -329,7 +329,7 @@ alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
-scommit() { pushd "$bin"; git status; git add -u; git commit -m "script changes"; git push; popd; pushd "$ubin"; git status; git add -u; git commit -m "script changes"; git push; popd; }
+scommit() { pushd "$bin"; git status; git add -all; git commit -m "script changes"; git push; popd; pushd "$ubin"; git status; git add -all; git commit -m "script changes"; git push; popd; }
 
 #
 # power management

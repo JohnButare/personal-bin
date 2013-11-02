@@ -335,8 +335,9 @@ alias gh='GitHelper'
 alias tgg='GitHelper tgui'
 
 alias gi='{ ! IsFunction __git_ps1; } && source /etc/bash_completion && SetPrompt'
-alias gd="gh down"
-alias gu="gh up"
+alias gd='gh down'
+alias ggc='gg commit'
+alias gu='gh up'
 
 alias tsvn='TortoiseSVN'
 alias svn='tsvn svn'

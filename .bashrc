@@ -24,6 +24,9 @@ shopt -s autocd cdspell cdable_vars
 # common functions
 [[ -n "$BIN" && -f "$BIN/function.sh" ]] && . "$BIN/function.sh"
 
+# completion
+! IsFunction __git_ps1 && source /etc/bash_completion
+
 #
 # locations - lower case (not exported), for cd'able variables ($<var><return or tab>) 
 #
@@ -76,8 +79,6 @@ a="$PUB/Documents/data/archive/bin"
 alias cf='CleanupFiles'
 alias cls=clear
 alias e='TextEdit'
-alias c='EnableCompletion'; 
-alias EnableCompletion='source /etc/bash_completion; SetPrompt'
 alias ListVars='declare -p | egrep -v "\-x"'
 alias ListExportVars='export'
 alias t='time pause'
@@ -236,7 +237,6 @@ alias SetKey='AutoHotKey restart'
 
 # Startup
 alias st='startup'
-alias es='te $ubin/startup.sh'
 
 # host file
 alias ehosts='host file edit'
@@ -334,7 +334,6 @@ alias gg='GitHelper gui'
 alias gh='GitHelper'
 alias tgg='GitHelper tgui'
 
-alias gi='{ ! IsFunction __git_ps1; } && source /etc/bash_completion && SetPrompt'
 alias gd='gh down'
 alias ggc='gg commit'
 alias gu='gh up'
@@ -470,7 +469,7 @@ alias vs='VisualStudio'
 alias hs='m CsisBuild; m m7s; m7slf; bslf;' # HomeSync
 alias pb="lync PersonalBridge"
 alias bslf="slf CsisBuild.intel.com"
-bs() { bslf || return; merge CsisBuild; }
+bs() { merge CsisBuild; bslf || return; }
 
 # locations
 ihome="//jjbutare-mobl/john/documents"

@@ -5,7 +5,7 @@
 #NoEnv
 
 CommonInit()
-;TimerInit()
+BrowserInit()
 OfficeInit()
 BashInit()
 
@@ -15,17 +15,16 @@ Init()
 #Include browser.ahk
 #Include display.ahk
 #Include office.ahk
-#Include phone.ahk
 #Include music.ahk
-; #Include timer.ahk
 #Include bash.ahk
 #Include VMware.ahk
 
 Test()
 {
-	global
-	EnvGet test, timerest
-	MsgBox test=%test% PROGRAMS64=%PROGRAMS64%
+	;global
+	;EnvGet test, timerest
+	;MsgBox test=%test% PROGRAMS64=%PROGRAMS64%
+	run notepad.exe
 }
 
 Init()
@@ -48,19 +47,16 @@ IdleEvent()
 ^Numpad9::MusicOther()
 
 ; Win
-#1::WinClose A ; Close active window
-#2::WinMinimize A ; Close active window
+#1::WinMinimize A ; Close active window
+#2::WinClose A ; Close active window
 ^#3::NewElevatedBash()
 #3::OpenBash()
 #!3::NewBash()
 
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenChrome()
-#!a::OpenChrome()
+#!a::NewChrome()
 ; +=Shift ^=Control #=Win !=Alt
-#b::Bridge()
-^#b::ClipBridge()
-+#b::PersonalBridge()
 ^#h::reload ; Reload AutoHotKeys
 #!h::reload ; Reload AutoHotKeys
 ^#i::run "%PROGRAMS64%\Internet Explorer\iexplore.exe" ; x64
@@ -80,7 +76,7 @@ IdleEvent()
 #!s::RunSonos()
 ^#t::Test()
 #t::OpenTextEditor()
-#!t::RuniTunes()
+#!t::NewTextEditor()
 ^#v::run "%bash%" VisualStudio start new,,min
 #v::run "%bash%" VisualStudio start new,,min
 #!v::OpenVmWare()

@@ -3,7 +3,7 @@
 
 # sytem-wide configuration - if not done in /etc/bash.bashrc
 if [[ ! $BIN ]]; then
-	echo "System configuration was not set in /etc/bash.bashrc" > /dev/stderr
+	echo ".bashrc: system configuration was not set in /etc/bash.bashrc" > /dev/stderr
 	[[ -d "/cygdrive/d/users" ]] && export USERS="/cygdrive/d/users" || export USERS="/cygdrive/c/users"
 	[[ -f "$USERS/Public/Documents/data/bin/bash.bashrc" ]] && . "$USERS/Public/Documents/data/bin/bash.bashrc"
 fi
@@ -20,9 +20,6 @@ set +a
 
 HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars
-
-# common functions
-[[ -n "$BIN" && -f "$BIN/function.sh" ]] && . "$BIN/function.sh"
 
 # completion
 ! IsFunction __git_ps1 && source /etc/bash_completion
@@ -113,6 +110,7 @@ alias s="start"
 alias autoruns='start autoruns.exe'
 alias AutoItDoc="start $pdata/doc/AutoIt.chm"
 alias bc='BeyondCompare'
+alias cctray='CruiseControlTray'
 alias chrome='chrome' # /opt/google/chrome/google-chrome
 alias ew='expression web'
 alias f='firefox'
@@ -152,8 +150,9 @@ alias md='MkDir'
 alias rd='RmDir'
 alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
 
-# explorer
+# other
 alias l='start explorer "$PWD"'
+alias rc='CopyDir'
 
 # list
 alias ls='ls -Q --color'
@@ -192,13 +191,6 @@ FindCd()
 		"$dir"
 	fi;
 }
-
-# copy
-alias CopyAll='xcopy /e /v /k /r /h /x /o /c'
-RoboCopyAll() { RoboCopy /z /ndl /e /w:3 /r:3 "$(utw $1)" "$(utw $2)"; }
-RoboCopyDir() { RoboCopyAll "$1" "$2/$(basename "$1")"; }
-alias rc='RoboCopyAll'
-alias rcd='RoboCopyDir'
 
 # drives
 alias d='drive'
@@ -299,20 +291,31 @@ GetPrompt()
 
 SetPrompt() 
 {
-	local green='\[\e]0;\w\a\]\[\e[32m\]'
-	local yellow='\[\e[33m\]'
+	local cyan='\[\e[36m\]'
 	local clear='\[\e[0m\]'
-	local dir='$(GetPrompt)'
-	#local dir='\[\e[33m\]\w\[\e[0m\]'
-	local user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '
-	local host="${user}"; IsSsh && host="${user//[[:space:]]/}@\h "
+	local green='\[\e[32m\]'
+	local red='\[\e[31m\]'
+	local yellow='\[\e[33m\]'
+
+	local dir='\w' user='\u' userAtHost='\u@\h'
+	
+	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
+	GIT_PS1_SHOWUPSTREAM="auto verbose"; # GIT_PS1_SHOWDIRTYSTATE="true"; GIT_PS1_SHOWSTASHSTATE="true"; GIT_PS1_SHOWUNTRACKEDFILES="true";
 	local git=''; IsFunction __git_ps1 && git='$(__git_ps1 " (%s)")'
+	local gitColor=''; [[ $git ]]	&& gitColor='$( git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "'$red'")'
+
 	local elevated=''; IsElevated && elevated='*'
 
-	PS1="${elevated}${green}${host}${yellow}${dir}${clear}${git}\$ "
+	# compact
+	# dir='$(GetPrompt)'; user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '
+	# userAtHost="${user}"; IsSsh && host="${user/ls/[[:space:]]/}@\h "
+	# PS1="${elevated}${green}${host}${yellow}${dir}${clear}${cyan}${gitColor}${git}${clear}\$ "
+
+	# multi-line
+	PS1="\[\e]0;\w\a\]\n${green}${userAtHost}${red}${elevated} ${yellow}${dir}${clear}${cyan}${gitColor}${git}\n${clear}\$ "
 }
 
-[[ "$PS1" != *GetPrompt* ]] && SetPrompt
+[[ "$PS1" != *git_ps1* ]] && SetPrompt
 [[ "$PWD" == "/cygdrive/c" ]] && cd ~
 
 #
@@ -477,6 +480,7 @@ ss="$ihome/group/Software\ Solutions"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
 
 # laptop
+alias mi='inst --hint //jjbutare-mobl/install --NoRunPrompt CsisDeveloper'
 SetMobileAliases() 
 {
 	local m="$1" h="$1"; (( h == 1 )) && h=""
@@ -547,13 +551,14 @@ alias ar='cdr Antidote'
 
 alias ab='build Antidote/Antidote.sln'
 alias abc='BuildClean Antidote/Antidote.sln'
-alias alb='"$ac/SolutionItems/BuildConfiguration/RunLocalBuild.cmd"'
+alias alb='antidote verbose App=Antidote BuildType=LocalBuild'
 
 alias ap='ProfileManager Antidote'
 
 alias aum='pushd .; mb && { "$ac/SolutionItems/Libraries/UpdateMagellan.cmd" && ab; }; popd'
 alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
 alias aub='RoboCopy "$(utw "$code/Antidote/Antidote/bin/Debug")" "$(utw "//vmspwbld001/d$/Program Files/Antidote")"' # Antidote Update BuildServer
+alias aul='RoboCopy "$(utw "$code/Antidote/Antidote/bin/Debug")" "$(utw "$P/Antidote")"' # Antidote Update LocalServer
 
 #
 # Magellan
@@ -568,7 +573,7 @@ alias mr='cdr Magellan'
 
 alias mb='build Magellan/Source/Magellan.sln'
 alias mbc='BuildClean Magellan/Source/Magellan.sln'
-alias mlb='antidote App=Magellan BuildType=LocalBuild CacheBrokerAddress=@DatabaseServer@' #  CacheBrokerAddress=@DestinationComputer@
+alias mlb='antidote App=Magellan BuildType=LocalBuild CacheBrokerAddress=@DatabaseServer@'
 
 #
 # FaSTr

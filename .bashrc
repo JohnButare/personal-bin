@@ -626,6 +626,7 @@ alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/
 # service
 alias sstStop='service stop ScadaService RASSI1PRSQLS; echo "Disable AlertChecker to prevent automatic service start"'
 alias sstStart='service start ScadaService RASSI1PRSQLS'
+alias sstStatus='service status ScadaService RASSI1PRSQLS'
 
 # logs
 ssl() { start explorer "//$1/d$/Program Files/Scada/ScadaService/log"; }

@@ -88,22 +88,6 @@ alias unfunction='unset -f'
 alias update='os update'
 
 #
-# install
-#
-
-alias ifind='ScriptEval FindInstallFile --eval && echo Installation Location is $InstallDir'
-
-i() 
-{ 
-	local hint=( ${InstallDir:+--hint "$InstallDir"} )
-	if [[ $# == 0 ]]; then
-		ScriptCd inst cd "${hint[@]}" "$@"
-	else
-		inst "${hint[@]}" "$@"
-	fi
-}
-
-#
 # applications
 #
 

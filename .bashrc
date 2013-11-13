@@ -467,7 +467,6 @@ ss="$ihome/group/Software\ Solutions"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
 
 # laptop
-alias mi='inst --hint //jjbutare-mobl/install --NoRunPrompt CsisDeveloper'
 SetMobileAliases() 
 {
 	local m="$1" h="$1"; (( h == 1 )) && h=""

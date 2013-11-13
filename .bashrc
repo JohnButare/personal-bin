@@ -413,7 +413,7 @@ alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
 alias house='start "$cloud/House/House Notes.docx"'
 alias w='start "$cloud/other/wedding/Wedding Notes.docx"'
 
-nas="$NAS"
+nas='//nas/public'
 ni="$nas/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 NasDrive() { net use n: "$(utw "$nr")" /user:jjbutare "$@"; }
@@ -470,10 +470,12 @@ alias vs='VisualStudio'
 # Intel
 #
 
-alias hs='m CsisBuild; m m7s; m7slf; bslf;' # HomeSync
+alias DfsSync='m install-dfs; DfsSlf;'
+alias DfsSlf='slf dfs'
+alias hs='m install-CsisBuild; m m7s; m7slf; bslf;' # HomeSync
 alias pb="lync PersonalBridge"
 alias bslf="slf CsisBuild.intel.com"
-bs() { merge CsisBuild; bslf || return; }
+bs() { merge install-CsisBuild; bslf || return; }
 
 # locations
 ihome="//jjbutare-mobl/john/documents"
@@ -624,9 +626,9 @@ alias spum='mb && { start "$sp/Libraries/UpdateMagellan.cmd" && spb; }'
 alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/null; start PointManagement.exe; popd > /dev/null'
 
 # service
-alias sstStop='service stop ScadaService RASSI1PRSQLS; echo "Disable AlertChecker to prevent automatic service start"'
-alias sstStart='service start ScadaService RASSI1PRSQLS'
-alias sstStatus='service status ScadaService RASSI1PRSQLS'
+alias sstStop='service stop ScadaService RASSI1PRSQLS; service stop ScadaService RASSI1BKSQLS; echo "Disable AlertChecker to prevent automatic service start"'
+alias sstStart='service start ScadaService RASSI1PRSQLS; service start ScadaService RASSI1BKSQLS;'
+alias sstStatus='service status ScadaService RASSI1PRSQLS; service status ScadaService RASSI1BKSQLS;'
 
 # logs
 ssl() { start explorer "//$1/d$/Program Files/Scada/ScadaService/log"; }

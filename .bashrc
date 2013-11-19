@@ -140,12 +140,12 @@ alias l='start explorer "$PWD"'
 alias rc='CopyDir'
 
 # list
-alias ls='ls -Q --color'
-alias la='ls -Al'
-alias ll='ls -l'
-alias llh='ll -d .*'
-alias lh='ls -d .*'
-alias lt='ls -Ah --full-time'
+alias ls='ls -Q --color'				# list 
+alias la='ls -Al'								# list all
+alias ll='ls -l'								# list long
+alias llh='ll -d .*'						# list long hidden
+alias lh='ls -d .*' 						# list hiden
+alias lt='ls -Ah --full-time'  	# list time
 
 alias dir='cmd /c dir'
 alias dirss="ls -1s --sort=size --reverse --human-readable -l" # sort by size
@@ -234,16 +234,16 @@ alias sk='SyncKey'
 # network
 #
 
-ScriptEval SshAgent initialize
-
-alias ipc='network ipc'
-alias rs='RemoteServer'
-alias slf='SyncLocalFiles'
-alias SshKey='ssh-add ~/.ssh/id_dsa'
-
 IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
 RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
 ShowSsh() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
+
+ScriptEval SshAgent initialize
+
+nu() { net use "$(ptw "$1")" "${@:2}"; }
+alias ipc='network ipc'
+alias slf='SyncLocalFiles'
+alias SshKey='ssh-add ~/.ssh/id_dsa'
 
 #
 # portable and backup
@@ -336,13 +336,14 @@ alias svn='tsvn svn'
 alias scd='ScriptCd'
 alias se='ScriptEval'
 
-alias slist='file * | egrep "Bourne-Again shell script|.sh:" | cut -d: -f1'
+alias slist='file * .* | egrep "Bourne-Again shell script|\.sh:|\.bash.*:" | cut -d: -f1'
 alias sfind='slist | xargs egrep'
 sfindl() { sfind --color=always "$1" | less -R; }
 alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 sup() { gu "$bin" "script changes" || return; echo; gu "$ubin" "script changes"; }
+sd() { gd "$bin" || return; echo; gd "$ubin"; }
 
 #
 # power management
@@ -453,6 +454,10 @@ alias vs='VisualStudio'
 #
 # Intel
 #
+
+slfbg() {	for h in "$@"; do slf -do "$h" &
+	done; }; 
+alias slfIntel='slfbg CsisBuild.intel.com rasSI1prsqls.amr.corp.intel.com rasSI1bksqls.amr.corp.intel.com rasPPprsqls.amr.corp.intel.com rasPPbksqls.amr.corp.intel.com'
 
 alias DfsSync='m install-dfs; DfsSlf;'
 alias DfsSlf='slf dfs'

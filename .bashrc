@@ -350,6 +350,7 @@ alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 sup() { gu "$bin" "script changes" || return; echo; gu "$ubin" "script changes"; }
 sd() { gd "$bin" || return; echo; gd "$ubin"; }
+scommit() { ggc "$bin"; ggc "$ubin"; }
 
 #
 # power management

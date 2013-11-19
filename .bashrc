@@ -79,7 +79,6 @@ alias cls=clear
 alias e='TextEdit'
 alias ListVars='declare -p | egrep -v "\-x"'
 alias ListExportVars='export'
-alias t='time pause'
 alias te='TextEdit'
 alias telnet='putty'
 alias update='os update'
@@ -118,6 +117,13 @@ zbak() { [[ $# == 1  ]] && 7z a "$1.zip" "$1" || 7z a "$1" "${@:2}"; }
 alias zrest='7z.exe x'
 alias zls='7z.exe l'
 alias zll='7z.exe l -slt'
+
+#
+# performance
+#
+alias t='time pause'
+alias ton='TimerOn'
+alias toff='TimerOff'
 
 #
 # file management

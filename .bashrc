@@ -331,6 +331,7 @@ alias tgg='GitHelper tgui'
 alias gd='gh down'
 alias ggc='gg commit'
 alias gu='gh up'
+alias gb='gh browse'
 
 alias tsvn='TortoiseSVN'
 alias svn='tsvn svn'

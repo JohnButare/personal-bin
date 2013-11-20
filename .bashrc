@@ -334,7 +334,6 @@ alias gu='gh up'
 alias gb='gh browse'
 
 alias tsvn='TortoiseSVN'
-alias svn='tsvn svn'
 
 #
 # scripts

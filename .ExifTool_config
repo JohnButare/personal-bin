@@ -1,0 +1,40 @@
+#------------------------------------------------------------------------------
+#               For detailed information on the definition of tag tables and
+#               tag information hashes, see lib/Image/ExifTool/README.
+#------------------------------------------------------------------------------
+
+# Shortcut tags are used when extracting information to simplify
+# commonly used commands.  They can be used to represent groups
+# of tags, or to provide an alias for a tag name.
+%Image::ExifTool::UserDefined::Shortcuts = (
+    MyShortcut => ['exif:createdate','exposuretime','aperture'],
+    MyAlias => 'FocalLengthIn35mmFormat',
+);
+
+%Image::ExifTool::UserDefined = (
+    'Image::ExifTool::Exif::Main' => {
+        0xd000 => {
+            Name => 'TestExifInt',
+            Writable => 'int16u',
+        },
+        0xd001 => {
+            Name => 'TestExifString',
+            Writable => 'string',
+            WriteGroup => 'IFD0',
+        },
+    },
+    # XMP tags may be added to existing namespaces:
+    'Image::ExifTool::XMP::xmp' => {
+        ImportedDate => { Groups => { 2 => 'Author' } },
+        ImportedOnHost => { Groups => { 2 => 'Author' } },
+        ImportedByUser => { Groups => { 2 => 'Author' } },
+        ImportedFromFolder => { Groups => { 2 => 'Author' } },
+        ImportedFileName => { Groups => { 2 => 'Author' } },
+        ImportedFileModificationTime => { Groups => { 2 => 'Author' } },
+        ImportedToFolder => { Groups => { 2 => 'Author' } },
+        ImportedFileSize => { Groups => { 2 => 'Author' } },
+    },
+);
+
+#------------------------------------------------------------------------------
+1;  #end

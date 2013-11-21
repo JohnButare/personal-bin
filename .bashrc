@@ -142,6 +142,7 @@ alias rd='RmDir'
 alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
 
 # other
+alias inf="FileInfo"
 alias l='start explorer "$PWD"'
 alias rc='CopyDir'
 
@@ -236,20 +237,24 @@ alias si='merge "$data/install" "//nas/public/documents/data/install"'
 alias spi='merge "$data/install" "/cygdrive/k/data/install"'
 alias sk='SyncKey'
 
+alias et='exiftool'
+alias etg='start exiftoolgui' # ExifToolGui
+
+
 #
 # network
 #
 
-IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
-RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
-ShowSsh() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
-
 ScriptEval SshAgent initialize
 
-nu() { net use "$(ptw "$1")" "${@:2}"; }
+nu() { net use "$(ptw "$1")" "${@:2}"; } # NetUse
 alias ipc='network ipc'
+IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
+RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
 alias slf='SyncLocalFiles'
 alias SshKey='ssh-add ~/.ssh/id_dsa'
+SshShow() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
+SshFix() { SshAgent cleanup || return; SshAgent startup || return; ScriptEval SshAgent initialize; }
 
 #
 # portable and backup
@@ -405,8 +410,8 @@ alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
 alias house='start "$cloud/House/House Notes.docx"'
 alias w='start "$cloud/other/wedding/Wedding Notes.docx"'
 
-nas='//nas/public'
-ni="$nas/documents/data/install"
+nas='//nas.hagerman.butare.net'
+ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 NasDrive() { net use n: "$(utw "$nr")" /user:jjbutare "$@"; }
 alias nslf='slf nas'
@@ -462,16 +467,8 @@ alias vs='VisualStudio'
 # Intel
 #
 
-slfbg() {	for h in "$@"; do slf -do "$h" &
-	done; }; 
-alias slfIntel='slfbg CsisBuild.intel.com rasSI1prsqls.amr.corp.intel.com rasSI1bksqls.amr.corp.intel.com rasPPprsqls.amr.corp.intel.com rasPPbksqls.amr.corp.intel.com'
-
-alias DfsSync='m install-dfs; DfsSlf;'
-alias DfsSlf='slf dfs'
+alias is='m install-CsisBuild; m install-dfs; m install-cr; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr' # IntelSync
 alias hs='m install-CsisBuild; m m7s; m7slf; bslf;' # HomeSync
-alias pb="lync PersonalBridge"
-alias bslf="slf CsisBuild.intel.com"
-bs() { merge install-CsisBuild; bslf || return; }
 
 # locations
 ihome="//jjbutare-mobl/john/documents"
@@ -486,7 +483,7 @@ SetMobileAliases()
 	alias m${m}c="host connect jjbutare-mobl${h}"
 	alias m${m}slf="slf jjbutare-mobl${h}"
 	alias m${m}slp="slp jjbutare-mobl${h}"
-	eval "m${m}s() { m m${m}s; m${m}slf; }"	
+	eval "m${m}s() { host available jjbutare-mobl${h} && { m m${m}s; m${m}slf; }; }"	
 	eval m${m}dl='//jjbutare-mobl${h}/John/Documents/data/download'
 }
 SetMobileAliases 1; SetMobileAliases 7; SetMobileAliases 9;

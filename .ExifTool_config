@@ -32,7 +32,7 @@
         ImportedFileName => { Groups => { 2 => 'Author' } },
         ImportedFileModificationTime => { Groups => { 2 => 'Author' } },
         ImportedToFolder => { Groups => { 2 => 'Author' } },
-        ImportedFileSize => { Groups => { 2 => 'Author' } },
+        ImportedFileSizeBytes => { Groups => { 2 => 'Author' } },
     },
 );
 

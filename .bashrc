@@ -334,7 +334,7 @@ alias gh='GitHelper'
 alias tgg='GitHelper tgui'
 
 alias gd='gh down'
-alias ggc='gg commit'
+alias gc='gg commit'
 alias gu='gh up'
 alias gb='gh browse'
 
@@ -355,7 +355,7 @@ alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 sup() { gu "$bin" "script changes" || return; echo; gu "$ubin" "script changes"; }
 sd() { gd "$bin" || return; echo; gd "$ubin"; }
-scommit() { ggc "$bin"; ggc "$ubin"; }
+scommit() { gc "$bin"; gc "$ubin"; }
 
 #
 # power management

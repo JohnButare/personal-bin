@@ -11,31 +11,22 @@
 	branch = always
 	diff = always
 	interactive = always
-[merge]
-	tool = BeyondCompare3
-[mergetool "kdiff3"]
-	path = C:/Program Files (x86)/KDiff3/kdiff3.exe
-[diff]
-	guitool = beyondcompare3
-[difftool "kdiff3"]
-	path = notepad.exe
 [core]
-	editor = \"c:/Program Files/Sublime Text 2/sublime_text.exe\"
 	autocrlf = false
 	filemode = false
-[credential]
-	helper = !\"C:/Program Files (x86)/GitExtensions/GitCredentialWinStore/git-credential-winstore.exe\"
+	editor = \"c:/Program Files/Sublime Text 3/sublime_text.exe\"
 [user]
 	name = jjbutare
 	email = john.butare.s@gmail.com
-[difftool "BeyondCompare3"]
-	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
+[credential]
+	helper = !\"C:/Program Files (x86)/GitExtensions/GitCredentialWinStore/git-credential-winstore.exe\"
+[diff]
+	guitool = beyondcompare3
 [difftool "beyondcompare3"]
 	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
 	cmd = \"C:/Program Files (x86)/Beyond Compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\"
+[merge]
+	tool = BeyondCompare3
 [mergetool "BeyondCompare3"]
 	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
 	cmd = \"C:/Program Files (x86)/Beyond Compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
-[difftool "tmerge"]
-	path = C:/Program Files/TortoiseGit/bin/TortoiseGitMerge.exe
-	cmd = \"C:/Program Files/TortoiseGit/bin/TortoiseGitMerge.exe\" \"$LOCAL\" \"$REMOTE\"

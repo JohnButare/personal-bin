@@ -7,7 +7,7 @@ case "${COMPUTERNAME,,}" in
 	oversoul) app -q $command LastPass word EverNote DropBox PowerMixer SnagIt iCloud PowerPanel pu;;
 	minime) app -q $command word EverNote DropBox PowerMixer SnagIt iCloud;;
 	jjbutare-mobl) app -q $command LastPass word EverNote DropBox PowerMixer SnagIt CruiseControlTray hp pu; intel $command;;
-	jjbutare-mobl7) app -q $command word EverNote DropBox PowerMixer SnagIt CruiseControlTray; intel $command;;
+	jjbutare-mobl7) app -q $command word EverNote DropBox PowerMixer SnagIt CruiseControlTray pu; intel $command;;
 esac
 
 # Other

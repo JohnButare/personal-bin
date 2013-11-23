@@ -79,29 +79,12 @@ alias cls=clear
 alias e='TextEdit'
 alias ListVars='declare -p | egrep -v "\-x"'
 alias ListExportVars='export'
-alias t='time pause'
 alias te='TextEdit'
 alias telnet='putty'
 alias update='os update'
 alias unexport='unset'
 alias unfunction='unset -f'
 alias update='os update'
-
-#
-# install
-#
-
-alias ifind='ScriptEval FindInstallFile --eval && echo Installation Location is $InstallDir'
-
-i() 
-{ 
-	local hint=( ${InstallDir:+--hint "$InstallDir"} )
-	if [[ $# == 0 ]]; then
-		ScriptCd inst cd "${hint[@]}" "$@"
-	else
-		inst "${hint[@]}" "$@"
-	fi
-}
 
 #
 # applications
@@ -136,6 +119,13 @@ alias zls='7z.exe l'
 alias zll='7z.exe l -slt'
 
 #
+# performance
+#
+alias t='time pause'
+alias ton='TimerOn'
+alias toff='TimerOff'
+
+#
 # file management
 #
 
@@ -152,16 +142,17 @@ alias rd='RmDir'
 alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
 
 # other
+alias inf="FileInfo"
 alias l='start explorer "$PWD"'
 alias rc='CopyDir'
 
 # list
-alias ls='ls -Q --color'
-alias la='ls -Al'
-alias ll='ls -l'
-alias llh='ll -d .*'
-alias lh='ls -d .*'
-alias lt='ls -Ah --full-time'
+alias ls='ls -Q --color'				# list 
+alias la='ls -Al'								# list all
+alias ll='ls -l'								# list long
+alias llh='ll -d .*'						# list long hidden
+alias lh='ls -d .*' 						# list hiden
+alias lt='ls -Ah --full-time'  	# list time
 
 alias dir='cmd /c dir'
 alias dirss="ls -1s --sort=size --reverse --human-readable -l" # sort by size
@@ -246,20 +237,24 @@ alias si='merge "$data/install" "//nas/public/documents/data/install"'
 alias spi='merge "$data/install" "/cygdrive/k/data/install"'
 alias sk='SyncKey'
 
+alias et='exiftool'
+alias etg='start exiftoolgui' # ExifToolGui
+
+
 #
 # network
 #
 
 ScriptEval SshAgent initialize
 
+nu() { net use "$(ptw "$1")" "${@:2}"; } # NetUse
 alias ipc='network ipc'
-alias rs='RemoteServer'
-alias slf='SyncLocalFiles'
-alias SshKey='ssh-add ~/.ssh/id_dsa'
-
 IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
 RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
-ShowSsh() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
+alias slf='SyncLocalFiles'
+alias SshKey='ssh-add ~/.ssh/id_dsa'
+SshShow() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
+SshFix() { SshAgent cleanup || return; SshAgent startup || return; ScriptEval SshAgent initialize; }
 
 #
 # portable and backup
@@ -341,9 +336,9 @@ alias tgg='GitHelper tgui'
 alias gd='gh down'
 alias ggc='gg commit'
 alias gu='gh up'
+alias gb='gh browse'
 
 alias tsvn='TortoiseSVN'
-alias svn='tsvn svn'
 
 #
 # scripts
@@ -352,13 +347,15 @@ alias svn='tsvn svn'
 alias scd='ScriptCd'
 alias se='ScriptEval'
 
-alias slist='file * | egrep "Bourne-Again shell script|.sh:" | cut -d: -f1'
+alias slist='file * .* | egrep "Bourne-Again shell script|\.sh:|\.bash.*:" | cut -d: -f1'
 alias sfind='slist | xargs egrep'
 sfindl() { sfind --color=always "$1" | less -R; }
 alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 sup() { gu "$bin" "script changes" || return; echo; gu "$ubin" "script changes"; }
+sd() { gd "$bin" || return; echo; gd "$ubin"; }
+scommit() { ggc "$bin"; ggc "$ubin"; }
 
 #
 # power management
@@ -413,8 +410,8 @@ alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
 alias house='start "$cloud/House/House Notes.docx"'
 alias w='start "$cloud/other/wedding/Wedding Notes.docx"'
 
-nas='//nas/public'
-ni="$nas/documents/data/install"
+nas='//nas.hagerman.butare.net'
+ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 NasDrive() { net use n: "$(utw "$nr")" /user:jjbutare "$@"; }
 alias nslf='slf nas'
@@ -470,10 +467,8 @@ alias vs='VisualStudio'
 # Intel
 #
 
-alias hs='m CsisBuild; m m7s; m7slf; bslf;' # HomeSync
-alias pb="lync PersonalBridge"
-alias bslf="slf CsisBuild.intel.com"
-bs() { merge CsisBuild; bslf || return; }
+alias is='m install-CsisBuild; m install-dfs; m install-cr; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr' # IntelSync
+alias hs='m install-CsisBuild; m m7s; m7slf; bslf;' # HomeSync
 
 # locations
 ihome="//jjbutare-mobl/john/documents"
@@ -481,7 +476,6 @@ ss="$ihome/group/Software\ Solutions"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
 
 # laptop
-alias mi='inst --hint //jjbutare-mobl/install --NoRunPrompt CsisDeveloper'
 SetMobileAliases() 
 {
 	local m="$1" h="$1"; (( h == 1 )) && h=""
@@ -489,7 +483,7 @@ SetMobileAliases()
 	alias m${m}c="host connect jjbutare-mobl${h}"
 	alias m${m}slf="slf jjbutare-mobl${h}"
 	alias m${m}slp="slp jjbutare-mobl${h}"
-	eval "m${m}s() { m m${m}s; m${m}slf; }"	
+	eval "m${m}s() { host available jjbutare-mobl${h} && { m m${m}s; m${m}slf; }; }"	
 	eval m${m}dl='//jjbutare-mobl${h}/John/Documents/data/download'
 }
 SetMobileAliases 1; SetMobileAliases 7; SetMobileAliases 9;
@@ -624,8 +618,9 @@ alias spum='mb && { start "$sp/Libraries/UpdateMagellan.cmd" && spb; }'
 alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/null; start PointManagement.exe; popd > /dev/null'
 
 # service
-alias sstStop='service stop ScadaService RASSI1PRSQLS; echo "Disable AlertChecker to prevent automatic service start"'
-alias sstStart='service start ScadaService RASSI1PRSQLS'
+alias sstStop='service stop ScadaService RASSI1PRSQLS; service stop ScadaService RASSI1BKSQLS; echo "Disable AlertChecker to prevent automatic service start"'
+alias sstStart='service start ScadaService RASSI1PRSQLS; service start ScadaService RASSI1BKSQLS;'
+alias sstStatus='service status ScadaService RASSI1PRSQLS; service status ScadaService RASSI1BKSQLS;'
 
 # logs
 ssl() { start explorer "//$1/d$/Program Files/Scada/ScadaService/log"; }

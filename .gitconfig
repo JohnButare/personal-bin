@@ -29,3 +29,4 @@
 	tool = BeyondCompare3
 [mergetool "BeyondCompare3"]
 	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
+	cmd = \"C:/Program Files (x86)/Beyond Compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"

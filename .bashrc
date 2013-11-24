@@ -233,8 +233,8 @@ alias uhosts='host file update'
 alias gp='media get'
 alias ms='media sync'
 alias sm='merge "$pub/Music" "//nas/music"'
-alias si='merge "$data/install" "//nas/public/documents/data/install"'
-alias spi='merge "$data/install" "/cygdrive/k/data/install"'
+alias si='merge "$data/install" "//nas/public/documents/data/install"' # SyncInstall
+alias spi='merge "$data/install" "/cygdrive/k/data/install"' # SyncPortableInstall
 alias sk='SyncKey'
 
 alias et='exiftool'
@@ -410,7 +410,7 @@ alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
 alias house='start "$cloud/House/House Notes.docx"'
 alias w='start "$cloud/other/wedding/Wedding Notes.docx"'
 
-nas='//nas.hagerman.butare.net'
+nas='//nas'
 ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 NasDrive() { net use n: "$(utw "$nr")" /user:jjbutare "$@"; }

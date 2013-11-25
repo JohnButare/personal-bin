@@ -354,7 +354,7 @@ alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 sup() { gu "$bin" "script changes" || return; echo; gu "$ubin" "script changes"; }
-sd() { gd "$bin" || return; echo; gd "$ubin"; }
+sd() { gd "$bin"; gd "$ubin"; }
 scommit() { gc "$bin"; gc "$ubin"; }
 
 #

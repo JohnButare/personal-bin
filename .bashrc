@@ -13,16 +13,18 @@ set -a
 GREP_OPTIONS='--color=auto'
 LESS='-R'
 LESSOPEN='|~/.lessfilter %s'
+IGNOREEOF=1
 set +a
 
 # interactive initialization - remainder not needed in child processes or scripts
 [[ "$-" != *i* ]] && return
 
 HISTCONTROL=erasedups
-shopt -s autocd cdspell cdable_vars
+shopt -s autocd cdspell cdable_vars histappend
 
 # completion
 ! IsFunction __git_ps1 && source /etc/bash_completion
+complete -r cd # cd should not complete variables without a leading $
 
 #
 # locations - lower case (not exported), for cd'able variables ($<var><return or tab>) 
@@ -309,6 +311,9 @@ SetPrompt()
 
 	# multi-line
 	PS1="\[\e]0;\w\a\]\n${green}${userAtHost}${red}${elevated} ${yellow}${dir}${clear}${cyan}${gitColor}${git}\n${clear}\$ "
+
+	# share history with other shells when the prompt changes
+	PROMPT_COMMAND='history -a; history -r'
 }
 
 [[ "$PS1" != *git_ps1* ]] && SetPrompt

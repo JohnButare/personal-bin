@@ -64,7 +64,9 @@ $if Bash
   set completion-ignore-case on
   set show-all-if-ambiguous on
 	set menu-complete-display-prefix off
-	
+	set skip-completed-text on
+	set visible-stats on
+
   # Expand homedir name
   set expand-tilde on
 

@@ -13,7 +13,7 @@ set -a
 GREP_OPTIONS='--color=auto'
 LESS='-R'
 LESSOPEN='|~/.lessfilter %s'
-IGNOREEOF=1
+#IGNOREEOF=1
 set +a
 
 # interactive initialization - remainder not needed in child processes or scripts
@@ -24,7 +24,7 @@ shopt -s autocd cdspell cdable_vars histappend
 
 # completion
 ! IsFunction __git_ps1 && source /etc/bash_completion
-complete -r cd # cd should not complete variables without a leading $
+complete -r cd >& /dev/null # cd should not complete variables without a leading $
 
 #
 # locations - lower case (not exported), for cd'able variables ($<var><return or tab>) 
@@ -359,8 +359,8 @@ alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 sup() { gu "$bin" "script changes" || return; echo; gu "$ubin" "script changes"; }
-sd() { gd "$bin"; gd "$ubin"; }
-scommit() { gc "$bin"; gc "$ubin"; }
+sdn() { gd "$bin"; gd "$ubin"; }
+scm() { gc "$bin"; gc "$ubin"; }
 
 #
 # power management
@@ -489,7 +489,7 @@ SetMobileAliases()
 	alias m${m}slf="slf jjbutare-mobl${h}"
 	alias m${m}slp="slp jjbutare-mobl${h}"
 	eval "m${m}s() { host available jjbutare-mobl${h} && { m m${m}s; m${m}slf; }; }"	
-	eval m${m}dl='//jjbutare-mobl${h}/John/Documents/data/download'
+	eval m${m}dl='//jjbutare-mobl${h}/c$/Users/jjbutare/Documents/data/download'
 }
 SetMobileAliases 1; SetMobileAliases 7; SetMobileAliases 9;
 

@@ -13,7 +13,7 @@ set -a
 GREP_OPTIONS='--color=auto'
 LESS='-R'
 LESSOPEN='|~/.lessfilter %s'
-IGNOREEOF=1
+#IGNOREEOF=1
 set +a
 
 # interactive initialization - remainder not needed in child processes or scripts

@@ -74,7 +74,8 @@ $if Bash
   set mark-directories on
   set mark-symlinked-directories on
 
-  set completion-query-items 200
+  set page-completions off
+  set completion-query-items -1
 
   # Match all files
   #set match-hidden-files on

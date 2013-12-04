@@ -73,26 +73,12 @@ alias up='"$up"'
 a="$PUB/Documents/data/archive/bin"
 
 #
-# misc
-#
-
-alias cf='CleanupFiles'
-alias cls=clear
-alias e='TextEdit'
-alias ListVars='declare -p | egrep -v "\-x"'
-alias ListExportVars='export'
-alias te='TextEdit'
-alias telnet='putty'
-alias update='os update'
-alias unexport='unset'
-alias unfunction='unset -f'
-alias update='os update'
-
-#
 # applications
 #
-
+alias e='edit'
 alias s="start"
+alias te='TextEdit'
+
 alias autoruns='start autoruns.exe'
 alias AutoItDoc="start $pdata/doc/AutoIt.chm"
 alias bc='BeyondCompare'
@@ -109,9 +95,16 @@ alias wmc='WindowsMediaCenter'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 
 #
+# misc
+#
+alias cf='CleanupFiles'
+alias cls=clear
+alias telnet='putty'
+alias update='os update'
+
+#
 # archive
 #
-
 alias fm='start "$p/7-Zip/7zFM.exe"'
 7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 alias untar='tar -v -x --atime-preserve <'
@@ -119,6 +112,14 @@ zbak() { [[ $# == 1  ]] && 7z a "$1.zip" "$1" || 7z a "$1" "${@:2}"; }
 alias zrest='7z.exe x'
 alias zls='7z.exe l'
 alias zll='7z.exe l -slt'
+
+#
+# variables and functions
+#
+alias ListVars='declare -p | egrep -v "\-x"'
+alias ListExportVars='export'
+alias unexport='unset'
+alias unfunction='unset -f'
 
 #
 # performance
@@ -130,7 +131,6 @@ alias toff='TimerOff'
 #
 # file management
 #
-
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'

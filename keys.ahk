@@ -78,7 +78,7 @@ IdleEvent()
 #t::OpenTextEditor()
 #!t::NewTextEditor()
 ^#v::run "%bash%" VisualStudio start new,,min
-#v::run "%bash%" VisualStudio start new,,min
+#v::run "%bash%" VisualStudio start,,min
 #!v::OpenVmWare()
 ^#w::NewWordDocument()
 #!w::NewWordDocument()

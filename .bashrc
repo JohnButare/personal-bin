@@ -473,7 +473,7 @@ alias vs='VisualStudio'
 #
 
 alias is='m install-CsisBuild; m install-dfs; m install-cr; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr' # IntelSync
-alias hs='m install-CsisBuild; m m7s; m7slf; bslf;' # HomeSync
+alias hs='m install-oversoul-CsisBuild; slf nas; slf -do CsisBuild.intel.com;' # HomeSync
 
 # locations
 ihome="//jjbutare-mobl/john/documents"

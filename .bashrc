@@ -203,7 +203,7 @@ alias dus='DiskUsage summary'
 #
 
 alias ei='te $bin/inst'
-alias ehp='ShellEdit "$udata/replicate/default.htm"'
+alias ehp='edit "$udata/replicate/default.htm"'
 
 # Bash (aliases, functions, startup, other)
 alias sa='. ~/.bashrc'
@@ -336,6 +336,7 @@ alias g='git'
 alias ge='"$P32/Git/bin/git"' # Git Extensions
 alias gg='GitHelper gui'
 alias gh='GitHelper'
+alias ghub='GitHelper hub'
 alias tgg='GitHelper tgui'
 
 alias gd='gh down'
@@ -343,6 +344,7 @@ alias gc='gg commit'
 alias gu='gh up'
 alias gb='gh browse'
 
+alias svn='TortoiseSVN svn'
 alias tsvn='TortoiseSVN'
 
 #
@@ -472,7 +474,7 @@ alias vs='VisualStudio'
 # Intel
 #
 
-alias is='m install-CsisBuild; m install-dfs; m install-cr; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr' # IntelSync
+alias is='m7s; m install-CsisBuild; m install-dfs; m install-cr; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr' # IntelSync
 alias hs='m install-oversoul-CsisBuild; slf nas; slf -do CsisBuild.intel.com;' # HomeSync
 
 # locations

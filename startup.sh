@@ -1,18 +1,18 @@
 
 # Common applications
-app -q $command AutoHotKey WinSplit
+app -b $command AutoHotKey WinSplit
 
 # Host specific applications
 case "${COMPUTERNAME,,}" in
-	oversoul) app -q $command LastPass word EverNote DropBox PowerMixer SnagIt iCloud PowerPanel pu;;
-	minime) app -q $command word EverNote DropBox PowerMixer SnagIt iCloud pu;;
-	jjbutare-mobl) app -q $command LastPass word EverNote DropBox PowerMixer SnagIt CruiseControlTray hp pu; intel $command;;
-	jjbutare-mobl7) app -q $command word EverNote DropBox PowerMixer SnagIt CruiseControlTray pu; intel $command;;
+	oversoul) app -b $command LastPass word EverNote DropBox PowerMixer SnagIt iCloud PowerPanel pu;;
+	minime) app -b $command word EverNote DropBox PowerMixer SnagIt iCloud pu;;
+	jjbutare-mobl) app -b $command LastPass word EverNote DropBox PowerMixer SnagIt CruiseControlTray hp pu; intel $command -b;;
+	jjbutare-mobl7) app -b $command word EverNote DropBox PowerMixer SnagIt CruiseControlTray pu; intel $command -b;;
 esac
 
 # Other
 if [[ "$command" == "startup" ]]; then
-	app -q startup explorer
+	app -b startup explorer
 	
 elif [[ "$command" == "close" ]]; then
 	#app -q close Chrome Firefox LastPass NotepadPP OneNote Outlook ProcessExplorer SnagIt\

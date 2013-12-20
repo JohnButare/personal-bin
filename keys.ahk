@@ -71,8 +71,7 @@ IdleEvent()
 #!p::run "procexp.exe"
 #!q::run quicken.btm,,min
 +#s::PowerDownMonitor()
-+#^s::run "%bash%" %BashArgs% power sleep force,,min
-; "%bash%" power sleep force,,min
++#^s::run "%bash%" %BashArgs% power sleep,,min
 #!s::RunSonos()
 ^#t::Test()
 #t::OpenTextEditor()

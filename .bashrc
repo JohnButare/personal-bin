@@ -598,6 +598,7 @@ alias frlb='sudo antidote App=Rpiad BuildType=LocalBuild'
 alias frp="ProfileManager Rpiad"
 alias frpu='cp "$fr/Profiles/Rpiad.profile" "$profiles/Rpiad.profile"'
 alias frput='cp "$fr/Profiles/DevProfiles/Test/Rpiad.profile" "$profiles"'
+alias frpupp='cp "$fr/Profiles/DevProfiles/Preprod/Rpiad.profile" "$profiles"'
 alias frpc='cp "$profiles/Rpiad.profile" "$fr/Profiles"'
 
 alias frt='$frc/Test/WebServiceTest/bin/Debug/WebServiceTest.exe'

@@ -23,7 +23,7 @@ HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars histappend
 
 # completion
-! IsFunction __git_ps1 && source /etc/bash_completion
+[[ -e /etc/bash_completion ]] && ! IsFunction __git_ps1 && source /etc/bash_completion
 complete -r cd >& /dev/null # cd should not complete variables without a leading $
 
 #
@@ -150,11 +150,11 @@ alias rc='CopyDir'
 
 # list
 alias ls='ls -Q --color'				# list 
-alias la='ls -Al'								# list all
-alias ll='ls -l'								# list long
-alias llh='ll -d .*'						# list long hidden
-alias lh='ls -d .*' 						# list hiden
-alias lt='ls -Ah --full-time'  	# list time
+alias la='ls -Al'						# list all
+alias ll='ls -l'						# list long
+alias llh='ll -d .*'					# list long hidden
+alias lh='ls -d .*' 					# list hiden
+alias lt='ls -Ah --full-time'  			# list time
 
 alias dir='cmd /c dir'
 alias dirss="ls -1s --sort=size --reverse --human-readable -l" # sort by size
@@ -705,3 +705,6 @@ alias dhdbTD1='dhdbp SqlServers=RASBK1SQLS,3180:TD1'
 
 alias dwp='deploy Web Environment=Production'
 alias dwpDL='dwp Servers=shsprsps'
+
+# platform specific
+[[ -f .bashrc.$platform ]] && . .bashrc.$platform

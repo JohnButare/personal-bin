@@ -1,0 +1,3 @@
+alias e='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
+alias l='open .'
+alias ls='gls -Q --color'

@@ -1,11 +1,9 @@
-# ~/.bashrc, user specific interactive intialization and non-interactive initialization for "mintty"
-# and "ssh <script>", template /etc/defaults/etc/skel/.bashrc, executed from ~/.bash_profile
+# ~/.bashrc, user specific interactive intialization, and non-interactive ("mintty" and "ssh <script>")
 
 # sytem-wide configuration - if not done in /etc/bash.bashrc
 if [[ ! $BIN ]]; then
 	echo ".bashrc: system configuration was not set in /etc/bash.bashrc" > /dev/stderr
-	[[ -d "/cygdrive/d/users" ]] && export USERS="/cygdrive/d/users" || export USERS="/cygdrive/c/users"
-	[[ -f "$USERS/Public/Documents/data/bin/bash.bashrc" ]] && . "$USERS/Public/Documents/data/bin/bash.bashrc"
+	[[ -f /usr/local/data/bin/bash.bashrc ]] && . "/usr/local/data/bin/bash.bashrc"
 fi
 
 # non-interactive initialization (available from child processes and scripts)

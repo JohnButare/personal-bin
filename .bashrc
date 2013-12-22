@@ -335,7 +335,7 @@ alias cdu='code update'
 
 alias git='ge' 
 alias g='git'
-alias gc='/usr/bin/git' 			# Cygwin Git
+alias gcy='/usr/bin/git' 			# Cygwin Git
 alias ge='"$P32/Git/bin/git"' # Git Extensions Git
 alias gg='GitHelper gui'
 alias gh='GitHelper'

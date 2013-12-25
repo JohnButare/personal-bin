@@ -24,9 +24,6 @@ shopt -s autocd cdspell cdable_vars histappend
 [[ -e /etc/bash_completion ]] && ! IsFunction __git_ps1 && source /etc/bash_completion
 complete -r cd >& /dev/null # cd should not complete variables without a leading $
 
-# GNU Core Utils
-[[ $PLATFORM == "mac" ]] && g='g' || g='' 
-
 #
 # locations - lower case (not exported), for cd'able variables ($<var><return or tab>) 
 #
@@ -150,7 +147,7 @@ alias l='start explorer "$PWD"'
 alias rc='CopyDir'
 
 # list
-alias ls=$g'ls -Q --color'	# list 
+alias ls=$G'ls -Q --color'	# list 
 alias la='ls -Al'							# list all
 alias ll='ls -l'							# list long
 alias llh='ll -d .*'					# list long hidden

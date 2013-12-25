@@ -25,7 +25,7 @@ shopt -s autocd cdspell cdable_vars histappend
 complete -r cd >& /dev/null # cd should not complete variables without a leading $
 
 # GNU Core Utils
-[[ $PLATFORM == "mac" ]] && g='g' && g='' 
+[[ $PLATFORM == "mac" ]] && g='g' || g='' 
 
 #
 # locations - lower case (not exported), for cd'able variables ($<var><return or tab>) 
@@ -214,7 +214,7 @@ alias ef='te $bin/function.sh'
 alias sf='. function.sh'
 
 alias bstart='source "$bin/bash.bashrc"; source ~/.bash_profile; bind -f ~/.inputrc;'
-alias estart='te /etc/profile /etc/bash.bashrc "$bin/bash.bashrc" "$ubin/.bash_profile" "$ubin/.bashrc"'
+alias estart='te /etc/profile /etc/bashrc /etc/bash.bashrc "$bin/bash.bashrc" "$ubin/.bash_profile" "$ubin/.bashrc"'
 
 alias ebo='te $ubin/.minttyrc $ubin/.inputrc /etc/bash.bash_logout $ubin/.bash_logout'
 
@@ -710,4 +710,4 @@ alias dwp='deploy Web Environment=Production'
 alias dwpDL='dwp Servers=shsprsps'
 
 # platform specific
-[[ -f .bashrc.$PLATFORM ]] && . .bashrc.$PLATFORM
+. .bashrc.$PLATFORM

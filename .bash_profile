@@ -1,9 +1,5 @@
 # ~/.bash_profile, user specific login initialization
 
-#export BASH_DEBUG="yes"
-[[ $BASH_DEBUG ]] && export BASH_STATUS_LOGIN_SHELL_CHILD="true"
-[[ $BASH_DEBUG ]] && BASH_STATUS_LOGIN_SHELL="true"
-
 # SSH
 IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
 RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }

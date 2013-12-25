@@ -26,7 +26,7 @@
 "\eOH": beginning-of-line
 "\eOF": end-of-line
 
-# Ctrl+Left/Right to move by whole words
+# Ctrl/Option+Left/Right to move by whole words
 "\e[1;5C": forward-word
 "\e[1;5D": backward-word
 

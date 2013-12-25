@@ -707,4 +707,4 @@ alias dwp='deploy Web Environment=Production'
 alias dwpDL='dwp Servers=shsprsps'
 
 # platform specific
-. .bashrc.$PLATFORM
+[[ -f "$UBIN/.bashrc.$PLATFORM" ]] && . "$UBIN/.bashrc.$PLATFORM"

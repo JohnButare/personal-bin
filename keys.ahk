@@ -69,7 +69,7 @@ IdleEvent()
 ^#n::NewFolder()
 #o::RunOutlook()
 #!p::run "procexp.exe"
-#!q::run quicken.btm,,min
+#!q::run "%bash%" quicken start,,min
 +#s::PowerDownMonitor()
 +#^s::run "%bash%" %BashArgs% power sleep,,min
 #!s::RunSonos()

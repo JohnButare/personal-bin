@@ -37,11 +37,11 @@ p32="$P32"
 sys="/cygdrive/c"
 pub="$PUB"
 bin="$BIN"
-data="$pub/Documents/data"
+data="$DATA"
 psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
 pp="$psm/Programs" # PublicPrograms
 pd="$pub/Desktop" # PublicDesktop
-i="$PUB/Documents/data/install"
+i="$data/install" # install
 
 # user
 home="$HOME"

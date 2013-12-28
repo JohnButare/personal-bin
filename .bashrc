@@ -355,7 +355,7 @@ alias tsvn='TortoiseSVN'
 alias scd='ScriptCd'
 alias se='ScriptEval'
 
-alias slist='file * .* | egrep "bash script|Bourne-Again shell script|\.sh:|\.bash.*:" | cut -d: -f1'
+alias slist='file * .* | FilterShellScript | cut -d: -f1'
 alias sfind='slist | xargs egrep'
 sfindl() { sfind --color=always "$1" | less -R; }
 alias sedit='slist | xargs RunFunction.sh TextEdit'

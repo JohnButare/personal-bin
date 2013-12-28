@@ -84,6 +84,7 @@ alias cctray='CruiseControlTray'
 alias chrome='chrome' # /opt/google/chrome/google-chrome
 alias ew='expression web'
 alias f='firefox'
+alias h='HostUtil'
 alias ie='InternetExplorer'
 alias m='merge'
 alias rdesk='cygstart mstsc /f /v:'
@@ -223,8 +224,8 @@ alias SetKey='AutoHotKey restart'
 alias st='startup'
 
 # host file
-alias ehosts='host file edit'
-alias uhosts='host file update'
+alias ehosts='HostUtil file edit'
+alias uhosts='HostUtil file update'
 
 #
 # media
@@ -368,9 +369,9 @@ scm() { gc "$bin"; gc "$ubin"; }
 # power management
 #
 
-alias boot='host boot'
-alias bw='host boot wait'
-alias connect='host connect'
+alias boot='HostUtil boot'
+alias bw='HostUtil boot wait'
+alias connect='HostUtil connect'
 alias hib='power hibernate'
 alias down='power shutdown'
 alias reb='power reboot'
@@ -486,11 +487,11 @@ SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
 SetMobileAliases() 
 {
 	local m="$1" h="$1"; (( h == 1 )) && h=""
-	alias m${m}b="host boot jjbutare-mobl${h}"
-	alias m${m}c="host connect jjbutare-mobl${h}"
+	alias m${m}b="HostUtil boot jjbutare-mobl${h}"
+	alias m${m}c="HostUtil connect jjbutare-mobl${h}"
 	alias m${m}slf="slf jjbutare-mobl${h}"
 	alias m${m}slp="slp jjbutare-mobl${h}"
-	eval "m${m}s() { host available jjbutare-mobl${h} && { m m${m}s; m${m}slf; }; }"	
+	eval "m${m}s() { HostUtil available jjbutare-mobl${h} && { m m${m}s; m${m}slf; }; }"	
 	eval m${m}dl='//jjbutare-mobl${h}/c$/Users/jjbutare/Documents/data/download'
 }
 SetMobileAliases 1; SetMobileAliases 7; SetMobileAliases 9;

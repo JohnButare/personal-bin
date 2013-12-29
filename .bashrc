@@ -21,7 +21,8 @@ HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars histappend
 
 # completion
-[[ -e /etc/bash_completion ]] && ! IsFunction __git_ps1 && source /etc/bash_completion
+[[ -e /etc/bash_completion ]] && ! IsFunction __git_ps1 && source /etc/bash_completion # win
+[[ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]] && ! IsFunction __git_ps1 && . /usr/local/etc/bash_completion.d/git-prompt.sh # mac
 complete -r cd >& /dev/null # cd should not complete variables without a leading $
 
 #
@@ -136,8 +137,6 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias cc='cd ~; cls'
 alias del='rm'
-fpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath "$1")"; echo "$arg"; clipw "$arg"; }
-wfpc() { [[ $# == 0 ]] && arg="$PWD" || arg="$(realpath "$1")"; echo "$(utw "$arg")"; utw "$arg" > /dev/clipboard; }
 alias md='MkDir'
 alias rd='RmDir'
 alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln

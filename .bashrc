@@ -43,6 +43,7 @@ psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
 pp="$psm/Programs" # PublicPrograms
 pd="$pub/Desktop" # PublicDesktop
 i="$data/install" # install
+v="/Volumes"
 
 # user
 home="$HOME"
@@ -52,7 +53,7 @@ udata="$udoc/data"
 cloud="$home/Dropbox"
 cdl="$cloud/data/download"
 code="$CODE"
-dl="$udata/download"
+dl="$HOME/Downloads"
 ubin="$udata/bin"
 usm="$APPDATA/Microsoft/Windows/Start Menu" #UserStartMenu
 up="$usm/Programs" # UserPrograms

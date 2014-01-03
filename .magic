@@ -1,0 +1,3 @@
+# bash shell magic
+0	string/wt	#!\ /usr/bin/env\ bash	Bourne-Again shell script text executable
+!:mime	text/x-shellscript

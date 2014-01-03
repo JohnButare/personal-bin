@@ -46,12 +46,13 @@ i="$data/install" # install
 v="/Volumes"
 
 # user
+
 home="$HOME"
 doc="$DOC"
 udoc="$DOC"
 udata="$udoc/data"
-cloud="$home/Dropbox"
-cdl="$cloud/data/download"
+
+bash="$udata/bash"
 code="$CODE"
 dl="$HOME/Downloads"
 ubin="$udata/bin"
@@ -59,18 +60,11 @@ usm="$APPDATA/Microsoft/Windows/Start Menu" #UserStartMenu
 up="$usm/Programs" # UserPrograms
 ud="$home/Desktop" # UserDesktop
 
-# shortcuts
-alias p='"$p"'
-alias p32='"$p32"'
-alias p64='"$p64"'
-alias pp='"$pp"'
-alias up='"$up"'
+cloud="$home/Dropbox"
+cdata="$cloud/data"
+cdl="$cdata/download"
 
-#
-# temporary aliases
-#
-
-a="$PUB/Documents/data/archive/bin"
+alias p='"$p"' p32='"$p32"' p64='"$p64"' pp='"$pp"' up='"$up"'
 
 #
 # applications
@@ -475,8 +469,9 @@ alias vs='VisualStudio'
 # Intel
 #
 
-alias is='m7s; m install-CsisBuild; m install-dfs; m install-cr; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr' # IntelSync
-alias hs='m install-oversoul-CsisBuild; slf nas; slf -do CsisBuild.intel.com;' # HomeSync
+alias IntelSync='m7s; m install-CsisBuild; m install-dfs; m install-cr; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr'
+alias HomeSync='m install-oversoul-CsisBuild; slf nas; slf -do CsisBuild.intel.com;'
+alias is=IntelSync hs=HomeSync
 
 # locations
 ihome="//jjbutare-mobl/john/documents"

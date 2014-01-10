@@ -14,14 +14,14 @@
 "\e[1;5C": forward-word     # ctrl/option-left, alt-f
 "\e[1;5D": backward-word    # ctrl/option-right, alt-b
 
-# delete to begin/end of line - ctrl-u/k
+# undo alt-backspace (win)
 # paste yanked/previous yanked text - ctrl/alt-y
 # delete character under cursor - ctrl-d Delete (win) fn-delete (mac)
 "\e[3~": delete-char
-"\e[3;5~": kill-word          # alt-d ctrl-backspace (win) option-delete (mac)
-"\C-_": backward-kill-word      # ctrl/option-delete
+"\e[3;5~": kill-word         	 	# alt-d ctrl-delete (win) option-delete (mac)
+"\C-_": backward-kill-word      # ctrl-backspace (win)
 "\e[3;6~": kill-line            # ctrl-shift-backspace
-"\xC2\x9F": backward-kill-line  # ctrl-shift-delete
+"\xC2\x9F": backward-kill-line  # ctrl-u/k, ctrl-shift-delete (win)
 
 # Search command history 
 "\e[A": history-search-backward # up

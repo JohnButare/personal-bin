@@ -205,7 +205,10 @@ alias ea='te $ubin/.bashrc'
 alias ef='te $bin/function.sh'
 alias sf='. function.sh'
 
-alias bstart='source "$bin/bash.bashrc"; source ~/.bash_profile; bind -f ~/.inputrc;'
+alias kstart='bind -f ~/.inputrc'
+alias ek='te ~/.inputrc'
+
+alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;'
 alias estart='te /etc/profile /etc/bashrc /etc/bash.bashrc "$bin/bash.bashrc" "$ubin/.bash_profile" "$ubin/.bashrc"'
 
 alias ebo='te $ubin/.minttyrc $ubin/.inputrc /etc/bash.bash_logout $ubin/.bash_logout'
@@ -555,8 +558,9 @@ alias ap='ProfileManager Antidote'
 
 alias aum='pushd .; mb && { "$ac/SolutionItems/Libraries/UpdateMagellan.cmd" && ab; }; popd'
 alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
-alias aub='RoboCopy "$(utw "$code/Antidote/Antidote/bin/Debug")" "$(utw "//vmspwbld001/d$/Program Files/Antidote")"' # Antidote Update BuildServer
-alias aul='RoboCopy "$(utw "$code/Antidote/Antidote/bin/Debug")" "$(utw "$P/Antidote")"' # Antidote Update LocalServer
+alias aub='CopyDir "$code/Antidote/Antidote/bin/Debug" "//vmspwbld001/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
+alias aul='CopyDir "$code/Antidote/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
+alias aubmq='CopyDir "$code/Antidote/Tools/MessageQueueCheck/bin/Debug" "//vmspwbld001/d$/Projects/Antidote/Tools/MessageQueueCheck/bin/Debug"'
 
 #
 # Magellan

@@ -33,6 +33,7 @@ complete -r cd >& /dev/null # cd should not complete variables without a leading
 p="$P"
 p64="$P64"
 p32="$P32"
+win="$data/platform/win"
 
 # public
 sys="/cygdrive/c"
@@ -668,6 +669,9 @@ alias dwPP='DeployLocal web force=true environment=PreProduction'
 alias dacPP='DeployLocal AlertChecker force=true environment=PreProduction'
 alias dssPP='DeployLocal ScadaService force=true environment=PreProduction'
 alias dhdbPP='DeployLocal HistorianDb force=true environment=PreProduction'
+
+# deploy to pilot
+alias dwPILOT='DeployLocal web force=true environment=Production servers=ORPRSPS'
 
 # deploy production
 alias drap='deploy deploy Environment=Production force=true'

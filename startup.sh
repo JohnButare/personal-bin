@@ -12,8 +12,8 @@ esac
 
 # Other
 if [[ "$command" == "close" ]]; then
-	app -b close chrome LastPass notepadpp ProcessExplorer SnagIt	Sonos TrueCrypt pu
-	IsElevated && tc SqlServer service stop all
+	app -b close LastPass notepadpp ProcessExplorer
+	IsElevated && SqlServer service stop all
 fi
 
 return $?

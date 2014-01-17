@@ -15,7 +15,7 @@ esac
 # Other
 if [[ "$command" == "close" ]]; then
 	app -b close LastPass notepadpp ProcessExplorer
-	IsElevated && SqlServer service stop all
+	IsElevated && SqlServer service stop --all
 fi
 
 return $?

@@ -84,6 +84,7 @@ alias f='firefox'
 alias h='HostUtil'
 alias ie='InternetExplorer'
 alias m='merge'
+alias powershell="$WINDIR/system32/WindowsPowerShell/v1.0/powershell.exe"
 alias rdesk='cygstart mstsc /f /v:'
 alias vm='VMware'
 alias wmp='WindowsMediaPlayer'

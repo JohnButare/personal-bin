@@ -1,73 +1,47 @@
 # ~/.inputrc: readline initialization file from /etc/defaults/etc/skel/.inputrc
+# http://www.bigsmoke.us/readline/shortcuts.pxhtml
 
 # test
 "\e[18~": "F7" #F7
 "\e[19~": "F8" #F8
 
-"\eOP": shell-expand-line #F1
+"\eOP": shell-expand-line   #F1
 "\eOQ": history-expand-line #F2
 
-# the following line is actually equivalent to "\C-?": delete-char
+# previous positition - ctrl-x
+"\eOH": beginning-of-line   # home, ctrl-a
+"\eOF": end-of-line         # end, ctrl-e
+"\e[1;5C": forward-word     # ctrl/option-left, alt-f
+"\e[1;5D": backward-word    # ctrl/option-right, alt-b
+
+# undo alt-backspace (win)
+# paste yanked/previous yanked text - ctrl/alt-y
+# delete character under cursor - ctrl-d Delete (win) fn-delete (mac)
 "\e[3~": delete-char
+"\e[3;5~": kill-word         	 	# alt-d ctrl-delete (win) option-delete (mac)
+"\C-_": backward-kill-word      # ctrl-backspace (win)
+"\e[3;6~": kill-line            # ctrl-shift-backspace
+"\xC2\x9F": backward-kill-line  # ctrl-u/k, ctrl-shift-delete (win)
 
-# VT
-"\e[1~": beginning-of-line
-"\e[4~": end-of-line
-
-# kvt
-"\e[H": beginning-of-line
-"\e[F": end-of-line
-
-# rxvt and konsole (i.e. the KDE-app...)
-"\e[7~": beginning-of-line
-"\e[8~": end-of-line
-
-# VT220
-"\eOH": beginning-of-line
-"\eOF": end-of-line
-
-# Ctrl/Option+Left/Right to move by whole words
-"\e[1;5C": forward-word
-"\e[1;5D": backward-word
-
-# Ctrl+Backspace/Delete to delete whole words
-"\e[3;5~": kill-word
-"\C-_": backward-kill-word
-
-# Ctrl+Shift+Backspace/Delete to delete to start/end of the line
-"\e[3;6~": kill-line
-"\xC2\x9F": backward-kill-line
-
-# Ctrl-Up/Down for searching command history 
-"\e[1;5A": history-search-backward 
-"\e[1;5B": history-search-forward 
-
-# Alt-Backspace for undo
-"\e\d": undo
-
-# Allow 8-bit input/output
-#set meta-flag on
-#set convert-meta off
-#set input-meta on
-#set output-meta on
+# Search command history 
+"\e[A": history-search-backward # up
+"\e[B": history-search-forward  # dn
+"\e[1;5A": history-search-backward  # ctrl-up 
+"\e[1;5B": history-search-forward   # ctrl-dn
 
 $if Bash
-  # Don't ring bell on completion
-  #set bell-style none
 
-  # or, don't beep at me - show me
-  #set bell-style visible
+  set bell-style visible # visible|none|audible
+ 
+  # Filename completion/expansion
+	Tab: complete          # tab
+	"\e[Z": menu-complete  # shift-tab
 
-  # Filename completion/expansion (tab, shift-tab)
-	Tab: complete
-	"\e[Z": menu-complete
   set completion-ignore-case on
   set show-all-if-ambiguous on
 	set menu-complete-display-prefix off
 	set skip-completed-text on
 	set visible-stats on
-
-  # Expand homedir name
   set expand-tilde on
 
   # Append "/" to all dirnames
@@ -80,7 +54,6 @@ $if Bash
   # Match all files
   #set match-hidden-files on
 
-  # 'Magic Space'
   # Insert a space character then performs a history expansion in the line
   Space: magic-space
 	

@@ -33,6 +33,7 @@ complete -r cd >& /dev/null # cd should not complete variables without a leading
 p="$P"
 p64="$P64"
 p32="$P32"
+win="$data/platform/win"
 
 # public
 sys="/cygdrive/c"
@@ -46,12 +47,13 @@ i="$data/install" # install
 v="/Volumes"
 
 # user
+
 home="$HOME"
 doc="$DOC"
 udoc="$DOC"
 udata="$udoc/data"
-cloud="$home/Dropbox"
-cdl="$cloud/data/download"
+
+bash="$udata/bash"
 code="$CODE"
 dl="$HOME/Downloads"
 ubin="$udata/bin"
@@ -59,18 +61,11 @@ usm="$APPDATA/Microsoft/Windows/Start Menu" #UserStartMenu
 up="$usm/Programs" # UserPrograms
 ud="$home/Desktop" # UserDesktop
 
-# shortcuts
-alias p='"$p"'
-alias p32='"$p32"'
-alias p64='"$p64"'
-alias pp='"$pp"'
-alias up='"$up"'
+cloud="$home/Dropbox"
+cdata="$cloud/data"
+cdl="$cdata/download"
 
-#
-# temporary aliases
-#
-
-a="$PUB/Documents/data/archive/bin"
+alias p='"$p"' p32='"$p32"' p64='"$p64"' pp='"$pp"' up='"$up"'
 
 #
 # applications
@@ -211,7 +206,10 @@ alias ea='te $ubin/.bashrc'
 alias ef='te $bin/function.sh'
 alias sf='. function.sh'
 
-alias bstart='source "$bin/bash.bashrc"; source ~/.bash_profile; bind -f ~/.inputrc;'
+alias kstart='bind -f ~/.inputrc'
+alias ek='te ~/.inputrc'
+
+alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;'
 alias estart='te /etc/profile /etc/bashrc /etc/bash.bashrc "$bin/bash.bashrc" "$ubin/.bash_profile" "$ubin/.bashrc"'
 
 alias ebo='te $ubin/.minttyrc $ubin/.inputrc /etc/bash.bash_logout $ubin/.bash_logout'
@@ -300,8 +298,9 @@ SetPrompt()
 	GIT_PS1_SHOWUPSTREAM="auto verbose"; # GIT_PS1_SHOWDIRTYSTATE="true"; GIT_PS1_SHOWSTASHSTATE="true"; GIT_PS1_SHOWUNTRACKEDFILES="true";
 	local git=''; IsFunction __git_ps1 && git='$(__git_ps1 " (%s)")'
 	local gitColor=''; [[ $git ]]	&& gitColor='$( git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "'$red'")'
-
 	local elevated=''; IsElevated && elevated='*'
+
+	[[ "$COMPUTERNAME" == @(Minime) ]] && { git=""; gitColor=""; }
 
 	# compact
 	# dir='$(GetPrompt)'; user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '
@@ -475,8 +474,9 @@ alias vs='VisualStudio'
 # Intel
 #
 
-alias is='m7s; m install-CsisBuild; m install-dfs; m install-cr; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr' # IntelSync
-alias hs='m install-oversoul-CsisBuild; slf nas; slf -do CsisBuild.intel.com;' # HomeSync
+alias IntelSync='m7s; m install-CsisBuild; m install-dfs; m install-cr; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr'
+alias HomeSync='m install-oversoul-CsisBuild; slf nas; slf -do CsisBuild.intel.com;'
+alias is=IntelSync hs=HomeSync
 
 # locations
 ihome="//jjbutare-mobl/john/documents"
@@ -560,8 +560,9 @@ alias ap='ProfileManager Antidote'
 
 alias aum='pushd .; mb && { "$ac/SolutionItems/Libraries/UpdateMagellan.cmd" && ab; }; popd'
 alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
-alias aub='RoboCopy "$(utw "$code/Antidote/Antidote/bin/Debug")" "$(utw "//vmspwbld001/d$/Program Files/Antidote")"' # Antidote Update BuildServer
-alias aul='RoboCopy "$(utw "$code/Antidote/Antidote/bin/Debug")" "$(utw "$P/Antidote")"' # Antidote Update LocalServer
+alias aub='CopyDir "$code/Antidote/Antidote/bin/Debug" "//vmspwbld001/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
+alias aul='CopyDir "$code/Antidote/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
+alias aubmq='CopyDir "$code/Antidote/Tools/MessageQueueCheck/bin/Debug" "//vmspwbld001/d$/Projects/Antidote/Tools/MessageQueueCheck/bin/Debug"'
 
 #
 # Magellan
@@ -669,6 +670,9 @@ alias dwPP='DeployLocal web force=true environment=PreProduction'
 alias dacPP='DeployLocal AlertChecker force=true environment=PreProduction'
 alias dssPP='DeployLocal ScadaService force=true environment=PreProduction'
 alias dhdbPP='DeployLocal HistorianDb force=true environment=PreProduction'
+
+# deploy to pilot
+alias dwPILOT='DeployLocal web force=true environment=Production servers=ORPRSPS'
 
 # deploy production
 alias drap='deploy deploy Environment=Production force=true'

@@ -1,4 +1,4 @@
-# ~/.bashrc, user specific interactive intialization, and non-interactive ("mintty" and "ssh <script>")
+# test ~/.bashrc, user specific interactive intialization, and non-interactive ("mintty" and "ssh <script>")
 
 # sytem-wide configuration - if not done in /etc/bash.bashrc
 if [[ ! $BIN ]]; then

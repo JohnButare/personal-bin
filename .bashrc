@@ -360,6 +360,8 @@ sfindl() { sfind --color=always "$1" | less -R; }
 alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
+sstat() { gh status "$bin"; gh status "$ubin"; }
+sdiff() { gh diff "$bin"; gh diff "$ubin"; }
 sup() { gu "$bin" "script changes" || return; echo; gu "$ubin" "script changes from $COMPUTERNAME${1+: $1}"; }
 sdn() { gd "$bin"; gd "$ubin"; }
 scm() { gc "$bin"; gc "$ubin"; }

@@ -1,4 +1,6 @@
-# OS X: /Applications/Xcode.app/Contents/Developer/usr/etc/gitconfig
+# Windows Git Extensions - 
+[core]
+	editor = \"c:/Program Files/Sublime Text 3/sublime_text.exe\" -n -w
 [diff]
 	guitool = beyondcompare3
 [difftool "beyondcompare3"]
@@ -10,7 +12,9 @@
 	path = C:/Program Files (x86)/Beyond Compare 3/bcomp.exe
 	cmd = \"C:/Program Files (x86)/Beyond Compare 3/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
 
-
+# OS X Xcode - /Applications/Xcode.app/Contents/Developer/usr/etc/gitconfig
+[core]
+	editor = \"/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl\" -n -w
 [diff]
     tool = bcomp
 [difftool]

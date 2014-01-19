@@ -13,7 +13,6 @@
 	interactive = always
 [core]
 	autocrlf = false
-	editor = \"c:/Program Files/Sublime Text 3/sublime_text.exe\"
 [user]
 	name = jjbutare
 	email = john.butare.s@gmail.com

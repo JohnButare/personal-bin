@@ -4,13 +4,14 @@ app -b $command explorer AutoHotKey WinSplit
 
 # Host specific applications
 local common="word EverNote DropBox PowerMixer PowerMixer f.lux SnagIt pu"
-case "${COMPUTERNAME,,}" in
+case "$COMPUTERNAME" in
 	bean) f.lux;;
 	minime) app -b $command $common;;
 	oversoul) app -b $command $common;;
-	jjbutare-mobl) app -b $command $common hp; intel $command -b;;
-	jjbutare-mobl7) app -b $command $common; intel $command -b;;
+	jjbutare*) app -b $command $common; intel $command -b;;
 esac
+
+[[ "$COMPUTERNAME" == "jjbutare-mobl" ]] && app -b "$hp"
 
 # Other
 if [[ "$command" == "close" ]]; then

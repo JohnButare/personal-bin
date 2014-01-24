@@ -193,6 +193,7 @@ alias duh='du --human-readable'
 alias ds='DirSize m'
 alias dsu='DiskSpaceUsage'
 alias dus='DiskUsage summary'
+alias TestDisk='sudo bench32.exe'
 
 #
 # edit/set
@@ -490,15 +491,16 @@ SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
 # laptop
 SetMobileAliases() 
 {
-	local m="$1" h="$1"; (( h == 1 )) && h=""
-	alias m${m}b="HostUtil boot jjbutare-mobl${h}"
-	alias m${m}c="HostUtil connect jjbutare-mobl${h}"
-	alias m${m}slf="slf jjbutare-mobl${h}"
-	alias m${m}slp="slp jjbutare-mobl${h}"
-	eval "m${m}s() { HostUtil available jjbutare-mobl${h} && { m m${m}s; m${m}slf; }; }"	
-	eval m${m}dl='//jjbutare-mobl${h}/c$/Users/jjbutare/Documents/data/download'
+	local m="$1" h="jjbutare-mobl$1"
+	case $m in 0) h="jjbutare-mobl";; 1) h="jjbutare-ivm1";; esac
+	alias m${m}b="HostUtil boot ${h}"
+	alias m${m}c="HostUtil connect ${h}"
+	alias m${m}slf="slf ${h}"
+	alias m${m}slp="slp ${h}"
+	eval "m${m}s() { HostUtil available ${h} && { m m${m}s; m${m}slf; }; }"
+	eval m${m}dl='//${h}/c$/Users/jjbutare/Documents/data/download'
 }
-SetMobileAliases 1; SetMobileAliases 7; SetMobileAliases 9;
+SetMobileAliases 0; SetMobileAliases 1; SetMobileAliases 7; SetMobileAliases 9;
 
 PrepKey() { local k="/cygdrive/e/mobl"; mkdir -p "$k/bin" "$k/doc"; }
 SyncKey() { local k="/cygdrive/e/mobl" f="/filters=-.*_sync.txt"; m "$bin" "$k/bin" "$f"; m "$udoc" "$k/doc" "/filters=-data\\VMware\\;-data\\mail\\"; }

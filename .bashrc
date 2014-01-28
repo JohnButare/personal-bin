@@ -139,6 +139,18 @@ alias md='MkDir'
 alias rd='RmDir'
 alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
 
+#
+# package management
+#
+alias choco='chocolatey'
+alias cinst='chocolatey install'
+alias cinst='chocolatey install'
+alias clist='chocolatey list'
+alias cpack='chocolatey pack'
+alias cpush='chocolatey push'
+alias cup='chocolatey uninstall'
+alias cver='chocolatey version'
+
 # other
 alias inf="FileInfo"
 alias l='start explorer "$PWD"'

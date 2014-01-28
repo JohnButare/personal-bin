@@ -30,17 +30,7 @@ complete -r cd >& /dev/null # cd should not complete variables without a leading
 # locations - lower case (not exported), for cd'able variables ($<var><return or tab>) 
 #
 
-# system
-p="$P"
-p64="$P64"
-p32="$P32"
-win="$data/platform/win"
-
-# public
-sys="/cygdrive/c"
-pub="$PUB"
-bin="$BIN"
-data="$DATA"
+p="$P" p32="$P32" win="$DATA/platform/win" sys="/cygdrive/c" pub="$PUB" bin="$BIN" data="$DATA"
 psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
 pp="$psm/Programs" # PublicPrograms
 pd="$pub/Desktop" # PublicDesktop
@@ -49,11 +39,7 @@ v="/Volumes"
 
 # user
 
-home="$HOME"
-doc="$DOC"
-udoc="$DOC"
-udata="$udoc/data"
-
+home="$HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data"
 bash="$udata/bash"
 code="$CODE"
 dl="$HOME/Downloads"
@@ -66,7 +52,7 @@ cloud="$home/Dropbox"
 cdata="$cloud/data"
 cdl="$cdata/download"
 
-alias p='"$p"' p32='"$p32"' p64='"$p64"' pp='"$pp"' up='"$up"'
+alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
 
 #
 # applications

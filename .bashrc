@@ -130,11 +130,11 @@ alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
 #
 alias choco='chocolatey'
 alias cinst='chocolatey install'
-alias cinst='chocolatey install'
 alias clist='chocolatey list'
 alias cpack='chocolatey pack'
 alias cpush='chocolatey push'
-alias cup='chocolatey uninstall'
+alias cuninst='chocolatey uninstall'
+alias cup='chocolatey update'
 alias cver='chocolatey version'
 
 # other

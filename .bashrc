@@ -495,6 +495,7 @@ SetMobileAliases()
 	alias m${m}c="HostUtil connect ${h}"
 	alias m${m}slf="slf ${h}"
 	alias m${m}slp="slp ${h}"
+	alias m${m}m="m m${m}s"
 	eval "m${m}s() { HostUtil available ${h} && { m m${m}s; m${m}slf; }; }"
 	eval m${m}dl='//${h}/c$/Users/jjbutare/Documents/data/download'
 }

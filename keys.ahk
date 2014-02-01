@@ -47,8 +47,8 @@ IdleEvent()
 ^Numpad9::MusicOther()
 
 ; Win
-#1::WinMinimize A ; Close active window
-#2::WinClose A ; Close active window
+#1::WinClose A ; Close active window
+#2::WinMinimize A ; Close active window
 ^#3::NewElevatedBash()
 #3::OpenBash()
 #!3::NewBash()

@@ -139,7 +139,7 @@ alias cver='chocolatey version'
 
 # other
 alias inf="FileInfo"
-alias l='start explorer "$PWD"'
+alias l='explore'
 alias rc='CopyDir'
 
 # list

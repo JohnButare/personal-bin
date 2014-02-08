@@ -13,21 +13,8 @@
 	interactive = always
 [core]
 	autocrlf = false
-	editor = \"c:/Program Files/Sublime Text 3/sublime_text.exe\" -n -w
 [user]
 	name = jjbutare
 	email = john.butare.s@gmail.com
-[credential]
-	helper = !\"C:/Program Files (x86)/GitExtensions/GitCredentialWinStore/git-credential-winstore.exe\"
 [push]
 	default = matching
-[diff]
-	guitool = BeyondCompare
-[difftool "BeyondCompare"]
-	path = C:/Program Files (x86)/Beyond Compare 4/bcomp.exe
-	cmd = \"C:/Program Files (x86)/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\"
-[merge]
-	tool = BeyondCompare
-[mergetool "BeyondCompare"]
-	path = C:/Program Files (x86)/Beyond Compare 4/bcomp.exe
-	cmd = \"C:/Program Files (x86)/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"

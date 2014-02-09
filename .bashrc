@@ -410,7 +410,7 @@ alias cs='cscript /nologo'
 # wiggin
 #
 
-alias BeanSync='sup; sdn; unc mount //nas/home && m bean-udata; unc mount //nas/public/documents/data && m bean-data'
+alias BeanSync='sup; sdn; unc mount //nas/home && m bean-udata; unc mount //nas/public/documents/data && echo m bean-data'
 alias bs=BeanSync
 
 opub="//oversoul/Public"

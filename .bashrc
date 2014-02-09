@@ -234,7 +234,6 @@ alias gp='media get'
 alias ms='media sync'
 alias sm='merge "$pub/Music" "//nas/music"'
 alias si='merge "$data/install" "//nas/public/documents/data/install"' # SyncInstall
-alias spi='merge "$data/install" "/cygdrive/k/data/install"' # SyncPortableInstall
 alias sk='SyncKey'
 
 alias et='exiftool'
@@ -410,6 +409,9 @@ alias cs='cscript /nologo'
 #
 # wiggin
 #
+
+alias BeanSync='echo sup sdn; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
+alias bs='BeanSync'
 
 opub="//oversoul/Public"
 ohome="//oversoul/John"

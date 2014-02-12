@@ -81,7 +81,6 @@ IdleEvent()
 #!v::OpenVmWare()
 ^#w::NewWordDocument()
 #!w::NewWordDocument()
-#x::OpenIm()
 #!x::OpenFirefox()
 #!y::OpenRecycleBin()
-
+#z::OpenIm()

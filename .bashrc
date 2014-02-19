@@ -484,6 +484,7 @@ alias HomeSync='m install-oversoul-CsisBuild; slf nas; slf -do CsisBuild.intel.c
 alias is=IntelSync hs=HomeSync
 
 # locations
+sync="$home/Syncplicity"
 ihome="//jjbutare-mobl/john/documents"
 ss="$ihome/group/Software\ Solutions"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
@@ -512,8 +513,8 @@ alias von="vpn on"
 alias voff="vpn off"
 
 # Source Control
-alias ssu='mu;au;fru;spu;inu'
-alias ssc='mc;ac;frc;spc;inc'
+alias ssu='mu;au;spu;inu'
+alias ssc='mc;ac;spc;inc'
 
 # Profile Manager
 profiles="$P/ITBAS/Profiles"

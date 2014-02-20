@@ -1,6 +1,8 @@
 # Common
 
 # Windows Git Extensions / msysgit (/Cygdrive/c/Program Files (x86)/Git/etc/gitconfig)
+# OS X Xcode - /Applications/Xcode.app/Contents/Developer/usr/etc/gitconfig
+
 
 # Windows Cygwin git (/etc/gitconfig) 
 [core]
@@ -16,20 +18,19 @@
 	path = C:/Program Files (x86)/Beyond Compare 4/bcomp.exe
 	cmd = \"C:/Program Files (x86)/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
 
-# OS X Xcode - /Applications/Xcode.app/Contents/Developer/usr/etc/gitconfig
 [core]
 	editor = \"/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl\" -n -w
 [diff]
-    tool = bcomp
+    tool = BeyondCompare
 [difftool]
     prompt = false
-[difftool "bcomp"]
+[difftool "BeyondCompare"]
     trustExitCode = true
     cmd = "/usr/local/bin/bcomp" "$LOCAL" "$REMOTE"
 [merge]
-    tool = bcomp
+    tool = BeyondCompare
 [mergetool]
     prompt = false
-[mergetool "bcomp"]
+[mergetool "BeyondCompare"]
     trustExitCode = true
     cmd = "/usr/local/bin/bcomp" "$LOCAL" "$REMOTE" "$BASE" "$MERGED"

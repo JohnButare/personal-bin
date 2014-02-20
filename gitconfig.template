@@ -1,4 +1,8 @@
-# Windows Cygwin git (/etc/gitconfig) / msysgit (/Cygdrive/c/Program Files (x86)/Git/etc/gitconfig)
+# Common
+
+# Windows Git Extensions / msysgit (/Cygdrive/c/Program Files (x86)/Git/etc/gitconfig)
+
+# Windows Cygwin git (/etc/gitconfig) 
 [core]
 	editor = \"c:/Program Files/Sublime Text 3/sublime_text.exe\" -n -w
 [diff]

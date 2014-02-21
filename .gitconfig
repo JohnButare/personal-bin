@@ -14,7 +14,16 @@
 [core]
 	autocrlf = false
 [user]
-	name = jjbutare
-	email = john.butare.s@gmail.com
+	name = John Butare
+	email = john.butare@intel.com
 [push]
 	default = matching
+[diff]
+    tool = bc
+[difftool]
+	prompt = false
+[merge]
+    tool = bc
+[mergetool]
+	prompt = false
+

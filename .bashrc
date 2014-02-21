@@ -425,6 +425,7 @@ alias w='start "$cloud/other/wedding/Wedding Notes.docx"'
 nas='//nas'
 ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
+ng='git@butare.net:/volume1/git'
 NasDrive() { net use n: "$(utw "$nr")" /user:jjbutare "$@"; }
 alias nslf='slf nas'
 alias nrslf='slf butare.net'

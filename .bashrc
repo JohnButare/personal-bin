@@ -588,6 +588,8 @@ alias mb='build Magellan/Source/Magellan.sln'
 alias mbc='BuildClean Magellan/Source/Magellan.sln'
 alias mlb='antidote App=Magellan BuildType=LocalBuild CacheBrokerAddress=@DatabaseServer@'
 
+alias mpu='cp "$mc/Profiles/"*.profile "$profiles"'
+
 #
 # FaSTr
 #

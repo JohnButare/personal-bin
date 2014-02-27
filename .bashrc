@@ -480,12 +480,12 @@ alias vs='VisualStudio'
 # Intel
 #
 
-alias IntelSync='m7s; m install-CsisBuild; m install-dfs; m install-cr; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr'
+alias IntelSync='m7s; m install-dfs; m install-cr; slf -do rrsprsps; m install-CsisBuild; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr'
 alias HomeSync='m install-oversoul-CsisBuild; slf nas; slf -do CsisBuild.intel.com;'
 alias is=IntelSync hs=HomeSync
 
 # locations
-sync="$home/Syncplicity"
+s="$home/Syncplicity"
 ihome="//jjbutare-mobl/john/documents"
 ss="$ihome/group/Software\ Solutions"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"

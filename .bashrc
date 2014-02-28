@@ -480,7 +480,7 @@ alias vs='VisualStudio'
 # Intel
 #
 
-alias IntelSync='m7s; m install-dfs; m install-cr; slf -do rrsprsps; m install-CsisBuild; slf -do CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr'
+alias IntelSync='m install-dfs; m install-cr; m install-CsisBuild; slf -do -nb rrsprsps; slf -do -nb CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr'
 alias HomeSync='m install-oversoul-CsisBuild; slf nas; slf -do CsisBuild.intel.com;'
 alias is=IntelSync hs=HomeSync
 

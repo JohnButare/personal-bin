@@ -19,11 +19,11 @@
 [push]
 	default = matching
 [diff]
-    tool = bc
+	tool = bc
 [difftool]
 	prompt = false
 [merge]
-    tool = bc
+	tool = bc
 [mergetool]
 	prompt = false
 	keepBackup = false

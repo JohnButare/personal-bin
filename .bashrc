@@ -361,7 +361,7 @@ alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 sstat() { echo "*** $bin ***"; gh status "$bin"; echo "*** $ubin ***"; gh status "$ubin"; }
-sdiff() { gh diff "$bin"; gh diff "$ubin"; }
+sgg() { gh gui "$bin"; gh gui "$ubin"; }
 sup() { local m="script changes from $COMPUTERNAME${1+: $1}"; gu "$bin" "$m" || return; gu "$ubin" "$m"; }
 sdn() { gd "$bin"; gd "$ubin"; }
 scm() { gc "$bin"; gc "$ubin"; }
@@ -566,6 +566,7 @@ alias abc='BuildClean Antidote/Antidote.sln'
 alias alb='antidote verbose App=Antidote BuildType=LocalBuild'
 
 alias ap='ProfileManager Antidote'
+alias apu='cp "$ac/SolutionItems/Profiles/"*.profile "$profiles"'
 
 alias aum='pushd .; mb && { "$ac/SolutionItems/Libraries/UpdateMagellan.cmd" && ab; }; popd'
 alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles

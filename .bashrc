@@ -568,7 +568,7 @@ alias alb='antidote verbose App=Antidote BuildType=LocalBuild'
 alias ap='ProfileManager Antidote'
 alias apu='cp "$ac/SolutionItems/Profiles/"*.profile "$profiles"'
 
-alias aum='pushd .; mb && { "$ac/SolutionItems/Libraries/UpdateMagellan.cmd" && ab; }; popd'
+alias aum='pushd .; mb && { cmd /c "$ac/SolutionItems/Libraries/UpdateMagellan.cmd" && ab; }; popd'
 alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
 alias aub='CopyDir "$code/Antidote/Antidote/bin/Debug" "//vmspwbld001/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
 alias aul='CopyDir "$code/Antidote/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
@@ -634,8 +634,8 @@ alias spco='cdco ScadaPortal'
 alias spb='build ScadaPortal/Source/ScadaPortal.sln'
 alias spbc='BuildClean ScadaPortal/Source/ScadaPortal.sln'
 
-alias spua='ab && { start "$sp/Libraries/UpdateAntidote.cmd" && spb; }'
-alias spum='mb && { start "$sp/Libraries/UpdateMagellan.cmd" && spb; }'
+alias spua='ab && { "$sp/Libraries/UpdateAntidote.cmd" && spb; }'
+alias spum='mb && { "$sp/Libraries/UpdateMagellan.cmd" && spb; }'
 
 alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/null; start PointManagement.exe; popd > /dev/null'
 

@@ -39,13 +39,14 @@ IdleEvent()
 	;run SleepTaskSleep.btm,,min
 }
 
+#Enter::send {Enter} ; disable Narrator
+
 ; Numeric Keypad
 ^Numpad4::MusicPreviousTrack()
 ^Numpad5::MusicPlayPause()
 ^Numpad6::MusicNextTrack()
 ^Numpad7::MusicEqualizer()
 ^Numpad9::MusicOther()
-
 ; Win
 #1::WinClose A ; Close active window
 #2::WinMinimize A ; Close active window

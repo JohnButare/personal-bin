@@ -635,8 +635,8 @@ alias spco='cdco ScadaPortal'
 alias spb='build ScadaPortal/Source/ScadaPortal.sln'
 alias spbc='BuildClean ScadaPortal/Source/ScadaPortal.sln'
 
-alias spua='ab && { "$sp/Libraries/UpdateAntidote.cmd" && spb; }'
-alias spum='mb && { "$sp/Libraries/UpdateMagellan.cmd" && spb; }'
+alias spua='"$sp/Libraries/UpdateAntidote.cmd"'
+alias spum='"$sp/Libraries/UpdateMagellan.cmd"'
 
 alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/null; start PointManagement.exe; popd > /dev/null'
 

@@ -482,8 +482,9 @@ alias vs='VisualStudio'
 #
 
 alias IntelSync='m install-dfs; m install-cr; m install-CsisBuild; slf -do -nb rrsprsps; slf -do -nb CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr'
-alias HomeSync='m install-oversoul-CsisBuild; slf nas; slf -do CsisBuild.intel.com;'
-alias is=IntelSync hs=HomeSync
+alias MoblSync='m install-oversoul-CsisBuild'
+alias BeanSync='m install-nas-rrsprsps'
+alias is=IntelSync mobls=MoblSync bs=BeanSync
 
 # locations
 s="$home/Syncplicity"

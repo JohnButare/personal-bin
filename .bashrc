@@ -2,7 +2,7 @@
 
 # sytem-wide configuration - if not done in /etc/bash.bashrc
 if [[ ! $BIN ]]; then
-	echo ".bashrc: system configuration was not set in /etc/bash.bashrc" > /dev/stderr
+	[[ "$-" == *i* ]] && echo ".bashrc: system configuration was not set in /etc/bash.bashrc" > /dev/stderr
 	[[ -f /usr/local/data/bin/bash.bashrc ]] && . "/usr/local/data/bin/bash.bashrc"
 fi
 

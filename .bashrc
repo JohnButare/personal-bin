@@ -331,8 +331,8 @@ alias cds='code status'
 alias cdco='code checkout'
 alias cdu='code update'
 
-#alias git='ge' 
 alias g='git'
+complete -o default -o nospace -F _git g
 alias gcy='/usr/bin/git' 			# Cygwin Git
 alias ge='"$P32/Git/bin/git"' # Git Extensions Git
 alias gg='GitHelper gui'

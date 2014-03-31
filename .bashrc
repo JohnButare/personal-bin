@@ -301,7 +301,7 @@ SetPrompt()
 	local gitColor=''; [[ $git ]]	&& gitColor='$( git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "'$red'")'
 	local elevated=''; IsElevated && elevated='*'
 
-	[[ "$COMPUTERNAME" == @(Minime) ]] && { git=""; gitColor=""; }
+	[[ "$COMPUTERNAME" == @(Minime|vmspwbld001) ]] && { git=""; gitColor=""; }
 
 	# compact
 	# dir='$(GetPrompt)'; user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '

@@ -1,7 +1,4 @@
 [alias]
-	dcw = diff --color-words
-	lo = log --oneline
-	logg = log --graph --oneline --all --decorate --abbrev-commit
 	co = checkout
 	ci = commit
 	df = diff
@@ -11,8 +8,71 @@
 	branch = always
 	diff = always
 	interactive = always
+
+	a = add
+	aa = add --all
+	ae = add --edit
+	ai = add --interactive
+	amend = commit --amend -C HEAD
+	ap = add --patch
+	au = add --update
+	authors = "!git log --pretty=format:%aN | sort | uniq -c | sort -rn"
+	b = branch -vv
+	c = commit
+	ca = commit --amend
+	changes = diff --name-status -r
+	check = diff --check
+	cm = commit --message
+	co = checkout
+	conflicted = grep --name-only --full-name '<<<<<<< HEAD'
+	cpc = cherry-pick
+	create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
+	d = diff --ignore-all-space
+	dc = diff --cached --ignore-all-space
+	dcw = diff --color-words
+	delete-branch = !sh -c 'git push origin :refs/heads/$1 && git remote prune origin && git branch -D $1' -
+	div = divergence
+	dt = difftool
+	h = help
+	irb = rebase --interactive
+	l = "!git log --graph --pretty='tformat:%C(yellow)%h{%C(green)%ar{%C(bold blue)%an{%C(red)%d%C(reset) %s' $* | column -t -s '{' | less -FXRS"
+	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
+	lg = log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+	lo = log --oneline
+	ls-ignored = ls-files --exclude-standard --ignored --others
+	m = merge -s recursive -X patience
+	markdown = !BN=$(git name-rev --name-only HEAD) && git log --no-merges --grep=$BN --pretty=oneline | awk -F"$BN: " '{print \"-\", $NF}' | uniq
+	mm = merge --no-ff
+	merge-branch = !git checkout master && git merge @{-1}
+	msg = commit --allow-empty -m
+	news = log -p HEAD@{1}..HEAD@{0}
+	p = cherry-pick -s
+	pick = cherry-pick
+	pr = !hub pull-request
+	prune-remotes = "!for remote in `git remote`; do git remote prune $remote; done"
+	r = remote
+	ra = !git log --graph --abbrev-commit --date=relative -20 --all --pretty='format:%C(yellow)%h%Creset -%C(red)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'
+	rb = rebase
+	rba = rebase --abort
+	rbc = rebase --continue
+	rbs = rebase --skip
+	rh = reset --hard
+	ru = remote update --prune
+	s = status --short --branch
+	sl = shortlog
+	sm = submodule
+	sma = submodule add
+	smu = submodule update --init
+	st = stash
+	stl = stash list
+	stp = stash pop
+	undo = reset --soft HEAD@{1}
+	wd = diff --word-diff="color"
+	wdc = diff --word-diff="color" --cached
+	push = push --tags
 [core]
 	autocrlf = false
+	excludesfile = ~/.gitignore
 [user]
 	name = John Butare
 	email = john.butare@intel.com

@@ -389,7 +389,7 @@ ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
 # sound
 #
 
-playsound() { cat "$1" > /dev/dsp; }
+playsound() { case "$PLATFORM" in win) cat "$1" > /dev/dsp;; mac) afplay "$1";; esac; }
 alias sound='os sound'
 alias ts='playsound "$data/setup/test.wav"'
 

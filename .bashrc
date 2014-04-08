@@ -285,6 +285,21 @@ GetPrompt()
 	fi;
 }
 
+GitPrompt()
+{
+	local gitColor red='\e[31m'
+
+	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
+	if [[ -d .git ]]; then
+		gitColor="$(git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
+		GIT_PS1_SHOWUPSTREAM="auto verbose"; 
+		#GIT_PS1_SHOWDIRTYSTATE="true" # shows *, not compatible with SHOWUNTRACKEDFILES in ScadaPortal (alternates showing status)
+		GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
+		GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
+	fi
+	__git_ps1 "$gitColor (%s)"
+}
+
 SetPrompt() 
 {
 	local cyan='\[\e[36m\]'
@@ -295,13 +310,8 @@ SetPrompt()
 
 	local dir='\w' user='\u' userAtHost='\u@\h'
 	
-	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
-	GIT_PS1_SHOWUPSTREAM="auto verbose"; # GIT_PS1_SHOWDIRTYSTATE="true"; GIT_PS1_SHOWSTASHSTATE="true"; GIT_PS1_SHOWUNTRACKEDFILES="true";
-	local git=''; IsFunction __git_ps1 && git='$(__git_ps1 " (%s)")'
-	local gitColor=''; [[ $git ]]	&& gitColor='$( git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "'$red'")'
-	local elevated=''; IsElevated && elevated='*'
-
-	[[ "$COMPUTERNAME" == @(Minime|vmspwbld001) ]] && { git=""; gitColor=""; }
+	local git; IsFunction __git_ps1 && git='$(GitPrompt)'
+	local elevated; IsElevated && elevated='*'
 
 	# compact
 	# dir='$(GetPrompt)'; user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '
@@ -309,7 +319,7 @@ SetPrompt()
 	# PS1="${elevated}${green}${host}${yellow}${dir}${clear}${cyan}${gitColor}${git}${clear}\$ "
 
 	# multi-line
-	PS1="\[\e]0;\w\a\]\n${green}${userAtHost}${red}${elevated} ${yellow}${dir}${clear}${cyan}${gitColor}${git}\n${clear}\$ "
+	PS1="\[\e]0;\w\a\]\n${green}${userAtHost}${red}${elevated} ${yellow}${dir}${clear}${cyan}${git}\n${clear}\$ "
 
 	# share history with other shells when the prompt changes
 	PROMPT_COMMAND='history -a; history -r'

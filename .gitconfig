@@ -20,6 +20,7 @@
 	b = branch -vv
 	c = commit
 	ca = commit --amend
+	cam = commit --all -m # commit-all-message
 	changes = diff --name-status -r
 	check = diff --check
 	cm = commit --message

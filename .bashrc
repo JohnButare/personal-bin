@@ -191,7 +191,7 @@ alias dr='drive list | egrep -i removable'
 alias duh='${G}du --human-readable'
 alias ds='DirSize m'
 alias dsu='DiskSpaceUsage'
-alias dus='du --summarize *'
+alias dus='${G}du --summarize *'
 alias TestDisk='sudo bench32.exe'
 
 #

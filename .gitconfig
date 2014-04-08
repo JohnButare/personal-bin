@@ -13,7 +13,7 @@
 	aa = add --all
 	ae = add --edit
 	ai = add --interactive
-	amend = commit --amend -C HEAD
+	amend = commit --amend -C HEAD # keep same commit message
 	ap = add --patch
 	au = add --update
 	authors = "!git log --pretty=format:%aN | sort | uniq -c | sort -rn"
@@ -34,7 +34,7 @@
 	div = divergence
 	dt = difftool
 	h = help
-	irb = rebase --interactive
+	irb = rebase --interactive # Cygwin git requires export GIT_EDITOR="sublime start -w -n"
 	l = "!git log --graph --pretty='tformat:%C(yellow)%h{%C(green)%ar{%C(bold blue)%an{%C(red)%d%C(reset) %s' $* | column -t -s '{' | less -FXRS"
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
 	lg = log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative

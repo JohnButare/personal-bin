@@ -188,7 +188,7 @@ alias dl='drive list'
 alias dr='drive list | egrep -i removable'
 
 # disk usage
-alias duh='du --human-readable'
+alias duh='${G}du --human-readable'
 alias ds='DirSize m'
 alias dsu='DiskSpaceUsage'
 alias dus='du --summarize *'

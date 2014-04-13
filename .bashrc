@@ -646,6 +646,7 @@ alias spco='cdco ScadaPortal'
 
 alias spb='build ScadaPortal/Source/ScadaPortal.sln'
 alias spbc='BuildClean ScadaPortal/Source/ScadaPortal.sln'
+alias splb='antidote App=ScadaPortal BuildType=LocalBuild'
 
 alias spua='"$sp/Libraries/UpdateAntidote.cmd"'
 alias spum='"$sp/Libraries/UpdateMagellan.cmd"'

@@ -1,5 +1,6 @@
 [alias]
 	co = checkout
+	co = checkout
 	ci = commit
 	df = diff
 	dfs = diff --staged
@@ -8,23 +9,21 @@
 	branch = always
 	diff = always
 	interactive = always
-
 	a = add
 	aa = add --all
 	ae = add --edit
 	ai = add --interactive
-	amend = commit --amend -C HEAD # keep same commit message
+	amend = commit --amend -C HEAD
 	ap = add --patch
 	au = add --update
-	authors = "!git log --pretty=format:%aN | sort | uniq -c | sort -rn"
+	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -rn
 	b = branch -vv
 	c = commit
 	ca = commit --amend
-	cam = commit --all -m # commit-all-message
+	cam = commit --all -m
 	changes = diff --name-status -r
 	check = diff --check
 	cm = commit --message
-	co = checkout
 	conflicted = grep --name-only --full-name '<<<<<<< HEAD'
 	cpc = cherry-pick
 	create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
@@ -35,15 +34,15 @@
 	div = divergence
 	dt = difftool
 	h = help
-	irb = rebase --interactive # Cygwin git requires export GIT_EDITOR="sublime start -w -n"
-	l = "!git log --graph --pretty='tformat:%C(yellow)%h{%C(green)%ar{%C(bold blue)%an{%C(red)%d%C(reset) %s' $* | column -t -s '{' | less -FXRS"
+	irb = rebase --interactive
+	l = !git log --graph --pretty='tformat:%C(yellow)%h{%C(green)%ar{%C(bold blue)%an{%C(red)%d%C(reset) %s' $* | column -t -s '{' | less -FXRS
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
 	lg = log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 	lo = log --oneline
-	lr = "!git --no-pager log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -20" # log recent
+	lr = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -20
 	ls-ignored = ls-files --exclude-standard --ignored --others
 	m = merge -s recursive -X patience
-	markdown = !BN=$(git name-rev --name-only HEAD) && git log --no-merges --grep=$BN --pretty=oneline | awk -F"$BN: " '{print \"-\", $NF}' | uniq
+	markdown = !BN=$(git name-rev --name-only HEAD) && git log --no-merges --grep=$BN --pretty=oneline | awk -F$BN: '{print \"-\", $NF}' | uniq
 	mm = merge --no-ff
 	merge-branch = !git checkout master && git merge @{-1}
 	msg = commit --allow-empty -m
@@ -69,8 +68,8 @@
 	stl = stash list
 	stp = stash pop
 	undo = reset --soft HEAD@{1}
-	wd = diff --word-diff="color"
-	wdc = diff --word-diff="color" --cached
+	wd = diff --word-diff=color
+	wdc = diff --word-diff=color--cached
 	push = push --tags
 [core]
 	autocrlf = false

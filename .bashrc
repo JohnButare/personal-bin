@@ -290,13 +290,13 @@ GitPrompt()
 	local gitColor red='\e[31m'
 
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
-	if [[ -d .git ]]; then
-		gitColor="$(git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
+	#if [[ -d .git ]]; then
+		#gitColor="$(git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 		GIT_PS1_SHOWUPSTREAM="auto verbose"; 
 		#GIT_PS1_SHOWDIRTYSTATE="true" # shows *, not compatible with SHOWUNTRACKEDFILES in ScadaPortal (alternates showing status)
-		GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
-		GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
-	fi
+		#GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
+		#GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
+	#fi
 	__git_ps1 "$gitColor (%s)"
 }
 

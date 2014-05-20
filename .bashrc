@@ -685,7 +685,7 @@ alias dpmTest='dpmp Servers=RAC2FMSF-CIM;RAC2FMSC-CIM;RAPB1FMSAA-CIM test=true f
 alias dra='DeployLocal RelayAgent force=true'
 alias dss='DeployLocal ScadaService force=true'
 alias dhdb='DeployLocal HistorianDb force=true DeployClr=true NoSecondary=false'
-alias ddl='DeployLocal DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true'
+alias ddl='DeployLocal DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true DeployScreens=true AddPoints=true'
 alias dac='DeployLocal AlertChecker force=true'
 alias dpm='DeployLocal PointManagement force=true'
 alias dw='DeployLocal Web force=true'

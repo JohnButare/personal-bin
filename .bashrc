@@ -527,8 +527,8 @@ alias von="vpn on"
 alias voff="vpn off"
 
 # Source Control
-alias ssu='mu;au;spu;inu'
-alias ssc='mc;ac;spc;inc'
+alias ssu='mu;au;spu'
+alias ssc='mc;ac;spc'
 
 # Profile Manager
 profiles="$P/ITBAS/Profiles"

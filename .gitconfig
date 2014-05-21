@@ -15,6 +15,7 @@
 	au = add --update
 	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -rn
 	b = branch -vv
+	br = "!f() { git branch --track $1 origin/$1; }; f" # create remote branch
 	c = commit
 	ca = commit --amend
 	cam = commit --all -m
@@ -33,12 +34,14 @@
 	div = divergence
 	dt = difftool
 	h = help
+	i = integrate
+	is = wtf --relations # integration status
 	irb = rebase --interactive
-	l = !git log --graph --pretty='tformat:%C(yellow)%h{%C(green)%ar{%C(bold blue)%an{%C(red)%d%C(reset) %s' $* | column -t -s '{' | less -FXRS
+	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -20
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
+	ld = !git log --graph --pretty='tformat:%C(yellow)%h{%C(green)%ar{%C(bold blue)%an{%C(red)%d%C(reset) %s' $* | column -t -s '{' | less -FXRS
 	lg = log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 	lo = log --oneline
-	lr = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -20
 	ls-ignored = ls-files --exclude-standard --ignored --others
 	m = merge -s recursive -X patience
 	markdown = !BN=$(git name-rev --name-only HEAD) && git log --no-merges --grep=$BN --pretty=oneline | awk -F$BN: '{print \"-\", $NF}' | uniq

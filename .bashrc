@@ -293,7 +293,7 @@ GitPrompt()
 	#if [[ -d .git ]]; then
 		#gitColor="$(git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 		GIT_PS1_SHOWUPSTREAM="auto verbose"; 
-		#GIT_PS1_SHOWDIRTYSTATE="true" # shows *, not compatible with SHOWUNTRACKEDFILES in ScadaPortal (alternates showing status)
+		#GIT_PS1_SHOWDIRTYSTATE="true" # shows *
 		#GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
 		#GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
 	#fi
@@ -332,7 +332,7 @@ SetPrompt()
 # Source Control
 # 
 
-gt="$code/test/git" # GitTest
+# code
 
 alias cdc='code commit --gui'
 alias cdl='code log'
@@ -341,7 +341,13 @@ alias cds='code status'
 alias cdco='code checkout'
 alias cdu='code update'
 
+# git
+
+alias eg='te ~/.gitconfig'
+
 alias g='git'
+alias gl='g l'
+
 complete -o default -o nospace -F _git g
 alias gcy='/usr/bin/git' 			# Cygwin Git
 alias ge='"$P32/Git/bin/git"' # Git Extensions Git
@@ -354,6 +360,8 @@ alias gd='gh down'
 alias gc='gg commit'
 alias gu='gh up'
 alias gb='gh browse'
+
+# svn
 
 alias svn='TortoiseSVN svn'
 alias tsvn='TortoiseSVN'
@@ -638,6 +646,10 @@ sp="$code/ScadaPortal"
 sps="$sp/DataScripts"
 spc="$sp/Source"
 
+alias spic='g integrate Continuous'
+alias spit='g integrate Test'
+alias spipp='g integrate Pre-Production'
+
 alias spu='cdu ScadaPortal'
 alias spc='cdc ScadaPortal'
 alias sps='cds ScadaPortal'
@@ -647,6 +659,7 @@ alias spco='cdco ScadaPortal'
 alias spb='build ScadaPortal/Source/ScadaPortal.sln'
 alias spbc='BuildClean ScadaPortal/Source/ScadaPortal.sln'
 alias splb='antidote App=ScadaPortal BuildType=LocalBuild'
+alias sptb='antidote App=ScadaPortal BuildType=DeployToTest'
 
 alias spua='start "$sp/Libraries/UpdateAntidote.cmd"'
 alias spum='start "$sp/Libraries/UpdateMagellan.cmd"'

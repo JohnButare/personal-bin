@@ -35,7 +35,7 @@
 	dt = difftool
 	h = help
 	i = integrate
-	is = wtf --relations # integration status
+	is = wtf --relations --short # integration status
 	irb = rebase --interactive
 	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -20
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'

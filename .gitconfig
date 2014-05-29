@@ -15,7 +15,7 @@
 	au = add --update
 	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -rn
 	b = branch -vv
-	br = "!f() { git branch --track $1 origin/$1; }; f" # create remote branch
+	br = "!f() { git branch --track $1 origin/$1; }; f" # create local version of specified remote branch
 	c = commit
 	ca = commit --amend
 	cam = commit --all -m
@@ -73,12 +73,11 @@
 	wd = diff --word-diff=color
 	wdc = diff --word-diff=color--cached
 	push = push --tags
+[color]
+	ui = auto
 [core]
 	autocrlf = false
 	excludesfile = ~/.gitignore
-[user]
-	name = John Butare
-	email = john.butare@intel.com
 [push]
 	default = current # http://prgmr.io/coding/git-push-default/
 [diff]
@@ -90,5 +89,8 @@
 [mergetool]
 	prompt = false
 	keepBackup = false
-[color]
-	ui = auto
+[rebase]
+	autosquash = true
+[user]
+	name = John Butare
+	email = john.butare@intel.com

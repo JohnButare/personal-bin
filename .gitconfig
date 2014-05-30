@@ -36,7 +36,6 @@
 	h = help
 	i = integrate
 	is = wtf --relations --short # integration status
-	irb = rebase --interactive
 	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -20
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
 	ld = !git log --graph --pretty='tformat:%C(yellow)%h{%C(green)%ar{%C(bold blue)%an{%C(red)%d%C(reset) %s' $* | column -t -s '{' | less -FXRS
@@ -58,6 +57,7 @@
 	rba = rebase --abort
 	rbc = rebase --continue
 	rbs = rebase --skip
+	ri  = rebase --interactive
 	rso = remote show origin
 	rh = reset --hard
 	ru = remote update --prune

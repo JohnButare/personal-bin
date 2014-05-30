@@ -58,6 +58,7 @@
 	rbc = rebase --continue
 	rbs = rebase --skip
 	ri  = rebase --interactive
+	rs = remote show
 	rso = remote show origin
 	rh = reset --hard
 	ru = remote update --prune

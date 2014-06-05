@@ -589,7 +589,7 @@ alias alb='antidote verbose App=Antidote BuildType=LocalBuild'
 alias ap='ProfileManager Antidote'
 alias apu='cp "$ac/SolutionItems/Profiles/"*.profile "$profiles"'
 
-alias aum='"$ac/SolutionItems/Libraries/UpdateMagellan.cmd"'
+alias aum='start "$ac/SolutionItems/Libraries/UpdateMagellan.cmd"'
 alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
 alias aub='CopyDir "$code/Antidote/Antidote/bin/Debug" "//vmspwbld001/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
 alias aul='CopyDir "$code/Antidote/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer

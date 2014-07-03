@@ -752,3 +752,13 @@ alias dwpDL='dwp Servers=shsprsps'
 
 # platform specific
 [[ -f "$UBIN/.bashrc.$PLATFORM" ]] && . "$UBIN/.bashrc.$PLATFORM"
+
+#
+# CruiseControlPlugins
+#
+
+ccpu()
+{
+	cp $code/CruiseControlPlugins/Source/ccnet.GitHub.plugin/bin/Debug/ccnet.GitHub.* \
+		"$(wtu '\\csisbuild\d$\Program Files (x86)\CruiseControl.NET\server')"
+}

@@ -95,5 +95,7 @@
 [user]
 	name = John Butare
 	email = john.butare@intel.com
+[https]
+	#proxy = http://proxy.rr.intel.com:911
 [http]
-	#proxy = http://proxy.fm.intel.com:911
+	#proxy = http://proxyuser:proxypwd@proxy.server.com:8080

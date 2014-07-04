@@ -15,7 +15,7 @@
 	au = add --update
 	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -rn
 	b = branch -vv
-	br = "!f() { git branch --track $1 origin/$1; }; f"
+	br = "!f() { git branch --track $1 origin/$1; }; f" # create local version of specified remote branch
 	c = commit
 	ca = commit --amend
 	cam = commit --all -m
@@ -23,7 +23,7 @@
 	check = diff --check
 	cm = commit --message
 	co = checkout
-	cob = checkout -b
+	cob = checkout -b # checkout and create branch
 	conflicted = grep --name-only --full-name '<<<<<<< HEAD'
 	cpc = cherry-pick
 	create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
@@ -35,7 +35,7 @@
 	dt = difftool
 	h = help
 	i = integrate
-	is = wtf --relations --short
+	is = wtf --relations --short # integration status
 	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -20
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
 	ld = !git log --graph --pretty='tformat:%C(yellow)%h{%C(green)%ar{%C(bold blue)%an{%C(red)%d%C(reset) %s' $* | column -t -s '{' | less -FXRS
@@ -57,7 +57,7 @@
 	rba = rebase --abort
 	rbc = rebase --continue
 	rbs = rebase --skip
-	ri = rebase --interactive
+	ri  = rebase --interactive
 	rs = remote show
 	rso = remote show origin
 	rh = reset --hard
@@ -80,7 +80,7 @@
 	autocrlf = false
 	excludesfile = ~/.gitignore
 [push]
-	default = current
+	default = current # http://prgmr.io/coding/git-push-default/
 [diff]
 	tool = bc
 [difftool]
@@ -95,3 +95,7 @@
 [user]
 	name = John Butare
 	email = john.butare@intel.com
+[https]
+	#proxy = http://proxy.rr.intel.com:911
+[http]
+	#proxy = http://proxyuser:proxypwd@proxy.server.com:8080

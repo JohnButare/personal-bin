@@ -502,7 +502,7 @@ alias vs='VisualStudio'
 
 alias MoblSyncInstall='m install-nas-rrsprsps'
 alias IntelSyncLocalFiles='slf -do -nb rrsprsps; slf -do -nb CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr'
-alias IntelSyncInstall='m install-dfs; m install-cr; m install-CsisBuild'
+alias IntelSyncInstall='m install-dfs; m install-cr; m install-CsisBuild; m install-CsisBuildNew'
 alias msi=MoblSyncInstall isi=IntelSyncInstall islf=IntelSyncLocalFiles
 
 # locations
@@ -757,8 +757,10 @@ alias dwpDL='dwp Servers=shsprsps'
 # CruiseControlPlugins
 #
 
+ccdir="$(wtu '\\csisbuild-new.intel.com\d$\Program Files (x86)\CruiseControl.NET\server')"
+
 ccpu()
 {
-	cp $code/CruiseControlPlugins/Source/ccnet.GitHub.plugin/bin/Debug/ccnet.GitHub.* \
-		"$(wtu '\\csisbuild\d$\Program Files (x86)\CruiseControl.NET\server')"
+	CopyDir "$code/CruiseControlPlugins/Source/ccnet.GitHub.plugin/bin/Debug" "$ccdir" /xf 'Net*' 'Thought*'
+	CopyDir "$code/GitHub/Source/ApiTest/bin/Debug" "$ccdir" /xf '*.vshost.*'
 }

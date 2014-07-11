@@ -761,6 +761,6 @@ ccdir="$(wtu '\\csisbuild-new.intel.com\d$\Program Files (x86)\CruiseControl.NET
 
 ccpu()
 {
-	CopyDir "$code/CruiseControlPlugins/Source/ccnet.GitHub.plugin/bin/Debug" "$ccdir" /xf 'Net*' 'Thought*'
-	CopyDir "$code/GitHub/Source/ApiTest/bin/Debug" "$ccdir" /xf '*.vshost.*'
+	CopyDir "$code/CruiseControlPlugins/Source/ccnet.GitHub.plugin/bin/Debug" "$ccdir" /xf '*.pdb' '*.vshost.*' 'log4net.dll' 'NetReflector.dll' 'ThoughtWorks.*'
+	CopyDir "$code/CruiseControlPlugins/Source/GitHubApi/bin/Debug" "$ccdir" /xf '*.pdb' '*.vshost.*'
 }

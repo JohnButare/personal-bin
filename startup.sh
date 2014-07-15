@@ -4,7 +4,7 @@ app -b $command explorer AutoHotKey
 
 if [[ "$COMPUTERNAME" == @(oversoul|jjbutare-ivm1) ]]; then
 	app -b mosaico
-else
+elif [[ "$COMPUTERNAME" != @(MiniMe) ]]; then
 	app -b winsplit
 fi
 

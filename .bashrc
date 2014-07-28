@@ -85,7 +85,7 @@ alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 alias cf='CleanupFiles'
 alias cls=clear
 alias telnet='putty'
-alias update='os update'
+alias u='os update'
 
 #
 # archive

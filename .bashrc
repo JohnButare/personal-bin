@@ -592,9 +592,9 @@ alias apu='cp "$ac/SolutionItems/Profiles/"*.profile "$profiles"'
 
 alias aum='start "$ac/SolutionItems/Libraries/UpdateMagellan.cmd"'
 alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
-alias aub='CopyDir "$code/Antidote/Antidote/bin/Debug" "//CsisBuild.intel.com/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
+alias aub='CopyDir "$code/Antidote/Antidote/bin/Debug" "//CsisBuild-new.intel.com/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
 alias aul='CopyDir "$code/Antidote/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
-alias aubmq='CopyDir "$code/Antidote/Tools/MessageQueueCheck/bin/Debug" "//CsisBuild.intel.com/d$/Projects/Antidote/Tools/MessageQueueCheck/bin/Debug"'
+alias aubmq='CopyDir "$code/Antidote/Tools/MessageQueueCheck/bin/Debug" "//CsisBuild-new.intel.com/d$/Projects/Antidote/Tools/MessageQueueCheck/bin/Debug"'
 
 #
 # Magellan
@@ -769,4 +769,4 @@ ccpu()
 	CopyDir "$code/CruiseControlPlugins/Source/GitHubApi/bin/Debug" "$ccdir" /xf '*.pdb' '*.vshost.*'
 }
 
-ccts() { cctray close; cp "$APPDATA/cctray-settings-$1.xml"  "$APPDATA/cctray-settings.xml"; cctray startup; }
+ccts() { cctray close; cp "$APPDATA/cctray-settings-$1.xml"  "$APPDATA/cctray-settings.xml"; cctray startup; } # CruiseControlTraySettings

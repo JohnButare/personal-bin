@@ -503,7 +503,7 @@ alias vs='VisualStudio'
 
 alias MoblSyncInstall='m install-nas-rrsprsps'
 alias IntelSyncLocalFiles='slf -do -nb rrsprsps; slf -do -nb CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr'
-alias IntelSyncInstall='m install-dfs; m install-cr; m install-CsisBuild; m install-CsisBuildNew'
+alias IntelSyncInstall='m install-dfs; m install-cr; m install-CsisBuild; m install-CsisBuildNew; m install-CsisBuildDr'
 alias msi=MoblSyncInstall isi=IntelSyncInstall islf=IntelSyncLocalFiles
 
 # locations

@@ -21,6 +21,7 @@
 	cam = commit --all -m
 	changes = diff --name-status -r
 	check = diff --check
+	cl = clean -d -f
 	cm = commit --message
 	co = checkout
 	cob = checkout -b # checkout and create branch

@@ -681,7 +681,7 @@ alias sslpppr='ssl rasPPprsqls'
 alias sslppbk='ssl rasPPbksqls'
 
 # deploy
-deploy() { pushd $spc/Setup/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
+deploy() { pushd $spc/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
 alias DeployLocal='deploy LogDirectory="$(utw "$sys/temp/ScadaPortalDeployment/log")"'
 
 # deploy log

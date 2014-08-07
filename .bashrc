@@ -601,6 +601,7 @@ alias aubmq='CopyDir "$code/Antidote/Tools/MessageQueueCheck/bin/Debug" "//CsisB
 #
 
 mc="$code/Magellan"
+ms="$mc/Source"
 
 alias mu='cdu Magellan'
 alias mc='cdc Magellan'

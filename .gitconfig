@@ -99,4 +99,4 @@
 [https]
 	#proxy = http://proxy.rr.intel.com:911
 [http]
-	#proxy = http://proxyuser:proxypwd@proxy.server.com:8080
+	#proxy = http://proxy.rr.intel.com:911

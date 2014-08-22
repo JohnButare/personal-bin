@@ -294,7 +294,7 @@ GitPrompt()
 	#if [[ -d .git ]]; then
 		#gitColor="$(git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 		GIT_PS1_SHOWUPSTREAM="auto verbose"; 
-		#GIT_PS1_SHOWDIRTYSTATE="true" # shows *
+		#GIT_PS1_SHOWDIRTYSTATE="true" # shows *, slow
 		#GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
 		#GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
 	#fi
@@ -326,8 +326,8 @@ SetPrompt()
 	PROMPT_COMMAND='history -a; history -r'
 }
 
-[[ "$PS1" != *git_ps1* ]] && SetPrompt
-[[ "$PWD" == "/cygdrive/c" ]] && cd ~
+SetPrompt
+[[ "$PWD" == @(/cygdrive/c|/usr/bin) ]] && cd ~
 
 #
 # Source Control

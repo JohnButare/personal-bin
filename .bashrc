@@ -20,10 +20,14 @@ set +a
 HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars histappend
 
-# completion
-[[ -e /etc/bash_completion ]] && ! IsFunction __git_ps1 && source /etc/bash_completion # win
+# completion - win
+[[ -e /etc/bash_completion ]] && ! IsFunction __git_ps1 && { . /etc/bash_completion; . git-prompt.sh; }
+
+# completion - mac
 [[ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]] && ! IsFunction __git_ps1 &&
-	{ . /usr/local/etc/bash_completion.d/git-prompt.sh; . /usr/local/etc/bash_completion.d/git-completion.bash; } # mac
+	{ . /usr/local/etc/bash_completion.d/git-prompt.sh; . /usr/local/etc/bash_completion.d/git-completion.bash; }
+
+# completion - generic
 complete -r cd >& /dev/null # cd should not complete variables without a leading $
 
 #

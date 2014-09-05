@@ -510,6 +510,7 @@ alias MoblSyncInstall='m install-nas-rrsprsps'
 alias IntelSyncLocalFiles='slf -do -nb rrsprsps; slf -do -nb CsisBuild.intel.com; slf -do -nb dfs; slf -do -nb cr'
 alias IntelSyncInstall='m install-dfs; m install-cr; m install-CsisBuild; m install-CsisBuildNew; m install-CsisBuildDr'
 alias msi=MoblSyncInstall isi=IntelSyncInstall islf=IntelSyncLocalFiles
+alias SetIntelProxy='export http_proxy=http://proxy.rr.intel.com:911; export https_proxy=http://proxy.rr.intel.com:911;'
 
 # locations
 s="$home/Syncplicity"
@@ -553,7 +554,8 @@ alias ProfileManagerConfig='TextEdit C:\winnt\system32\ProfileManager.xml'
 
 ProfileManager() 
 {
-	local p="$P/ITBAS/ProfileManager/ProfileManager.exe"
+	local p="$code/ProfileManager/bin/Debug/ProfileManager.exe"
+	[[ ! -f "$p" ]] && p="$P/ITBAS/ProfileManager/ProfileManager.exe"
 	if [[ $# == 1 && -f "$1" ]]; then
 		start "$p" \"$(utw $1)\"
 	elif [[ $# == 1 ]]; then

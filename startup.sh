@@ -9,7 +9,7 @@ elif [[ "$COMPUTERNAME" != @(MiniMe) ]]; then
 fi
 
 # Host specific applications
-local common="word EverNote DropBox PowerMixer PowerMixer f.lux SnagIt pu"
+local common="word EverNote DropBox PowerMixer PowerMixer SnagIt" # pu
 case "$COMPUTERNAME" in
 	bean) f.lux;;
 	minime|oversoul) app -b $command $common;;

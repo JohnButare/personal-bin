@@ -100,3 +100,6 @@
 	#proxy = http://proxy.rr.intel.com:911
 [http]
 	#proxy = http://proxy.rr.intel.com:911
+[hub]
+	host = github.intel.com
+	protocol = https

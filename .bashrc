@@ -511,6 +511,7 @@ alias IntelSyncLocalFiles='slf -do -nb rrsprsps; slf -do -nb CsisBuild.intel.com
 alias IntelSyncInstall='m install-dfs; m install-cr; m install-CsisBuild; m install-CsisBuildNew; m install-CsisBuildDr'
 alias msi=MoblSyncInstall isi=IntelSyncInstall islf=IntelSyncLocalFiles
 alias SetIntelProxy='export http_proxy=http://proxy.rr.intel.com:911; export https_proxy=http://proxy.rr.intel.com:911;'
+export GITHUB_HOST=github.intel.com
 
 # locations
 s="$home/Syncplicity"
@@ -690,11 +691,10 @@ alias sslppbk='ssl rasPPbksqls'
 
 # deploy
 deploy() { pushd $spc/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
-alias DeployLocal='deploy LogDirectory="$(utw "$sys/temp/ScadaPortalDeployment/log")"'
 
 # deploy log
 alias dlog='deploy log'
-alias dll='DeployLocal log'
+alias dll='deploy log'
 alias dlt='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/Test.Log.vmspwbld001.txt'
 alias dlpp='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/PreProduction.Log.vmspwbld001.txt'
 alias dlp='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/Production.Log.vmspwbld001.txt'
@@ -704,23 +704,23 @@ alias dpmTestAll='dpmp test=true force=false'
 alias dpmTest='dpmp Servers=RAC2FMSF-CIM;RAC2FMSC-CIM;RAPB1FMSAA-CIM test=true force=true'
 
 # deploy to test
-alias dra='DeployLocal RelayAgent force=true'
-alias dss='DeployLocal ScadaService force=true'
-alias dhdb='DeployLocal HistorianDb force=true DeployClr=true NoSecondary=false'
-alias ddl='DeployLocal DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true DeployScreens=true AddPoints=true'
-alias dac='DeployLocal AlertChecker force=true'
-alias dpm='DeployLocal PointManagement force=true'
-alias dw='DeployLocal Web force=true'
+alias dra='deploy RelayAgent force=true'
+alias dss='deploy ScadaService force=true'
+alias dhdb='deploy HistorianDb force=true DeployClr=true NoSecondary=false'
+alias ddl='deploy DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true DeployScreens=true AddPoints=true'
+alias dac='deploy AlertChecker force=true'
+alias dpm='deploy PointManagement force=true'
+alias dw='deploy Web force=true'
 
 # deploy to pre-production
-alias draPP='DeployLocal RelayAgent force=true environment=PreProduction'
-alias dwPP='DeployLocal web force=true environment=PreProduction'
-alias dacPP='DeployLocal AlertChecker force=true environment=PreProduction'
-alias dssPP='DeployLocal ScadaService force=true environment=PreProduction'
-alias dhdbPP='DeployLocal HistorianDb force=true environment=PreProduction'
+alias draPP='deploy RelayAgent force=true environment=PreProduction'
+alias dwPP='deploy web force=true environment=PreProduction'
+alias dacPP='deploy AlertChecker force=true environment=PreProduction'
+alias dssPP='deploy ScadaService force=true environment=PreProduction'
+alias dhdbPP='deploy HistorianDb force=true environment=PreProduction'
 
 # deploy to pilot
-alias dwPILOT='DeployLocal web force=true environment=Production servers=ORPRSPS'
+alias dwPILOT='deploy web force=true environment=Production servers=ORPRSPS'
 
 # deploy production
 alias drap='deploy deploy Environment=Production force=true'

@@ -437,7 +437,6 @@ alias cs='cscript /nologo'
 #
 
 alias BeanSync='sup; sdn; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
-alias bs='BeanSync'
 
 opub="//oversoul/Public"
 ohome="//oversoul/John"

@@ -103,3 +103,5 @@
 [hub]
 	host = github.intel.com
 	protocol = https
+[git-up "fetch"]
+	prune = true

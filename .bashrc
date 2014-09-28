@@ -121,15 +121,32 @@ alias toff='TimerOff'
 #
 # file management
 #
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias cc='cd ~; cls'
+alias cd='UncCd'
+alias ..='builtin cd ..'
+alias ...='builtin cd ../..'
+alias ....='builtin cd ../../..'
+alias .....='cbuiltin d ../../../..'
+alias cc='builtin cd ~; cls'
 alias del='rm'
 alias md='MkDir'
 alias rd='RmDir'
 alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
+
+UncCd()
+{
+	! IsUncPath "$1" && { builtin cd "$@"; return; }
+	[[ ! "$(GetUncShare "$1")" ]] && { unc list "$1"; return; }
+	ScriptCd unc mount "$1" || return
+}
+
+UncLs()
+{
+	local ls="${G}ls -Q --color" unc="${@: -1}"
+	! IsUncPath "$unc" && { command $ls "$@"; return; }
+	[[ ! "$(GetUncShare "$unc")" ]] && { unc list "$unc"; return; }
+	local dir; dir="$(unc mount "$unc")" || return
+	$ls "${@:1:$#-1}" "$dir"
+}
 
 #
 # package management
@@ -149,17 +166,17 @@ alias l='explore'
 alias rc='CopyDir'
 
 # list
-alias ls=$G'ls -Q --color'	# list 
-alias la='ls -Al'							# list all
-alias ll='ls -l'							# list long
-alias llh='ll -d .*'					# list long hidden
-alias lh='ls -d .*' 					# list hiden
-alias lt='ls -Ah --full-time'	# list time
+alias ls='UncLs'									# list 
+alias la='UncLs -Al'							# list all
+alias ll='UncLs -l'								# list long
+alias llh='UncLs -d .*'						# list long hidden
+alias lh='UncLs -d .*' 						# list hiden
+alias lt='UncLs -Ah --full-time'	# list time
 
 alias dir='cmd /c dir'
-alias dirss="ls -1s --sort=size --reverse --human-readable -l" # sort by size
-alias dirst='ls -l --sort=time --reverse' # sort by last modification time
-alias dirsct='ls -l --time=ctime --sort=time --reverse' # sort by creation  time
+alias dirss="UncLs -1s --sort=size --reverse --human-readable -l" # sort by size
+alias dirst='UncLs -l --sort=time --reverse' # sort by last modification time
+alias dirsct='UncLs -l --time=ctime --sort=time --reverse' # sort by creation  time
  #-l | awk '{ print \$5 \"\t\" \$9 }'
 
 # find

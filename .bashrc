@@ -309,7 +309,7 @@ GetPrompt()
 
 GitPrompt()
 {
-	local gitColor red='\e[31m'
+	#local gitColor red='\e[31m'
 
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
 	#if [[ -d .git ]]; then
@@ -361,7 +361,7 @@ alias cdl='code log'
 alias cdr='code revert --gui'
 alias cds='code status'
 alias cdco='code checkout'
-alias cdu='code update'
+alias cdup='code update'
 
 # git
 
@@ -482,12 +482,16 @@ alias XmlShow='xml sel -t -c'
 # Development
 #
 
-test="$code/test"
 www="/cygdrive/c/inetpub/wwwroot"
 
 alias ss='SqlServer'
 alias sscd='ScriptCd SqlServer cd'
 alias ssp='SqlServer profiler express'
+
+test="$code/test"
+alias tup='cdup test'
+alias tc='cdc test'
+alias ts='cds test'
 
 #
 # JAVA Development
@@ -558,8 +562,9 @@ alias von="vpn on"
 alias voff="vpn off"
 
 # Source Control
-alias ssu='mu;au;spu'
-alias ssc='mc;ac;spc'
+alias ssup='tup;mup;aupd;spup'
+alias ssc='tc;mc;ac;spc'
+alias sss='tst;mst;as;sps'
 
 # Profile Manager
 profiles="$P/ITBAS/Profiles"
@@ -601,7 +606,7 @@ alias albert='rdesk asmadrid-mobl2'
 ac="$code/Antidote"
 as="$ac/SolutionItems/DataScripts/MigrationScripts"
 
-alias au='cdu Antidote'
+alias aupd='cdup Antidote'
 alias ac='cdc Antidote'
 alias as='cds Antidote'
 alias ar='cdr Antidote'
@@ -626,7 +631,7 @@ alias aubmq='CopyDir "$code/Antidote/Tools/MessageQueueCheck/bin/Debug" "//CsisB
 mc="$code/Magellan"
 ms="$mc/Source"
 
-alias mu='cdu Magellan'
+alias mup='cdup Magellan'
 alias mc='cdc Magellan'
 alias mst='cds Magellan'
 alias mr='cdr Magellan'
@@ -645,7 +650,7 @@ fr="$code/RPIAD"
 frc="$fr/Source"
 frs="$fr/DataScripts"
 
-alias fru='cdu RPIAD'
+alias fru='cdup RPIAD'
 alias frc='cdc RPIAD'
 alias frs='cds RPIAD'
 alias frr='cdr RPIAD'
@@ -675,7 +680,7 @@ alias spic='g integrate Continuous'
 alias spit='g integrate Test'
 alias spipp='g integrate Pre-Production'
 
-alias spu='cdu ScadaPortal'
+alias spup='cdup ScadaPortal'
 alias spc='cdc ScadaPortal'
 alias sps='cds ScadaPortal'
 alias spr='cdr ScadaPortal'

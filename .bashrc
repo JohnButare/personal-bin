@@ -564,7 +564,7 @@ alias voff="vpn off"
 # Source Control
 alias ssup='tup;mup;aupd;spup'
 alias ssc='tc;mc;ac;spc'
-alias sss='tst;mst;as;sps'
+alias sss='ts;mst;as;sps'
 
 # Profile Manager
 profiles="$P/ITBAS/Profiles"

@@ -791,7 +791,7 @@ alias dwpDL='dwp Servers=shsprsps'
 #ccdir="$(wtu '\\csisbuild.intel.com\d$\Program Files (x86)\CruiseControl.NET - PreProd\server')"
 ccdir="$(wtu '\\csisbuild.intel.com\d$\Program Files (x86)\CruiseControl.NET - Prod\server')"
 
-ccpu()
+ccpu() # CruiseControlProgramUpdate
 {
 	CopyDir "$code/CruiseControlPlugins/Source/ccnet.GitHub.plugin/bin/Debug" "$ccdir" /xf '*.pdb' '*.vshost.*' 'log4net.dll' 'NetReflector.dll' 'ThoughtWorks.*'
 	CopyDir "$code/CruiseControlPlugins/Source/GitHubApi/bin/Debug" "$ccdir" /xf '*.pdb' '*.vshost.*'

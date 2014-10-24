@@ -378,16 +378,6 @@ alias gh='GitHelper'
 alias ghub='GitHelper hub'
 alias tgg='GitHelper tgui'
 
-alias gd='gh down'
-alias gc='gg commit'
-alias gu='gh up'
-alias gb='gh browse'
-
-# svn
-
-alias svn='TortoiseSVN svn'
-alias tsvn='TortoiseSVN'
-
 #
 # scripts
 #
@@ -404,9 +394,12 @@ alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 sstat() { echo "****** bin ******"; gh status "$bin"; echo -e "\n****** ubin ******"; gh status "$ubin"; }
 sdiff() { echo "****** bin ******"; gh diff "$bin"; echo -e "\n****** ubin ******"; gh diff "$ubin"; }
 sgg() { gh gui "$bin"; gh gui "$ubin"; }
-sup() { local m="script changes from $COMPUTERNAME${1+: $1}"; gu "$bin" "$m" || return; gu "$ubin" "$m"; }
-sdn() { gd "$bin"; gd "$ubin"; }
-scm() { gc "$bin"; gc "$ubin"; }
+
+# script (bin and ubin) - Update/Commit/Status/Save
+scup() { cd "$bin" && git up && cd "$ubin" && git up; }
+scc() { gh commitg "$ubin"; gh commitg "$bin"; }
+scs() { gh status "$bin"; gh status "$ubin"; }
+scsave() { local m="script changes from $COMPUTERNAME${1+: $1}"; gu "$bin" "$m" || return; gu "$ubin" "$m"; }
 
 #
 # power management
@@ -561,7 +554,7 @@ alias vpn="intel vpn"
 alias von="vpn on"
 alias voff="vpn off"
 
-# Source Control
+# Source Control - Software Solutions Update/Commit/Status
 alias ssup='tup;mup;aupd;spup'
 alias ssc='tc;mc;ac;spc'
 alias sss='ts;mst;as;sps'

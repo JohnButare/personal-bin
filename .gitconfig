@@ -16,6 +16,9 @@
 	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -rn
 	b = branch -vv
 	br = "!f() { git branch --track $1 origin/$1; }; f" # create local version of specified remote branch
+	brcr = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' - # branch create
+	brmv = "!f() { git branch -m $1 $2 && git push origin :$1 && git push -u origin $2; }; f" # branch move (rename)
+	brrm = "!f() { git push origin :$1 && git remote prune origin && git branch -d $1; }; f" # remove branch
 	c = commit
 	ca = commit --amend
 	cam = commit --all -m
@@ -27,11 +30,9 @@
 	cob = checkout -b # checkout and create branch
 	conflicted = grep --name-only --full-name '<<<<<<< HEAD'
 	cpc = cherry-pick
-	create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
 	d = diff --ignore-all-space
 	dc = diff --cached --ignore-all-space
 	dcw = diff --color-words
-	delete-branch = !sh -c 'git push origin :refs/heads/$1 && git remote prune origin && git branch -D $1' -
 	div = divergence
 	dt = difftool
 	h = help

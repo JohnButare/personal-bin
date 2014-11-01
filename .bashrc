@@ -322,6 +322,8 @@ GitPrompt()
 	__git_ps1 "$gitColor (%s)"
 }
 
+alias SetBashGitPrompt='source "$(brew --prefix bash-git-prompt)/share/gitprompt.sh"'
+
 SetPrompt() 
 {
 	local cyan='\[\e[36m\]'

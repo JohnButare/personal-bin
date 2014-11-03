@@ -12,8 +12,8 @@ fi
 local common="word EverNote DropBox PowerMixer PowerMixer SnagIt"
 case "$COMPUTERNAME" in
 	bean) f.lux;;
-	minime|oversoul) app -b $command $common;;
-	jjbutare*) app -b $command $common pu SyncPlicity; intel $command -b;;
+	minime|oversoul) app -b $command $common pu;;
+	jjbutare*) app -b $command $common SyncPlicity pu; intel $command -b;;
 esac
 
 [[ "$COMPUTERNAME" == "jjbutare-mobl" ]] && app -b "$hp"

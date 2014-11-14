@@ -351,6 +351,7 @@ SetPrompt()
 
 SetPrompt
 [[ "$PWD" == @(/cygdrive/c|/usr/bin) ]] && cd ~
+[[ $SET_PWD ]] && { cd "$SET_PWD"; unset SET_PWD; }
 
 #
 # Source Control

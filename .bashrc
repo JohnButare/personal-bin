@@ -400,6 +400,8 @@ sgg() { gh gui "$bin"; gh gui "$ubin"; }
 
 # script (bin and ubin) - Update/Commit/Status/Save
 scup() { cd "$bin" && git up && cd "$ubin" && git up; }
+scpush() { cd "$bin" && git push "$@" && cd "$ubin" && git push "$@"; }
+scpull() { cd "$bin" && git pull --rebase "$@" && cd "$ubin" && git pull --rebase "$@"; }
 scc() { gh commitg "$ubin"; gh commitg "$bin"; }
 scs() { gh status "$bin"; gh status "$ubin"; }
 scsave() { local m="script changes from $COMPUTERNAME${1+: $1}"; gu "$bin" "$m" || return; gu "$ubin" "$m"; }

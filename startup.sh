@@ -12,7 +12,8 @@ fi
 local common="word EverNote DropBox PowerMixer PowerMixer SnagIt"
 case "$COMPUTERNAME" in
 	bean) f.lux;;
-	minime|oversoul) app -b $command $common pu;;
+	minime) app -b $command $common;;
+	oversoul) app -b $command $common pu;;
 	jjbutare*) app -b $command $common SyncPlicity pu; intel $command -b;;
 esac
 

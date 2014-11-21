@@ -55,16 +55,14 @@ IdleEvent()
 #!3::NewBash()
 
 ; +=Shift ^=Control #=Win !=Alt
-#a::OpenChrome()
-#!a::NewChrome()
-; +=Shift ^=Control #=Win !=Alt
+#a::OpenFirefox()
+#!a::NewFirefox()
+#e::OpenChrome()
+#!e::NewChrome()
 ^#h::reload ; Reload AutoHotKeys
-#!h::reload ; Reload AutoHotKeys
 ^#i::run "%PROGRAMS64%\Internet Explorer\iexplore.exe" ; x64
 #!i::run "%PROGRAMS32%\Internet Explorer\iexplore.exe" ; x86
 #j::run eclipse.btm,,min
-#m::run "mblctr.exe"
-#!m::RunWindowsMediaPlayer()
 #!n::RunOneNote()
 #n::OpenEverNote()
 ^#n::NewFolder()
@@ -85,3 +83,4 @@ IdleEvent()
 #!x::OpenFirefox()
 #!y::OpenRecycleBin()
 #z::OpenIm()
+

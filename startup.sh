@@ -9,12 +9,12 @@ elif [[ "$COMPUTERNAME" != @(MiniMe) ]]; then
 fi
 
 # Host specific applications
-local common="word EverNote DropBox PowerMixer PowerMixer SnagIt"
+local common="word DropBox PowerMixer PowerMixer SnagIt"
 case "$COMPUTERNAME" in
 	bean) f.lux;;
 	minime) app -b $command $common;;
 	oversoul) app -b $command $common pu;;
-	jjbutare*) app -b $command $common SyncPlicity pu; intel $command -b;;
+	jjbutare*) app -b $command $common SyncPlicity; intel $command -b;;
 esac
 
 [[ "$COMPUTERNAME" == "jjbutare-mobl" ]] && app -b "$hp"

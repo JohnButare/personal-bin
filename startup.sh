@@ -13,7 +13,7 @@ local common="word DropBox PowerMixer PowerMixer SnagIt"
 case "$COMPUTERNAME" in
 	bean) f.lux;;
 	minime) app -b $command $common;;
-	oversoul) app -b $command $common pu;;
+	oversoul) app -b $command $common;;
 	jjbutare*) app -b $command $common SyncPlicity; intel $command -b;;
 esac
 

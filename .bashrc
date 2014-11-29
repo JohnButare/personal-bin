@@ -8,7 +8,6 @@ fi
 
 # non-interactive initialization (available from child processes and scripts)
 set -a
-GREP_OPTIONS='--color=auto'
 LESS='-R'
 LESSOPEN='|~/.lessfilter %s'
 #IGNOREEOF=1

@@ -82,6 +82,9 @@ alias wmp='WindowsMediaPlayer'
 alias wmc='WindowsMediaCenter'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 
+alias grep='\grep --color=auto'
+alias egrep='\egrep --color=auto'
+
 #
 # misc
 #
@@ -147,18 +150,6 @@ UncLs()
 	$ls "${@:1:$#-1}" "$dir"
 }
 
-#
-# package management
-#
-alias choco='chocolatey'
-alias cinst='chocolatey install'
-alias clist='chocolatey list'
-alias cpack='chocolatey pack'
-alias cpush='chocolatey push'
-alias cuninst='chocolatey uninstall'
-alias cup='chocolatey update'
-alias cver='chocolatey version'
-
 # other
 alias inf="FileInfo"
 alias l='explore'
@@ -214,6 +205,18 @@ alias ds='DirSize m'
 alias dsu='DiskSpaceUsage'
 alias dus='${G}du --summarize --human-readable'
 alias TestDisk='sudo bench32.exe'
+
+#
+# package management
+#
+alias choco='chocolatey'
+alias cinst='chocolatey install'
+alias clist='chocolatey list'
+alias cpack='chocolatey pack'
+alias cpush='chocolatey push'
+alias cuninst='chocolatey uninstall'
+alias cup='chocolatey update'
+alias cver='chocolatey version'
 
 #
 # edit/set

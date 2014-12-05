@@ -20,8 +20,8 @@
 	brmv = "!f() { git branch -m $1 $2 && git push origin :$1 && git push -u origin $2; }; f" # branch move (rename)
 	brrm = "!f() { git push origin :$1 && git remote prune origin && git branch -d $1; }; f" # remove branch
 	c = commit
-	ca = commit --amend
-	cam = commit --all -m
+	ca = commit --all -m
+	cam = commit --amend
 	changes = diff --name-status -r
 	check = diff --check
 	cl = clean -d -f

@@ -172,8 +172,8 @@ alias dirsct='UncLs -l --time=ctime --sort=time --reverse' # sort by creation  t
 # find
 alias fa='FindAll'
 alias fcd='FindCd'
-fclip() { file=$(FindAll $1 | head -1) && clipw "$file"; } # FindClip
-fe() { file=$(FindAll $1 | head -1) && TextEdit "$file"; } # FindEdit
+fclip() { file="$(FindAll "$1" | head -1)" && clipw "$file"; } # FindClip
+fe() { file="$(FindAll "$1" | head -1)" && TextEdit "$file"; } # FindEdit
 ft() { local startDir="${@:3}"; grep --color -i -r -e "$1" --include=$2 "${startDir:-.}"; } # FindText TEXT FILE_PATTERN [START_DIR](.)
 
 FindAll()

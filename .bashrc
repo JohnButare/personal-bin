@@ -799,4 +799,4 @@ ccpu() # CruiseControlProgramUpdate
 	CopyDir "$code/CruiseControlPlugins/Source/GitHubApi/bin/Debug" "$ccdir" /xf '*.pdb' '*.vshost.*'
 }
 
-ccts() { cctray close; cp "$APPDATA/cctray-settings-$1.xml"  "$APPDATA/cctray-settings.xml"; cctray startup; } # CruiseControlTraySettings
+ccts() { cctray close; cp "$APPDATA/cctray-settings-$1.xml"  "$APPDATA/cctray-settings.xml"; cctray start; } # CruiseControlTraySettings

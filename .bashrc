@@ -376,6 +376,12 @@ alias g='git'
 alias gl='g l'
 alias gca='g ca'
 alias gst='g s'
+alias gr='ge ri' #
+alias grb='ge ri'
+alias grc='ge rbc'
+alias gmt='g mergetool'
+alias gf='g fix'
+alias gs='g sq'
 
 complete -o default -o nospace -F _git g
 alias gcy='/usr/bin/git' 			# Cygwin Git

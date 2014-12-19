@@ -38,34 +38,29 @@
 	h = help
 	i = integrate
 	is = wtf --relations --short # integration status
-	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative -20
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
-	ld = !git log --graph --pretty='tformat:%C(yellow)%h{%C(green)%ar{%C(bold blue)%an{%C(red)%d%C(reset) %s' $* | column -t -s '{' | less -FXRS
-	lg = log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
-	lo = log --oneline
 	ls-ignored = ls-files --exclude-standard --ignored --others
 	m = merge -s recursive -X patience
 	markdown = !BN=$(git name-rev --name-only HEAD) && git log --no-merges --grep=$BN --pretty=oneline | awk -F$BN: '{print \"-\", $NF}' | uniq
 	mm = merge --no-ff
 	merge-branch = !git checkout master && git merge @{-1}
 	msg = commit --allow-empty -m
-	news = log -p HEAD@{1}..HEAD@{0}
 	pick = cherry-pick
 	pr = !hub pull-request
 	prune-remotes = "!for remote in `git remote`; do git remote prune $remote; done"
 	r = remote
-	ra = !git log --graph --abbrev-commit --date=relative -20 --all --pretty='format:%C(yellow)%h%Creset -%C(red)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'
 	rb = rebase
 	rba = rebase --abort
 	rbc = rebase --continue
 	rbs = rebase --skip
-	ri = rebase --interactive
+	ri = rebase --interactive --autosquash
+  fix = "!f() { git commit -am \"fixup! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # fixup [COMMIT] [MESSAGE] - fixup this commit onto specified or last commit
+  sq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # squash [COMMIT] [MESSAGE] - squash this commit onto specified or last commit
 	rs = remote show
 	rso = remote show origin
 	rh = reset --hard
 	ru = remote update --prune
 	s = status --short --branch
-	sl = shortlog
 	sm = submodule
 	sma = submodule add
 	smu = submodule update --init
@@ -76,6 +71,13 @@
 	wd = diff --word-diff=color
 	wdc = diff --word-diff=color--cached
 	push = push --tags
+
+	# log
+	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -20 # log
+	logb = !git --no-pager log --oneline -20 # log brief
+	logg = log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative # log graph
+	logd = log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative # log detail
+	news = log -p HEAD@{1}..HEAD@{0}
 [color]
 	ui = auto
 [core]

@@ -74,6 +74,7 @@
 
 	# log
 	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -20 # log
+	logo = !git --no-pager log --oneline -1 # log one
 	logb = !git --no-pager log --oneline -20 # log brief
 	logg = log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative # log graph
 	logd = log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative # log detail

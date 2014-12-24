@@ -57,8 +57,6 @@ IdleEvent()
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenFirefox()
 #!a::NewFirefox()
-#e::OpenChrome()
-#!e::NewChrome()
 ^#h::reload ; Reload AutoHotKeys
 ^#i::run "%PROGRAMS64%\Internet Explorer\iexplore.exe" ; x64
 #!i::run "%PROGRAMS32%\Internet Explorer\iexplore.exe" ; x86

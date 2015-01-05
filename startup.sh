@@ -14,7 +14,7 @@ case "$COMPUTERNAME" in
 	bean) f.lux;;
 	minime) app -b $command $common;;
 	oversoul) app -b $command $common;;
-	jjbutare*) app -b $command $common SyncPlicity; intel $command -b;;
+	jjbutare*) app -b $command ProcessExplorer $common SyncPlicity; intel $command -b;;
 esac
 
 [[ "$COMPUTERNAME" == "jjbutare-mobl" ]] && app -b "$hp"

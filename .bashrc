@@ -45,7 +45,7 @@ v="/Volumes"
 home="$HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data"
 bash="$udata/bash"
 code="$CODE"
-dl="$HOME/Downloads"
+[[ "$COMPUTERNAME" == @(jjbutare-ivm1) ]] && dl="//psf/Home/downloads" || dl="$HOME/Downloads"
 ubin="$udata/bin"
 usm="$APPDATA/Microsoft/Windows/Start Menu" #UserStartMenu
 up="$usm/Programs" # UserPrograms
@@ -179,7 +179,7 @@ ft() { local startDir="${@:3}"; grep --color -i -r -e "$1" --include=$2 "${start
 FindAll()
 {
 	[[ $# == 0 ]] && { echo "No file specified"; return; }
-	find . -iname "$@"
+	find . -iname "$@" |& egrep -v "Permission denied"
 }
 
 FindCd()

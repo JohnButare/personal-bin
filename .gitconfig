@@ -15,8 +15,8 @@
 	au = add --update
 	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -rn
 	b = branch -vv
-	br = "!f() { git branch --track $1 origin/$1; }; f" # create local version of specified remote branch
-	brcr = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' - # branch create
+	br = "!f() { git branch --track $1 origin/$1; git checkout $1; }; f" # create local version of specified remote branch
+	brcr = !sh -c 'git branch $1 $2 && git push -u origin $1 && git checkout $1' - # branch create
 	brmv = "!f() { git branch -m $1 $2 && git push origin :$1 && git push -u origin $2; }; f" # branch move (rename)
 	fr = "!f() { git brmv $1 Frozen-$1; }; f" # branch freeze
 	brrm = "!f() { git push origin :$1 && git remote prune origin && git branch -d $1; }; f" # remove branch
@@ -56,6 +56,7 @@
 	rbc = rebase --continue
 	rbs = rebase --skip
 	ri = rebase --interactive --autosquash
+	rpo = remote prune origin
   fix = "!f() { git commit -am \"fixup! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # fixup [COMMIT] [MESSAGE] - fixup this commit onto specified or last commit
   sq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # squash [COMMIT] [MESSAGE] - squash this commit onto specified or last commit
 	rs = remote show

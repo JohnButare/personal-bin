@@ -460,7 +460,7 @@ alias cs='cscript /nologo'
 # wiggin
 #
 
-alias BeanSync='sup; sdn; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
+alias BeanSync='scup; scpush; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
 
 opub="//oversoul/Public"
 ohome="//oversoul/John"

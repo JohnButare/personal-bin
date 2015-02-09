@@ -38,9 +38,10 @@
 	dt = difftool
 	h = help
 	i = integrate
+	iall = "!f() { git i Continuous && git i Test && git i Pre-Production; }; f" # integrate all
 	iup = "!f() { git ir Continuous && git ir Test && git ir Pre-Production && git up; }; f" # integrate up
 	is = wtf --relations --short # integration status
-	ic = "!f() { git checkout $1 && git reset --hard $2 && git push --force; }; f" # integration branch clean, g ic INTEGRATION_BRANCH VERSION
+	ic = "!f() { git checkout $1 && git reset --hard Release-v$2 && git push --force; }; f" # integration branch clean, g ic INTEGRATION_BRANCH VERSION
 	ir = "!f() { cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; git checkout $1 && git reset --hard origin/$1; git checkout $cb; }; f" # integration branch reset, g ir INTEGRATION_BRANCH
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
 	ls-ignored = ls-files --exclude-standard --ignored --others

@@ -85,6 +85,8 @@ alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 alias grep='\grep --color=auto'
 alias egrep='\egrep --color=auto'
 
+export LPASS_AGENT_TIMEOUT=0
+
 #
 # misc
 #

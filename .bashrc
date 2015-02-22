@@ -174,9 +174,21 @@ alias dirsct='UncLs -l --time=ctime --sort=time --reverse' # sort by creation  t
 # find
 alias fa='FindAll'
 alias fcd='FindCd'
-fclip() { file="$(FindAll "$1" | head -1)" && clipw "$file"; } # FindClip
-fe() { file="$(FindAll "$1" | head -1)" && TextEdit "$file"; } # FindEdit
-ft() { local startDir="${@:3}"; grep --color -i -r -e "$1" --include=$2 "${startDir:-.}"; } # FindText TEXT FILE_PATTERN [START_DIR](.)
+alias ft='FindText'
+fclip() { IFS=$'\n' files=( $(FindAll "$1") ) && clipw "${files[@]}"; } # FindClip
+fae() { IFS=$'\n' files=( $(FindAll "$1") ) && TextEdit "${files[@]}"; } # FindAllEdit
+fte() { IFS=$'\n' files=( $(FindText "$@" | cut -d: -f1) ) && TextEdit "${files[@]}"; } # FindTextEdit
+
+fsql() { ft "$1" "*.sql"; } # FindSql TET
+esql() { fte "$1" "*.sql"; } # EditSql TEXT
+fsqlv() { fsql "-- version $1"; } # FindSqlVersion [VERSION]
+esqlv() { esql "-- version $1"; } # EditSqlVersion [VERSION]
+
+FindText() # TEXT FILE_PATTERN [START_DIR](.)
+{ 
+	local startDir="${@:3}"
+	grep --color -i -r -e "$1" --include=$2 "${startDir:-.}"
+}
 
 FindAll()
 {
@@ -572,9 +584,9 @@ alias von="vpn on"
 alias voff="vpn off"
 
 # Source Control - Software Solutions Update/Commit/Status
-alias ssup='tup;mup;aupd;spup'
-alias ssc='tc;mc;ac;spc'
-alias sss='ts;mst;as;sps'
+alias ssup='mup;aupd;spup'
+alias ssc='mc;ac;spc'
+alias sss='mst;as;sps'
 
 # Profile Manager
 profiles="$P/ITBAS/Profiles"

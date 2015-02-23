@@ -176,8 +176,8 @@ alias fa='FindAll'
 alias fcd='FindCd'
 alias ft='FindText'
 fclip() { IFS=$'\n' files=( $(FindAll "$1") ) && clipw "${files[@]}"; } # FindClip
-fae() { IFS=$'\n' files=( $(FindAll "$1") ) && TextEdit "${files[@]}"; } # FindAllEdit
-fte() { IFS=$'\n' files=( $(FindText "$@" | cut -d: -f1) ) && TextEdit "${files[@]}"; } # FindTextEdit
+fae() { IFS=$'\n' files=( $(FindAll "$1") ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindAllEdit
+fte() { IFS=$'\n' files=( $(FindText "$@" | cut -d: -f1) ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindTextEdit
 
 fsql() { ft "$1" "*.sql"; } # FindSql TET
 esql() { fte "$1" "*.sql"; } # EditSql TEXT

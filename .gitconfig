@@ -14,12 +14,14 @@
 	ap = add --patch
 	au = add --update
 	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -rn
+
 	b = branch -vv
 	br = "!f() { git branch --track $1 origin/$1; git checkout $1; }; f" # create local version of specified remote branch
 	brcr = !sh -c 'git branch $1 $2 && git push -u origin $1 && git checkout $1' - # branch create
 	brmv = "!f() { git branch -m $1 $2 && git push origin :$1 && git push -u origin $2; }; f" # branch move (rename)
 	fr = "!f() { git brmv $1 Frozen-$1; }; f" # branch freeze
 	brrm = "!f() { git branch -d $1; git push origin :$1 && git remote prune origin; }; f" # remove branch
+
 	c = commit
 	ca = commit --all -m
 	cam = commit --amend
@@ -37,13 +39,15 @@
 	div = divergence
 	dt = difftool
 	h = help
-	i = integrate
-	iall = "!f() { git i Continuous && git i Test && git i Pre-Production; }; f" # integrate all
-	iup = "!f() { git ir Continuous && git ir Test && git ir Pre-Production && git up; }; f" # integrate up
-	icall = "!f() { git ic Continuous $2 && git ir Test $2 && git ir Pre-Production $2; }; f" # integrate clean all, g icall VERSION
+
+	i = integrate # integrate current branch to integration branch, g i INTEGRATION_BRANCH
 	is = wtf --relations --short # integration status
-	ic = "!f() { git checkout $1 && git reset --hard $2 && git push --force; }; f" # integration branch clean, g ic INTEGRATION_BRANCH VERSION
-	ir = "!f() { cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; git checkout $1 && git reset --hard origin/$1; git checkout $cb; }; f" # integration branch reset, g ir INTEGRATION_BRANCH
+	iall = "!f() { git i Continuous && git i Test && git i Pre-Production; }; f" # integrate all
+	ic = "!f() { git checkout $1 && git reset --hard $2 && git push --force; }; f" # integration branch clean to version, g ic INTEGRATION_BRANCH BRANCH
+	icall = "!f() { git ic Continuous $2 && git ir Test $2 && git ir Pre-Production $2; }; f" # integrate clean all, g icall VERSION
+	ir = "!f() { cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; git checkout $1 && git reset --hard origin/$1; git checkout $cb; }; f" # integration reset to origin, g ir INTEGRATION_BRANCH
+	iup = "!f() { git ir Continuous && git ir Test && git ir Pre-Production && git up; }; f" # integrate up
+
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
 	ls-ignored = ls-files --exclude-standard --ignored --others
 	m = merge -s recursive -X patience

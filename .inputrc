@@ -11,8 +11,10 @@
 # previous positition - ctrl-x
 "\eOH": beginning-of-line   # home, ctrl-a
 "\eOF": end-of-line         # end, ctrl-e
-"\e[1;5C": forward-word     # ctrl/option-left, alt-f
-"\e[1;5D": backward-word    # ctrl/option-right, alt-b
+"\e[1;5C": forward-word     # (mintty) ctrl-left, alt-f (terminal) option-left
+"\e[1;5D": backward-word    # (mintty) ctrl-right, alt-b (termina) option-left
+"\e[1;2C": forward-word     # (iTerm) shift-left
+"\e[1;2D": backward-word    # (iTerm) shift-left
 
 # undo alt-backspace (win)
 # paste yanked/previous yanked text - ctrl/alt-y

@@ -145,17 +145,11 @@ UncCd()
 
 UncLs()
 {
-	#local aa="${G}ls -Q --color" unc="${@: -1}"
-	#! IsUncPath "$unc" && { command $ls "$@"; return; }
-	#[[ ! "$(GetUncShare "$unc")" ]] && { unc list "$unc"; return; }
-	#local dir; dir="$(unc mount "$unc")" || return
-	#$ls "${@:1:$#-1}" "$dir"
-
 	local unc="${@: -1}"
 	! IsUncPath "$unc" && { command ${G}ls -Q --color "$@"; return; }
 	[[ ! "$(GetUncShare "$unc")" ]] && { unc list "$unc"; return; }
 	local dir; dir="$(unc mount "$unc")" || return
-	$ls "${@:1:$#-1}" "$dir"
+	${G}ls -Q --color "${@:1:$#-1}" "$dir"
 }
 
 # other

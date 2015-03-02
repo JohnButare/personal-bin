@@ -145,8 +145,14 @@ UncCd()
 
 UncLs()
 {
-	local ls="${G}ls -Q --color" unc="${@: -1}"
-	! IsUncPath "$unc" && { command $ls "$@"; return; }
+	#local aa="${G}ls -Q --color" unc="${@: -1}"
+	#! IsUncPath "$unc" && { command $ls "$@"; return; }
+	#[[ ! "$(GetUncShare "$unc")" ]] && { unc list "$unc"; return; }
+	#local dir; dir="$(unc mount "$unc")" || return
+	#$ls "${@:1:$#-1}" "$dir"
+
+	local unc="${@: -1}"
+	! IsUncPath "$unc" && { command ${G}ls -Q --color "$@"; return; }
 	[[ ! "$(GetUncShare "$unc")" ]] && { unc list "$unc"; return; }
 	local dir; dir="$(unc mount "$unc")" || return
 	$ls "${@:1:$#-1}" "$dir"
@@ -176,14 +182,14 @@ alias fa='FindAll'
 alias fcd='FindCd'
 alias ft='FindText'
 fclip() { IFS=$'\n' files=( $(FindAll "$1") ) && clipw "${files[@]}"; } # FindClip
-fae() { IFS=$'\n' files=( $(FindAll "$1") ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindAllEdit
+fe() { IFS=$'\n' files=( $(FindAll "$1") ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindAllEdit
 fte() { IFS=$'\n' files=( $(FindText "$@" | cut -d: -f1) ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindTextEdit
 
 fsql() { ft "$1" "*.sql"; } # FindSql TET
 esql() { fte "$1" "*.sql"; } # EditSql TEXT
 fsqlv() { fsql "-- version $1"; } # FindSqlVersion [VERSION]
 esqlv() { esql "-- version $1"; } # EditSqlVersion [VERSION]
-msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | grep -v "deploy" | sort | tail -1; } # MaxSqlVersion
+msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | grep -i -v "deploy" | sort | tail -1; } # MaxSqlVersion
 
 FindText() # TEXT FILE_PATTERN [START_DIR](.)
 { 
@@ -199,12 +205,13 @@ FindAll()
 
 FindCd()
 {
-	local dir="$(FindAll "$@" | head -1)"
+	local file="$(FindAll "$@" | head -1)"
+	local dir="$(GetFilePathj "$file")"
 
-	if [ -z "$dir" ]; then
-		echo Could not find "$@"
+	if [ -d "$dir" ]; then
+		echo Could not find directory "$@"
 	else
-		"$dir"
+		cd "$dir"
 	fi;
 }
 
@@ -601,7 +608,7 @@ ProfileManager()
 	local p="$code/ProfileManager/bin/Debug/ProfileManager.exe"
 	[[ ! -f "$p" ]] && p="$P/ITBAS/ProfileManager/ProfileManager.exe"
 	if [[ $# == 1 && -f "$1" ]]; then
-		start "$p" \"$(utw $1)\"
+		echo start "$p" \"$(utw $1)\"
 	elif [[ $# == 1 ]]; then
 		start "$p" \"$(utw $profiles/$1.profile)\"
 	else

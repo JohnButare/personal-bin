@@ -550,8 +550,8 @@ alias vs='VisualStudio'
 #
 
 alias MoblSyncInstall='m install-nas-rrsprsps'
-alias IntelSyncLocalFiles='slf CsisBuild.intel.com; slf CsisBuild-dr.intel.com'
-alias IntelSyncInstall='m install-CsisBuildNew; m install-CsisBuildDr; m install-dfs' # m install-cr
+alias IntelSyncLocalFiles='slf -do rrsprsps; slf CsisBuild.intel.com; slf CsisBuild-dr.intel.com'
+alias IntelSyncInstall='m install-CsisBuild; m install-CsisBuildDr; m install-dfs' # m install-cr
 alias msi=MoblSyncInstall isi=IntelSyncInstall islf=IntelSyncLocalFiles
 alias SetIntelProxy='se intel SetProxy'
 export GITHUB_HOST=github.intel.com

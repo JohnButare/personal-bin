@@ -20,7 +20,7 @@ HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars histappend
 
 # completion - win
-[[ -d "$COMPLETION" ]] && ! IsFunction __git_ps1 && { . /etc/bash_completion; . git-prompt.sh; }
+[[ -f "/etc/bash_completion" ]] && ! IsFunction __git_ps1 && { . /etc/bash_completion; . git-prompt.sh; }
 
 # completion - mac
 if [[ -f "$COMPLETION/git-prompt.sh" ]] && ! IsFunction __git_ps1; then

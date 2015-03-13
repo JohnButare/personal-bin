@@ -187,7 +187,7 @@ fsql() { ft "$1" "*.sql"; } # FindSql TET
 esql() { fte "$1" "*.sql"; } # EditSql TEXT
 fsqlv() { fsql "-- version $1"; } # FindSqlVersion [VERSION]
 esqlv() { esql "-- version $1"; } # EditSqlVersion [VERSION]
-msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | grep -i -v "deploy" | sort | tail -1; } # MaxSqlVersion
+msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | egrep -i -v "deploy|skip|ignore" | sort | tail -1; } # MaxSqlVersion
 
 FindText() # TEXT FILE_PATTERN [START_DIR](.)
 { 

@@ -36,7 +36,7 @@ $if Bash
   set bell-style visible # visible|none|audible
   set completion-query-items -1
   set completion-ignore-case on
-  set expand-tilde on
+  set expand-tilde off
   set match-hidden-files off
   set menu-complete-display-prefix off
   set page-completions off

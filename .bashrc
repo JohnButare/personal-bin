@@ -467,6 +467,7 @@ alias TestSound='playsound "$data/setup/test.wav"'
 #
 
 alias cm='os ComputerManagement'
+alias credm='os CredentialManagement'
 alias dm='os DeviceManager'
 alias prog='product gui'
 alias prop='os SystemProperties'

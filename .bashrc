@@ -18,7 +18,6 @@ set +a
 
 HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars dirspell histappend direxpand
-pause
 
 # completion - win
 [[ -f "/etc/bash_completion" ]] && ! IsFunction __git_ps1 && { . /etc/bash_completion; . git-prompt.sh; }

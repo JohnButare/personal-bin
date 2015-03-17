@@ -82,7 +82,7 @@ alias npp='notepadpp start'
 alias powershell="$WINDIR/system32/WindowsPowerShell/v1.0/powershell.exe"
 alias rdesk='cygstart mstsc /f /v:'
 alias vm='VMware'
-alias wmp='WindowsMediaPlayer'
+alias wmp='start "$P32\Windows Media Player\wmplayer.exe"'
 alias wmc='WindowsMediaCenter'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 

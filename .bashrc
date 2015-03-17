@@ -97,7 +97,7 @@ export LPASS_AGENT_TIMEOUT=0
 alias cf='CleanupFiles'
 alias cls=clear
 alias telnet='putty'
-alias u='os update'
+u() { ask 'Update repositories' && { ssup || return; }; os update || return; }
 
 #
 # archive

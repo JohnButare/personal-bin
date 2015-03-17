@@ -47,6 +47,11 @@ IdleEvent()
 ^Numpad6::MusicNextTrack()
 ^Numpad7::MusicEqualizer()
 ^Numpad9::MusicOther()
+
+^Numpad8::SoundSet +5
+^Numpad2::SoundSet -5
+^Numpad0::SoundSet +1, , mute
+
 ; Win
 #1::WinClose A ; Close active window
 #2::WinMinimize A ; Close active window

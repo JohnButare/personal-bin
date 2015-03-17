@@ -21,6 +21,7 @@
 	brmv = "!f() { git branch -m $1 $2 && git push origin :$1 && git push -u origin $2; }; f" # branch move (rename)
 	fr = "!f() { git brmv $1 Frozen-$1; }; f" # branch freeze
 	brrm = "!f() { git branch -d $1; git push origin :$1 && git remote prune origin; }; f" # remove branch
+	brex = "!f() { git rev-parse --verify $1 >& /dev/null; }; f" # branch exist
 
 	c = commit
 	ca = commit --all -m
@@ -46,7 +47,8 @@
 	ic = "!f() { git checkout $1 && git reset --hard $2 && git push --force; }; f" # integration branch clean to version, g ic INTEGRATION_BRANCH BRANCH
 	icall = "!f() { git ic Continuous $2 && git ir Test $2 && git ir Pre-Production $2; }; f" # integrate clean all, g icall VERSION
 	ir = "!f() { cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; git checkout $1 && git reset --hard origin/$1; git checkout $cb; }; f" # integration reset to origin, g ir INTEGRATION_BRANCH
-	iup = "!f() { git ir Continuous && git ir Test && git ir Pre-Production && git up; }; f" # integrate up
+	irall = "!f() { git ir Continuous && git ir Test && git ir Pre-Production; }; f" # integrate reset all
+	iup = "!f() { git irall && git up; }; f" # integrate up
 
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
 	ls-ignored = ls-files --exclude-standard --ignored --others

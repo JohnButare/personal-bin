@@ -55,7 +55,8 @@ usm="$APPDATA/Microsoft/Windows/Start Menu" #UserStartMenu
 up="$usm/Programs" # UserPrograms
 ud="$home/Desktop" # UserDesktop
 
-cloud="$home/Dropbox"
+db="$home/Dropbox"
+cloud="$db"
 cdata="$cloud/data"
 cdl="$cdata/download"
 

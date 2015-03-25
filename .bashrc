@@ -594,7 +594,7 @@ alias voff="vpn off"
 
 # Source Control - Software Solutions Update/Commit/Status
 alias ssup='mup;aupd;spup'
-alias ssc='mc;ac;spc'
+alias ssc='scc;mc;ac;spc'
 alias sss='mst;as;sps'
 
 # Profile Manager

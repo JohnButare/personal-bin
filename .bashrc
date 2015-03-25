@@ -100,8 +100,8 @@ alias cls=clear
 alias telnet='putty'
 u() 
 { 
-	ask 'Update repositories' && { ssup || return; }
 	ask 'Commit repositories' && { ssc || return; }
+	ask 'Update repositories' && { ssup || return; }
 	os update || return
 }
 

@@ -98,7 +98,12 @@ export LPASS_AGENT_TIMEOUT=0
 alias cf='CleanupFiles'
 alias cls=clear
 alias telnet='putty'
-u() { intel IsIntelHost && ask 'Update repositories' && { ssup || return; }; os update || return; }
+u() 
+{ 
+	intel IsIntelHost && ask 'Commit repositories' && { ssc || return; }
+	intel IsIntelHost && ask 'Update repositories' && { ssup || return; }
+	os update || return
+}
 
 #
 # archive
@@ -470,6 +475,7 @@ alias TestSound='playsound "$data/setup/test.wav"'
 alias cm='os ComputerManagement'
 alias credm='os CredentialManagement'
 alias dm='os DeviceManager'
+alias ev='os EventViewer'
 alias prog='product gui'
 alias prop='os SystemProperties'
 alias ResourceMonitor='os ResourceMonitor'

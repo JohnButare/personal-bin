@@ -100,8 +100,11 @@ alias cls=clear
 alias telnet='putty'
 u() 
 { 
-	intel IsIntelHost && ask 'Commit repositories' && { ssc || return; }
-	intel IsIntelHost && ask 'Update repositories' && { ssup || return; }
+	if intel IsIntelHost; then
+		ask 'Commit Intel repositories' && { ssc || return; }
+		ask 'Update Intel repositories' && { ssup || return; }
+		ask 'Sync Intel install' && { IntelSyncInstall || return; }
+	fi
 	os update || return
 }
 

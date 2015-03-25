@@ -98,7 +98,12 @@ export LPASS_AGENT_TIMEOUT=0
 alias cf='CleanupFiles'
 alias cls=clear
 alias telnet='putty'
-u() { ask 'Update repositories' && { ssup || return; }; os update || return; }
+u() 
+{ 
+	ask 'Update repositories' && { ssup || return; }
+	ask 'Commit repositories' && { ssc || return; }
+	os update || return
+}
 
 #
 # archive
@@ -594,7 +599,7 @@ alias voff="vpn off"
 
 # Source Control - Software Solutions Update/Commit/Status
 alias ssup='mup;aupd;spup'
-alias ssc='scc;mc;ac;spc'
+alias ssc='mc;ac;spc'
 alias sss='mst;as;sps'
 
 # Profile Manager

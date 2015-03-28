@@ -65,7 +65,7 @@
 	rba = rebase --abort
 	rbc = rebase --continue
 	rbs = rebase --skip
-	ri = rebase --interactive --autosquash
+	rbi = rebase --interactive --autosquash
 	rpo = remote prune origin
   fix = "!f() { git commit -am \"fixup! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # fixup [COMMIT] [MESSAGE] - fixup this commit onto specified or last commit
   sq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # squash [COMMIT] [MESSAGE] - squash this commit onto specified or last commit

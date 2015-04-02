@@ -29,6 +29,8 @@
 	changes = diff --name-status -r
 	check = diff --check
 	cl = clean -d -f
+	cla = clean -d -x -i # clean all [PATTERN, i.e. */Bin/]
+	clvs =  clean -d -x -i -e '*.dbmdl' -e '*.user' -e '*.suo' # clean all except Visual Studio user files
 	cm = commit --message
 	co = checkout
 	cob = checkout -b # checkout and create branch

@@ -415,16 +415,16 @@ alias gs='g sq' # squash commit
 # Git for Windows is faster, but older than Cygwin git
 unfunction git
 unset GIT_PYTHON_GIT_EXECUTABLE
-if [[ -f "$P32/Git/bin/git.exe" ]]; then
-	export GIT_PYTHON_GIT_EXECUTABLE="$P32/Git/bin/git.exe"
-	git() { "$P32/Git/bin/git.exe" "$@"; }
-	#export GIT_PYTHON_GIT_EXECUTABLE=~/"Downloads/PortableGit-2.3.5.8-dev-preview-64-bit.7z/cmd/git.exe"
-	#git() { ~/"Downloads/PortableGit-2.3.5.8-dev-preview-64-bit.7z/cmd/git.exe" "$@"; }
+if [[ -f "$P/Git/cmd/git.exe" ]]; then
+	export GIT_PYTHON_GIT_EXECUTABLE="$P/Git/cmd/git.exe"
+	git() { "$P/Git/cmd/git.exe" "$@"; }
+	#export GIT_PYTHON_GIT_EXECUTABLE="$P32/Git/bin/git.exe"
+	#git() { "$P32/Git/bin/git.exe" "$@"; }
 fi
 
 alias gc='/usr/bin/git' 			# Cygwin Git
-alias ge='"$P32/Git/bin/git"' # Git Extensions Git
-alias gfw='~/"Downloads/PortableGit-2.3.5.8-dev-preview-64-bit.7z/cmd/git.exe"' # Git for Windows
+alias ge='"$P32/Git/bin/git"' # msysgit (installed with Git Extensions)
+alias gfw='"$P/Git/cmd/git.exe"' # Git for Windows
 
 complete -o default -o nospace -F _git g
 alias gg='GitHelper gui'

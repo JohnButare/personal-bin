@@ -98,15 +98,6 @@ export LPASS_AGENT_TIMEOUT=0
 alias cf='CleanupFiles'
 alias cls=clear
 alias telnet='putty'
-u() 
-{ 
-	if intel IsIntelHost; then
-		ask 'Commit Intel repositories' && { ssc || return; }
-		ask 'Update Intel repositories' && { ssup || return; }
-		ask 'Sync Intel install' && { IntelSyncInstall || return; }
-	fi
-	os update || return
-}
 
 #
 # archive
@@ -411,16 +402,6 @@ alias grbc='ge rbc' # rebase continue
 alias gmt='g mergetool'
 alias gf='g fix' # fixup commit
 alias gs='g sq' # squash commit
-
-# Git for Windows is faster, but older than Cygwin git
-unfunction git
-unset GIT_PYTHON_GIT_EXECUTABLE
-if [[ -f "$P/Git/cmd/git.exe" ]]; then
-	export GIT_PYTHON_GIT_EXECUTABLE="$P/Git/cmd/git.exe"
-	git() { "$P/Git/cmd/git.exe" "$@"; }
-	#export GIT_PYTHON_GIT_EXECUTABLE="$P32/Git/bin/git.exe"
-	#git() { "$P32/Git/bin/git.exe" "$@"; }
-fi
 
 alias gc='/usr/bin/git' 			# Cygwin Git
 alias ge='"$P32/Git/bin/git"' # msysgit (installed with Git Extensions)
@@ -852,3 +833,17 @@ ccpu() # CruiseControlProgramUpdate
 }
 
 ccts() { cctray close; cp "$APPDATA/cctray-settings-$1.xml"  "$APPDATA/cctray-settings.xml"; cctray start; } # CruiseControlTraySettings
+
+#
+# update
+#
+
+u() 
+{ 
+	if intel IsIntelHost; then
+		ask 'Commit Intel repositories' && { ssc || return; }
+		ask 'Update Intel repositories' && { ssup || return; }
+		ask 'Sync Intel install' && { IntelSyncInstall || return; }
+	fi
+	os update || return
+}

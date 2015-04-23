@@ -340,16 +340,16 @@ GetPrompt()
 
 GitPrompt()
 {
-	#local gitColor red='\e[31m'
+	local gitColor red='\e[31m'
 
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
-	#if [[ -d .git ]]; then
-		#gitColor="$(git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
+	if [[ -d .git ]]; then
+		gitColor="$(git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 		GIT_PS1_SHOWUPSTREAM="auto verbose"; 
 		#GIT_PS1_SHOWDIRTYSTATE="true" # shows *, slow
-		#GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
+		GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
 		#GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
-	#fi
+	fi
 	__git_ps1 "$gitColor (%s)"
 }
 
@@ -402,6 +402,7 @@ alias cdup='code update'
 alias eg='te ~/.gitconfig'
 
 alias g='git'
+alias gd='gc diff'
 alias gl='g l'
 alias gca='g ca'
 alias gst='g s'
@@ -411,9 +412,21 @@ alias gmt='g mergetool'
 alias gf='g fix' # fixup commit
 alias gs='g sq' # squash commit
 
-complete -o default -o nospace -F _git g
-alias gcy='/usr/bin/git' 			# Cygwin Git
+# Git for Windows is faster, but older than Cygwin git
+unfunction git
+unset GIT_PYTHON_GIT_EXECUTABLE
+if [[ -f "$P32/Git/bin/git.exe" ]]; then
+	export GIT_PYTHON_GIT_EXECUTABLE="$P32/Git/bin/git.exe"
+	git() { "$P32/Git/bin/git.exe" "$@"; }
+	#export GIT_PYTHON_GIT_EXECUTABLE=~/"Downloads/PortableGit-2.3.5.8-dev-preview-64-bit.7z/cmd/git.exe"
+	#git() { ~/"Downloads/PortableGit-2.3.5.8-dev-preview-64-bit.7z/cmd/git.exe" "$@"; }
+fi
+
+alias gc='/usr/bin/git' 			# Cygwin Git
 alias ge='"$P32/Git/bin/git"' # Git Extensions Git
+alias gfw='~/"Downloads/PortableGit-2.3.5.8-dev-preview-64-bit.7z/cmd/git.exe"' # Git for Windows
+
+complete -o default -o nospace -F _git g
 alias gg='GitHelper gui'
 alias gh='GitHelper'
 alias ghub='GitHelper hub'

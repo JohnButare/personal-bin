@@ -278,7 +278,6 @@ alias uhosts='HostUtil file update'
 alias gp='media get'
 alias ms='media sync'
 alias sm='merge "$pub/Music" "//nas/music"'
-alias si='merge "$data/install" "//nas/public/documents/data/install"' # SyncInstall
 alias sk='SyncKey'
 
 alias et='exiftool'
@@ -485,12 +484,8 @@ alias cs='cscript /nologo'
 #
 
 alias BeanSync='scup; scpush; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
-
-opub="//oversoul/Public"
-ohome="//oversoul/John"
-oi="$opub/Documents/data/install"
-odl="$ohome/Documents/data/download"
-
+alias bs='BeanSync
+'
 alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
 alias house='start "$cloud/House/House Notes.docx"'
 alias w='start "$cloud/other/wedding/Wedding Notes.docx"'
@@ -499,8 +494,6 @@ nas='//nas'
 ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 ng='git@butare.net:/volume1/git'
-NasDrive() { net use n: "$(utw "$nr")" /user:jjbutare "$@"; }
-alias nslf='slf nas'
 alias nrslf='slf butare.net'
 
 #

@@ -204,12 +204,12 @@ FindAll()
 FindCd()
 {
 	local file="$(FindAll "$@" | head -1)"
-	local dir="$(GetFilePathj "$file")"
+	local dir="$(GetFilePath "$file")"
 
 	if [ -d "$dir" ]; then
-		echo Could not find directory "$@"
-	else
 		cd "$dir"
+	else
+		echo Could not find directory "$@"
 	fi;
 }
 

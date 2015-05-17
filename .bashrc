@@ -276,7 +276,6 @@ alias uhosts='HostUtil file update'
 #
 
 alias gp='media get'
-alias ms='media sync'
 alias sm='merge "$pub/Music" "//nas/music"'
 alias sk='SyncKey'
 
@@ -482,13 +481,10 @@ alias cs='cscript /nologo'
 #
 # wiggin
 #
-
-alias BeanSync='scup; scpush; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
-alias bs='BeanSync
-'
+alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
+alias bs='BeanSync'; alias BeanSync='scup; scpush; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
 alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
 alias house='start "$cloud/House/House Notes.docx"'
-alias w='start "$cloud/other/wedding/Wedding Notes.docx"'
 
 nas='//nas'
 ni="$nas/public/documents/data/install"

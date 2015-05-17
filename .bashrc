@@ -401,9 +401,8 @@ alias gmt='g mergetool'
 alias gf='g fix' # fixup commit
 alias gs='g sq' # squash commit
 
-alias gc='/usr/bin/git' 			# Cygwin Git
-alias ge='"$P32/Git/bin/git"' # msysgit (installed with Git Extensions)
-alias gfw='"$P/Git/cmd/git.exe"' # Git for Windows
+alias gc='/usr/bin/git' 					# Cygwin Git
+alias gfw='"$P/Git/cmd/git.exe"' 	# Git for Windows
 
 complete -o default -o nospace -F _git g
 alias gg='GitHelper gui'

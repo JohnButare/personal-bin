@@ -333,10 +333,11 @@ GitPrompt()
 
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
 	if [[ -d .git ]]; then
-		gitColor="$(git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
+		:
+		gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 		GIT_PS1_SHOWUPSTREAM="auto verbose"; 
 		#GIT_PS1_SHOWDIRTYSTATE="true" # shows *, slow
-		GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
+		#GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
 		#GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
 	fi
 	__git_ps1 "$gitColor (%s)"
@@ -388,9 +389,15 @@ alias cdup='code update'
 
 # git
 
+alias g='git'
 alias eg='te ~/.gitconfig'
 
-alias g='git'
+if [[ "$PLATFORM" == "win" ]]; then
+	alias gc='/usr/bin/git' 					# Cygwin Git
+	alias gw='"$P/Git/cmd/git.exe"' 	# Git for Windows
+	alias g='gw'
+fi
+
 alias gd='gc diff'
 alias gl='g l'
 alias gca='g ca'
@@ -400,9 +407,6 @@ alias grbc='ge rbc' # rebase continue
 alias gmt='g mergetool'
 alias gf='g fix' # fixup commit
 alias gs='g sq' # squash commit
-
-alias gc='/usr/bin/git' 					# Cygwin Git
-alias gfw='"$P/Git/cmd/git.exe"' 	# Git for Windows
 
 complete -o default -o nospace -F _git g
 alias gg='GitHelper gui'

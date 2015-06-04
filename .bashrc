@@ -832,10 +832,10 @@ ccts() { cctray close; cp "$APPDATA/cctray-settings-$1.xml"  "$APPDATA/cctray-se
 
 u() 
 { 
-	if intel IsIntelHost; then
+	if [[ $# == 0 ]] && intel IsIntelHost; then
 		ask 'Commit Intel repositories' && { ssc || return; }
 		ask 'Update Intel repositories' && { ssup || return; }
 		ask 'Sync Intel install' && { IntelSyncInstall || return; }
 	fi
-	os update || return
+	os update $1 || return
 }

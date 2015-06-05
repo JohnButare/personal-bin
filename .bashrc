@@ -336,9 +336,11 @@ GitPrompt()
 		:
 		gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 		GIT_PS1_SHOWUPSTREAM="auto verbose"; 
-		#GIT_PS1_SHOWDIRTYSTATE="true" # shows *, slow
-		#GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
-		#GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
+		if [[ "$PLATFORM" == "Mac" ]]; then
+			GIT_PS1_SHOWDIRTYSTATE="true" # shows *
+			GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
+			GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
+		fi
 	fi
 	__git_ps1 "$gitColor (%s)"
 }

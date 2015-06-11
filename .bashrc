@@ -486,8 +486,7 @@ alias cs='cscript /nologo'
 #
 # wiggin
 #
-alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
-alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
+
 alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
 alias house='start "$cloud/House/House Notes.docx"'
 
@@ -496,6 +495,11 @@ ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 ng='git@butare.net:/volume1/git'
 alias nrslf='slf butare.net'
+
+# NAS Sync
+alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
+alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
+alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
 
 #
 # XML
@@ -551,7 +555,6 @@ alias vs='VisualStudio'
 # Intel
 #
 
-alias MoblSyncInstall='m install-nas-rrsprsps'
 alias IntelSyncLocalFiles='slf rrsprsps; slf CsisBuild.intel.com; slf CsisBuild-dr.intel.com'
 alias IntelSyncInstall='m install-CsisBuild; m install-CsisBuildDr; m install-dfs' # m install-cr
 alias msi=MoblSyncInstall isi=IntelSyncInstall islf=IntelSyncLocalFiles
@@ -834,10 +837,24 @@ ccts() { cctray close; cp "$APPDATA/cctray-settings-$1.xml"  "$APPDATA/cctray-se
 
 u() 
 { 
-	if [[ $# == 0 ]] && intel IsIntelHost; then
+	local OnIntelNetwork
+
+	# Intel
+	if [[ $# == 0 ]] && intel OnIntelNetwork; then
+		OnIntelNetwork=true
 		ask 'Commit Intel repositories' && { ssc || return; }
 		ask 'Update Intel repositories' && { ssup || return; }
 		ask 'Sync Intel install' && { IntelSyncInstall || return; }
 	fi
+
+	# Wiggin NAS
+	if HostUtil available nas; then
+		case "$HOSTNAME" in
+			bean) NasSyncBean;;
+			oversoul) NasSyncOversoul;;
+			jjbutare-*) [[ $OnIntelNetwork ]] && NasSyncIntel;;
+		esac
+	fi
+
 	os update $1 || return
 }

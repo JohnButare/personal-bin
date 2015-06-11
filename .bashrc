@@ -487,7 +487,7 @@ alias cs='cscript /nologo'
 # wiggin
 #
 alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
-alias bs='BeanSync'; alias BeanSync='scup; scpush; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
+alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
 alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
 alias house='start "$cloud/House/House Notes.docx"'
 

@@ -744,6 +744,12 @@ alias sslppbk='ssl rasPPbksqls'
 # deploy
 deploy() { pushd $spc/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
 
+# deploy relay
+alias drt="deploy Web Environment=Test force=true DeployWeb=false DeployScripts=false DeployClr=true"
+alias drpp="deploy Web Environment=Pre-Production force=true DeployWeb=false DeployScripts=false DeployClr=true"
+alias drpilot="deploy Web Environment=Production force=true DeployWeb=false DeployScripts=false DeployClr=true Servers=ORPRSPS.amr.corp.intel.com"
+alias drp="deploy Web Environment=Production force=true DeployWeb=false DeployScripts=false DeployClr=true"
+
 # deploy log
 alias dlog='deploy log'
 alias dll='deploy log'

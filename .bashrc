@@ -854,7 +854,7 @@ u()
 	fi
 
 	# Wiggin NAS
-	if HostUtil available nas && ask 'Sync nas'; then
+	if [[ $# == 0 ]] && HostUtil available nas && ask 'Sync nas'; then
 		case "$HOSTNAME" in
 			bean) NasSyncBean;;
 			oversoul) NasSyncOversoul;;

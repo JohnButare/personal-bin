@@ -391,21 +391,17 @@ alias cdup='code update'
 
 # git
 
-alias g='git'
 alias eg='te ~/.gitconfig'
 
-if [[ "$PLATFORM" == "win" ]]; then
-	alias gc='/usr/bin/git' 					# Cygwin Git
-	alias gw='"$P/Git/cmd/git.exe"' 	# Git for Windows
-	alias g='gw'
-fi
+alias g='git' gc=g gw=g # platform specific git (Cygwin, Git for Windows)
+[[ "$PLATFORM" == "win" ]] && alias gc='/usr/bin/git' gw='"$P/Git/cmd/git.exe"'	g='gw'
 
 alias gd='gc diff'
 alias gl='g l'
 alias gca='g ca'
 alias gst='g s'
-alias grb='ge rbi' # rebase
-alias grbc='ge rbc' # rebase continue
+alias grb='g rbi' # rebase
+alias grbc='g rbc' # rebase continue
 alias gmt='g mergetool'
 alias gf='g fix' # fixup commit
 alias gs='g sq' # squash commit

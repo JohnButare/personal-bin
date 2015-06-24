@@ -288,6 +288,7 @@ alias etg='start exiftoolgui' # ExifToolGui
 
 ScriptEval SshAgent initialize
 
+alias hu='HostUtil'
 nu() { net use "$(ptw "$1")" "${@:2}"; } # NetUse
 alias ipc='network ipc'
 IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }

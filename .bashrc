@@ -554,7 +554,7 @@ alias vs='VisualStudio'
 
 alias IntelSyncLocalFiles='slf rrsprsps; slf CsisBuild.intel.com; slf CsisBuild-dr.intel.com'
 alias IntelSyncInstall='m install-CsisBuild; m install-CsisBuildDr; m install-dfs' # m install-cr
-alias msi=MoblSyncInstall isi=IntelSyncInstall islf=IntelSyncLocalFiles
+alias isi=IntelSyncInstall islf=IntelSyncLocalFiles
 alias SetIntelProxy='se intel SetProxy'
 export GITHUB_HOST=github.intel.com
 

@@ -2,7 +2,7 @@
 # Common applications
 app -b $command explorer AutoHotKey
 
-if [[ "$COMPUTERNAME" == @(oversoul|jjbutare-ivm1) ]]; then
+if [[ "$COMPUTERNAME" == @(jjbutare-ivm1) ]]; then
 	app -b mosaico
 elif [[ "$COMPUTERNAME" != @(MiniMe) ]]; then
 	app -b winsplit

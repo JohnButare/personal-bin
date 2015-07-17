@@ -845,13 +845,12 @@ u()
 	# Intel
 	if [[ $# == 0 ]] && intel OnIntelNetwork; then
 		OnIntelNetwork=true
-		ask 'Commit Intel repositories' && { ssc || return; }
-		ask 'Update Intel repositories' && { ssup || return; }
-		ask 'Sync Intel install' && { IntelSyncInstall || return; }
+		ask 'Intel code repository update' && { ssc || return; ssup || return; }
+		ask 'Intel install directory update' && { IntelSyncInstall || return; }
 	fi
 
 	# Wiggin NAS
-	if [[ $# == 0 ]] && HostUtil available nas && ask 'Sync Wiggin nas files'; then
+	if [[ $# == 0 ]] && HostUtil available nas && ask 'Wiggin nas file update'; then
 		case "$HOSTNAME" in
 			bean) NasSyncBean;;
 			oversoul) NasSyncOversoul;;

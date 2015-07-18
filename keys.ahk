@@ -63,8 +63,8 @@ IdleEvent()
 #a::OpenBrowser()
 #!a::NewBrowser()
 ^#h::reload ; Reload AutoHotKeys
-#i::OpenEdge()
-#!i::NewEdge()
+#i::OpenIe()
+#!i::NewIe()
 #j::run eclipse.btm,,min
 #!n::RunOneNote()
 #n::OpenEverNote()

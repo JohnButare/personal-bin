@@ -60,11 +60,11 @@ IdleEvent()
 #!3::NewBash()
 
 ; +=Shift ^=Control #=Win !=Alt
-#a::OpenChrome()
-#!a::NewChrome()
+#a::OpenBrowser()
+#!a::NewBrowser()
 ^#h::reload ; Reload AutoHotKeys
-^#i::run "%PROGRAMS64%\Internet Explorer\iexplore.exe" ; x64
-#!i::run "%PROGRAMS32%\Internet Explorer\iexplore.exe" ; x86
+#i::OpenEdge()
+#!i::NewEdge()
 #j::run eclipse.btm,,min
 #!n::RunOneNote()
 #n::OpenEverNote()

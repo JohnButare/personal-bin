@@ -544,6 +544,11 @@ BuildClean() { n build /t:Clean /m "$code/$1"; }
 alias vs='VisualStudio'
 
 #
+# Juntos
+#
+alias jh='"$cloud/group/Juntos Holdings"'
+
+#
 # Intel
 #
 

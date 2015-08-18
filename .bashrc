@@ -395,7 +395,7 @@ alias g='git' gc=g gw=g # platform specific git (Cygwin, Git for Windows)
 alias gd='gc diff'
 alias gl='g l'
 alias gca='g ca'
-alias gst='g s'
+alias gs='g s'
 alias gr='g rbi' # rebase
 alias grc='g rbc' # rebase continue
 alias grf='g fix' # fixup commit

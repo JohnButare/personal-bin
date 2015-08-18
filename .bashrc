@@ -398,9 +398,9 @@ alias gca='g ca'
 alias gst='g s'
 alias gr='g rbi' # rebase
 alias grc='g rbc' # rebase continue
+alias grf='g fix' # fixup commit
+alias grs='g sq' # squash commit
 alias gmt='g mergetool'
-alias gf='g fix' # fixup commit
-alias gs='g sq' # squash commit
 
 complete -o default -o nospace -F _git g
 alias gg='GitHelper gui'

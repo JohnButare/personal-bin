@@ -6,7 +6,7 @@ app -b $command explorer AutoHotKey
 [[ "$COMPUTERNAME" != @(MiniMe) ]] && app -b $command winsplit
 
 # Host specific applications
-local common="word DropBox PowerMixer PowerMixer"
+local common="word DropBox"
 case "$COMPUTERNAME" in
 	bean) f.lux;;
 	minime | oversoul | jjbutare-wvm*) app -b $command $common;;

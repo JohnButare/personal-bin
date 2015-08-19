@@ -9,7 +9,7 @@ app -b $command explorer AutoHotKey
 local common="word DropBox PowerMixer PowerMixer"
 case "$COMPUTERNAME" in
 	bean) f.lux;;
-	minime) app -b $command $common;;
+	minime | oversoul | jjbutare-wvm*) app -b $command $common;;
 	oversoul) app -b $command $common;;
 	jjbutare-i* | jjbutare-mobl*) app -b $command $common SyncPlicity; intel $command -b;;
 esac

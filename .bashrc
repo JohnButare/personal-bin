@@ -851,7 +851,7 @@ u()
 
 	# Wiggin NAS
 	if [[ $# == 0 ]] && HostUtil available nas && ask 'Wiggin nas file update'; then
-		case "$HOSTNAME" in
+		case "$COMPUTERNAME" in
 			bean) NasSyncBean;;
 			oversoul) NasSyncOversoul;;
 			jjbutare-*) [[ $OnIntelNetwork ]] && NasSyncIntel;;

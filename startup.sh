@@ -2,11 +2,8 @@
 # Common applications
 app -b $command explorer AutoHotKey
 
-if [[ "$COMPUTERNAME" == @(jjbutare-ivm1) ]]; then
-	app -b mosaico
-elif [[ "$COMPUTERNAME" != @(MiniMe) ]]; then
-	app -b winsplit
-fi
+[[ "$COMPUTERNAME" == @(jjbutare-ivm1) ]] && app -b $command mosaico
+[[ "$COMPUTERNAME" != @(MiniMe) ]] && app -b $command winsplit
 
 # Host specific applications
 local common="word DropBox PowerMixer PowerMixer"
@@ -14,14 +11,11 @@ case "$COMPUTERNAME" in
 	bean) f.lux;;
 	minime) app -b $command $common;;
 	oversoul) app -b $command $common;;
-	jjbutare*) app -b $command ProcessExplorer $common SyncPlicity; intel $command -b;;
+	jjbutare-i* | jjbutare-mobl*) app -b $command $common SyncPlicity; intel $command -b;;
 esac
 
-[[ "$COMPUTERNAME" == "jjbutare-mobl" ]] && app -b "$hp"
-
-# Other
 if [[ "$command" == "close" ]]; then
-	app -b close LastPass notepadpp ProcessExplorer
+	app -b close notepadpp ProcessExplorer
 	IsElevated && SqlServer service stop --all
 fi
 

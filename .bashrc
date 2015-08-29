@@ -604,7 +604,7 @@ ProfileManager()
 	local p="$code/ProfileManager/bin/Debug/ProfileManager.exe"
 	[[ ! -f "$p" ]] && p="$P/ITBAS/ProfileManager/ProfileManager.exe"
 	if [[ $# == 1 && -f "$1" ]]; then
-		echo start "$p" \"$(utw $1)\"
+		start "$p" \"$(utw $1)\"
 	elif [[ $# == 1 ]]; then
 		start "$p" \"$(utw $profiles/$1.profile)\"
 	else
@@ -821,10 +821,9 @@ alias dwpDL='dwp Servers=shsprsps'
 # CruiseControlPlugins
 #
 
-#ccdir="$(wtu '\\csisbuild-new.intel.com\d$\Program Files (x86)\CruiseControl.NET\server')"
-#ccdir="$(wtu '\\csisbuild.intel.com\d$\Program Files (x86)\CruiseControl.NET\server')"
+ccdir="$(wtu '\\csisbuild-dr.intel.com\d$\Program Files (x86)\CruiseControl.NET\server')"
 #ccdir="$(wtu '\\csisbuild.intel.com\d$\Program Files (x86)\CruiseControl.NET - PreProd\server')"
-ccdir="$(wtu '\\csisbuild.intel.com\d$\Program Files (x86)\CruiseControl.NET - Prod\server')"
+#ccdir="$(wtu '\\csisbuild.intel.com\d$\Program Files (x86)\CruiseControl.NET - Prod\server')"
 
 ccpu() # CruiseControlProgramUpdate
 {

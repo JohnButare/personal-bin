@@ -4,12 +4,11 @@
 #SingleInstance force
 #NoEnv
 
+Init()
 CommonInit()
 BrowserInit()
 OfficeInit()
 BashInit()
-
-Init()
 
 #Include common.ahk
 #Include browser.ahk
@@ -31,13 +30,8 @@ Init()
 {
   global
 	StringCaseSense, Off		
-	IdleMinutes = 15
+	DEFAULT_BROWSER=firefox
 }  
-
-IdleEvent()
-{
-	;run SleepTaskSleep.btm,,min
-}
 
 #Enter::send {Enter} ; disable Narrator
 

@@ -291,7 +291,7 @@ RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
 alias slf='SyncLocalFiles'
 alias SshKey='ssh-add ~/.ssh/id_dsa'
 SshShow() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
-SshFix() { [[ "$PLATFORM" == "mac" ]] && return; SshAgent fix || return; ScriptEval SshAgent initialize; }
+SshFix() { SshAgent fix || return; ScriptEval SshAgent initialize; }
 alias sshf='SshFix'
 
 #

@@ -553,7 +553,7 @@ alias jh='"$cloud/group/Juntos Holdings"'
 #
 
 alias IntelSyncLocalFiles='slf rrsprsps; slf CsisBuild.intel.com; slf CsisBuild-dr.intel.com'
-alias IntelSyncInstall='m install-CsisBuild; m install-CsisBuildDr; m install-dfs' # m install-cr
+alias IntelSyncInstall='m install-CsisBuild; m install-CsisBuildDr; m install-dfs ;m install-cr'
 alias isi=IntelSyncInstall islf=IntelSyncLocalFiles
 alias SetIntelProxy='se intel SetProxy'
 export GITHUB_HOST=github.intel.com

@@ -52,6 +52,7 @@ Init()
 ^#3::NewElevatedBash()
 #3::OpenBash()
 #!3::NewBash()
+#+3::NewBash()
 
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenBrowser()

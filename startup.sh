@@ -2,8 +2,8 @@
 # Common applications
 app -b $command explorer AutoHotKey
 
-[[ "$COMPUTERNAME" == @(jjbutare-ivm1) ]] && app -b $command mosaico
-[[ "$COMPUTERNAME" != @(MiniMe) ]] && app -b $command winsplit
+[[ "$COMPUTERNAME" == @(jjbutare-?vm*) ]] && app -b $command mosaico
+[[ "$COMPUTERNAME" != @(jjbutare-?vm*|MiniMe) ]] && app -b $command winsplit
 
 # Host specific applications
 local common="word DropBox"

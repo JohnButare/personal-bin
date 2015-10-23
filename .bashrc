@@ -328,7 +328,7 @@ GitPrompt()
 	local gitColor red='\e[31m'
 
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
-	if [[ -d .git ]]; then
+	if [[ -e .git ]]; then
 		:
 		gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 		GIT_PS1_SHOWUPSTREAM="auto verbose"; 

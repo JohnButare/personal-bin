@@ -20,7 +20,9 @@ HISTCONTROL=erasedups
 shopt -s autocd cdspell cdable_vars dirspell histappend direxpand
 
 # completion - win
-[[ -f "$COMPLETION/git" ]] && ! IsFunction __git_ps1 && { . "$COMPLETION/git"; }
+[[ -f "$COMPLETION/git" ]] && ! IsFunction __git_ps1 && { . "$COMPLETION/git"; . "$BIN/git-prompt.sh"; }
+#__git_eread
+#
 
 # completion - mac
 if [[ -f "$COMPLETION/git-prompt.sh" ]] && ! IsFunction __git_ps1; then
@@ -111,6 +113,8 @@ zll() { [[ "$PLATFORM" == "win" ]] && 7z.exe l -slt "${@}" || unzip -ll "${@}"; 
 #
 alias ListVars='declare -p | egrep -v "\-x"'
 alias ListExportVars='export'
+alias ListFunctions='declare -F'
+alias ListFunctionsAll='declare -f'
 alias unexport='unset'
 alias unfunction='unset -f'
 

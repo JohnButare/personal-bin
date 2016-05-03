@@ -107,7 +107,7 @@ alias fm='start "$p/7-Zip/7zFM.exe"'
 7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 alias untar='tar -v -x --atime-preserve <'
 zbak() { local z="zip -r"; [[ "$PLATFORM" == "win" ]] && z="7z.exe a"
-	[[ $# == 1  ]] && $z "$1.zip" "$1" || $z "$1" "${@:2}"; }
+	[[ $# == 1  ]] && eval $z "$1.zip" "$1" || eval $z "$1" "${@:2}"; }
 zrest() { [[ "$PLATFORM" == "win" ]] && 7z.exe x "${@}"|| unzip "${@}"; }
 zls() { [[ "$PLATFORM" == "win" ]] && 7z.exe l "${@}" || unzip -l "${@}"; }
 zll() { [[ "$PLATFORM" == "win" ]] && 7z.exe l -slt "${@}" || unzip -ll "${@}"; }

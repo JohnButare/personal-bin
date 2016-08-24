@@ -57,6 +57,7 @@ Init()
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenBrowser()
 #!a::NewBrowser()
+#b::WinActivate .* Microsoft SQL Server Management Studio
 ^#h::reload ; Reload AutoHotKeys
 #i::OpenIe()
 #!i::NewIe()
@@ -73,12 +74,6 @@ Init()
 ^#t::Test()
 #t::OpenTextEditor()
 #!t::NewTextEditor()
-^#v::run "%bash%" VisualStudio start new,,min
-#v::run "%bash%" VisualStudio start,,min
-#!v::OpenVmWare()
-^#w::NewWordDocument()
-#!w::NewWordDocument()
-#!x::OpenFirefox()
+#v::WinActivate .* Microsoft Visual Studio
 #!y::OpenRecycleBin()
 #z::OpenIm()
-

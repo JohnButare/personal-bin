@@ -75,5 +75,7 @@ Init()
 #t::OpenTextEditor()
 #!t::NewTextEditor()
 #v::WinActivate .* Microsoft Visual Studio
+#!v::WinActivate .* ASG-Remote Desktop 2012
+#!w::RunWord()
 #!y::OpenRecycleBin()
 #z::OpenIm()

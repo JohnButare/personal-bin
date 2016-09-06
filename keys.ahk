@@ -57,6 +57,7 @@ Init()
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenBrowser()
 #!a::NewBrowser()
+#!g::WinActivate .*Git Extensions
 ^#h::reload ; Reload AutoHotKeys
 #i::OpenIe()
 #!i::NewIe()

@@ -57,7 +57,6 @@ Init()
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenBrowser()
 #!a::NewBrowser()
-#b::WinActivate .* Microsoft SQL Server Management Studio
 ^#h::reload ; Reload AutoHotKeys
 #i::OpenIe()
 #!i::NewIe()
@@ -68,9 +67,7 @@ Init()
 #o::RunOutlook()
 #!p::run "procexp.exe"
 #!q::run "%bash%" quicken start,,min
-+#s::PowerDownMonitor()
-+#^s::run "%bash%" %BashArgs% power sleep,,min
-#!s::RunSonos()
+#!s::WinActivate .* Microsoft SQL Server Management Studio
 ^#t::Test()
 #t::OpenTextEditor()
 #!t::NewTextEditor()

@@ -71,7 +71,7 @@ Init()
 #!s::WinActivate .* Microsoft SQL Server Management Studio
 ^#t::Test()
 #t::OpenTextEditor()
-#!t::NewTextEditor()
+#!t::OpenTextEditor()
 #v::WinActivate .* Microsoft Visual Studio
 #!v::WinActivate .* ASG-Remote Desktop 2012
 #!w::RunWord()

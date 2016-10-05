@@ -405,10 +405,14 @@ alias gl='g l'
 alias gca='g ca'
 alias gs='g s'
 alias gri='g rbi' # rebase
+alias gria='g rbia' # rebase interactive auto, rebase all fixup! commits
 alias grc='g rbc' # rebase continue
 alias grf='g fix' # fixup commit
 alias grs='g sq' # squash commit
 alias gmt='g mergetool'
+alias grft='grf && g i Test' # fixup commit and push to test
+alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
+
 
 complete -o default -o nospace -F _git g
 alias gg='GitHelper gui'

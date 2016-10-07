@@ -1,4 +1,6 @@
 [alias]
+	test = "!f() { git --version; git config -l --system ; git remote prune origin; }; f"
+
 	df = diff
 	dfs = diff --staged
 	ui = always

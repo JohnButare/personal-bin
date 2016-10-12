@@ -734,6 +734,7 @@ alias sptb='antidote App=ScadaPortal BuildType=DeployToTest'
 
 alias spua='start "$sp/Libraries/UpdateAntidote.cmd"'
 alias spum='start "$sp/Libraries/UpdateMagellan.cmd"'
+alias spumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $sp/Libraries"
 
 alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/null; start PointManagement.exe; popd > /dev/null'
 

@@ -713,6 +713,7 @@ alias frt='$frc/Test/WebServiceTest/bin/Debug/WebServiceTest.exe'
 #
 
 sp="$code/ScadaPortal"
+spt="$code/ScadaPortalTest"
 sps="$sp/DataScripts"
 spc="$sp/Source"
 

@@ -658,6 +658,7 @@ alias ap='ProfileManager Antidote'
 alias apu='cp "$ac/SolutionItems/Profiles/"*.profile "$profiles"'
 
 alias aum='start "$ac/SolutionItems/Libraries/UpdateMagellan.cmd"'
+alias aumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $ac/SolutionItems/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/SolutionItems/Libraries/Silverlight" # Updte Magellan Core
 alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
 alias aub='CopyDir "$code/Antidote/Antidote/bin/Debug" "//CsisBuild-new.intel.com/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
 alias aul='CopyDir "$code/Antidote/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
@@ -735,7 +736,7 @@ alias sptb='antidote App=ScadaPortal BuildType=DeployToTest'
 
 alias spua='start "$sp/Libraries/UpdateAntidote.cmd"'
 alias spum='start "$sp/Libraries/UpdateMagellan.cmd"'
-alias spumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $sp/Libraries"
+alias spumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $sp/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $sp/Libraries/Silverlight"
 
 alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/null; start PointManagement.exe; popd > /dev/null'
 

@@ -737,8 +737,7 @@ alias sptb='antidote App=ScadaPortal BuildType=DeployToTest'
 alias spua='start "$sp/Libraries/UpdateAntidote.cmd"'
 alias spum='start "$sp/Libraries/UpdateMagellan.cmd"'
 alias spumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $sp/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $sp/Libraries/Silverlight"
-
-alias pmu='pushd "$spc/PointManagementUtility/PointManagement/bin/Debug" > /dev/null; start PointManagement.exe; popd > /dev/null'
+alias spumd="cp $mc/Source/Magellan.Data/bin/Debug/Magellan.Data.* $sp/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $sp/Libraries/Silverlight"
 
 # service
 alias sstStop='service stop ScadaService RASSI1PRSQLS; service stop ScadaService RASSI1BKSQLS; echo "Disable AlertChecker to prevent automatic service start"'

@@ -129,4 +129,4 @@
 [git-up "fetch"]
 	prune = true
 [git-up "rebase"]
-	auto = true
+	auto = false

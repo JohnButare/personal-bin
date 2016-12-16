@@ -30,7 +30,7 @@ Init()
 {
   global
 	StringCaseSense, Off		
-	DEFAULT_BROWSER=firefox
+	DEFAULT_BROWSER=chrome
 }  
 
 #Enter::send {Enter} ; disable Narrator

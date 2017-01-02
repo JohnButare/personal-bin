@@ -491,9 +491,6 @@ alias cs='cscript /nologo'
 # wiggin
 #
 
-alias wn='start "$cloud/Systems/Wiggin Network Notes.docx"'
-alias house='start "$cloud/House/House Notes.docx"'
-
 nas='//nas'
 ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'

@@ -502,6 +502,11 @@ alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount //nas/home &
 alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
 alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
 
+# homebridge
+alias hdir='cd //nasc/docker/homebridge'
+alias hconfig='hdir; e /volumes/docker/homebridge/config.json'
+alias hconfigp='hdir; e /volumes/docker/homebridge/package.json'
+
 #
 # XML
 #

@@ -62,13 +62,12 @@ Init()
 #i::OpenIe()
 #!i::NewIe()
 #j::run eclipse.btm,,min
-#!n::RunOneNote()
-#n::OpenEverNote()
+#n::RunOneNote()
 ^#n::NewFolder()
 #o::RunOutlook()
 #!p::run "procexp.exe"
 #!q::run "%bash%" quicken start,,min
-#!s::WinActivate .* Microsoft SQL Server Management Studio
+#!s::WinActivate .*Microsoft SQL Server Management Studio
 ^#t::Test()
 #t::OpenTextEditor()
 #!t::OpenTextEditor()
@@ -77,3 +76,4 @@ Init()
 #!w::RunWord()
 #!y::OpenRecycleBin()
 #z::OpenIm()
+; +=Shift ^=Control #=Win !=Alt

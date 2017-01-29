@@ -498,7 +498,7 @@ ng='git@butare.net:/volume1/git'
 alias nrslf='slf butare.net'
 
 # NAS Sync
-alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount //nas/home && merge bean-udata; unc mount //nas/public/documents/data && merge bean-data'
+alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount //nasc/usbshare1/home && merge bean-udata; unc mount //nasc/usbshare1/public/documents/data && merge bean-data'
 alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
 alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
 
@@ -868,7 +868,6 @@ u()
 	if [[ $# == 0 ]] && HostUtil available nas && ask 'Wiggin nas file update'; then
 		case "$COMPUTERNAME" in
 			bean) NasSyncBean;;
-			oversoul) NasSyncOversoul;;
 			jjbutare-*) [[ $OnIntelNetwork ]] && NasSyncIntel;;
 		esac
 	fi

@@ -333,19 +333,16 @@ GetPrompt()
 
 GitPrompt()
 {
+	[[ "$PLATFORM" == "Win" ]] && return # git is slow on windows
+
 	local gitColor red='\e[31m'
 
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
-	if [[ -e .git ]]; then
-		:
-		gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
-		GIT_PS1_SHOWUPSTREAM="auto verbose"; 
-		if [[ "$PLATFORM" == "Mac" ]]; then
-			GIT_PS1_SHOWDIRTYSTATE="true" # shows *
-			GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
-			GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
-		fi
-	fi
+	gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
+	GIT_PS1_SHOWUPSTREAM="auto verbose"; 
+	GIT_PS1_SHOWDIRTYSTATE="true" # shows *
+	GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
+	GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
 	__git_ps1 "$gitColor (%s)"
 }
 
@@ -521,6 +518,7 @@ alias XmlShow='xml sel -t -c'
 www="/cygdrive/c/inetpub/wwwroot"
 
 alias ss='SqlServer'
+alias ssms='SqlServerManagementStudio'
 alias sscd='ScriptCd SqlServer cd'
 alias ssp='SqlServer profiler express'
 
@@ -640,6 +638,25 @@ alias inc='code commit IntelNuGet'
 alias albert='rdesk asmadrid-mobl2'
 
 #
+# Magellan
+#
+
+mc="$code/Magellan"
+ms="$mc/Source"
+
+alias mup='cdup Magellan'
+alias mc='cdc Magellan'
+alias mst='cds Magellan'
+alias mr='cdr Magellan'
+
+alias mvs='vs "$ms/Magellan.sln"'
+alias mb='build Magellan/Source/Magellan.sln'
+alias mbc='BuildClean Magellan/Source/Magellan.sln'
+alias mlb='antidote App=Magellan BuildType=LocalBuild CacheBrokerAddress=@DatabaseServer@'
+
+alias mpu='cp "$mc/Profiles/"*.profile "$profiles"'
+
+#
 # Antidote
 #
 
@@ -666,25 +683,6 @@ alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antido
 alias aub='CopyDir "$code/Antidote/Antidote/bin/Debug" "//CsisBuild-new.intel.com/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
 alias aul='CopyDir "$code/Antidote/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
 alias aubmq='CopyDir "$code/Antidote/Tools/MessageQueueCheck/bin/Debug" "//CsisBuild-new.intel.com/d$/Projects/Antidote/Tools/MessageQueueCheck/bin/Debug"'
-
-#
-# Magellan
-#
-
-mc="$code/Magellan"
-ms="$mc/Source"
-
-alias mup='cdup Magellan'
-alias mc='cdc Magellan'
-alias mst='cds Magellan'
-alias mr='cdr Magellan'
-
-alias mvs='vs "$ms/Magellan.sln"'
-alias mb='build Magellan/Source/Magellan.sln'
-alias mbc='BuildClean Magellan/Source/Magellan.sln'
-alias mlb='antidote App=Magellan BuildType=LocalBuild CacheBrokerAddress=@DatabaseServer@'
-
-alias mpu='cp "$mc/Profiles/"*.profile "$profiles"'
 
 #
 # FaSTr
@@ -720,6 +718,8 @@ sp="$code/ScadaPortal"
 spt="$code/ScadaPortalTest"
 sps="$sp/DataScripts"
 spc="$sp/Source"
+
+alias ScadaRunOnAll='/cygdrive/c/Projects/ScadaPortal/Source/Utilities/ScadaRunOnAll/bin/Debug/ScadaRunOnAll.exe'
 
 alias spic='g integrate Continuous'
 alias spit='g integrate Test'
@@ -780,8 +780,10 @@ alias dpmTest='dpmp Servers=RAC2FMSF-CIM;RAC2FMSC-CIM;RAPB1FMSAA-CIM test=true f
 # deploy to test
 alias dra='deploy RelayAgent force=true'
 alias dss='deploy ScadaService force=true'
+alias dsps='deploy ScadaProjectService force=true ForceLocalDeployment=true'
 alias dhdb='deploy HistorianDb force=true DeployClr=true NoSecondary=false'
-alias ddl='deploy DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true DeployScreens=true AddPoints=true'
+alias ddlc='deploy DataLogger force=true InstallDataLogger=false ConfigureDataLogger=false PopPoints=false DeployScreens=false AddPoints=false ChangeCredentials=true ForceLocalDeployment=true'
+alias ddl='deploy DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true DeployScreens=true AddPoints=true ChangeCredentials=true ForceLocalDeployment=true'
 alias dac='deploy AlertChecker force=true'
 alias dpm='deploy PointManagement force=true'
 alias dw='deploy Web force=true'

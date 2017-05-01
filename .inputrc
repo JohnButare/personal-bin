@@ -2,11 +2,13 @@
 # http://www.bigsmoke.us/readline/shortcuts.pxhtml
 
 # test
+#"\eOP": "F1"  #F1
 "\e[18~": "F7" #F7
 "\e[19~": "F8" #F8
 
-"\eOP": shell-expand-line   #F1
-"\eOQ": history-expand-line #F2
+"\eOP": "gs\015"       #F1
+"\eOQ": shell-expand-line   #F2
+"\eOR": history-expand-line #F3
 
 # previous positition - ctrl-x
 "\eOH": beginning-of-line   # home, ctrl-a

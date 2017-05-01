@@ -16,9 +16,15 @@
 	amend = commit --amend -C HEAD
 	ap = add --patch
 	au = add --update
-	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -rn
+	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -r
 
 	b = branch -vv
+
+	ls = "!f()   { git show-ref | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | egrep '^[ ]*'$1; }; f" # list, ls PATTERN
+	bls = "!f()  { git show-ref | grep 'refs/heads' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | egrep '^[ ]*'$1;  }; f" # list branch, bls PATTERN
+	tls = "!f()  { git show-ref | grep 'refs/tags' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sed 's/v//' | sed 's/\\./,/g' | sort -n | sed 's/,/\\./g' | egrep '^[ ]*'$1; }; f" # list tag, tls PATTERN
+	rbls = "!f() { git show-ref | grep 'refs/remotes/origin' | cut -f 2 -d' ' | cut -f 4-5 -d'/' | sort | egrep '^[ ]*'$1; }; f" # list remote branch, rbls PATTERN
+
 	br = "!f() { git branch --track $1 origin/$1; git checkout $1; }; f" # create local version of specified remote branch
 	brcr = "!f() { [[ ! $3 ]] && { echo "An existing branch is required" ; return 1; }; git branch $2 $3 && git push -u origin $2 && git checkout $2; }; f" - # branch create NEW EXISTING
 	brmv = "!f() { git branch -m $1 $2 && git push origin :$1 && git push -u origin $2; }; f" # branch move (rename)
@@ -44,6 +50,7 @@
 	dcw = diff --color-words
 	div = divergence
 	dt = difftool
+	ft = fetch --tags
 	h = help
 
 	i = integrate # integrate current branch to integration branch, g i INTEGRATION_BRANCH
@@ -75,7 +82,7 @@
 	rpo = remote prune origin
 	fix = "!f() { git commit -am \"fixup! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # fixup [COMMIT] [MESSAGE] - fixup this commit onto specified or last commit
 	sq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # squash [COMMIT] [MESSAGE] - squash this commit onto specified or last commit
-	rs = remote show
+		rs = remote show
 	rso = remote show origin
 	rh = reset --hard
 	ru = remote update --prune

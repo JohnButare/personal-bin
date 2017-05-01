@@ -1,17 +1,16 @@
-
-# Common applications
 app -b $command explorer AutoHotKey
 
-[[ "$COMPUTERNAME" == @(jjbutare-?vm*|jjbutare-mobl12) ]] && app -b $command mosaico
-[[ "$COMPUTERNAME" != @(jjbutare-?vm*|jjbutare-mobl12) ]] && app -b $command winsplit
+if [[ "$COMPUTERNAME" == @(jjbutare-?vm*|jjbutare-mobl*) ]]; then
+	app -b $command mosaico
+else
+	app -b $command winsplit
+fi
 
-# Host specific applications
 local common="word DropBox"
 case "$COMPUTERNAME" in
 	bean) f.lux;;
-	minime | oversoul | jjbutare-wvm*) app -b $command $common;;
-	oversoul) app -b $command $common;;
-	jjbutare-i* | jjbutare-mobl*) app -b $command $common SyncPlicity; intel $command -b;;
+	jjbutare-wvm*|oversoul) app -b $command $common;;
+	jjbutare-i*|jjbutare-mobl*) app -b $command $common SyncPlicity duet; intel $command -b;;
 esac
 
 if [[ "$command" == "close" ]]; then

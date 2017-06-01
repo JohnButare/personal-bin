@@ -3,12 +3,14 @@
 
 # test
 #"\eOP": "F1"  #F1
-"\e[18~": "F7" #F7
-"\e[19~": "F8" #F8
+#"\e[18~": "F7" #F7
+#"\e[19~": "F8" #F8
 
-"\eOP": "gs\015"       #F1
-"\eOQ": shell-expand-line   #F2
-"\eOR": history-expand-line #F3
+"\eOP": "gs\015"            #F1
+"\eOQ": "gbs\015"           #F2
+
+"\e[15~": shell-expand-line   #F5
+"\e[16~": history-expand-line #F6
 
 # previous positition - ctrl-x
 "\eOH": beginning-of-line   # home, ctrl-a

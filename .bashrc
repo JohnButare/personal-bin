@@ -715,6 +715,8 @@ alias frt='$frc/Test/WebServiceTest/bin/Debug/WebServiceTest.exe'
 # SCADA Portal
 #
 
+sprt='g co Test; g reset --hard Production; g merge develop; g merge US-EnhanceWebFailover; g merge origin/US-PLCEdit4; g merge origin/US-RevokeGuest; g merge US-HmiImprovements' # SCADA Portal reset test
+
 sp="$code/ScadaPortal"
 spt="$code/ScadaPortalTest"
 sps="$sp/DataScripts"

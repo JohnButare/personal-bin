@@ -398,6 +398,7 @@ alias g='git' gc=g gw=g # platform specific git (Cygwin, Git for Windows)
 [[ "$PLATFORM" == "win" ]] && alias gc='/usr/bin/git' gw='"$P/Git/cmd/git.exe"'	g='gw'
 
 alias gd='gc diff'
+alias gf='gc freeze'
 alias gl='g l'
 alias gca='g ca'
 alias gs='g s' 			# status

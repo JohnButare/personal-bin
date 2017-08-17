@@ -46,6 +46,10 @@ Init()
 ^Numpad2::SoundSet -5
 ^Numpad0::SoundSet +1, , mute
 
+; Mouse
+WheelLeft::Send ^#{Left}
+WheelRight::Send ^#{Right}
+
 ; Win
 #1::WinClose A ; Close active window
 #2::WinMinimize A ; Close active window

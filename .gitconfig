@@ -30,6 +30,7 @@
 	brcr = "!f() { [[ ! $3 ]] && { echo "An existing branch is required" ; return 1; }; git branch $2 $3 && git push -u origin $2 && git checkout $2; }; f" - # branch create NEW EXISTING
 	brmv = "!f() { git branch -m $1 $2 && git push origin :$1 && git push -u origin $2; }; f" # branch move (rename)
 	fr = "!f() { git brmv $1 Frozen-$1; }; f" # branch freeze
+	ufr = "!f() { echo git brmv "$1" "${1/Frozen-/}"; }; f" # branch unfreeze
 	brrm = "!f() { git branch -d $1; git push origin :$1 && git remote prune origin; }; f" # remove branch
 	brex = "!f() { git rev-parse --verify $1 >& /dev/null; }; f" # branch exist
 

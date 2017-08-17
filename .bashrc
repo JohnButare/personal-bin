@@ -192,6 +192,8 @@ fsqlv() { fsql "-- version $1"; } # FindSqlVersion [VERSION]
 esqlv() { esql "-- version $1"; } # EditSqlVersion [VERSION]
 msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | egrep -i -v "deploy|skip|ignore" | sort | tail -1; } # MaxSqlVersion
 
+eai() { fte "0.0.0.0" "AssemblyInfo.cs"; } # EditAssemblyInfo that are set to deploy (v0.0.0.0)
+
 FindText() # TEXT FILE_PATTERN [START_DIR](.)
 { 
 	local startDir="${@:3}"
@@ -333,11 +335,17 @@ GetPrompt()
 
 GitPrompt()
 {
-	[[ "$PLATFORM" == "Win" ]] && return # git is slow on windows
-
 	local gitColor red='\e[31m'
-
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
+
+	if [[ "$PLATFORM" == "Win" ]]; then # basic prompt - git is slow on windows
+		[[ -d .git ]] || return
+		#gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
+		#__git_ps1 "$gitColor (%s)"	
+		echo "$gitColor  ($(git rev-parse --abbrev-ref HEAD))"
+		return 
+	fi
+
 	gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 	GIT_PS1_SHOWUPSTREAM="auto verbose"; 
 	GIT_PS1_SHOWDIRTYSTATE="true" # shows *
@@ -411,7 +419,7 @@ alias grs='g sq' 		# create a rebase squash commit
 alias gmt='g mergetool'
 alias grft='grf && g i Test' # fixup commit and push to test
 alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
-
+alias gu='gc up'		# update branches
 
 complete -o default -o nospace -F _git g
 alias gg='GitHelper gui'
@@ -663,7 +671,6 @@ alias mpu='cp "$mc/Profiles/"*.profile "$profiles"'
 #
 
 ac="$code/Antidote"
-as="$ac/SolutionItems/DataScripts/MigrationScripts"
 
 alias aupd='cdup Antidote'
 alias ac='cdc Antidote'
@@ -671,20 +678,19 @@ alias as='cds Antidote'
 alias ar='cdr Antidote'
 
 alias avs='vs "$ac/Antidote.sln"'
-alias ab='build Antidote/Antidote.sln'
+alias ab='build Antidote/source/Antidote.sln'
 alias abc='BuildClean Antidote/Antidote.sln'
 alias alb='antidote verbose App=Antidote BuildType=LocalBuild'
 
 alias ap='ProfileManager Antidote'
-alias apu='cp "$ac/SolutionItems/Profiles/"*.profile "$profiles"'
+alias apu='cp "$ac/deployment/profiles/"*.profile "$profiles"'
 
-alias aum='start "$ac/SolutionItems/Libraries/UpdateMagellan.cmd"'
-alias aumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $ac/SolutionItems/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/SolutionItems/Libraries/Silverlight" # Updte Magellan Core
-alias aumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $ac/SolutionItems/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/SolutionItems/Libraries/Silverlight" # Update Magellan Service Management
-alias aup='sudo cp "$code/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
-alias aub='CopyDir "$code/Antidote/Antidote/bin/Debug" "//CsisBuild-new.intel.com/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
-alias aul='CopyDir "$code/Antidote/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
-alias aubmq='CopyDir "$code/Antidote/Tools/MessageQueueCheck/bin/Debug" "//CsisBuild-new.intel.com/d$/Projects/Antidote/Tools/MessageQueueCheck/bin/Debug"'
+alias aum='start "$ac/libraries/UpdateMagellan.cmd"'
+alias aumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $ac/libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/libraries/Silverlight" # Updte Magellan Core
+alias aumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $ac/libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/libraries/Silverlight" # Update Magellan Service Management
+alias aup='sudo cp "$code/source/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
+alias aub='CopyDir "$code/source/Antidote/Antidote/bin/Debug" "//CsisBuild-new.intel.com/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
+alias aul='CopyDir "$code/source/Antidote/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
 
 #
 # FaSTr

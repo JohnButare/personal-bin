@@ -47,8 +47,8 @@ Init()
 ^Numpad0::SoundSet +1, , mute
 
 ; Mouse
-WheelLeft::Send ^#{Left}
-WheelRight::Send ^#{Right}
+WheelLeft::Send ^#{Right}
+WheelRight::Send ^#{Left}
 
 ; Win
 #1::WinClose A ; Close active window
@@ -67,12 +67,13 @@ WheelRight::Send ^#{Right}
 #!i::NewIe()
 #j::run eclipse.btm,,min
 #n::RunOneNote()
+^#m::RunTidal()
 ^#n::NewFolder()
 #o::RunOutlook()
 #!p::run "procexp.exe"
 #!q::run "%bash%" quicken start,,min
 #!s::WinActivate .*Microsoft SQL Server Management Studio
-^#t::Test()
+^#t::RunTidal()
 #t::OpenTextEditor()
 #!t::OpenTextEditor()
 #v::WinActivate .* Microsoft Visual Studio

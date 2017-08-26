@@ -687,6 +687,7 @@ alias apu='cp "$ac/deployment/profiles/"*.profile "$profiles"'
 
 alias aum='start "$ac/libraries/UpdateMagellan.cmd"'
 alias aumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $ac/libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/libraries/Silverlight" # Updte Magellan Core
+alias aumt="cp $mc/Source/Magellan.Threading/bin/Debug/Magellan.Threading.* $ac/Libraries" # Antidote Update Magellan Threading
 alias aumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $ac/libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/libraries/Silverlight" # Update Magellan Service Management
 alias aup='sudo cp "$code/source/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
 alias aub='CopyDir "$code/source/Antidote/Antidote/bin/Debug" "//CsisBuild-new.intel.com/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
@@ -747,8 +748,8 @@ alias spbc='BuildClean ScadaPortal/Source/ScadaPortal.sln'
 alias splb='antidote App=ScadaPortal BuildType=LocalBuild'
 alias sptb='antidote App=ScadaPortal BuildType=DeployToTest'
 
-alias spua='start "$sp/Libraries/UpdateAntidote.cmd"'
-alias spum='start "$sp/Libraries/UpdateMagellan.cmd"'
+alias spua='start "$sp/bin/UpdateAntidote.cmd"'
+alias spum='start "$sp/bin/UpdateMagellan.cmd"'
 alias spumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.{dll,pdb,xml} $sp/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $sp/Libraries/Silverlight"
 alias spumd="cp $mc/Source/Magellan.Data/bin/Debug/Magellan.Data.* $sp/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $sp/Libraries/Silverlight"
 alias spumt="cp $mc/Source/Magellan.Threading/bin/Debug/Magellan.Threading.* $sp/Libraries"

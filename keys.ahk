@@ -60,7 +60,7 @@ WheelRight::Send ^#{Left}
 
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenBrowser()
-#!a::NewBrowser()
+#!a::WinActivate Antidote
 #!g::WinActivate .*Git Extensions
 ^#h::reload ; Reload AutoHotKeys
 #i::OpenIe()

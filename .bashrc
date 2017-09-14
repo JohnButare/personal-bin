@@ -770,6 +770,9 @@ alias sslppbk='ssl rasPPbksqls'
 
 # deploy
 deploy() { pushd $spc/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
+alias dclr='deploy HistorianDb force=true BkOnly=true Projects=TB1 DeployClr=true DeployScripts=false ControlServiceModules=false DeployHistorianSharedClr=false' # deploy custom
+alias dra='deploy RelayAgent force=true' # deploy relay agent
+alias das='deploy AlarmShelvingService force=true' # deploy alarm shelving service
 
 # deploy relay
 alias drt="deploy Web Environment=Test force=true DeployWeb=false DeployScripts=false DeployClr=true"

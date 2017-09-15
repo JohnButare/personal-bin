@@ -498,13 +498,14 @@ alias cs='cscript /nologo'
 # wiggin
 #
 
-nas='//nas'
+nas='//nasc'
 ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 ng='git@butare.net:/volume1/git'
 alias nrslf='slf butare.net'
 
 # NAS Sync
+alias nud='NasUpdateDhcp'; alias NasUpdateDhcp='scp ~/Dropbox/systems/nasc/DHCP/dhcpd-eth0-static.conf root@nasc:/etc/dhcpd'
 alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount //nasc/usbshare1/home && merge bean-udata; unc mount //nasc/usbshare1/public/documents/data && merge bean-data'
 alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
 alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'

@@ -503,6 +503,7 @@ ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 ng='git@butare.net:/volume1/git'
 alias nrslf='slf butare.net'
+alias NasDown='ssh root@nas1 poweroff; ssh root@nas2 poweroff'
 
 # NAS Configuration
 alias ned='NasEditDns'; alias NasEditDns="e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf"

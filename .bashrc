@@ -504,15 +504,19 @@ nr='//butare.net@ssl@5006/DavWWWRoot'
 ng='git@butare.net:/volume1/git'
 alias nrslf='slf butare.net'
 
+# NAS Configuration
+alias ned='NasEditDns'; alias NasEditDns="e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf"
+alias nudhcp='NasUpdateDhcp'; alias NasUpdateDhcp="scp ~/Dropbox/systems/nas/DNS/dhcpd-eth0-static.conf root@nas1:/etc/dhcpd"
+alias nudns='NasUpdateDns'; NasUpdateDns() { scp ~/"Dropbox/systems/nas/dns/1.168.192.in-addr.arpa" ~/"Dropbox/systems/nas/dns/hagerman.butare.net" "root@nas$1:/var/packages/DNSServer/target/named/etc/zone/master"; }
+alias ncc='NasCopyConfig'; NasCopyConfig() { scp "root@nas$1:/etc/dhcpd/dhcpd-eth0-"*".conf" "root@nas$1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; }
+
 # NAS Sync
-alias ned='NasEditDhcp'; alias NasEditDhcp='e ~/Dropbox/systems/nas/DHCP/dhcpd-eth0-static.conf'
-alias nud='NasUpdateDhcp'; alias NasUpdateDhcp='scp ~/Dropbox/systems/nas/DHCP/dhcpd-eth0-static.conf root@$nas:/etc/dhcpd'
-alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount //$nas/usbshare1/home && merge bean-udata; unc mount //nasc/usbshare1/public/documents/data && merge bean-data'
+alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount $nas/usbshare1/home && merge bean-udata; unc mount //nasc/usbshare1/public/documents/data && merge bean-data'
 alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
 alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
 
 # homebridge
-alias hdir='cd //$nas/docker/homebridge'
+alias hdir='cd $nas/docker/homebridge'
 alias hconfig='hdir; e /volumes/docker/homebridge/config.json'
 alias hconfigp='hdir; e /volumes/docker/homebridge/package.json'
 

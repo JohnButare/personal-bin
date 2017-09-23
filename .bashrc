@@ -265,9 +265,8 @@ alias estart='te /etc/profile /etc/bashrc /etc/bash.bashrc "$bin/bash.bashrc" "$
 
 alias ebo='te $ubin/.minttyrc $ubin/.inputrc /etc/bash.bash_logout $ubin/.bash_logout'
 
-# Autohotkey
-alias EditKey='te $ubin/keys.ahk'
-alias SetKey='AutoHotKey restart'
+alias ahk='AutoHotkey'
+alias ahkr='ahk restart'
 
 # Startup
 alias st='startup'

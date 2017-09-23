@@ -2,7 +2,6 @@
 
 ; Initialize
 #SingleInstance force
-#NoEnv
 
 Init()
 CommonInit()
@@ -10,13 +9,13 @@ BrowserInit()
 OfficeInit()
 BashInit()
 
+#Include C:\Program Files\Cygwin\usr\local\data\platform\win
 #Include common.ahk
 #Include browser.ahk
 #Include display.ahk
 #Include office.ahk
 #Include music.ahk
 #Include bash.ahk
-#Include VMware.ahk
 
 Test()
 {
@@ -29,11 +28,10 @@ Test()
 Init()
 {
   global
-	StringCaseSense, Off		
-	DEFAULT_BROWSER=chrome
+	DEFAULT_BROWSER := "chrome"
 }  
 
-#Enter::send {Enter} ; disable Narrator
+#Enter::send "{Enter}" ; disable Narrator
 
 ; Numeric Keypad
 ^Numpad4::MusicPreviousTrack()
@@ -47,12 +45,12 @@ Init()
 ^Numpad0::SoundSet +1, , mute
 
 ; Mouse
-WheelLeft::Send ^#{Right}
-WheelRight::Send ^#{Left}
+WheelLeft::Send "^#{Right}"
+WheelRight::Send "^#{Left}"
 
 ; Win
-#1::WinClose A ; Close active window
-#2::WinMinimize A ; Close active window
+#1::WinClose "A" ; Close active window
+#2::WinMinimize "A" ; Close active window
 ^#3::NewElevatedBash()
 #3::OpenBash()
 #!3::NewBash()
@@ -61,7 +59,7 @@ WheelRight::Send ^#{Left}
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenBrowser()
 #!a::WinActivate Antidote
-#!g::WinActivate .*Git Extensions
+#!g::WinActivate ".*Git Extensions"
 ^#h::reload ; Reload AutoHotKeys
 #i::OpenIe()
 #!i::NewIe()
@@ -71,13 +69,13 @@ WheelRight::Send ^#{Left}
 ^#n::NewFolder()
 #o::RunOutlook()
 #!p::run "procexp.exe"
-#!q::run "%bash%" quicken start,,min
-#!s::WinActivate .*Microsoft SQL Server Management Studio
+#!q::run bash " quicken start",,min
+#!s::WinActivate ".*Microsoft SQL Server Management Studio"
 ^#t::RunTidal()
 #t::OpenTextEditor()
 #!t::OpenTextEditor()
-#v::WinActivate .* Microsoft Visual Studio
-#!v::WinActivate .* ASG-Remote Desktop 2012
+#v::WinActivate ".* Microsoft Visual Studio"
+#!v::WinActivate ".* ASG-Remote Desktop 2012"
 #!w::RunWord()
 #!y::OpenRecycleBin()
 #z::OpenIm()

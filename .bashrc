@@ -587,7 +587,7 @@ alias SetIntelProxy='se intel SetProxy'
 export GITHUB_HOST=github.intel.com
 
 # locations
-s="$home/Syncplicity"; sdata="$s/data"
+s="$home/Syncplicity Folders"; sdata="$s/data"
 ihome="//jjbutare-mobl/john/documents"
 ss="$ihome/group/Software\ Solutions"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"

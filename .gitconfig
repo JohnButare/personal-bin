@@ -52,7 +52,6 @@
 	dcw = diff --color-words
 	div = divergence
 	dt = difftool
-	ft = fetch --tags
 	h = help
 
 	i = integrate # integrate current branch to integration branch, g i INTEGRATION_BRANCH
@@ -75,19 +74,22 @@
 	pr = !hub pull-request
 	prune-remotes = "!for remote in `git remote`; do git remote prune $remote; done"
 	r = remote
+	
+	# rebase
 	rb = rebase
 	rba = rebase --abort
 	rbc = rebase --continue
 	rbs = rebase --skip
 	rbi = rebase --interactive --autosquash
 	rbia = "!f() { git rebase --interactive --autosquash HEAD~$((1 + $(git --no-pager log --pretty=format:'%s' --abbrev-commit -40 | egrep '^fixup!' | wc -l))); }; f" # rebase interactive auto, rebase all fixup! commits
-	rpo = remote prune origin
+
+	# reset
+	rh = 	reset --hard # reset hard
+	rho = "!f() { git rh "origin/$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; }; f" # reset hard origin
+
 	fix = "!f() { git commit -am \"fixup! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # fixup [COMMIT] [MESSAGE] - fixup this commit onto specified or last commit
 	sq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # squash [COMMIT] [MESSAGE] - squash this commit onto specified or last commit
-		rs = remote show
-	rso = remote show origin
 	rh = reset --hard
-	ru = remote update --prune
 	s = status --short --branch
 	sm = submodule
 	sma = submodule add
@@ -98,15 +100,34 @@
 	undo = reset --soft HEAD@{1}
 	wd = diff --word-diff=color
 	wdc = diff --word-diff=color--cached
+
+	# remote
+	ft = fetch --tags
 	push = push --tags
+	rs = remote show # show
+	rso = remote show origin # show origin
+	rpo = remote prune origin # prune origin
+	ru = remote update --prune
+	rua = "!f() { git ft; git rpo; }; f" # update all
+
+	# tag
+	tagcr = "!f() { git tag $1; git push origin $1; }; f" # remove # create
+	tagp = git push origin # push origin
+	tagrm = "!f() { git tag -d $1; git push origin -d $1 && git remote prune origin; }; f" # remove
+	tagr = "!f() { git tagrm $1; git tagcr $1; }; f" # replace
+
+	# reflog
+	rl = "!f() { git  reflog | head -40; }; f" # reflog
 
 	# log
-	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -10 # log
+	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -30 # log
+	ld = !git --no-pager log --graph --pretty='%cD %Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -30 # log
 	logo = !git --no-pager log --oneline -1 # log one
 	logb = !git --no-pager log --oneline -20 # log brief
 	logg = log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative # log graph
 	logd = log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative # log detail
 	news = log -p HEAD@{1}..HEAD@{0}
+
 [color]
 	ui = auto
 [core]

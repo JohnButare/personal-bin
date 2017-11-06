@@ -192,12 +192,13 @@ fsqlv() { fsql "-- version $1"; } # FindSqlVersion [VERSION]
 esqlv() { esql "-- version $1"; } # EditSqlVersion [VERSION]
 msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | egrep -i -v "deploy|skip|ignore" | sort | tail -1; } # MaxSqlVersion
 
-eai() { fte "0.0.0.0" "AssemblyInfo.cs"; } # EditAssemblyInfo that are set to deploy (v0.0.0.0)
+alias ftd="egrep --color -r --binary-files=without-match -e 'TODO:' --exclude={*.idt,*.jpg,*.png} --exclude-dir={.git,bin,Bin,Components,Libraries,obj,packages} --include=." # Find TODO text
+eai() { fte "0.0.0.0" "VersionInfo.cs"; } # EditAssemblyInfo that are set to deploy (v0.0.0.0)
 
 FindText() # TEXT FILE_PATTERN [START_DIR](.)
 { 
 	local startDir="${@:3}"
-	grep --color -i -r -e "$1" --include=$2 "${startDir:-.}"
+	egrep --color -i -r -e "$1" --include=$2 "${startDir:-.}"
 }
 
 FindAll()
@@ -399,11 +400,10 @@ alias cdup='code update'
 
 # git
 
-alias eg='te ~/.gitconfig'
-
 alias g='git' gc=g gw=g # platform specific git (Cygwin, Git for Windows)
 [[ "$PLATFORM" == "win" ]] && alias gc='/usr/bin/git' gw='"$P/Git/cmd/git.exe"'	g='gw'
 
+#alias g='git'
 alias gd='gc diff'
 alias gf='gc freeze'
 alias gl='g l'
@@ -416,15 +416,19 @@ alias grc='g rbc' 	# rebase continue
 alias grf='g fix' 	# create a rebase fixup commit
 alias grs='g sq' 		# create a rebase squash commit
 alias gmt='g mergetool'
-alias grft='grf && g i Test' # fixup commit and push to test
+alias gp='g push'
+alias gpf='g push --force'		# push force
+alias grft='grf && g i Test' 	# fixup commit and push to test
 alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
 alias gu='gc up'		# update branches
 
-complete -o default -o nospace -F _git g
+alias eg='te ~/.gitconfig'
 alias gg='GitHelper gui'
 alias gh='GitHelper'
 alias ghub='GitHelper hub'
 alias tgg='GitHelper tgui'
+
+complete -o default -o nospace -F _git g
 
 #
 # scripts
@@ -519,6 +523,11 @@ alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
 alias hdir='cd $nas/docker/homebridge'
 alias hconfig='hdir; e /volumes/docker/homebridge/config.json'
 alias hconfigp='hdir; e /volumes/docker/homebridge/package.json'
+
+#
+# other
+#
+ffw="sudo powershell FlipFlopWheel.ps1"
 
 #
 # XML
@@ -776,9 +785,10 @@ alias sslppbk='ssl rasPPbksqls'
 
 # deploy
 deploy() { pushd $spc/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
-alias dclr='deploy HistorianDb force=true BkOnly=true Projects=TB1 DeployClr=true DeployScripts=false ControlServiceModules=false DeployHistorianSharedClr=false' # deploy custom
+alias dclr='deploy HistorianDb force=true BkOnly=true include=TB1 DeployClr=true DeployScripts=false ControlServiceModules=false DeployHistorianSharedClr=false' # deploy custom
 alias dra='deploy RelayAgent force=true' # deploy relay agent
-alias das='deploy AlarmShelvingService force=true' # deploy alarm shelving service
+alias dps='deploy ProjectService force=true RelayAgent=true include=TB1 PrOnly=true' # deploy project service
+alias das='deploy AlarmShelvingService force=true RelayAgent=true include=TB1' # deploy alarm shelving service
 
 # deploy relay
 alias drt="deploy Web Environment=Test force=true DeployWeb=false DeployScripts=false DeployClr=true"

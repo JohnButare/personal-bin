@@ -10,7 +10,7 @@ local common="word DropBox"
 case "$COMPUTERNAME" in
 	bean) f.lux;;
 	jjbutare-wvm*|oversoul) app -b $command $common;;
-	jjbutare-i*|jjbutare-mobl*) app -b $command $common SyncPlicity duet; intel $command -b;;
+	jjbutare-i*|jjbutare-mobl*) app -b $command $common SyncPlicity; intel $command -b;;
 esac
 
 if [[ "$command" == "close" ]]; then

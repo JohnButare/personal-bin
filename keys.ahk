@@ -28,7 +28,7 @@ Test()
 Init()
 {
   global
-	DEFAULT_BROWSER := "chrome"
+	DEFAULT_BROWSER := "firefox"
 }  
 
 #Enter::send "{Enter}" ; disable Narrator

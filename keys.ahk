@@ -71,9 +71,9 @@ WheelRight::Send "^#{Left}"
 #!p::run "procexp.exe"
 #!q::run bash " quicken start",,min
 #!s::WinActivate ".*Microsoft SQL Server Management Studio"
-^#t::RunTidal()
 #t::OpenTextEditor()
-#!t::OpenTextEditor()
+#!t::OpenNotepadPp()
+^#t::OpenNotepadPp()
 #v::WinActivate ".* Microsoft Visual Studio"
 #!v::WinActivate ".* ASG-Remote Desktop 2012"
 #!w::RunWord()

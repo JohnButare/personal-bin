@@ -181,6 +181,7 @@ alias dirsct='UncLs -l --time=ctime --sort=time --reverse' # sort by creation  t
 # find
 alias fa='FindAll'
 alias fcd='FindCd'
+alias fst='FindStart'
 alias ft='FindText'
 fclip() { IFS=$'\n' files=( $(FindAll "$1") ) && clipw "${files[@]}"; } # FindClip
 fe() { IFS=$'\n' files=( $(FindAll "$1") ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindAllEdit
@@ -205,6 +206,11 @@ FindAll()
 {
 	[[ $# == 0 ]] && { echo "No file specified"; return; }
 	find . -iname "$@" |& egrep -v "Permission denied"
+}
+
+FindStart()
+{
+	start "$(FindAll "$@" | head -1)";
 }
 
 FindCd()
@@ -410,6 +416,8 @@ alias gl='g l'
 alias gca='g ca'
 alias gs='g s' 			# status
 alias gbs='g bs'		# branch status [PATTERN]
+alias gr='g rb' 	# rebase
+alias gr1='g rb HEAD~1 --onto' 	# rebase first commit onto specified branch
 alias gri='g rbi' 	# rebase interactive
 alias gria='g rbia' # rebase interactive auto, rebase all fixup! commits
 alias grc='g rbc' 	# rebase continue

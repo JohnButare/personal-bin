@@ -908,11 +908,8 @@ u()
 	fi
 
 	# Wiggin NAS
-	if [[ $# == 0 ]] && HostUtil available nas && ask 'Wiggin nas file update'; then
-		case "$COMPUTERNAME" in
-			bean) NasSyncBean;;
-			jjbutare-*) [[ $OnIntelNetwork ]] && NasSyncIntel;;
-		esac
+	if [[ $# == 0 ]] && [[ "$COMPUTERNAME" == "bean" ]] && HostUtil available nas1 && ask 'Wiggin nas file update'; then
+		NasSyncBean
 	fi
 
 	os update $1 || return

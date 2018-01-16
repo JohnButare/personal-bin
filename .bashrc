@@ -181,7 +181,7 @@ alias dirsct='UncLs -l --time=ctime --sort=time --reverse' # sort by creation  t
 # find
 alias fa='FindAll'
 alias fcd='FindCd'
-alias fst='FindStart'
+alias fs='FindStart'
 alias ft='FindText'
 fclip() { IFS=$'\n' files=( $(FindAll "$1") ) && clipw "${files[@]}"; } # FindClip
 fe() { IFS=$'\n' files=( $(FindAll "$1") ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindAllEdit
@@ -604,9 +604,8 @@ alias SetIntelProxy='se intel SetProxy'
 export GITHUB_HOST=github.intel.com
 
 # locations
-s="$home/Syncplicity Folders"; sdata="$s/data"
+s="$home/Syncplicity Folders"; sdata="$s/data"; sql="$sdata/sql"; ss="$sql/SCADA Portal"
 ihome="//jjbutare-mobl/john/documents"
-ss="$ihome/group/Software\ Solutions"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
 
 # laptop
@@ -793,10 +792,10 @@ alias sslppbk='ssl rasPPbksqls'
 
 # deploy
 deploy() { pushd $spc/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
-alias dclr='deploy HistorianDb force=true BkOnly=true include=TB1 DeployClr=true DeployScripts=false ControlServiceModules=false DeployHistorianSharedClr=false' # deploy custom
+alias dclr='deploy HistorianDb force=true PrOnly=Atrue include=TB1 DeployClr=false DeployHistorianSharedClr=true DeployScripts=false ControlServiceModules=false' # deploy custom
 alias dra='deploy RelayAgent force=true' # deploy relay agent
 alias dps='deploy ProjectService force=true RelayAgent=true include=TB1 PrOnly=true' # deploy project service
-alias das='deploy AlarmShelvingService force=true RelayAgent=true include=TB1' # deploy alarm shelving service
+alias das='deploy AlarmShelvingService force=true RelayAgent=true include=TB1 PrOnly=true' # deploy alarm shelving service
 
 # deploy relay
 alias drt="deploy Web Environment=Test force=true DeployWeb=false DeployScripts=false DeployClr=true"

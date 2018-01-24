@@ -414,21 +414,20 @@ alias gd='gc diff'
 alias gf='gc freeze'
 alias gl='g l'
 alias gca='g ca'
-alias gs='g s' 			# status
-alias gbs='g bs'		# branch status [PATTERN]
+alias gs='g s' 		# status
+alias gbs='g bs'	# branch status [PATTERN]
 alias gr='g rb' 	# rebase
 alias gr1='g rb HEAD~1 --onto' 	# rebase first commit onto specified branch
 alias gri='g rbi' 	# rebase interactive
 alias gria='g rbia' # rebase interactive auto, rebase all fixup! commits
 alias grc='g rbc' 	# rebase continue
 alias grf='g fix' 	# create a rebase fixup commit
-alias grs='g sq' 		# create a rebase squash commit
+alias grs='g sq' 	# create a rebase squash commit
 alias gmt='g mergetool'
 alias gp='g push'
 alias gpf='g push --force'		# push force
 alias grft='grf && g i Test' 	# fixup commit and push to test
 alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
-alias gu='gc up'		# update branches
 
 alias eg='te ~/.gitconfig'
 alias gg='GitHelper gui'
@@ -798,7 +797,7 @@ alias dps='deploy ProjectService force=true RelayAgent=true include=TB1 PrOnly=t
 alias das='deploy AlarmShelvingService force=true RelayAgent=true include=TB1 PrOnly=true' # deploy alarm shelving service
 
 # deploy relay
-alias drt="deploy Web Environment=Test force=true DeployWeb=false DeployScripts=false DeployClr=true"
+alias drt="deploy HistorianRelayDb Environment=Test force=true DeployScripts=true DeployClr=true"
 alias drpp="deploy Web Environment=Pre-Production force=true DeployWeb=false DeployScripts=false DeployClr=true"
 alias drpilot="deploy Web Environment=Production force=true DeployWeb=false DeployScripts=false DeployClr=true Servers=ORPRSPS.amr.corp.intel.com"
 alias drp="deploy Web Environment=Production force=true DeployWeb=false DeployScripts=false DeployClr=true"

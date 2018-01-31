@@ -906,9 +906,9 @@ u()
 	fi
 
 	# Wiggin NAS
-	if [[ $# == 0 ]] && [[ "$COMPUTERNAME" == "bean" ]] && HostUtil available nas1 && ask 'Wiggin nas file update'; then
-		NasSyncBean
-	fi
+	#if [[ $# == 0 ]] && [[ "$COMPUTERNAME" == "bean" ]] && HostUtil available nas1 && ask 'Wiggin nas file update'; then
+	#	NasSyncBean
+	#fi
 
 	os update $1 || return
 }

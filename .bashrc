@@ -429,6 +429,8 @@ alias gpf='g push --force'		# push force
 alias grft='grf && g i Test' 	# fixup commit and push to test
 alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
 
+alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
+
 alias eg='te ~/.gitconfig'
 alias gg='GitHelper gui'
 alias gh='GitHelper'
@@ -780,6 +782,14 @@ alias spumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.Servic
 alias sstStop='service stop ScadaService RASSI1PRSQLS; service stop ScadaService RASSI1BKSQLS; echo "Disable AlertChecker to prevent automatic service start"'
 alias sstStart='service start ScadaService RASSI1PRSQLS; service start ScadaService RASSI1BKSQLS;'
 alias sstStatus='service status ScadaService RASSI1PRSQLS; service status ScadaService RASSI1BKSQLS;'
+
+# run on all
+alias era="s \"$sp/DataScripts/Miscellaneous Scripts/sqlCommandToRun.sql\"" # edit run on all
+alias epi="e \"$sp/DataScripts/Miscellaneous Scripts/prodinput.txt\"" # edit run on all
+alias ra="ScadaRunOnAll CommandFile=\"C:\Projects\ScadaPortal\DataScripts\Miscellaneous Scripts\sqlCommandToRun.sql\""
+alias rat="ScadaRunOnAll Environment=Test"
+alias rap="ra include=AllProjects " # run on all projects
+alias rahs="ra include=HistorianAccess" # run on Historian Access
 
 # logs
 ssl() { start explorer "//$1/d$/Program Files/Scada/ScadaService/log"; }

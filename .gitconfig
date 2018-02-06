@@ -1,6 +1,5 @@
 [alias]
 	test = "!f() { [[ ! $2 ]] && { echo hi; return 1; }; echo $2; }; f"
-
 	df = diff
 	dfs = diff --staged
 	ui = always
@@ -16,35 +15,32 @@
 	ap = add --patch
 	au = add --update
 	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -r
-
-	ls = "!f()   { git show-ref | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | egrep '^[ ]*'$1; }; f" # list, ls PATTERN
-	tls = "!f()  { git show-ref | grep 'refs/tags' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sed 's/v//' | sed 's/\\./,/g' | sort -n | sed 's/,/\\./g' | egrep '^[ ]*'$1; }; f" # list tag, tls [PATTERN]
-	bls = "!f()  { git show-ref | grep 'refs/heads' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | egrep '^[ ]*'$1;  }; f" # list branch, bls PATTERN
-	rbls = "!f() { git show-ref | grep 'refs/remotes/origin' | cut -f 2 -d' ' | cut -f 4-5 -d'/' | sort | egrep '^[ ]*'$1; }; f" # list remote branch, rbls PATTERN
-	
-	b = branch -vv		# branch status
-	bs = branch-status	# branch status [PATTERN]
-	br = "!f() { git branch --track $1 origin/$1; git checkout $1; }; f" # create local version of specified remote branch
-	brcr = "!f() { [[ ! $3 ]] && { echo "An existing branch is required" ; return 1; }; git branch $2 $3 && git push -u origin $2 && git checkout $2; }; f" - # branch create NEW EXISTING
-	brmv = "!f() { git branch -m $1 $2 && git push origin :$1 && git push -u origin $2; }; f" # branch move (rename)
-	fr = "!f() { git brmv $1 Frozen-$1; }; f" 		# branch rename to Frozen-
-	ufr = "!f() { echo git brmv "$1" "${1/Frozen-/}"; }; f" # branch rename without Frozen-
-	brrm = "!f() { git branch -d $1; git push origin :$1 && git remote prune origin; }; f" # remove branch
-	brex = "!f() { git rev-parse --verify $1 >& /dev/null; }; f" # branch exist
-	bro = "!f() { cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; git checkout $1 && git reset --hard origin/$1; git checkout $cb; }; f" # bro BRANCH, branch reset origin, reset the specified branch to it's origin and return to the current branch
-	brh = "!f() { cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; git checkout $1 && git reset --hard $cb && git push --force; git checkout $cb; }; f" # brh BRANCH, branch reset here, reset the specified branch to the current branch return to the current branch
-	
+	ls = "!f()   { git show-ref | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | egrep '^[ ]*'$1; }; f"
+	tls = "!f()  { git show-ref | grep 'refs/tags' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sed 's/v//' | sed 's/\\./,/g' | sort -n | sed 's/,/\\./g' | egrep '^[ ]*'$1; }; f"
+	bls = "!f()  { git show-ref | grep 'refs/heads' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | egrep '^[ ]*'$1;  }; f"
+	rbls = "!f() { git show-ref | grep 'refs/remotes/origin' | cut -f 2 -d' ' | cut -f 4-5 -d'/' | sort | egrep '^[ ]*'$1; }; f"
+	b = branch -vv
+	bs = branch-status
+	br = "!f() { git branch --track $1 origin/$1; git checkout $1; }; f"
+	brcr = "!f() { [[ ! $3 ]] && { echo An existing branch is required ; return 1; }; git branch $2 $3 && git push -u origin $2 && git checkout $2; }; f-"
+	brmv = "!f() { git branch -m $1 $2 && git push origin :$1 && git push -u origin $2; }; f"
+	fr = "!f() { git brmv $1 Frozen-$1; }; f"
+	ufr = "!f() { echo git brmv $1 ${1/Frozen-/}; }; f"
+	brrm = "!f() { git branch -d $1; git push origin :$1 && git remote prune origin; }; f"
+	brex = "!f() { git rev-parse --verify $1 >& /dev/null; }; f"
+	bro = "!f() { cb=$(git symbolic-ref -q HEAD | cut -d/-f 3); git checkout $1 && git reset --hard origin/$1; git checkout $cb; }; f"
+	brh = "!f() { cb=$(git symbolic-ref -q HEAD | cut -d/-f 3); git checkout $1 && git reset --hard $cb && git push --force; git checkout $cb; }; f"
 	c = commit
 	ca = commit --all -m
 	cam = commit --amend
 	changes = diff --name-status -r
 	check = diff --check
 	cl = clean -d -f
-	cla = clean -d -x -i # clean all [PATTERN, i.e. */Bin/]
-	clvs =  clean -d -x -i -e '*.dbmdl' -e '*.user' -e '*.suo' # clean all except Visual Studio user files
+	cla = clean -d -x -i
+	clvs = clean -d -x -i -e '*.dbmdl' -e '*.user' -e '*.suo'
 	cm = commit --message
 	co = checkout
-	cob = checkout -b # checkout and create branch
+	cob = checkout -b
 	conflicted = grep --name-only --full-name '<<<<<<< HEAD'
 	cpc = cherry-pick
 	d = diff --ignore-all-space
@@ -53,16 +49,14 @@
 	div = divergence
 	dt = difftool
 	h = help
-
-	i = integrate # integrate current branch to integration branch, g i INTEGRATION_BRANCH
-	is = wtf --relations --short # integration status
-	iall = "!f() { git i Continuous && git i Test && git i Pre-Production; }; f" # integrate all
-	ic = "!f() { git checkout $1 && git reset --hard $2 && git push --force; }; f" # integration branch clean to version, integration clean to specified branch, g ic INTEGRATION_BRANCH BRANCH
-	icall = "!f() { git ic Test $1 && git ic Pre-Production $1; }; f" # integrate clean all, g icall VERSION
-	ir = "!f() { cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; git checkout $1 && git reset --hard origin/$1; git checkout $cb; }; f" # integration reset to origin, g ir INTEGRATION_BRANCH
-	irall = "!f() { git ir Continuous && git ir Test && git ir Pre-Production; }; f" # integrate reset all
-	iup = "!f() { git irall && git up; }; f" # integrate up
-
+	i = integrate
+	is = wtf --relations --short
+	iall = "!f() { git i Continuous && git i Test && git i Pre-Production; }; f"
+	ic = "!f() { git checkout $1 && git reset --hard $2 && git push --force; }; f"
+	icall = "!f() { git ic Test $1 && git ic Pre-Production $1; }; f"
+	ir = "!f() { cb=$(git symbolic-ref -q HEAD | cut -d/-f 3); git checkout $1 && git reset --hard origin/$1; git checkout $cb; }; f"
+	irall = "!f() { git ir Continuous && git ir Test && git ir Pre-Production; }; f"
+	iup = "!f() { git irall && git up; }; f"
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
 	ls-ignored = ls-files --exclude-standard --ignored --others
 	m = merge -s recursive -X patience
@@ -74,22 +68,17 @@
 	pr = !hub pull-request
 	prune-remotes = "!for remote in `git remote`; do git remote prune $remote; done"
 	r = remote
-	
-	# rebase
 	rb = rebase
 	rba = rebase --abort
 	rbc = rebase --continue
 	rbs = rebase --skip
 	rbi = rebase --interactive --autosquash
-	rbia = "!f() { git rebase --interactive --autosquash HEAD~$((1 + $(git --no-pager log --pretty=format:'%s' --abbrev-commit -40 | egrep '^fixup!' | wc -l))); }; f" # rebase interactive auto, rebase all fixup! commits
-
-	# reset
-	rh = 	reset --hard # reset hard
-	rho = "!f() { git rh "origin/$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; }; f" # reset hard origin
-
-	fix = "!f() { git commit -am \"fixup! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # fixup [COMMIT] [MESSAGE] - fixup this commit onto specified or last commit
-	sq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # squash [COMMIT] [MESSAGE] - squash this commit onto specified or last commit
+	rbia = "!f() { git rebase --interactive --autosquash HEAD~$((1 + $(git --no-pager log --pretty=format:'%s' --abbrev-commit -40 | egrep '^fixup!' | wc -l))); }; f"
 	rh = reset --hard
+	rh = reset --hard
+	rho = "!f() { git rh origin/$(git symbolic-ref -q HEAD | cut -d/-f 3); }; f"
+	fix = "!f() { git commit -am \"fixup! $(git log -1 --format='%s' $1)\n\n$2\"; }; f"
+	sq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f"
 	s = status --short --branch
 	sm = submodule
 	sma = submodule add
@@ -100,43 +89,36 @@
 	undo = reset --soft HEAD@{1}
 	wd = diff --word-diff=color
 	wdc = diff --word-diff=color--cached
-
-	# remote
 	ft = fetch --tags
 	push = push --tags
-	rs = remote show # show
-	rso = remote show origin # show origin
-	rpo = remote prune origin # prune origin
+	rs = remote show
+	rso = remote show origin
+	rpo = remote prune origin
 	ru = remote update --prune
-	rua = "!f() { git ft; git rpo; }; f" # update all
-
-	# tag
-	tagcr = "!f() { git tag $1; git push origin $1; }; f" # remove # create
-	tagp = git push origin # push origin
-	tagrm = "!f() { git tag -d $1; git push origin -d $1 && git remote prune origin; }; f" # remove
-	tagr = "!f() { git tagrm $1; git tagcr $1; }; f" # replace
-
-	# reflog
-	rl = "!f() { git  reflog | head -40; }; f" # reflog
-
-	# log
-	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -30 # log
-	ld = !git --no-pager log --graph --pretty='%cD %Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -30 # log
-	logo = !git --no-pager log --oneline -1 # log one
-	logb = !git --no-pager log --oneline -20 # log brief
-	logg = log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative # log graph
-	logd = log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative # log detail
+	rua = "!f() { git ft; git rpo; }; f"
+	tagcr = "!f() { git tag $1; git push origin $1; }; f"
+	tagp = git push origin
+	tagrm = "!f() { git tag -d $1; git push origin -d $1 && git remote prune origin; }; f"
+	tagr = "!f() { git tagrm $1; git tagcr $1; }; f"
+	rl = "!f() { git  reflog | head -40; }; f"
+	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -30
+	ld = !git --no-pager log --graph --pretty='%cD %Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -30
+	logo = !git --no-pager log --oneline -1
+	logb = !git --no-pager log --oneline -20
+	logg = log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative
+	logd = log --graph --pretty=format:'%Cred%h%Creset %an -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 	news = log -p HEAD@{1}..HEAD@{0}
-
 [color]
 	ui = auto
 [core]
 	autocrlf = false
 	excludesfile = ~/.gitignore
+	editor = \"C:/Program Files/Sublime Text 3/sublime_text.exe\" -w --multiinstance
 [push]
-	default = current # http://prgmr.io/coding/git-push-default/
+	default = current
 [diff]
 	tool = bc
+	guitool = bc
 [difftool]
 	prompt = false
 [merge]
@@ -149,10 +131,6 @@
 [user]
 	name = John Butare
 	email = john.butare@intel.com
-[https]
-	#proxy = http://proxy.rr.intel.com:911
-[http]
-	#proxy = http://proxy.rr.intel.com:911
 [hub]
 	host = github.intel.com
 	protocol = https
@@ -160,3 +138,9 @@
 	prune = true
 [git-up "rebase"]
 	auto = false
+[difftool "beyondcompare4"]
+	path = C:/Program Files/Beyond Compare 4/bcomp.exe
+	cmd = \"C:/Program Files/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\"
+[mergetool "BeyondCompare4"]
+	path = C:/Program Files/Beyond Compare 4/bcomp.exe
+	cmd = \"C:/Program Files/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"

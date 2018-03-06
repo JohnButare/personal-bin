@@ -54,13 +54,13 @@ v="/Volumes"
 
 home="$HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data"
 bash="$udata/bash"
-code="$CODE"
+code="$CODE"; c="$CODE"
 [[ "$COMPUTERNAME" == @(jjbutare-ivm1) ]] && dl="//psf/Home/downloads" || dl="$HOME/Downloads"
 ubin="$udata/bin"
 usm="$APPDATA/Microsoft/Windows/Start Menu" #UserStartMenu
 up="$usm/Programs" # UserPrograms
 ud="$home/Desktop" # UserDesktop
-db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"
+d="$home/Dropbox"; cloud="$d"; cdata="$cloud/data"; cdl="$cdata/download"
 alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
 
 #
@@ -191,7 +191,7 @@ fsql() { ft "$1" "*.sql"; } # FindSql TET
 esql() { fte "$1" "*.sql"; } # EditSql TEXT
 fsqlv() { fsql "-- version $1"; } # FindSqlVersion [VERSION]
 esqlv() { esql "-- version $1"; } # EditSqlVersion [VERSION]
-msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | egrep -i -v "deploy|skip|ignore" | sort | tail -1; } # MaxSqlVersion
+msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | egrep -i -v "deploy|skip|ignore|NonVersioned" | sort | tail -1; } # MaxSqlVersion
 
 alias ftd="egrep --color -r --binary-files=without-match -e 'TODO:' --exclude={*.idt,*.jpg,*.png} --exclude-dir={.git,bin,Bin,Components,Libraries,obj,packages} --include=." # Find TODO text
 eai() { fte "0.0.0.0" "VersionInfo.cs"; } # EditAssemblyInfo that are set to deploy (v0.0.0.0)
@@ -588,6 +588,7 @@ alias gcd='scd DotNet GacCd'
 build() { n build /verbosity:minimal /m "$code/$1"; }
 BuildClean() { n build /t:Clean /m "$code/$1"; }
 alias vs='VisualStudio'
+s="$/"
 
 #
 # Juntos

@@ -14,7 +14,7 @@
 
 	# other
 	ls-ignored = ls-files --exclude-standard --ignored --others
-	pr = !hub pull-request
+	pr2 = !hub pull-request # in git-extras
 
 	# add
 	a = add
@@ -49,6 +49,8 @@
 	# branch integrate
 	i = integrate # i INTEGRATION_BRANCH, integrate current branch to integration branch,
 	iall = "!f() { git i Continuous && git i Test && git i Pre-Production; }; f" # integrate all
+	ic = "!f() { git checkout $1 && git reset --hard $2 && git push --force; }; f" # integration branch clean to version, integration clean to specified branch, g ic INTEGRATION_BRANCH BRANCH
+	icall = "!f() { git ic Test $1 && git ic Pre-Production $1; }; f" # integrate clean all, g icall VERSION
 	ir = "!f() { local cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; git checkout $1 && git reset --hard origin/$1; git checkout $cb; }; f" # ir INTEGRATION_BRANCH, reset the INTEGRATION_BRANCH to origin
 	irall = "!f() { git ir Continuous && git ir Test && git ir Pre-Production; }; f" # ir, reset all integration branches to their origin
 	is = wtf --relations --short # integration status
@@ -85,7 +87,7 @@
 	wdc = diff --word-diff=color--cached
 
 	# log
-	authors = !git log --pretty=format:%aN | sort | uniq -c | sort -r
+	authors2 = !git log --pretty=format:%aN | sort | uniq -c | sort -r # in git-extras
 	l = !git --no-pager log --graph --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -30 # log
 	latest = for-each-ref --count=10 --sort=-committerdate --format='%(committerdate:short) %(refname:short)'
 	ld = !git --no-pager log --graph --pretty='%cD %Cred%h%Creset%C(yellow)%d%Creset %s' --abbrev-commit --date=relative -30 # log
@@ -115,7 +117,7 @@
 	rsq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # squash [COMMIT] [MESSAGE] - rebase squas, commit changes as a squash commit
 
 	# reset
-	undo = reset --soft HEAD@{1}
+	undo2 = reset --soft HEAD@{1} # in git-extras
 	ro = "!f() { local cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)";  git reset --hard "origin/$cb"; }; f" # ro, reset origin
 
 	# remote

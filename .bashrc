@@ -60,7 +60,7 @@ ubin="$udata/bin"
 usm="$APPDATA/Microsoft/Windows/Start Menu" #UserStartMenu
 up="$usm/Programs" # UserPrograms
 ud="$home/Desktop" # UserDesktop
-d="$home/Dropbox"; cloud="$d"; cdata="$cloud/data"; cdl="$cdata/download"
+db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"
 alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
 
 #
@@ -519,7 +519,7 @@ alias NasDown='ssh root@nas1 poweroff; ssh root@nas2 poweroff'
 
 # NAS Configuration
 alias ned='NasEditDns'; alias NasEditDns="e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf"
-alias nudhcp='NasUpdateDhcp'; NasUpdateDhcp() { cat ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf | sed '/^#/d' | sed '/^$/ d' > /tmp/dhcpd.conf; scp /tmp/dhcpd.conf root@nas1:/etc/dhcpd; }
+alias nudhcp='NasUpdateDhcp'; NasUpdateDhcp() { cat ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf | sed '/^#/d' | sed '/^$/ d' > /tmp/dhcpd.conf; scp /tmp/dhcpd.conf root@nas1:/etc/dhcpd; scp /tmp/dhcpd.conf root@nas1:/etc/dhcpd/dhcpd-eth0-static.conf; }
 alias nudns='NasUpdateDns'; NasUpdateDns() { scp ~/"Dropbox/systems/nas/dns/1.168.192.in-addr.arpa" ~/"Dropbox/systems/nas/dns/hagerman.butare.net" "root@nas$1:/var/packages/DNSServer/target/named/etc/zone/master"; }
 alias ncc='NasCopyConfig'; NasCopyConfig() { scp "root@nas$1:/etc/dhcpd/dhcpd-eth0-"*".conf" "root@nas$1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; }
 

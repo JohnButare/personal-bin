@@ -186,7 +186,9 @@
 	auto = false
 [difftool "bc"]
 	path = C:/Program Files/Beyond Compare 4/bcomp.exe
-	cmd = \"C:/Program Files/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\"
+	cmd = \"/usr/local/bin/bcomp\"  \"$LOCAL\" \"$REMOTE\"
+	trustExitCode = true
 [mergetool "bc"]
 	path = C:/Program Files/Beyond Compare 4/bcomp.exe
-	cmd = \"C:/Program Files/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+	cmd = \"/usr/local/bin/bcomp\"  \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+	trustExitCode = true

@@ -510,20 +510,22 @@ alias cs='cscript /nologo'
 # wiggin
 #
 
+
+# NAS
+
 nas='//nas1'
 ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 ng='git@butare.net:/volume1/git'
-alias nrslf='slf butare.net'
-alias NasDown='ssh root@nas1 poweroff; ssh root@nas2 poweroff'
 
-# NAS Configuration
+alias NasDown='ssh root@nas1 poweroff; ssh root@nas2 poweroff'
+alias nussh='ssh root@nas1 "chmod 700 /volume1/homes/$user/.ssh; chmod 644 /volume1/homes/$user/.ssh/authorized_keys"  || return'
 alias ned='NasEditDns'; alias NasEditDns="e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf"
 alias nudhcp='NasUpdateDhcp'; NasUpdateDhcp() { cat ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf | sed '/^#/d' | sed '/^$/ d' > /tmp/dhcpd.conf; scp /tmp/dhcpd.conf root@nas1:/etc/dhcpd; scp /tmp/dhcpd.conf root@nas1:/etc/dhcpd/dhcpd-eth0-static.conf; }
 alias nudns='NasUpdateDns'; NasUpdateDns() { scp ~/"Dropbox/systems/nas/dns/1.168.192.in-addr.arpa" ~/"Dropbox/systems/nas/dns/hagerman.butare.net" "root@nas$1:/var/packages/DNSServer/target/named/etc/zone/master"; }
 alias ncc='NasCopyConfig'; NasCopyConfig() { scp "root@nas$1:/etc/dhcpd/dhcpd-eth0-"*".conf" "root@nas$1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; }
 
-# NAS Sync
+alias nrslf='slf butare.net'
 alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount $nas/usbshare1/home && merge bean-udata; unc mount //nasc/usbshare1/public/documents/data && merge bean-data'
 alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
 alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'

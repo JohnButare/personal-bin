@@ -153,10 +153,10 @@ UncCd()
 UncLs()
 {
 	local unc="${@: -1}"
-	! IsUncPath "$unc" && { command ${G}ls -Q --color "$@"; return; }
+	! IsUncPath "$unc" && { command ${G}ls --hide={desktop.ini,NTUSER.*,ntuser.*} -F -Q --group-directories-first --color "$@"; return; }
 	[[ ! "$(GetUncShare "$unc")" ]] && { unc list "$unc"; return; }
 	local dir; dir="$(unc mount "$unc")" || return
-	${G}ls -Q --color "${@:1:$#-1}" "$dir"
+	${G}ls --hide={desktop.ini,NTUSER.*,ntuser.*} -F --group-directories-first -Q --group-directories-first --color "${@:1:$#-1}" "$dir"
 }
 
 # other

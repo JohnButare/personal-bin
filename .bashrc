@@ -804,10 +804,6 @@ alias sslppbk='ssl rasPPbksqls'
 
 # deploy
 deploy() { pushd $spc/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
-alias dclr='deploy HistorianDb force=true PrOnly=Atrue include=TB1 DeployClr=false DeployHistorianSharedClr=true DeployScripts=false ControlServiceModules=false' # deploy custom
-alias dra='deploy RelayAgent force=true' # deploy relay agent
-alias dps='deploy ProjectService force=true RelayAgent=true include=TB1 PrOnly=true' # deploy project service
-alias das='deploy AlarmShelvingService force=true RelayAgent=true include=TB1 PrOnly=true' # deploy alarm shelving service
 
 # deploy relay
 alias drt="deploy HistorianRelayDb Environment=Test force=true DeployScripts=true DeployClr=true"
@@ -827,10 +823,15 @@ alias dpmTestAll='dpmp test=true force=false'
 alias dpmTest='dpmp Servers=RAC2FMSF-CIM;RAC2FMSC-CIM;RAPB1FMSAA-CIM test=true force=true'
 
 # deploy to test
+alias dclr='deploy HistorianDb force=true PrOnly=Atrue include=TB1 DeployClr=false DeployHistorianSharedClr=true DeployScripts=false ControlServiceModules=false' # deploy custom
+alias dra='deploy RelayAgent force=true' # deploy relay agent
+alias dps='deploy ProjectService force=true RelayAgent=true include=TB1 PrOnly=true' # deploy project service
+alias das='deploy AlarmShelvingService force=true RelayAgent=true include=TB1 PrOnly=true' # deploy alarm shelving service
+
 alias dra='deploy RelayAgent force=true'
 alias dss='deploy ScadaService force=true'
 alias dsps='deploy ScadaProjectService force=true ForceLocalDeployment=true'
-alias dhdb='deploy HistorianDb force=true DeployClr=true NoSecondary=false'
+alias dhdb='deploy HistorianDb force=true DeployScripts=false PrOnly=true DeployMagellanClr=false DeployClr=true NoSecondary=false ControlServiceModules=false'
 alias ddlc='deploy DataLogger force=true InstallDataLogger=false ConfigureDataLogger=false PopPoints=false DeployScreens=false AddPoints=false ChangeCredentials=true ForceLocalDeployment=true'
 alias ddl='deploy DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true DeployScreens=true AddPoints=true ChangeCredentials=true ForceLocalDeployment=true'
 alias dac='deploy AlertChecker force=true'

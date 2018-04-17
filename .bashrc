@@ -17,6 +17,7 @@ set +a
 [[ "$-" != *i* ]] && return
 
 HISTCONTROL=erasedups
+HISTFILE="$DOC/data/bash/.bash_history"
 shopt -s autocd cdspell cdable_vars dirspell histappend direxpand
 
 # completion - win

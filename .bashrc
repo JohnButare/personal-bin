@@ -757,8 +757,6 @@ spt="$code/ScadaPortalTest"
 sps="$sp/DataScripts"
 spc="$sp/Source"
 
-alias ScadaRunOnAll='/cygdrive/c/Projects/ScadaPortal/Source/Utilities/ScadaRunOnAll/bin/Debug/ScadaRunOnAll.exe'
-
 alias spic='g integrate Continuous'
 alias spit='g integrate Test'
 alias spipp='g integrate Pre-Production'
@@ -788,12 +786,15 @@ alias sstStart='service start ScadaService RASSI1PRSQLS; service start ScadaServ
 alias sstStatus='service status ScadaService RASSI1PRSQLS; service status ScadaService RASSI1BKSQLS;'
 
 # run on all
-alias era="s \"$sp/DataScripts/Miscellaneous Scripts/sqlCommandToRun.sql\"" # edit run on all
-alias epi="e \"$sp/DataScripts/Miscellaneous Scripts/prodinput.txt\"" # edit run on all
-alias ra="ScadaRunOnAll CommandFile=\"C:\Projects\ScadaPortal\DataScripts\Miscellaneous Scripts\sqlCommandToRun.sql\""
-alias rat="ScadaRunOnAll Environment=Test"
-alias rap="ra include=AllProjects " # run on all projects
-alias rahs="ra include=HistorianAccess" # run on Historian Access
+RunOnAllSql="$sp/DataScripts/Miscellaneous Scripts/sqlCommandToRun.sql"
+RunOnAllInput="$sp/DataScripts/Miscellaneous Scripts/prodinput.txt"
+alias ScadaRunOnAll='/cygdrive/c/Projects/ScadaPortal/Source/Utilities/ScadaRunOnAll/bin/Debug/ScadaRunOnAll.exe'
+alias ser="s \"$RunOnAllSql\"" # edit run on all
+alias seri="e \"$RunAllAllInput" # edit run on all input
+alias sra="ScadaRunOnAll InputFile=\"$(utw "$RunOnAllInput")\" CommandFile=\"$(utw "$RunOnAllSql")\""
+alias srt="sra Environment=Test"
+alias srp="sra include=AllProjects " # run on all projects
+alias srha="sra include=HistorianAccess" # run on Historian Access
 
 # logs
 ssl() { start explorer "//$1/d$/Program Files/Scada/ScadaService/log"; }

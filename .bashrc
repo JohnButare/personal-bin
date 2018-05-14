@@ -697,7 +697,7 @@ alias mpu='cp "$mc/Profiles/"*.profile "$profiles"'
 # Antidote
 #
 
-ac="$code/Antidote"
+ac="$code/Antidote/Source"
 
 alias aupd='cdup Antidote'
 alias ac='cdc Antidote'
@@ -716,9 +716,9 @@ alias aum='start "$ac/libraries/UpdateMagellan.cmd"'
 alias aumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $ac/libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/libraries/Silverlight" # Updte Magellan Core
 alias aumt="cp $mc/Source/Magellan.Threading/bin/Debug/Magellan.Threading.* $ac/Libraries" # Antidote Update Magellan Threading
 alias aumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $ac/libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/libraries/Silverlight" # Update Magellan Service Management
-alias aup='sudo cp "$code/source/Antidote/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
-alias aub='CopyDir "$code/source/Antidote/Antidote/bin/Debug" "//CsisBuild-new.intel.com/d$/Program Files/Antidote"; aubmq' # Antidote Update BuildServer
-alias aul='CopyDir "$code/source/Antidote/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
+alias aup='sudo cp "$code/Antidote/source/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
+alias aub='CopyDir "$code/Antidote/source/Antidote/bin/Debug" "//CsisBuild.intel.com/d$/Program Files/Antidote"' # Antidote Update BuildServer
+alias aul='CopyDir "$code/Antidote/source/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
 
 #
 # FaSTr
@@ -820,9 +820,8 @@ alias dlt='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/Test.Log.vms
 alias dlpp='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/PreProduction.Log.vmspwbld001.txt'
 alias dlp='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/Production.Log.vmspwbld001.txt'
 
-# deploy - test CI
-alias dpmTestAll='dpmp test=true force=false'
-alias dpmTest='dpmp Servers=RAC2FMSF-CIM;RAC2FMSC-CIM;RAPB1FMSAA-CIM test=true force=true'
+# deploy to LocalBuild
+alias dadbLB='deploy AntidoteDb environment=LocalBuild'
 
 # deploy to test
 alias dclr='deploy HistorianDb force=true PrOnly=Atrue include=TB1 DeployClr=false DeployHistorianSharedClr=true DeployScripts=false ControlServiceModules=false' # deploy custom
@@ -854,16 +853,6 @@ alias dwPILOT='deploy web force=true environment=Production servers=ORPRSPS'
 alias drap='deploy deploy Environment=Production force=true'
 alias draRA='drap SqlServers=RASBK1SQLS,3180:CB3'
 alias draRR='drap SqlServers=RRSBK1SQLS,3180:CUB'
-
-alias dpmp='deploy PointManagement Environment=Production'
-alias dpmAL='dpmp SqlServers=ALSBK1SQLS,3180:AFO'
-alias dpmHD='dpmp SqlServers=HDSBK1SQLS,3180:F17_FMS'
-alias dpmJR='dpmp SqlServers=JRSBK1SQLS.ger.corp.intel.com,3180:IDPJ'
-alias dpmLC='dpmp SqlServers=LCSBK1SQLS,3180:EPMS'
-alias dpmOC='dpmp SqlServers=OCSBK1SQLS,3180:F22_HPM'
-alias dpmRA='dpmp SqlServers=RASBK1SQLS,3180:CB3'
-alias dpmRR='dpmp SqlServers=RRSBK1SQLS,3180:CUB'
-alias dpmIR='dpmp SqlServers=IRsbk1sqls,3180:F10'
 
 alias dssp='deploy ScadaService Environment=Production'
 alias dssJR='dssp SqlServers=JRSBK1SQLS.ger.corp.intel.com,3180:IDPJ'

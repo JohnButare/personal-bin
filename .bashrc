@@ -602,6 +602,7 @@ alias jh='"$cloud/group/Juntos Holdings"'
 # Intel
 #
 
+alias BashAd="start runas '/env' '/user:amr\ad_jjbutare' mintty"
 alias IntelSyncLocalFiles='slf rrsprsps; slf CsisBuild.intel.com; slf CsisBuild-dr.intel.com'
 alias IntelSyncInstall='m install-CsisBuild; m install-CsisBuildDr; m install-dfs ;m install-cr'
 alias isi=IntelSyncInstall islf=IntelSyncLocalFiles
@@ -750,7 +751,7 @@ alias frt='$frc/Test/WebServiceTest/bin/Debug/WebServiceTest.exe'
 # SCADA Portal
 #
 
-sprt='g co Test; g reset --hard Production; g merge develop; g merge US-EnhanceWebFailover; g merge origin/US-PLCEdit4; g merge origin/US-RevokeGuest; g merge US-HmiImprovements' # SCADA Portal reset test
+alias spbs="ScadaPortalBootstrap"
 
 sp="$code/ScadaPortal"
 spt="$code/ScadaPortalTest"
@@ -825,14 +826,13 @@ alias dadbLB='deploy AntidoteDb environment=LocalBuild'
 
 # deploy to test
 alias dclr='deploy HistorianDb force=true PrOnly=Atrue include=TB1 DeployClr=false DeployHistorianSharedClr=true DeployScripts=false ControlServiceModules=false' # deploy custom
-alias dra='deploy RelayAgent force=true' # deploy relay agent
-alias dps='deploy ProjectService force=true RelayAgent=true include=TB1 PrOnly=true' # deploy project service
-alias das='deploy AlarmShelvingService force=true RelayAgent=true include=TB1 PrOnly=true' # deploy alarm shelving service
+alias dra='deploy RelayAgent force=true Environment=Test' # deploy relay agent
+alias dps='deploy ProjectService force=true Environment=Test RelayAgent=true include=TB1 PrOnly=true' # deploy project service
+alias das='deploy AlarmShelvingService force=true Environment=Test RelayAgent=true include=TB1 PrOnly=true' # deploy alarm shelving service
 
-alias dra='deploy RelayAgent force=true'
 alias dss='deploy ScadaService force=true'
 alias dsps='deploy ScadaProjectService force=true ForceLocalDeployment=true'
-alias dhdb='deploy HistorianDb force=true DeployScripts=false PrOnly=true DeployMagellanClr=false DeployClr=true NoSecondary=false ControlServiceModules=false'
+alias dhdb='deploy HistorianDb force=true Environment=Test DeployScripts=false PrOnly=true DeployMagellanClr=false DeployClr=true NoSecondary=false ControlServiceModules=false'
 alias ddlc='deploy DataLogger force=true InstallDataLogger=false ConfigureDataLogger=false PopPoints=false DeployScreens=false AddPoints=false ChangeCredentials=true ForceLocalDeployment=true'
 alias ddl='deploy DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true DeployScreens=true AddPoints=true ChangeCredentials=true ForceLocalDeployment=true'
 alias dac='deploy AlertChecker force=true'
@@ -840,11 +840,11 @@ alias dpm='deploy PointManagement force=true'
 alias dw='deploy Web force=true'
 
 # deploy to pre-production
-alias draPP='deploy RelayAgent force=true environment=PreProduction'
-alias dwPP='deploy web force=true environment=PreProduction'
-alias dacPP='deploy AlertChecker force=true environment=PreProduction'
-alias dssPP='deploy ScadaService force=true environment=PreProduction'
-alias dhdbPP='deploy HistorianDb force=true environment=PreProduction'
+alias drapp='deploy RelayAgent force=true environment=Pre-Production'
+alias dwpp='deploy web force=true environment=PreProduction'
+alias dacpp='deploy AlertChecker force=true environment=Pre-Production'
+alias dsspp='deploy ScadaService force=true environment=Pre-Production'
+alias dhdbpp='deploy HistorianDb force=true environment=Pre-Production'
 
 # deploy to pilot
 alias dwPILOT='deploy web force=true environment=Production servers=ORPRSPS'

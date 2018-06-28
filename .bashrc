@@ -482,6 +482,7 @@ alias slp='power sleep'
 #
 
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
+alias NumProcs='cat /proc/cpuinfo | grep processor | wc -l'
 
 #
 # sound

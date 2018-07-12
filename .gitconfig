@@ -141,6 +141,7 @@
 	tagp = git push origin # push origin
 	tagrm = "!f() { git tag -d $1; git push origin -d $1 && git remote prune origin; }; f" # remove
 	tagr = "!f() { git tagrm $1; git tagcr $1; }; f" # replace
+	tagmv = "!f() { git tagrm $1; git tagcr $1; }; f" # move
 
 	# reflog
 	rl = "!f() { git  reflog | head -40; }; f" # reflog
@@ -186,9 +187,7 @@
 	auto = false
 [difftool "bc"]
 	path = C:/Program Files/Beyond Compare 4/bcomp.exe
-	cmd = \"/usr/local/bin/bcomp\"  \"$LOCAL\" \"$REMOTE\"
-	trustExitCode = true
+	cmd = \"C:/Program Files/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\"
 [mergetool "bc"]
 	path = C:/Program Files/Beyond Compare 4/bcomp.exe
-	cmd = \"/usr/local/bin/bcomp\"  \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
-	trustExitCode = true
+	cmd = \"C:/Program Files/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"

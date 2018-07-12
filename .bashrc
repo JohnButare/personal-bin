@@ -586,7 +586,7 @@ alias ab='as adb'
 # .NET Development
 #
 
-alias n='DotNet'
+alias n='DotNetHelper'
 alias ncd='scd DotNet cd'
 alias gcd='scd DotNet GacCd'
 build() { n build /verbosity:minimal /m "$code/$1"; }
@@ -719,7 +719,7 @@ alias aumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $ac/libraries;
 alias aumt="cp $mc/Source/Magellan.Threading/bin/Debug/Magellan.Threading.* $ac/Libraries" # Antidote Update Magellan Threading
 alias aumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $ac/libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/libraries/Silverlight" # Update Magellan Service Management
 alias aup='sudo cp "$code/Antidote/source/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
-alias aub='CopyDir "$code/Antidote/source/Antidote/bin/Debug" "//CsisBuild.intel.com/d$/Program Files/Antidote"' # Antidote Update BuildServer
+alias aub='4 "$code/Antidote/source/Antidote/bin/Debug" "//CsisBuild.intel.com/d$/Program Files/Antidote"' # Antidote Update BuildServer
 alias aul='CopyDir "$code/Antidote/source/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer
 
 #
@@ -808,6 +808,7 @@ alias sslppbk='ssl rasPPbksqls'
 
 # deploy
 deploy() { pushd $spc/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
+alias spud='CopyDir "$spc/Deploy/Deploy/bin/Debug" "//CsisBuild.intel.com/c$/Projects/ScadaPortal/Development/Source/Deploy/Deploy/bin/Debug"' # update deploy
 
 # deploy relay
 alias drt="deploy HistorianRelayDb Environment=Test force=true DeployScripts=true DeployClr=true"
@@ -890,7 +891,7 @@ ccdir="$(wtu '\\csisbuild-dr.intel.com\d$\Program Files (x86)\CruiseControl.NET\
 
 ccpu() # CruiseControlProgramUpdate
 {
-	CopyDir "$code/CruiseControlPlugins/Source/ccnet.GitHub.plugin/bin/Debug" "$ccdir" /xf '*.pdb' '*.vshost.*' 'log4net.dll' 'NetReflector.dll' 'ThoughtWorks.*'
+	4 "$code/CruiseControlPlugins/Source/ccnet.GitHub.plugin/bin/Debug" "$ccdir" /xf '*.pdb' '*.vshost.*' 'log4net.dll' 'NetReflector.dll' 'ThoughtWorks.*'
 	CopyDir "$code/CruiseControlPlugins/Source/GitHubApi/bin/Debug" "$ccdir" /xf '*.pdb' '*.vshost.*'
 }
 

@@ -310,6 +310,7 @@ alias SshKey='ssh-add ~/.ssh/id_dsa'
 SshShow() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
 SshFix() { SshAgent fix || return; ScriptEval SshAgent initialize; }
 alias sshf='SshFix'
+[[ "$PLATFORM" == "win" ]] && alias dig="\"$P/dig/bin/dig.exe\""
 
 #
 # portable and backup
@@ -520,20 +521,27 @@ ni="$nas/public/documents/data/install"
 nr='//butare.net@ssl@5006/DavWWWRoot'
 ng='git@butare.net:/volume1/git'
 
-alias NasDown='ssh root@nas1 poweroff; ssh root@nas2 poweroff'
-alias nussh='ssh root@nas1 "chmod 700 /volume1/homes/$user/.ssh; chmod 644 /volume1/homes/$user/.ssh/authorized_keys"  || return' # NAS update SSH
+alias NasDown='ssh nas1 poweroff; ssh nas2 poweroff'
+alias nussh='ssh nas1 "chmod 700 /volume1/homes/$user/.ssh; chmod 644 /volume1/homes/$user/.ssh/authorized_keys"  || return' # NAS update SSH
 alias ned='NasEditDns'; alias NasEditDns="e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf" # NAS edit DHCP and DNS
 alias nudhcp='NasUpdateDhcp'
-alias nudns='NasUpdateDns'; NasUpdateDns() { scp ~/"Dropbox/systems/nas/dns/1.168.192.in-addr.arpa" ~/"Dropbox/systems/nas/dns/hagerman.butare.net" "root@nas$1:/var/packages/DNSServer/target/named/etc/zone/master"; } # NAS update DNS
-alias ncc='NasCopyConfig'; NasCopyConfig() { scp "root@nas$1:/etc/dhcpd/dhcpd-eth0-"*".conf" "root@nas$1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; } # NAS copy (backup) configuration
+alias nudns='NasUpdateDns';
+alias ncc='NasCopyConfig'; NasCopyConfig() { scp "nas1:/etc/dhcpd/dhcpd-eth0-"*".conf" "nas1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; } # NAS copy (backup) configuration
+
+NasUpdateDns() 
+{
+	local f=~/"Dropbox/systems/nas/dns/"
+	scp "$f/1.168.192.in-addr.arpa" "$f/hagerman.butare.net" "nas1:/var/packages/DNSServer/target/named/etc/zone/master"; 
+	#scp "$f/1.168.192.in-addr.arpa" "$f/hagerman.butare.net" "router:/var/packages/DNSServer/target/named/etc/zone/master"; 
+}
 
 NasUpdateDhcp() 
 { 
 	local f="/tmp/dhcpd.conf"
 	cat ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf | sed '/^#/d' | sed '/^$/ d' > $f
-	scp "$f" root@router:/etc/dhcpd; scp "$f" root@router:/etc/dhcpd/dhcpd-static-static.conf; scp "$f" root@router:/etc/dhcpd/dhcpdStatic.ori;
-	scp "$f" root@nas1:/etc/dhcpd; scp "$f" root@nas1:/etc/dhcpd/dhcpd-eth0-static.conf;
-	#scp "$f" root@nas2:/etc/dhcpd; scp "$f" root@nas2:/etc/dhcpd/dhcpd-eth0-static.conf;
+	scp "$f" router:/etc/dhcpd; scp "$f" router:/etc/dhcpd/dhcpd-static-static.conf; scp "$f" router:/etc/dhcpd/dhcpdStatic.ori;
+	scp "$f" nas1:/etc/dhcpd; scp "$f" nas1:/etc/dhcpd/dhcpd-eth0-static.conf;
+	#scp "$f" nas2:/etc/dhcpd; scp "$f" nas2:/etc/dhcpd/dhcpd-eth0-static.conf;
 } 
 
 alias nrslf='slf butare.net'

@@ -620,7 +620,7 @@ alias jh='"$cloud/group/Juntos Holdings"'
 # Intel
 #
 
-alias BashAd="start runas '/env' '/user:amr\ad_jjbutare' mintty"
+alias BashAd="start runas '/env' '/user:amr\ad_"$USERNAME"' mintty"
 alias IntelSyncLocalFiles='slf rrsprsps; slf CsisBuild.intel.com; slf CsisBuild-dr.intel.com'
 alias IntelSyncInstall='m install-CsisBuild; m install-CsisBuildDr; m install-dfs ;m install-cr'
 alias isi=IntelSyncInstall islf=IntelSyncLocalFiles
@@ -850,7 +850,7 @@ alias dps='deploy ProjectService force=true Environment=Test RelayAgent=true inc
 alias das='deploy AlarmShelvingService force=true Environment=Test RelayAgent=true include=TB1 PrOnly=true' # deploy alarm shelving service
 
 alias dss='deploy ScadaService force=true'
-alias dsps='deploy ScadaProjectService force=true ForceLocalDeployment=true'
+alias dsps='deploy ScadaProjectService force=true ForceLocalDeployment=true Environment=test'
 alias dhdb='deploy HistorianDb force=true Environment=Test DeployScripts=false PrOnly=true DeployMagellanClr=false DeployClr=true NoSecondary=false ControlServiceModules=false'
 alias ddlc='deploy DataLogger force=true InstallDataLogger=false ConfigureDataLogger=false PopPoints=false DeployScreens=false AddPoints=false ChangeCredentials=true ForceLocalDeployment=true'
 alias ddl='deploy DataLogger force=true InstallDataLogger=false ConfigureDataLogger=true PopPoints=true DeployScreens=true AddPoints=true ChangeCredentials=true ForceLocalDeployment=true'

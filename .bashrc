@@ -628,7 +628,7 @@ alias SetIntelProxy='se intel SetProxy'
 export GITHUB_HOST=github.intel.com
 
 # locations
-s="$home/Syncplicity Folders"; sdata="$s/data"; sql="$sdata/sql"; ss="$sql/SCADA Portal"
+s="$home/Syncplicity"; sdata="$s/data"; sql="$sdata/sql"; ss="$sql/SCADA Portal"
 ihome="//jjbutare-mobl/john/documents"
 SsSoftware="//VMSPFSFSCH09/DEV_RNDAZ/Software"
 

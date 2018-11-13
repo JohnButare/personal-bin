@@ -37,15 +37,15 @@ Init()
 #Enter::send "{Enter}" ; disable Narrator
 
 ; Numeric Keypad
-^Numpad4::MusicPreviousTrack()
-^Numpad5::MusicPlayPause()
-^Numpad6::MusicNextTrack()
-^Numpad7::MusicEqualizer()
-^Numpad9::MusicOther()
+;^Numpad4::MusicPreviousTrack()
+;^Numpad5::MusicPlayPause()
+;^Numpad6::MusicNextTrack()
+;^Numpad7::MusicEqualizer()
+;^Numpad9::MusicOther()
 
-^Numpad8::SoundSet +5
-^Numpad2::SoundSet -5
-^Numpad0::SoundSet +1, , mute
+;^Numpad8::SoundSet +5
+;^Numpad2::SoundSet -5
+;^Numpad0::SoundSet +1, , mute
 
 ; Mouse
 ;WheelLeft::Send "^#{Right}"
@@ -61,13 +61,15 @@ Init()
 
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenBrowser()
+#b::OpenThunderbird()
 #!a::WinActivate Antidote
 #!g::WinActivate ".*Git Extensions"
 ^#h::reload ; Reload AutoHotKeys
 #i::OpenIe()
 #!i::NewIe()
 #j::run eclipse.btm,,min
-#n::RunOneNote()
+#n::OpenStandardNotes()
++#n::RunOneNote()
 ^#m::RunTidal()
 ^#n::NewFolder()
 #o::RunOutlook()

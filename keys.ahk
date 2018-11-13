@@ -28,7 +28,10 @@ Test()
 Init()
 {
   global
-	DEFAULT_BROWSER := "firefox"
+
+  DEFAULT_BROWSER := "firefox"
+  if (EnvGet("USERDOMAIN") = "AMR")
+		DEFAULT_BROWSER := "chrome"
 }  
 
 #Enter::send "{Enter}" ; disable Narrator

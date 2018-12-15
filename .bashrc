@@ -92,6 +92,9 @@ alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 alias grep='\grep --color=auto'
 alias egrep='\egrep --color=auto'
 
+alias nruby='/usr/local/opt/ruby/bin/ruby'
+alias unruby='export PATH="/usr/local/opt/ruby/bin:$PATH"' # use new ruby
+
 export LPASS_AGENT_TIMEOUT=0
 
 #

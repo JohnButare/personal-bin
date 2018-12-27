@@ -191,3 +191,5 @@
 [mergetool "bc"]
 	path = C:/Program Files/Beyond Compare 4/bcomp.exe
 	cmd = \"C:/Program Files/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+[winUpdater]
+	recentlySeenVersion = 2.20.1.windows.1

@@ -1,15 +1,10 @@
 app -b $command explorer AutoHotKey
 
-if [[ "$COMPUTERNAME" == @(jjbutare-?vm*|jjbutare-mobl*) ]]; then
-	app -b $command mosaico
-else
-	app -b $command winsplit
-fi
-
-local common="word DropBox"
+local common="AquaSnap TidyTabs AltTabTerminatror DropBox word GlassWire"
 case "$COMPUTERNAME" in
+	oversoul) app -b $command CorsairUtilityEngine $common IntelRapidStorage;;
 	bean) f.lux;;
-	jjbutare-wvm*|oversoul) app -b $command $common;;
+	jjbutare-wvm*) app -b $command $common;;
 	jjbutare-i*|jjbutare-mobl*) app -b $command $common SyncPlicity; intel $command -b;;
 esac
 

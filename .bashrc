@@ -774,7 +774,7 @@ alias frt='$frc/Test/WebServiceTest/bin/Debug/WebServiceTest.exe'
 # SCADA Portal
 #
 
-alias spbs="ScadaPortalBootstrap"
+alias spi="ScadaPortalInstall"
 
 sp="$code/ScadaPortal"
 spt="$code/ScadaPortalTest"
@@ -803,6 +803,9 @@ alias spumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.{dll,pdb,xml} $
 alias spumd="cp $mc/Source/Magellan.Data/bin/Debug/Magellan.Data.* $sp/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $sp/Libraries/Silverlight"
 alias spumt="cp $mc/Source/Magellan.Threading/bin/Debug/Magellan.Threading.* $sp/Libraries"
 alias spumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $sp/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $sp/Libraries/Silverlight"
+
+# update build server
+alias spudqa="CopyDir -r $spc //CsisBuild.intel.com/c$/Projects/ScadaPortal/DevQa/Source"
 
 # service
 alias sstStop='service stop ScadaService RASSI1PRSQLS; service stop ScadaService RASSI1BKSQLS; echo "Disable AlertChecker to prevent automatic service start"'

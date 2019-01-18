@@ -737,7 +737,7 @@ alias ap='ProfileManager Antidote'
 alias apu='cp "$ac/deployment/profiles/"*.profile "$profiles"'
 
 alias aum='start "$ac/libraries/UpdateMagellan.cmd"'
-alias aumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $ac/libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/libraries/Silverlight" # Updte Magellan Core
+alias aumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $ac/../Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/../Libraries/Silverlight" # Updte Magellan Core
 alias aumt="cp $mc/Source/Magellan.Threading/bin/Debug/Magellan.Threading.* $ac/Libraries" # Antidote Update Magellan Threading
 alias aumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $ac/libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/libraries/Silverlight" # Update Magellan Service Management
 alias aup='sudo cp "$code/Antidote/source/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
@@ -776,7 +776,7 @@ alias frt='$frc/Test/WebServiceTest/bin/Debug/WebServiceTest.exe'
 
 alias spi="ScadaPortalInstall"
 
-sp="$code/ScadaPortal"
+sp="$code/ScadaPortal"; [[ "$COMPUTERNAME" == "VMSPWBLD01" ]] && sp="$code/ScadaPortal/DevQa"
 spt="$code/ScadaPortalTest"
 sps="$sp/DataScripts"
 spc="$sp/Source"

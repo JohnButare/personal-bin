@@ -470,6 +470,11 @@ scs() { gh status "$bin"; gh status "$ubin"; }
 scsave() { local m="script changes from $COMPUTERNAME${1+: $1}"; gu "$bin" "$m" || return; gu "$ubin" "$m"; }
 
 #
+# Node.js
+#
+alias node='\node --use-strict'
+
+#
 # power management
 #
 

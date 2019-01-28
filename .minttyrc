@@ -19,3 +19,6 @@ WindowShortcuts=yes
 SwitchShortcuts=yes
 ZoomShortcuts=yes
 AltFnShortcuts=yes
+ThemeFile=mintty
+Locale=en_US
+Charset=UTF-8

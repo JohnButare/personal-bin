@@ -298,22 +298,30 @@ alias et='exiftool'
 alias etg='start exiftoolgui' # ExifToolGui
 
 #
+# ssh
+#
+
+alias sshf='SshFix'
+alias SshKey='ssh-add ~/.ssh/id_dsa'
+alias pagent="start pageant ~/.ssh/id_rsa.ppk"
+
+IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
+SshShow() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
+SshFix() { SshAgent fix || return; ScriptEval SshAgent initialize; }
+
+#
 # network
 #
 
 ScriptEval SshAgent initialize
 
-alias hu='HostUtil'
-nu() { net use "$(ptw "$1")" "${@:2}"; } # NetUse
-alias ipc='network ipc'
-IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
-RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
-alias slf='SyncLocalFiles'
-alias SshKey='ssh-add ~/.ssh/id_dsa'
-SshShow() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
-SshFix() { SshAgent fix || return; ScriptEval SshAgent initialize; }
-alias sshf='SshFix'
 [[ "$PLATFORM" == "win" ]] && alias dig="\"$P/dig/bin/dig.exe\""
+alias hu='HostUtil'
+alias ipc='network ipc'
+alias slf='SyncLocalFiles'
+
+RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
+nu() { net use "$(ptw "$1")" "${@:2}"; } # NetUse
 
 #
 # portable and backup

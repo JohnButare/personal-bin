@@ -149,7 +149,7 @@ alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
 
 UncCd()
 {
-	! IsUncPath "$1" && { builtin cd "$@"; return; }
+	[[ "$PLATFORM" == "win" ]] || ! IsUncPath "$1" && { builtin cd "$@"; return; }
 	[[ ! "$(GetUncShare "$1")" ]] && { unc list "$1"; return; }
 	ScriptCd unc mount "$1" || return
 }
@@ -157,7 +157,12 @@ UncCd()
 UncLs()
 {
 	local unc="${@: -1}"
-	! IsUncPath "$unc" && { command ${G}ls --hide={desktop.ini,NTUSER.*,ntuser.*} -F -Q --group-directories-first --color "$@"; return; }
+	
+	if [[ "$PLATFORM" == "win" ]] || ! IsUncPath "$unc"; then
+		command ${G}ls --hide={desktop.ini,NTUSER.*,ntuser.*} -F -Q --group-directories-first --color "$@"
+		return
+	fi
+
 	[[ ! "$(GetUncShare "$unc")" ]] && { unc list "$unc"; return; }
 	local dir; dir="$(unc mount "$unc")" || return
 	${G}ls --hide={desktop.ini,NTUSER.*,ntuser.*} -F --group-directories-first -Q --group-directories-first --color "${@:1:$#-1}" "$dir"

@@ -324,6 +324,8 @@ ScriptEval SshAgent initialize
 alias hu='HostUtil'
 alias ipc='network ipc'
 alias slf='SyncLocalFiles'
+alias FindSyncTxt='fa .*_sync.txt'
+alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 
 RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
 nu() { net use "$(ptw "$1")" "${@:2}"; } # NetUse

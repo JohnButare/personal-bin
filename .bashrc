@@ -143,8 +143,8 @@ alias ....='builtin cd ../../..'
 alias .....='cbuiltin d ../../../..'
 alias c='builtin cd ~; cls'
 alias del='rm'
-alias md='MkDir'
-alias rd='RmDir'
+alias md='mkdir'
+alias rd='rmdir'
 alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
 
 UncCd()

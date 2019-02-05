@@ -100,13 +100,19 @@ export LPASS_AGENT_TIMEOUT=0
 #
 # misc
 #
+
 alias cf='CleanupFiles'
 alias cls=clear
-[[ "$PLATFORM" == "win" ]] && alias telnet='putty'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
 
 #
 # archive
 #
+
 alias fm='start "$p/7-Zip/7zFM.exe"'
 7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 alias untar='tar -v -x --atime-preserve <'
@@ -119,6 +125,7 @@ zll() { [[ "$PLATFORM" == "win" ]] && 7z.exe l -slt "${@}" || unzip -ll "${@}"; 
 #
 # variables and functions
 #
+
 alias ListVars='declare -p | egrep -v "\-x"'
 alias ListExportVars='export'
 alias ListFunctions='declare -F'
@@ -129,6 +136,7 @@ alias unfunction='unset -f'
 #
 # performance
 #
+
 alias t='time pause'
 alias ton='TimerOn'
 alias toff='TimerOff'
@@ -136,6 +144,7 @@ alias toff='TimerOff'
 #
 # file management
 #
+
 alias cd='UncCd'
 alias ..='builtin cd ..'
 alias ...='builtin cd ../..'
@@ -168,12 +177,14 @@ UncLs()
 	${G}ls --hide={desktop.ini,NTUSER.*,ntuser.*} -F --group-directories-first -Q --group-directories-first --color "${@:1:$#-1}" "$dir"
 }
 
-# other
 alias inf="FileInfo"
 alias l='explore'
 alias rc='CopyDir'
 
+#
 # list
+#
+
 alias ls='UncLs'									# list 
 alias la='UncLs -Al'							# list all
 alias ll='UncLs -l'								# list long
@@ -187,7 +198,10 @@ alias dirst='UncLs -l --sort=time --reverse' # sort by last modification time
 alias dirsct='UncLs -l --time=ctime --sort=time --reverse' # sort by creation  time
  #-l | awk '{ print \$5 \"\t\" \$9 }'
 
+#
 # find
+#
+
 alias fa='FindAll'
 alias fcd='FindCd'
 alias fs='FindStart'
@@ -234,13 +248,19 @@ FindCd()
 	fi;
 }
 
+#
 # drives
+#
+
 alias d='drive'
 alias de='drive eject'
 alias dl='drive list'
 alias dr='drive list | egrep -i removable'
 
+#
 # disk usage
+#
+
 alias duh='${G}du --human-readable'
 alias ds='DirSize m'
 alias dsu='DiskSpaceUsage'
@@ -250,6 +270,7 @@ alias TestDisk='sudo bench32.exe'
 #
 # package management
 #
+
 alias choco='chocolatey'
 alias cinst='chocolatey install'
 alias clist='chocolatey list'

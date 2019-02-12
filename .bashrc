@@ -892,11 +892,11 @@ alias dlp='TextEdit //vmspwbld001/d$/temp/ScadaPortalDeployment/log/Production.L
 # deploy to LocalBuild
 alias dadbLB='deploy AntidoteDb environment=LocalBuild'
 
-# deploy to test
+# deploy to dev
 alias dclr='deploy HistorianDb force=true PrOnly=Atrue include=TB1 DeployClr=false DeployHistorianSharedClr=true DeployScripts=false ControlServiceModules=false' # deploy custom
 alias dra='deploy RelayAgent force=true Environment=Test' # deploy relay agent
-alias dps='deploy ProjectService force=true Environment=Test RelayAgent=true include=TB1 PrOnly=true' # deploy project service
-alias das='deploy AlarmShelvingService force=true Environment=Test RelayAgent=true include=TB1 PrOnly=true' # deploy alarm shelving service
+alias dps='deploy ProjectService force=true Environment=dev RelayAgent=true include=pr ' # deploy project service
+alias das='deploy AlarmShelvingService force=true Environment=dev RelayAgent=true include=pr' # deploy alarm shelving service
 
 alias dss='deploy ScadaService force=true'
 alias dsps='deploy ScadaProjectService force=true ForceLocalDeployment=true Environment=test'

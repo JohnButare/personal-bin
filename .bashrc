@@ -779,8 +779,8 @@ alias apu='cp "$ac/deployment/profiles/"*.profile "$profiles"'
 
 alias aum='start "$ac/libraries/UpdateMagellan.cmd"'
 alias aumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $ac/../Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/../Libraries/Silverlight" # Updte Magellan Core
-alias aumt="cp $mc/Source/Magellan.Threading/bin/Debug/Magellan.Threading.* $ac/Libraries" # Antidote Update Magellan Threading
-alias aumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $ac/libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/libraries/Silverlight" # Update Magellan Service Management
+alias aumt="cp $mc/Source/Magellan.Threading/bin/Debug/Magellan.Threading.* $ac/../Libraries" # Antidote Update Magellan Threading
+alias aumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $ac/../Libraries;" # Update Magellan Service Management
 alias aup='sudo cp "$code/Antidote/source/Antidote/bin/Debug/*" "$P/Antidote"' # Antidote Update ProgramFiles
 alias aub='4 "$code/Antidote/source/Antidote/bin/Debug" "//CsisBuild.intel.com/d$/Program Files/Antidote"' # Antidote Update BuildServer
 alias aul='CopyDir "$code/Antidote/source/Antidote/bin/Debug" "$P/Antidote"' # Antidote Update LocalServer

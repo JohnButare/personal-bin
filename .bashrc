@@ -541,13 +541,12 @@ alias TestSound='playsound "$data/setup/test.wav"'
 # windows
 #
 
-alias cm='os ComputerManagement'
-alias credm='os CredentialManagement'
-alias dm='os DeviceManager'
-alias ev='os EventViewer'
+alias cm='start CompMgmt.msc'
+alias credm='start control /name Microsoft.CredentialManager'
+alias dm='start DevMgmt.msc'
+alias ev='start eventvwr.msc'
 alias prog='product gui'
 alias prop='os SystemProperties'
-alias ResourceMonitor='os ResourceMonitor'
 alias SystemRestore='vss'
 
 alias ws='wscript /nologo'

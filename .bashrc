@@ -556,6 +556,8 @@ alias cs='cscript /nologo'
 # wiggin
 #
 
+# Raspberry Pi
+
 
 # NAS
 
@@ -596,6 +598,32 @@ alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
 alias hdir='cd $nas/docker/homebridge'
 alias hconfig='hdir; e /volumes/docker/homebridge/config.json'
 alias hconfigp='hdir; e /volumes/docker/homebridge/package.json'
+
+hbak()
+{ 
+	local h="$1" f="$1.homebridge.zip" d="$cloud/systems/homebridge/$1"
+
+	[[ $h ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
+	[[ -f "$d/$f" ]] && { bak --move "$d/$f" || return; }
+	ssh $h "rm -f $f; zip -r $f .homebridge" || return
+	scp $h:~/$f "$d" || return
+	echo "Successfully backed up $h homebridge configuration to $f"
+}
+
+hrest()
+{ 
+	local h="$1";
+	local f="$h.homebridge.zip" d="$cloud/systems/homebridge/$h" bakFile="$h.$(GetTimeStamp).homebridge" hb="/etc/init.d/homebridge"
+
+	[[ $h ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
+	[[ -f "$d/$f" ]] || { EchoErr "$f does not exist"; return 1; }
+	ask -dr n "Are you sure you want to restore $f to $h" || return
+
+	ssh $h "[[ -d .bak ]] || mkdir .bak; zip -r .bak/$bakFile ~/.homebridge" || return
+	scp "$d/$f" $h:~ || return
+	ssh $h "sudo $hb stop && rm -fr ~/.homebridge && unzip -o $f && sudo $hb start" || return
+	echo "Successfully restored $f homebridge configuration to $h"
+}
 
 #
 # other

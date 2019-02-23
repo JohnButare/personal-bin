@@ -1,0 +1,5 @@
+XTerm*FaceName: DejaVu Sans Mono
+XTerm*FaceSize: 12
+XTerm*Geometry: 80x30
+XTerm*Foreground: lightgrey
+XTerm*Background: #201810

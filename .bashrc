@@ -1,5 +1,8 @@
 # ~/.bashrc, user specific interactive intialization, and non-interactive ("mintty" and "ssh <script>")
 
+# interactive initialization - remainder not needed in child processes or scripts
+[[ "$-" != *i* ]] && return
+
 # sytem-wide configuration - if not done in /etc/bash.bashrc
 if [[ ! $BIN ]]; then
 	[[ "$-" == *i* ]] && echo ".bashrc: system configuration was not set in /etc/bash.bashrc" > /dev/stderr
@@ -16,9 +19,12 @@ set +a
 # interactive initialization - remainder not needed in child processes or scripts
 [[ "$-" != *i* ]] && return
 
-HISTCONTROL=erasedups
-HISTFILE="$DOC/data/bash/.bash_history"
-shopt -s autocd cdspell cdable_vars dirspell histappend direxpand
+# history
+HISTCONTROL=ignoreboth
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 
 # completion - win
 if [[ -f "/usr/share/bash-completion/completions/git" ]] && ! IsFunction __git_ps1; then
@@ -114,8 +120,8 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 #
 
 alias fm='start "$p/7-Zip/7zFM.exe"'
-7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 alias untar='tar -v -x --atime-preserve <'
+z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 zbak() { local z="zip -r"; [[ "$PLATFORM" == "win" ]] && z="7z.exe a"
 	[[ $# == 1  ]] && eval $z "$1.zip" "$1" || eval $z "$1" "${@:2}"; }
 zrest() { [[ "$PLATFORM" == "win" ]] && 7z.exe x "${@}"|| unzip "${@}"; }
@@ -150,7 +156,8 @@ alias ..='builtin cd ..'
 alias ...='builtin cd ../..'
 alias ....='builtin cd ../../..'
 alias .....='cbuiltin d ../../../..'
-alias c='builtin cd ~; cls'
+alias c='cls'		# clear screen
+alias cb='builtin cd ~; cls' # clear screen and cd
 alias del='rm'
 alias md='mkdir'
 alias rd='rmdir'
@@ -288,6 +295,10 @@ alias ei='te $bin/inst'
 alias ehp='edit "$udata/replicate/default.htm"'
 
 # Bash (aliases, functions, startup, other)
+
+startupFiles="/etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.bashrc"
+IsPlatform mac && startupFiles+="/etc/bashrc"
+
 alias sa='. ~/.bashrc'
 alias ea='te $ubin/.bashrc'
 
@@ -298,7 +309,7 @@ alias kstart='bind -f ~/.inputrc'
 alias ek='te ~/.inputrc'
 
 alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;'
-alias estart='te /etc/profile /etc/bashrc /etc/bash.bashrc "$bin/bash.bashrc" "$ubin/.bash_profile" "$ubin/.bashrc"'
+alias estart="te $startupFiles"
 
 alias ebo='te $ubin/.minttyrc $ubin/.inputrc /etc/bash.bash_logout $ubin/.bash_logout'
 
@@ -324,22 +335,34 @@ alias et='exiftool'
 alias etg='start exiftoolgui' # ExifToolGui
 
 #
+# X Windows
+#
+
+# set the X DISPLAY if not set and X is installed (in /usr/bin/XWin for Cygwin)
+[[ ! "$DISPLAY" && -f /usr/bin/XWin ]] && export DISPLAY=:0
+
+#
 # ssh
 #
 
-alias sshf='SshFix'
-alias SshKey='ssh-add ~/.ssh/id_dsa'
-alias pagent="start pageant ~/.ssh/id_rsa.ppk"
+[[ ! -f "$SSH_AGENT_AUTH_SOCK" ]] && SshAgent startup && eval "$(SshAgent initialize)"
 
-IsSsh() { [ -n "$SSH_TTY" ] || [ "$(RemoteServer)" != "" ]; }
-SshShow() { IsSsh && echo "Logged in from $(RemoteServer)" || echo "Not using ssh";}
+sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # connect with a full environment, i.e. sshfull nas2 power shutdown
+sshsudo() { ssh -t $1 sudo ${@:2}; }
+
+alias ssht='ssh -t' # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
+alias sshx='ssh -Y'; alias sx=sshx; # connect with X forward
+alias sshf='SshFix'
+alias sshf='sshfull'
+alias SshKey='ssh-add ~/.ssh/id_dsa'
+
+RemoteServerName() { nslookup "$(RemoteServer)" | grep "name =" | cut -d" " -f3; }
+SshShow() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh";}
 SshFix() { SshAgent fix || return; ScriptEval SshAgent initialize; }
 
 #
 # network
 #
-
-ScriptEval SshAgent initialize
 
 [[ "$PLATFORM" == "win" ]] && alias dig="\"$P/dig/bin/dig.exe\""
 alias hu='HostUtil'
@@ -348,7 +371,6 @@ alias slf='SyncLocalFiles'
 alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 
-RemoteServer() { who am i | cut -f2  -d\( | cut -f1 -d\); }
 nu() { net use "$(ptw "$1")" "${@:2}"; } # NetUse
 
 #
@@ -389,7 +411,7 @@ GitPrompt()
 		[[ -d .git ]] || return
 		#gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 		#__git_ps1 "$gitColor (%s)"	
-		echo "$gitColor  ($(git rev-parse --abbrev-ref HEAD))"
+		echo "$gitColor ($(git rev-parse --abbrev-ref HEAD))"
 		return 
 	fi
 
@@ -411,19 +433,17 @@ SetPrompt()
 	local red='\[\e[31m\]'
 	local yellow='\[\e[33m\]'
 
-	local dir='\w' user='\u' userAtHost='\u@\h'
-	
+	local dir='\w' user='\u' host='\h'; host="${HOSTNAME#$USER-}"; [[ "$USER" != "jjbutare" ]] && host+="@\u" # \h
 	local git; IsFunction __git_ps1 && git='$(GitPrompt)'
 	local elevated; IsElevated && elevated='*'
 
 	# compact
 	# dir='$(GetPrompt)'; user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '
-	# userAtHost="${user}"; IsSsh && host="${user/ls/[[:space:]]/}@\h "
+	# host="${user}"; IsSsh && host="${user/ls/[[:space:]]/}@\h "
 	# PS1="${elevated}${green}${host}${yellow}${dir}${clear}${cyan}${gitColor}${git}${clear}\$ "
 
 	# multi-line
-	PS1="\[\e]0;\w\a\]\n${green}${userAtHost}${red}${elevated} ${yellow}${dir}${clear}${cyan}${git}\n${clear}\$ "
-
+	PS1="\[\e]0;\w\a\]\n${green}${host}${red}${elevated} ${yellow}${dir}${clear}${cyan}${git}\n${clear}\$ "
 	# share history with other shells when the prompt changes
 	PROMPT_COMMAND='history -a; history -r'
 }
@@ -557,7 +577,7 @@ alias cs='cscript /nologo'
 #
 
 # Raspberry Pi
-
+alias PiCheckPower='! dmesg --time-format ctime | egrep -i volt' # check for under voltage in the log
 
 # NAS
 
@@ -652,6 +672,11 @@ test="$code/test"
 alias tup='cdup test'
 alias tc='cdc test'
 alias ts='cds test'
+
+# 
+# C Development
+#
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 #
 # JAVA Development
@@ -1005,10 +1030,5 @@ u()
 		ask 'Intel install directory update' && { IntelSyncInstall || return; }
 	fi
 
-	# Wiggin NAS
-	#if [[ $# == 0 ]] && [[ "$COMPUTERNAME" == "bean" ]] && HostUtil available nas1 && ask 'Wiggin nas file update'; then
-	#	NasSyncBean
-	#fi
-
-	os update $1 || return
+	HostUpdate $1 || return
 }

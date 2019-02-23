@@ -62,6 +62,7 @@ Init()
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenBrowser()
 #b::OpenThunderbird()
+#c::WinActivate ".*Visual Studio" ; code
 #!a::WinActivate Antidote
 #!g::WinActivate ".*Git Extensions"
 ^#h::reload ; Reload AutoHotKeys
@@ -79,8 +80,9 @@ Init()
 #t::OpenTextEditor()
 #!t::OpenNotepadPp()
 ^#t::OpenNotepadPp()
-#v::WinActivate ".* Microsoft Visual Studio"
+#v::WinActivate ".*VMware Workstation"
 #!v::WinActivate ".* ASG-Remote Desktop 2012"
+#w::RunWord()
 #!w::RunWord()
 #!y::OpenRecycleBin()
 #z::OpenIm()

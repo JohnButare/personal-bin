@@ -36,12 +36,14 @@ fi
 #
 
 # completion - mac
-if [[ -f "$COMPLETION/git-prompt.sh" ]] && ! IsFunction __git_ps1; then
-	. "$COMPLETION/git-prompt.sh"
-	. "$COMPLETION/git-completion.bash"
-	. "$COMPLETION/hub.bash_completion.sh"
-	. "$COMPLETION/tig-completion.bash"
+d="/usr/local/etc/bash_completion.d"
+if [[ -f "$d/git-prompt.sh" ]] && ! IsFunction __git_ps1; then
+	. "$d/git-prompt.sh"
+	. "$d/git-completion.bash"
+	. "$d/hub.bash_completion.sh"
+	. "$d/tig-completion.bash"
 fi
+unset d
 
 # completion - generic
 complete -r cd >& /dev/null # cd should not complete variables without a leading $
@@ -433,9 +435,12 @@ SetPrompt()
 	local red='\[\e[31m\]'
 	local yellow='\[\e[33m\]'
 
-	local dir='\w' user='\u' host='\h'; host="${HOSTNAME#$USER-}"; [[ "$USER" != "jjbutare" ]] && host+="@\u" # \h
+	local dir='\w' user='\u'
 	local git; IsFunction __git_ps1 && git='$(GitPrompt)'
 	local elevated; IsElevated && elevated='*'
+
+	host="${HOSTNAME#$USER-}"; host="${host%%.*}"
+	[[ "$USER" != "jjbutare" ]] && host+="@\u" # \h
 
 	# compact
 	# dir='$(GetPrompt)'; user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '

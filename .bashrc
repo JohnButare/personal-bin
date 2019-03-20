@@ -619,6 +619,12 @@ alias hdir='cd $nas/docker/homebridge'
 alias hconfig='hdir; e /volumes/docker/homebridge/config.json'
 alias hconfigp='hdir; e /volumes/docker/homebridge/package.json'
 
+alias hstatus='sudo /etc/init.d/homebridge status'
+alias hstart='sudo /etc/init.d/homebridge start'
+alias hstop='sudo /etc/init.d/homebridge stop'
+alias hlog='tail /var/log/homebridge.log'
+alias hlogerr='tail /var/log/homebridge.err'
+
 hbak()
 { 
 	local h="$1" f="$1.homebridge.zip" d="$cloud/systems/homebridge/$1"

@@ -617,7 +617,7 @@ alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
 alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
 
 # homebridge
-alias hedit='e ~/.homebridge/config.json'
+hedit() { eval e "~$1/.homebridge/config.json"; }
 alias hstatus='sudo /etc/init.d/homebridge status'
 alias hstart='sudo /etc/init.d/homebridge start'
 alias hstop='sudo /etc/init.d/homebridge stop'

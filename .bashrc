@@ -581,9 +581,6 @@ alias cs='cscript /nologo'
 # wiggin
 #
 
-# Raspberry Pi
-alias PiCheckPower='! dmesg --time-format ctime | egrep -i volt' # check for under voltage in the log
-
 # NAS
 
 nas='//nas1'
@@ -620,25 +617,26 @@ alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
 alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
 
 # homebridge
-alias hdir='cd $nas/docker/homebridge'
-alias hconfig='hdir; e /volumes/docker/homebridge/config.json'
-alias hconfigp='hdir; e /volumes/docker/homebridge/package.json'
-
+alias hedit='e ~/.homebridge/config.json'
 alias hstatus='sudo /etc/init.d/homebridge status'
 alias hstart='sudo /etc/init.d/homebridge start'
 alias hstop='sudo /etc/init.d/homebridge stop'
+alias hrestart='sudo /etc/init.d/homebridge restart'
 alias hlog='tail /var/log/homebridge.log'
 alias hlogerr='tail /var/log/homebridge.err'
+alias hbakall='hbak jjbutare@pi1; hbak pi@pi2'
 
 hbak()
 { 
 	local h="$1" f="$1.homebridge.zip" d="$cloud/systems/homebridge/$1"
 
 	[[ $h ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
+	[[ ! -d "$d" ]] && { mkdir "$d" || return; }
 	[[ -f "$d/$f" ]] && { bak --move "$d/$f" || return; }
+
 	ssh $h "rm -f $f; zip -r $f .homebridge" || return
 	scp $h:~/$f "$d" || return
-	echo "Successfully backed up $h homebridge configuration to $f"
+	echo "Successfully backed up $h homebridge configuration to $d/$f"
 }
 
 hrest()
@@ -655,6 +653,9 @@ hrest()
 	ssh $h "sudo $hb stop && rm -fr ~/.homebridge && unzip -o $f && sudo $hb start" || return
 	echo "Successfully restored $f homebridge configuration to $h"
 }
+
+# Raspberry Pi
+alias pcp="PiCheckPower"; alias PiCheckPower='! dmesg --time-format ctime | egrep -i volt' # check for under voltage in the log
 
 #
 # other

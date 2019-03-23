@@ -1,6 +1,6 @@
 app -b $command explorer AutoHotKey
 
-local common="AquaSnap TidyTabs AltTabTerminatror DropBox word Greenshot GlassWire"
+local common="AquaSnap TidyTabs AltTabTerminatror DasKeyboard DropBox word Greenshot GlassWire"
 case "$COMPUTERNAME" in
 	oversoul) app -b $command CorsairUtilityEngine $common IntelRapidStorage; PuttyAgent;;
 	bean) f.lux;;

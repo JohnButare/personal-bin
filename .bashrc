@@ -554,6 +554,11 @@ alias slp='power sleep'
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
 alias NumProcs='cat /proc/cpuinfo | grep processor | wc -l'
 
+# 
+# windows
+#
+alias WindowSpy="Au3Info.exe &"
+
 #
 # sound
 #
@@ -563,19 +568,22 @@ alias sound='os sound'
 alias TestSound='playsound "$data/setup/test.wav"'
 
 #
-# windows
+# Operating System
 #
 
-alias cm='start CompMgmt.msc'
-alias credm='start control /name Microsoft.CredentialManager'
-alias dm='start DevMgmt.msc'
-alias ev='start eventvwr.msc'
-alias prog='product gui'
-alias prop='os SystemProperties'
-alias SystemRestore='vss'
+if IsPlatform win; then
+	alias apps='explorer shell:AppsFolder'
+	alias cm='start CompMgmt.msc'
+	alias credm='start control /name Microsoft.CredentialManager'
+	alias dm='start DevMgmt.msc'
+	alias ev='start eventvwr.msc'
+	alias prog='product gui'
+	alias prop='os SystemProperties'
+	alias SystemRestore='vss'
 
-alias ws='wscript /nologo'
-alias cs='cscript /nologo'
+	alias ws='wscript /nologo'
+	alias cs='cscript /nologo'
+fi
 
 #
 # wiggin

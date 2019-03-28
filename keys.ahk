@@ -6,16 +6,22 @@
 Init()
 CommonInit()
 BrowserInit()
-OfficeInit()
 BashInit()
+
+OfficeInit()
+ImInit()
+MailInit()
 
 #Include C:\Program Files\Cygwin\usr\local\data\platform\win
 #Include common.ahk
 #Include browser.ahk
 #Include display.ahk
-#Include office.ahk
 #Include music.ahk
 #Include bash.ahk
+
+#Include office.ahk
+#Include im.ahk
+#Include mail.ahk
 
 Test()
 {
@@ -73,7 +79,7 @@ Init()
 +#n::RunOneNote()
 ^#m::RunTidal()
 ^#n::NewFolder()
-#o::RunOutlook()
+#o::OpenMail()
 #!p::run "procexp.exe"
 #!q::run bash " quicken start",,min
 #!s::WinActivate ".*Microsoft SQL Server Management Studio"

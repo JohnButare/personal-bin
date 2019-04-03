@@ -632,7 +632,7 @@ NasUpdateDhcp()
 	cat ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf | sed '/^#/d' | sed '/^$/ d' > $f
 	scp "$f" router:/etc/dhcpd; scp "$f" router:/etc/dhcpd/dhcpd-static-static.conf; scp "$f" router:/etc/dhcpd/dhcpdStatic.ori;
 	scp "$f" nas1:/etc/dhcpd; scp "$f" nas1:/etc/dhcpd/dhcpd-eth0-static.conf;
-	scp "$f" nas2:/etc/dhcpd; scp "$f" nas2:/etc/dhcpd/dhcpd-eth0-static.conf;
+	#scp "$f" nas2:/etc/dhcpd; scp "$f" nas2:/etc/dhcpd/dhcpd-eth0-static.conf;
 } 
 
 alias nrslf='slf butare.net'

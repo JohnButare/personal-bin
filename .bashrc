@@ -280,14 +280,8 @@ alias TestDisk='sudo bench32.exe'
 # package management
 #
 
-alias choco='chocolatey'
-alias cinst='chocolatey install'
-alias clist='chocolatey list'
-alias cpack='chocolatey pack'
-alias cpush='chocolatey push'
-alias cuninst='chocolatey uninstall'
-alias cup='chocolatey update'
-alias cver='chocolatey version'
+IsPlatform win && alias apt-get='apt-cyg'
+IsPlatform mac && alias apt-get='brew'
 
 #
 # edit/set
@@ -392,17 +386,7 @@ alias eject='be; ep;'
 # prompt
 #
 
-GetPrompt()
-{
-	if [[ "$PWD" == "$HOME" ]]; then
-		echo '~'
-	elif (( ${#PWD} > 20 )); then
-		local tmp="${PWD%/*/*}";
-		(( ${#tmp} > 0 )) && [[ "$tmp" != "$PWD" ]] && echo "${PWD:${#tmp}+1}" || echo "$PWD";
-	else
-		echo "$PWD"
-	fi;
-}
+alias SetBashGitPrompt='source "$(brew --prefix bash-git-prompt)/share/gitprompt.sh"'
 
 GitPrompt()
 {
@@ -425,8 +409,6 @@ GitPrompt()
 	__git_ps1 "$gitColor (%s)"
 }
 
-alias SetBashGitPrompt='source "$(brew --prefix bash-git-prompt)/share/gitprompt.sh"'
-
 SetPrompt() 
 {
 	local cyan='\[\e[36m\]'
@@ -439,23 +421,27 @@ SetPrompt()
 	local git; IsFunction __git_ps1 && git='$(GitPrompt)'
 	local elevated; IsElevated && elevated='*'
 
-	host="${HOSTNAME#$USER-}"; host="${host%%.*}"
-	[[ "$USER" != "jjbutare" ]] && host+="@\u" # \h
+	host="${HOSTNAME#$USER-}"; host="${host%%.*}" # remove the username freom the hostname to shorten it
+	[[ "$USER" != "jjbutare" ]] && host+="@\u" 		# add the username if it is not me (i.e. root)
 
-	# compact
 	# dir='$(GetPrompt)'; user=''; [[ "$(id -un)" != "jjbutare" ]] && user='\u '
-	# host="${user}"; IsSsh && host="${user/ls/[[:space:]]/}@\h "
 	# PS1="${elevated}${green}${host}${yellow}${dir}${clear}${cyan}${gitColor}${git}${clear}\$ "
 
-	# multi-line
-	PS1="\[\e]0;\w\a\]\n${green}${host}${red}${elevated} ${yellow}${dir}${clear}${cyan}${git}\n${clear}\$ "
+	# use a multi-line prompt with directory unless using tmux (which cotnains the directory in the status area)
+	if [[ $TMUX ]]; then
+		PS1="${green}${host}${red}${elevated}${clear}${cyan}${git}${clear}\$ "
+	else
+		PS1="\[\e]0;\w\a\]\n${green}${host}${red}${elevated} ${yellow}${dir}${clear}${cyan}${git}\n${clear}\$ "
+	fi
+	
 	# share history with other shells when the prompt changes
-	PROMPT_COMMAND='history -a; history -r'
+	PROMPT_COMMAND='history -a; history -r' 
 }
 
 SetPrompt
 [[ "$PWD" == @(/cygdrive/c|/usr/bin) ]] && cd ~
 [[ $SET_PWD ]] && { cd "$SET_PWD"; unset SET_PWD; }
+
 
 #
 # Source Control
@@ -553,6 +539,7 @@ alias slp='power sleep'
 
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
 alias NumProcs='cat /proc/cpuinfo | grep processor | wc -l'
+IsPlatform win && alias htop="top"
 
 # 
 # windows

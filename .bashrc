@@ -420,6 +420,7 @@ SetPrompt()
 	local dir='\w' user='\u'
 	local git; IsFunction __git_ps1 && git='$(GitPrompt)'
 	local elevated; IsElevated && elevated='*'
+	local pwd=""; IsPlatform win && pwd="\[\e]0;\w\a\]"; # forces the directgory in TMUX status line to update in Windows
 
 	host="${HOSTNAME#$USER-}"; host="${host%%.*}" # remove the username freom the hostname to shorten it
 	[[ "$USER" != "jjbutare" ]] && host+="@\u" 		# add the username if it is not me (i.e. root)
@@ -429,9 +430,9 @@ SetPrompt()
 
 	# use a multi-line prompt with directory unless using tmux (which cotnains the directory in the status area)
 	if [[ $TMUX ]]; then
-		PS1="${green}${host}${red}${elevated}${clear}${cyan}${git}${clear}\$ "
+	 	PS1="${pwd}${green}${host}${red}${elevated}${clear}${cyan}${git}${clear}\$ "
 	else
-		PS1="\[\e]0;\w\a\]\n${green}${host}${red}${elevated} ${yellow}${dir}${clear}${cyan}${git}\n${clear}\$ "
+		PS1="${pwd}\n${green}${host}${red}${elevated} ${yellow}${dir}${clear}${cyan}${git}\n${clear}\$ "
 	fi
 	
 	# share history with other shells when the prompt changes

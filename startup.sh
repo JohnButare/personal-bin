@@ -2,7 +2,7 @@ app -b $command explorer AutoHotKey
 
 local common="AquaSnap TidyTabs AltTabTerminatror DropBox word Greenshot GlassWire"
 case "$COMPUTERNAME" in
-	oversoul) app -b $command CorsairUtilityEngine $common IntelRapidStorage; PuttyAgent;;
+	oversoul) app -b $command CorsairUtilityEngine $common IntelRapidStorage vmware; PuttyAgent;;
 	bean) f.lux;;
 	jjbutare-wvm*) app -b $command $common;;
 	jjbutare-i*|jjbutare-mobl*) app -b $command $common SyncPlicity; intel $command -b;;

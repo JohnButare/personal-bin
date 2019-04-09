@@ -420,7 +420,7 @@ SetPrompt()
 	local dir='\w' user='\u'
 	local git; IsFunction __git_ps1 && git='$(GitPrompt)'
 	local elevated; IsElevated && elevated='*'
-	local pwd=""; IsPlatform win && pwd="\[\e]0;\w\a\]"; # forces the directgory in TMUX status line to update in Windows
+	local pwd="\[\e]0;\w\a\]"; # forces the directgory in TMUX status line to update
 
 	host="${HOSTNAME#$USER-}"; host="${host%%.*}" # remove the username freom the hostname to shorten it
 	[[ "$USER" != "jjbutare" ]] && host+="@\u" 		# add the username if it is not me (i.e. root)

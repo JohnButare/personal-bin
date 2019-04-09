@@ -521,6 +521,7 @@ scsave() { local m="script changes from $COMPUTERNAME${1+: $1}"; gu "$bin" "$m" 
 # Node.js
 #
 alias node='\node --use-strict'
+alias npmls='npm ls --depth=0'
 
 #
 # power management

@@ -6,8 +6,8 @@
 #"\e[18~": "F7" #F7
 #"\e[19~": "F8" #F8
 
-"\eOP": "gs\015"            #F1
-"\eOQ": "gbs\015"           #F2
+"\eOP": "gs\015"	#F1
+"\eOQ": "gs\015"	#F2
 
 "\e[15~": shell-expand-line   #F5
 "\e[16~": history-expand-line #F6
@@ -25,7 +25,8 @@
 # delete character under cursor - ctrl-d Delete (win) fn-delete (mac)
 "\e[3~": delete-char
 "\e[3;5~": kill-word         	 	# alt-d ctrl-delete (win) option-delete (mac)
-"\C-_": backward-kill-word      # ctrl-backspace (win)
+"\C-_": backward-kill-word      # alt-backspace ctrl-backspace (win)
+"\C-H": backward-kill-word      # alt-backspace ctrl-backspace (win)
 "\e[3;6~": kill-line            # ctrl-shift-backspace
 "\xC2\x9F": backward-kill-line  # ctrl-u/k, ctrl-shift-delete (win)
 

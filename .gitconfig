@@ -48,11 +48,8 @@
 
 	# branch integrate
 	i = integrate # i INTEGRATION_BRANCH, integrate current branch to integration branch,
-	iall = "!f() { git i Continuous && git i Test && git i Pre-Production; }; f" # integrate all
 	ic = "!f() { git checkout $1 && git reset --hard $2 && git push --force; }; f" # integration branch clean to version, integration clean to specified branch, g ic INTEGRATION_BRANCH BRANCH
-	icall = "!f() { git ic Test $1 && git ic Pre-Production $1; }; f" # integrate clean all, g icall VERSION
 	ir = "!f() { local cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)"; git checkout $1 && git reset --hard origin/$1; git checkout $cb; }; f" # ir INTEGRATION_BRANCH, reset the INTEGRATION_BRANCH to origin
-	irall = "!f() { git ir Continuous && git ir Test && git ir Pre-Production; }; f" # ir, reset all integration branches to their origin
 	is = wtf --relations --short # integration status
 	
 	# cherry-pick
@@ -156,7 +153,7 @@
 [core]
 	autocrlf = false
 	excludesfile = ~/.gitignore
-	editor = \"C:/Program Files/Sublime Text 3/sublime_text.exe\" -w --multiinstance
+	editor = sublime --wait
 [push]
 	default = current # http://prgmr.io/coding/git-push-default/
 [diff]
@@ -186,10 +183,8 @@
 [git-up "rebase"]
 	auto = false
 [difftool "bc"]
-	path = C:/Program Files/Beyond Compare 4/bcomp.exe
-	cmd = \"C:/Program Files/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\"
+	cmd = BeyondCompare --wait \"$LOCAL\" \"$REMOTE\"
 [mergetool "bc"]
-	path = C:/Program Files/Beyond Compare 4/bcomp.exe
-	cmd = \"C:/Program Files/Beyond Compare 4/bcomp.exe\" \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+	cmd = BeyondCompare --wait \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
 [winUpdater]
 	recentlySeenVersion = 2.20.1.windows.1

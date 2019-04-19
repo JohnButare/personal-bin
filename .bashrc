@@ -89,6 +89,7 @@ alias cls=clear
 alias ei='e $bin/inst'
 alias ehp='start "$udata/replicate/default.htm"'
 alias st='startup'
+alias hw='cowsay "Hello, World!" | lolcat'
 
 #
 # applications
@@ -125,7 +126,7 @@ if [[ "$PLATFORM" == "win" ]]; then
 	alias prog='product gui'
 	alias prop='os SystemProperties'
 	alias SystemRestore='vss'
-	alias WindowSpy="Au3Info.exe &"
+	alias WindowSpy="RunInDir --background Au3Info.exe"
 
 	alias ws='wscript /nologo'
 	alias cs='cscript /nologo'
@@ -319,6 +320,7 @@ SshFix() { SshAgent fix || return; ScriptEval SshAgent initialize; }
 #
 # network
 #
+
 [[ "$PLATFORM" == "win" ]] && alias dig="\"$P/dig/bin/dig.exe\""
 alias hu='HostUtil'
 alias ipc='network ipc'
@@ -326,6 +328,8 @@ alias slf='SyncLocalFiles'
 alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 nu() { net use "$(ptw "$1")" "${@:2}"; } # NetUse
+alias NetConfig='control netconnections'
+alias NetStatus='ipconfig /all'
 
 #
 # prompt

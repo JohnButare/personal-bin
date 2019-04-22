@@ -349,11 +349,11 @@ GitPrompt()
 	local gitColor red='\e[31m'
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
 
-	# use a basic prompt only in the root of the repo in Cygwin due to performance issues
-	if [[ "$PLATFORM_LIKE" == "cygwin" ]]; then 
-		[[ -d .git ]] || return
-		#echo "$gitColor ($(git rev-parse --abbrev-ref HEAD))"
-		#return 
+	# use a basic prompt for systems where we have performance issues
+	if [[ "$PLATFORM_LIKE" == "cygwin" ]] || IsVm; then 
+		[[ ! -d .git ]] && return
+		echo "$gitColor ($(git rev-parse --abbrev-ref HEAD))"
+		return 
 	fi
 
 	gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
@@ -385,7 +385,7 @@ SetPrompt()
 	[[ $user ]] && user="@${user}"
 
 	# use a multi-line prompt with directory unless using tmux (which cotnains the directory in the status area)
-	if [[ $TMUX ]]; then
+	if [[ $TMUX || $TERMINATOR_UUID ]]; then
 	 	PS1="${pwd}${green}${host}${user}${clear}${cyan}${git}${clear}\$ "
 	else
 		PS1="${pwd}\n${green}${host}${user} ${yellow}${dir}${clear}${cyan}${git}\n${clear}\$ "

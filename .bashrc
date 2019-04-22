@@ -385,11 +385,7 @@ SetPrompt()
 	[[ $user ]] && user="@${user}"
 
 	# use a multi-line prompt with directory unless using tmux (which cotnains the directory in the status area)
-	if [[ $TMUX || $TERMINATOR_UUID ]]; then
-	 	PS1="${pwd}${green}${host}${user}${clear}${cyan}${git}${clear}\$ "
-	else
-		PS1="${pwd}\n${green}${host}${user} ${yellow}${dir}${clear}${cyan}${git}\n${clear}\$ "
-	fi
+ 	PS1="${pwd}${green}${host}${user}${clear}${cyan}${git}${clear}\$ "
 	
 	# share history with other shells when the prompt changes
 	PROMPT_COMMAND='history -a; history -r' 

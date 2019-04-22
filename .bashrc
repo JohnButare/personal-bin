@@ -302,20 +302,26 @@ alias etg='start exiftoolgui' # ExifToolGui
 # ssh
 #
 
-[[ ! -S "$SSH_AUTH_SOCK" ]] && { SshAgent startup && eval "$(SshAgent initialize)"; }
+# check and repair the ssh-agent - call this directly over the sshc function for speed
+[[ ! $SSH_AUTH_SOCK && -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+if [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID"; then
+	echo "Fixing the ssh-agent..."
+	SshAgent startup && . "$HOME/.ssh/environment"
+fi
 
-sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # connect with a full environment, i.e. sshfull nas2 power shutdown
+# connect
+sshf() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
 sshsudo() { ssh -t $1 sudo ${@:2}; }
-
 alias ssht='ssh -t' # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
 alias sshx='ssh -Y'; alias sx=sshx; # connect with X forward
-alias sshf='SshFix'
-alias sshf='sshfull'
-alias SshKey='ssh-add ~/.ssh/id_dsa'
 
+# agent
+sshc() { ! ( [[ -S "$SSH_AUTH_SOCK" ]] && ProcessIdExists "$SSH_AGENT_PID" ) && SshAgent startup && eval "$(SshAgent initialize)"; } # sshc() - ssh check: check and repair the ssh-agent
+sshf() { SshAgent fix || return; ScriptEval SshAgent initialize; } # ssh fix: force creation of a new ssh-agent
+
+# other
 RemoteServerName() { nslookup "$(RemoteServer)" | grep "name =" | cut -d" " -f3; }
-SshShow() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh";}
-SshFix() { SshAgent fix || return; ScriptEval SshAgent initialize; }
+sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh";}
 
 #
 # network

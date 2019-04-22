@@ -8,8 +8,6 @@ case "$HOSTNAME" in
 	jjbutare-i*|jjbutare-mobl*) app -b $command $common SyncPlicity; intel $command -b;;
 esac
 
-if [[ "$command" == "close" ]]; then
-	app -b close notepadpp ProcessExplorer
-fi
+[[ "$command" == "close" ]] && { app -b close notepadpp ProcessExplorer || return; }
 
-return $?
+return 0

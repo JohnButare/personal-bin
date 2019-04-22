@@ -351,10 +351,13 @@ GitPrompt()
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
 
 	# use a basic prompt for systems where we have performance issues
-	if [[ "$PLATFORM_LIKE" == "cygwin" ]] || IsVm; then 
+	if [[ "$PLATFORM" == "win" ]]; then 
 		[[ ! -d .git ]] && return
-		echo "$gitColor ($(git rev-parse --abbrev-ref HEAD))"
-		return 
+		
+		if [[ "$PLATFORM_LIKE" == "cygwin" ]] || IsVm; then
+			echo "$gitColor ($(git rev-parse --abbrev-ref HEAD))"
+			return 
+		fi
 	fi
 
 	gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"

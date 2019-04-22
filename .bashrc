@@ -169,6 +169,7 @@ alias ....='builtin cd ../../..'
 alias .....='cbuiltin d ../../../..'
 alias c='cls'		# clear screen
 alias cb='builtin cd ~; cls' # clear screen and cd
+alias ch='cb; hw;' # clear both, hello world
 alias del='rm'
 alias md='mkdir'
 alias rd='rmdir'

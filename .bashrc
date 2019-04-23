@@ -23,7 +23,7 @@ HISTFILESIZE=2000
 shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 
 # completion
-if IsPlatform win && [[ -f "/usr/share/bash-completion/completions/git" ]] && ! IsFunction __git_ps1; then
+if IsPlatform win,raspbian && [[ -f "/usr/share/bash-completion/completions/git" ]] && ! IsFunction __git_ps1; then
 	. "/usr/share/bash-completion/completions/git"
 	. "$BIN/git-prompt.sh"
 fi

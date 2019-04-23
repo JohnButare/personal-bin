@@ -6,6 +6,7 @@
   suppress_multiple_term_dialog = True
   title_use_system_font = False
 [keybindings]
+  help = <Primary>F1
   zoom_in = <Primary>KP_Add
   zoom_out = <Primary>KP_Subtract
 [layouts]

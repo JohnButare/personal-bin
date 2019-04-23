@@ -6,8 +6,8 @@
 #"\e[18~": "F7" #F7
 #"\e[19~": "F8" #F8
 
-"\eOP": "gs\015"	#F1
-"\eOQ": "gs\015"	#F2
+"\eOP": "gs\015"		#F1
+"\eOQ": "g diff\015"	#F2
 
 "\e[15~": shell-expand-line   #F5
 "\e[16~": history-expand-line #F6

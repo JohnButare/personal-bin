@@ -314,7 +314,7 @@ fi
 sshf() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
 sshsudo() { ssh -t $1 sudo ${@:2}; }
 alias ssht='ssh -t' # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
-alias sshx='ssh -Y'; alias sx=sshx; # connect with X forward
+alias sshx='DISPLAY=localhost:0 ssh -X'; alias sx=sshx; # connect with X forward
 
 # agent
 sshc() { ! ( [[ -S "$SSH_AUTH_SOCK" ]] && ProcessIdExists "$SSH_AGENT_PID" ) && SshAgent startup && eval "$(SshAgent initialize)"; } # sshc() - ssh check: check and repair the ssh-agent

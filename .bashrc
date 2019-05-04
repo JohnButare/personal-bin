@@ -175,7 +175,6 @@ alias md='mkdir'
 alias rd='rmdir'
 alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
 
-
 UncCd()
 {
 	[[ "$PLATFORM" == "cygwin" ]] || ! IsUncPath "$1" && { builtin cd "$@"; return; }
@@ -293,11 +292,13 @@ alias et='exiftool'
 alias etg='start exiftoolgui' # ExifToolGui
 
 #
-# X Windows
+# Windows
 #
 
 # set the X DISPLAY if not set and X is installed (in /usr/bin/XWin for Cygwin)
 [[ ! "$DISPLAY" && -f /usr/bin/XWin ]] && export DISPLAY=:0
+
+SetTitle() { printf "\e]2;$*\a"; }
 
 #
 # ssh
@@ -377,7 +378,7 @@ SetPrompt()
 	local user; [[ "$USER" != "jjbutare" ]] && user="\u"
 	local root; IsRoot && user+="${red}*"
 	local elevated; [[ "$PLATFORM" == "win" ]] && IsElevated && user+="${red}e"
-	local pwd="\[\e]0;\w\a\]"; # forces the directgory in TMUX status line to update
+	local title="\[\e]0;Bash $dir\a\]"; # forces the title bar to update
 
 	host="${HOSTNAME#$USER-}"; host="${host#$SUDO_USER-}"; # remove the username from the hostname to shorten it
 	host="${host%%.*}" # remove DNS suffix
@@ -385,7 +386,7 @@ SetPrompt()
 	[[ $user ]] && user="@${user}"
 
 	# use a multi-line prompt with directory unless using tmux (which cotnains the directory in the status area)
- 	PS1="${pwd}${green}${host}${user}${clear}${cyan}${git}${clear}\$ "
+ 	PS1="${title}${green}${host}${user}${clear}${cyan}${git}${clear}\$ "
 	
 	# share history with other shells when the prompt changes
 	PROMPT_COMMAND='history -a; history -r' 
@@ -480,23 +481,24 @@ IsPlatform win && alias apt-get='apt-cyg'
 IsPlatform mac && alias apt-get='brew'
 
 #
-# power management
+# hardware
 #
 alias boot='HostUtil boot'
 alias bw='HostUtil boot wait'
 alias connect='HostUtil connect'
-alias hib='power hibernate'
 alias down='power shutdown'
+alias hib='power hibernate'
+alias logoff='logoff.exe'
 alias reb='power reboot'
 alias slp='power sleep'
+
+NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 
 #
 # process
 #
-ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
-
-NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 elevate() { start --elevate "$@"; }
+ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
 
 #
 # raspberry pi
@@ -716,3 +718,4 @@ alias srha="sra include=HistorianAccess" # run on Historian Access
 
 # cd to home directory if needed unless we are just updating aliases
 [[ "$1" != "update" && "$PWD" != "$HOME" ]] && cd "$HOME"
+

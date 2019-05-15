@@ -12,7 +12,7 @@ OfficeInit()
 ImInit()
 MailInit()
 
-#Include C:\Program Files\Cygwin\usr\local\data\platform\win
+#Include C:\Users\Public\Documents\data\platform\win
 #Include common.ahk
 #Include browser.ahk
 #Include display.ahk

@@ -440,7 +440,7 @@ alias hlog='tail /var/log/homebridge.log'
 alias hlogerr='tail /var/log/homebridge.err'
 alias hbakall='hbak jjbutare@pi1; hbak pi@pi2'
 
-hbak()
+hbak() # hbak HOST
 { 
 	local h="$1" f="$1.homebridge.zip" d="$cloud/systems/homebridge/$1"
 

@@ -502,6 +502,7 @@ NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 #
 elevate() { start --elevate "$@"; }
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
+procmon() { start -rid -e procmon; }
 
 #
 # raspberry pi

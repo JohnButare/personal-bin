@@ -297,6 +297,7 @@ alias etg='start exiftoolgui' # ExifToolGui
 
 # set the X DISPLAY if not set and X is installed (in /usr/bin/XWin for Cygwin)
 [[ ! "$DISPLAY" && -f /usr/bin/XWin ]] && export DISPLAY=:0
+[[ "$DISPLAY" && -f /usr/bin/ssh-askpass ]] && export SUDO_ASKPASS=/usr/bin/ssh-askpass
 
 SetTitle() { printf "\e]2;$*\a"; }
 

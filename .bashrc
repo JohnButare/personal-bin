@@ -174,6 +174,7 @@ alias del='rm'
 alias md='mkdir'
 alias rd='rmdir'
 alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
+alias wh="$WIN_HOME"
 
 UncCd()
 {
@@ -210,7 +211,7 @@ alias llh='UncLs -d .*'						# list long hidden
 alias lh='UncLs -d .*' 						# list hiden
 alias lt='UncLs -Ah --full-time'	# list time
 
-alias dir='cmd /c dir'
+alias dir='cmd.exe /c dir' # Windows dir
 alias dirss="UncLs -1s --sort=size --reverse --human-readable -l" # sort by size
 alias dirst='UncLs -l --sort=time --reverse' # sort by last modification time
 alias dirsct='UncLs -l --time=ctime --sort=time --reverse' # sort by creation  time

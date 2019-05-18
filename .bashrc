@@ -88,7 +88,7 @@ alias cf='CleanupFiles'
 alias cls=clear
 alias ei='e $bin/inst'
 alias ehp='start "$udata/replicate/default.htm"'
-alias st='startup --no-prompt'
+alias st='startup'
 alias hw='cowsay "Hello, World!" | lolcat'
 
 #

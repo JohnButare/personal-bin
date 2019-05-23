@@ -441,8 +441,8 @@ alias hstatus='sudo /etc/init.d/homebridge status'
 alias hstart='sudo /etc/init.d/homebridge start'
 alias hstop='sudo /etc/init.d/homebridge stop'
 alias hrestart='sudo /etc/init.d/homebridge restart'
-alias hlog='tail /var/log/homebridge.log'
-alias hlogerr='tail /var/log/homebridge.err'
+alias hlog='cat /var/log/homebridge.log'
+alias hlogerr='cat /var/log/homebridge.err'
 alias hbakall='hbak jjbutare@pi1; hbak pi@pi2'
 
 hbak() # hbak HOST
@@ -458,7 +458,7 @@ hbak() # hbak HOST
 	echo "Successfully backed up $h homebridge configuration to $d/$f"
 }
 
-hrest()
+hrest() # hrest HOST
 { 
 	local h="$1";
 	local f="$h.homebridge.zip" d="$cloud/systems/homebridge/$h" bakFile="$h.$(GetTimeStamp).homebridge" hb="/etc/init.d/homebridge"
@@ -469,7 +469,7 @@ hrest()
 
 	ssh $h "[[ -d .bak ]] || mkdir .bak; zip -r .bak/$bakFile ~/.homebridge" || return
 	scp "$d/$f" $h:~ || return
-	ssh $h "sudo $hb stop && rm -fr ~/.homebridge && unzip -o $f && sudo $hb start" || return
+	ssh $h "rm -fr ~/.homebridge && unzip -o $f" || return
 	echo "Successfully restored $f homebridge configuration to $h"
 }
 

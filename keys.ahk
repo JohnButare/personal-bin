@@ -60,10 +60,10 @@ Init()
 ; Win
 #1::WinClose "A" ; Close active window
 #2::WinMinimize "A" ; Close active window
-^#3::NewElevatedBash()
-#3::OpenBash()
-#!3::NewBash()
-#+3::NewBash()
+;^#3::NewElevatedBash()
+;#3::OpenBash()
+;#!3::NewBash()
+;#+3::NewBash()
 
 ; +=Shift ^=Control #=Win !=Alt
 #a::OpenBrowser()

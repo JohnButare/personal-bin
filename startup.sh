@@ -1,15 +1,14 @@
-app -b $command AutoHotKey
+local common="AquaSnap TidyTabs AltTabTerminatror DropBox word Greenshot GlassWire PuttyAgent sshd"
 
+app -b $command AutoHotKey || return
 xserver $command || return
 
-local common="AquaSnap TidyTabs AltTabTerminatror DropBox word Greenshot GlassWire PuttyAgent sshd"
 case "$HOSTNAME" in
-	oversoul) app -b $command CorsairUtilityEngine $common IntelRapidStorage vmware;;
-	bean) f.lux;;
-	jjbutare-wvm*) app -b $command $common;;
-	jjbutare-i*|jjbutare-mobl*) app -b $command $common SyncPlicity; intel $command -b;;
+	oversoul) app -b $command $common CorsairUtilityEngine IntelRapidStorage vmware;;
+	bean) f.lux || return;;
+	jjbutare-wvm*) app -b $command $common || return;;
+	jjbutare-i*|jjbutare-mobl*) app -b $command $common SyncPlicity || return; intel $command -b || return;;
 esac
 
-[[ "$command" == "close" ]] && { app -b close notepadpp ProcessExplorer || return; }
 
 return 0

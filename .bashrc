@@ -126,7 +126,7 @@ if [[ "$PLATFORM" == "win" ]]; then
 	alias prog='product gui'
 	alias prop='os SystemProperties'
 	alias SystemRestore='vss'
-	alias WindowSpy="RunInDir --background Au3Info.exe"
+	alias WindowSpy="start Au3Info.exe"
 
 	alias ws='wscript /nologo'
 	alias cs='cscript /nologo'

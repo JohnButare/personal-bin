@@ -331,7 +331,6 @@ sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using s
 # network
 #
 
-[[ "$PLATFORM" == "win" ]] && alias dig="\"$P/dig/bin/dig.exe\""
 alias hu='HostUtil'
 alias ipc='network ipc'
 alias slf='SyncLocalFiles'

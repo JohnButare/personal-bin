@@ -538,26 +538,22 @@ alias XmlShow='xml sel -t -c'
 #
 # wiggin
 #
+
 alias b='sudo WigginBackup'
 alias be='WigginBackup eject'
 alias sp='portable sync'
 alias mp='portable merge'
 alias ep='portable eject'
 alias eject='be; ep;'
+alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount $nas/usbshare1/home && merge bean-udata; unc mount //nasc/usbshare1/public/documents/data && merge bean-data'
+alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
+alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
 
-alias ned='NasEditDns'; alias NasEditDns="e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf" # NAS edit DHCP and DNS
-alias nud='NasUpdateDhcp'; alias nbd='NasBackupDhcp'
-alias nudns='NasUpdateDns';
-alias ncc='NasCopyConfig'; NasCopyConfig() { scp "nas1:/etc/dhcpd/dhcpd-eth0-"*".conf" "nas1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; } # NAS copy (backup) configuration
+# DHCP
 
-NasUpdateDns() 
-{
-	local f=~/"Dropbox/systems/nas/dns/"
-	scp "$f/1.168.192.in-addr.arpa" "$f/hagerman.butare.net" "router:/var/packages/DNSServer/target/named/etc/zone/master"; 
-	scp "$f/1.168.192.in-addr.arpa" "$f/hagerman.butare.net" "nas1:/var/packages/DNSServer/target/named/etc/zone/master"; 
-}
+alias ned='NasEditDhcp'; NasEditDhcp() { e ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf; }
 
-NasBackupDhcp()
+alias nbd='NasBackupDhcp'; NasBackupDhcp()
 { 
 	local h="$1" f="$1.dhcpd.zip" d="$cloud/systems/nas/dhcp/$1"
 
@@ -570,22 +566,33 @@ NasBackupDhcp()
 	echo "Successfully backed up $h dhcpd configuration to $d/$f"
 }
 
-NasUpdateDhcp() 
+alias nud='NasUpdateDhcp'; NasUpdateDhcp() 
 { 
-	local f="/tmp/dhcpd.conf"
+	local h="$1" f="/tmp/dhcpd.conf"
 
-	NasBackupDhcp router; NasBackupDhcp nas1; NasBackupDhcp nas2;
+	[[ $h ]] || { EchoErr "USAGE: NasUpdateDhcp HOST"; return 1; }
 
 	cat ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf | sed '/^#/d' | sed '/^$/ d' > $f
-	scp "$f" router:/etc/dhcpd; scp "$f" router:/etc/dhcpd/dhcpd-static-static.conf; scp "$f" router:/etc/dhcpd/dhcpdStatic.ori;
-	scp "$f" nas1:/etc/dhcpd; scp "$f" nas1:/etc/dhcpd/dhcpd-eth0-static.conf;
-	#scp "$f" nas2:/etc/dhcpd; scp "$f" nas2:/etc/dhcpd/dhcpd-eth0-static.conf;
+
+	scp "$f" root@$h:/etc/dhcpd
+
+	case "$h" in
+		router) scp "$f" $h:/etc/dhcpd/dhcpdStatic.ori; scp "$f" $h:/etc/dhcpd/dhcpd-static-static.conf;;
+		nas?) scp "$f" $h:/etc/dhcpd/dhcpd-eth0-static.conf;
+	esac
 } 
 
-alias nrslf='slf butare.net'
-alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount $nas/usbshare1/home && merge bean-udata; unc mount //nasc/usbshare1/public/documents/data && merge bean-data'
-alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
-alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
+# DNS 
+
+alias nedns="NasEditDns"; NasEditDns() { e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net; }
+alias nbdns='NasBackupDns'; NasBackupDns() { scp "nas1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; }
+
+alias nudns='NasUpdateDns'; NasUpdateDns() 
+{
+	local f=~/"Dropbox/systems/nas/dns/"
+	scp "$f/1.168.192.in-addr.arpa" "$f/hagerman.butare.net" "router:/var/packages/DNSServer/target/named/etc/zone/master"; 
+	scp "$f/1.168.192.in-addr.arpa" "$f/hagerman.butare.net" "nas1:/var/packages/DNSServer/target/named/etc/zone/master"; 
+}
 
 #
 # development

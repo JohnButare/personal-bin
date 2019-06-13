@@ -499,6 +499,7 @@ alias hib='power hibernate'
 alias logoff='logoff.exe'
 alias reb='power reboot'
 alias slp='power sleep'
+IsPlatform win && alias ffw='elevate powershell FlipFlopWheel.ps1'
 
 NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 

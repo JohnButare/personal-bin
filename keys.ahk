@@ -35,7 +35,7 @@ Init()
 {
   global
 
-  DEFAULT_BROWSER := "firefox"
+  DEFAULT_BROWSER := "chrome"
   if (EnvGet("USERDOMAIN") = "AMR")
 		DEFAULT_BROWSER := "chrome"
 }  

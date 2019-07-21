@@ -444,8 +444,8 @@ alias hstatus='sudo /etc/init.d/homebridge status'
 alias hstart='sudo /etc/init.d/homebridge start'
 alias hstop='sudo /etc/init.d/homebridge stop'
 alias hrestart='sudo /etc/init.d/homebridge restart'
-alias hlog='cat /var/log/homebridge.log'
-alias hlogerr='cat /var/log/homebridge.err'
+alias hlog='tail /var/log/homebridge.log'
+alias hlogerr='tail /var/log/homebridge.err'
 alias hbakall='hbak jjbutare@pi1; hbak pi@pi2'
 
 hbak() # hbak HOST

@@ -222,13 +222,16 @@ alias dirsct='UncLs -l --time=ctime --sort=time --reverse' # sort by creation  t
 #
 # find
 #
+
 alias fa='FindAll'
 alias fcd='FindCd'
 alias fs='FindStart'
 alias ft='FindText'
+
 fclip() { IFS=$'\n' files=( $(FindAll "$1") ) && clipw "${files[@]}"; } # FindClip
 fe() { IFS=$'\n' files=( $(FindAll "$1") ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindAllEdit
 fte() { IFS=$'\n' files=( $(FindText "$@" | cut -d: -f1) ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindTextEdit
+ftl() { egrep -i "$@" *; } # Find Text Local - find specified text in the current directory
 
 fsql() { ft "$1" "*.sql"; } # FindSql TET
 esql() { fte "$1" "*.sql"; } # EditSql TEXT
@@ -502,6 +505,7 @@ alias hib='power hibernate'
 alias logoff='logoff.exe'
 alias reb='power reboot'
 alias slp='power sleep'
+alias pfs='power fix sleep'
 
 NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 

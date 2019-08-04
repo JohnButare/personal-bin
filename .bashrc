@@ -89,8 +89,7 @@ alias cls=clear
 alias ei='e $bin/inst'
 alias ehp='start "$udata/replicate/default.htm"'
 alias hw='cowsay "Hello, World!" | lolcat'
-alias ffw='elevate powershell.exe FlipFlopWheel.ps1'
-alias st='startup'
+alias st='startup --no-pause'
 
 
 #
@@ -130,10 +129,10 @@ if [[ "$PLATFORM" == "win" ]]; then
 	alias SystemRestore='vss'
 	alias WindowSpy="start Au3Info.exe"
 
+	alias ffw='elevate powershell FlipFlopWheel.ps1'
+
 	alias ws='wscript /nologo'
 	alias cs='cscript /nologo'
-
-	ffw="sudo powershell FlipFlopWheel.ps1"
 
 	alias wsllr='wslconfig.exe /list /running'
 	alias wslt='wslconfig.exe /terminate Ubuntu-18.04'
@@ -145,6 +144,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 #
 # archive
 #
+
 alias fm='start "$p/7-Zip/7zFM.exe"'
 alias untar='tar -v -x --atime-preserve <'
 z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
@@ -493,6 +493,7 @@ IsPlatform mac && alias apt-get='brew'
 #
 # hardware
 #
+
 alias boot='HostUtil boot'
 alias bw='HostUtil boot wait'
 alias connect='HostUtil connect'
@@ -501,7 +502,6 @@ alias hib='power hibernate'
 alias logoff='logoff.exe'
 alias reb='power reboot'
 alias slp='power sleep'
-IsPlatform win && alias ffw='elevate powershell FlipFlopWheel.ps1'
 
 NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 

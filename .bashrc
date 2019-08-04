@@ -412,11 +412,13 @@ SetPrompt
 #
 # git
 #
+
 alias g='git' gl=g gw=g; [[ "$PLATFORM" == "win" ]] && alias gl='/usr/bin/git' gw='"$P/Git/cmd/git.exe"'
 alias gd='gc diff'
 alias gf='gc freeze'
 alias gl='g l'
-alias gca='g ca'
+alias gca='g ca'								# commit all
+alias gcam='g amendAll'					# commit ammend all
 alias gs='g s' 									# status
 alias gbs='g bs'								# branch status [PATTERN]
 alias gr='g rb' 								# rebase
@@ -432,7 +434,7 @@ alias gpf='g push --force'			# push force
 alias grft='grf && g i Test' 		# fixup commit and push to test
 alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
 alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
-alias eg='te ~/.gitconfig'
+alias eg='e ~/.gitconfig'
 alias gg='GitHelper gui'
 alias gh='GitHelper'
 alias ghub='GitHelper hub'

@@ -206,6 +206,9 @@ alias rc='CopyDir'
 #
 # directory management
 #
+
+eval $(dircolors $ubin/dircolors) # ls colors
+
 alias ls='UncLs'									# list 
 alias la='UncLs -Al'							# list all
 alias ll='UncLs -l'								# list long
@@ -743,4 +746,3 @@ alias srha="sra include=HistorianAccess" # run on Historian Access
 
 # cd to home directory if needed unless we are just updating aliases
 [[ "$1" != "update" && "$PWD" != "$HOME" ]] && cd "$HOME"
-

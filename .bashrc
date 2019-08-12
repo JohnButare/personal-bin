@@ -207,7 +207,7 @@ alias rc='CopyDir'
 # directory management
 #
 
-eval $(dircolors $ubin/dircolors) # ls colors
+which dircolors >& /dev/null && eval $(dircolors $ubin/dircolors) # ls colors
 
 alias ls='UncLs'									# list 
 alias la='UncLs -Al'							# list all

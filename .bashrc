@@ -495,7 +495,7 @@ alias npmls='npm ls --depth=0'
 #
 # package management
 #
-IsPlatform win && alias apt-get='apt-cyg'
+IsPlatform cygwin && alias apt-get='apt-cyg'
 IsPlatform mac && alias apt-get='brew'
 
 #

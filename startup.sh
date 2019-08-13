@@ -8,7 +8,6 @@ case "$HOSTNAME" in
 	oversoul) app -b $command $common CorsairUtilityEngine IntelRapidStorage Discord || return;;
 	bean) f.lux || return;;
 	jjbutare-wvm*) app -b $command $common || return;;
-	jjbutare-i*|jjbutare-mobl*) app -b $command $common SyncPlicity || return; intel $command -b || return;;
 esac
 
 return 0

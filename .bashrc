@@ -74,11 +74,14 @@ alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
 # configure
-startupFiles="/etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.bashrc"; IsPlatform mac && startupFiles+="/etc/bashrc"
+
 alias sa='. ~/.bashrc update' ea='e ~/.bashrc'
 alias ef='e $bin/function.sh' sf='. function.sh'
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
-alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;' estart="e $startupFiles"
+
+alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;'
+alias estart="e /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.bashrc"
+
 alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
 #
@@ -207,7 +210,7 @@ alias rc='CopyDir'
 # directory management
 #
 
-which dircolors >& /dev/null && eval $(dircolors $ubin/dircolors) # ls colors
+which dircolors >& /dev/null && eval $(dircolors $ubin/default.dircolors) # ls colors
 
 alias ls='UncLs'									# list 
 alias la='UncLs -Al'							# list all

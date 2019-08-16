@@ -171,7 +171,7 @@
 	autosquash = true
 [user]
 	name = John Butare
-	email = john.butare@intel.com
+	email = john@butare.net
 [https]
 	#proxy = http://proxy.rr.intel.com:911
 [http]

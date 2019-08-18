@@ -20,20 +20,35 @@ HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
 
+alias hc='HistoryClear'
+
 shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 
 # completion
-if IsPlatform win,raspbian && [[ -f "/usr/share/bash-completion/completions/git" ]] && ! IsFunction __git_ps1; then
-	. "/usr/share/bash-completion/completions/git"
-	. "$BIN/git-prompt.sh"
-fi
 
-if IsPlatform mac && [[ -f "/usr/local/etc/bash_completion.d/git-prompt.sh" ]] && ! IsFunction __git_ps1; then
-	. "/usr/local/etc/bash_completion.d/git-prompt.sh"
-	. "/usr/local/etc/bash_completion.d/git-completion.bash"
-	. "/usr/local/etc/bash_completion.d/hub.bash_completion.sh"
-	. "/usr/local/etc/bash_completion.d/tig-completion.bash"
-fi
+case "$PLATFORM" in
+	linux) 
+		if [[ -f /usr/lib/git-core/git-sh-prompt ]] && ! IsFunction __git_ps1; then
+			. /usr/lib/git-core/git-sh-prompt
+		fi
+		;;
+
+	win|raspbian) 
+		if [[ -f "/usr/share/bash-completion/completions/git" ]] && ! IsFunction __git_ps1; then
+			. "/usr/share/bash-completion/completions/git"
+			. "$BIN/git-prompt.sh"
+		fi
+		;;
+
+	mac)
+		if [[ -f "/usr/local/etc/bash_completion.d/git-prompt.sh" ]] && ! IsFunction __git_ps1; then
+			. "/usr/local/etc/bash_completion.d/git-prompt.sh"
+			. "/usr/local/etc/bash_completion.d/git-completion.bash"
+			. "/usr/local/etc/bash_completion.d/hub.bash_completion.sh"
+			. "/usr/local/etc/bash_completion.d/tig-completion.bash"
+		fi
+		;;
+esac
 
 complete -r cd >& /dev/null # cd should not complete variables without a leading $
 
@@ -348,7 +363,7 @@ GitPrompt()
 		fi
 	fi
 
-	gitColor="$(gw status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
+	gitColor="$(git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 	GIT_PS1_SHOWUPSTREAM="auto verbose"; # = at origin, < behind,  > ahead, <> diverged
 	GIT_PS1_SHOWDIRTYSTATE="true" # shows *
 	GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
@@ -380,7 +395,7 @@ SetPrompt()
  	PS1="${title}${green}${host}${user}${clear}${cyan}${git}${clear}\$ "
 	
 	# share history with other shells when the prompt changes
-	PROMPT_COMMAND='history -a; history -r' 
+	PROMPT_COMMAND='history -a; history -r;' 
 }
 
 SetPrompt

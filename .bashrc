@@ -1,4 +1,4 @@
-# ~/.bashrc, user specific interactive intialization, and non-interactive ("mintty" and "ssh <script>")
+# ~/.bashrc, user intialization
 
 # sytem-wide configuration - if not done in /etc/bash.bashrc
 if [[ ! $BIN ]]; then
@@ -6,7 +6,7 @@ if [[ ! $BIN ]]; then
 	[[ -f /usr/local/data/bin/bash.bashrc ]] && . "/usr/local/data/bin/bash.bashrc"
 fi
 
-# non-interactive initialization (available from child processes and scripts)
+# non-interactive initialization - available from child processes and scripts, i.e. ssh <script>
 set -a
 LESS='-R'
 LESSOPEN='|~/.lessfilter %s'
@@ -74,7 +74,6 @@ alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
 # configure
-
 alias sa='. ~/.bashrc update' ea='e ~/.bashrc'
 alias ef='e $bin/function.sh' sf='. function.sh'
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
@@ -87,6 +86,7 @@ alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 #
 # other
 #
+
 alias cf='CleanupFiles'
 alias cls=clear
 alias ei='e $bin/inst'
@@ -94,11 +94,9 @@ alias ehp='start "$udata/replicate/default.htm"'
 alias hw='cowsay "Hello, World!" | lolcat'
 alias st='startup --no-pause'
 
-
 #
 # applications
 #
-u() { HostUpdate $1 || return; }
 
 alias e='TextEdit'
 alias bc='BeyondCompare'
@@ -110,37 +108,6 @@ alias vm='VMware'
 alias grep='\grep --color=auto'
 alias egrep='\egrep --color=auto'
 
-if [[ "$PLATFORM" == "win" ]]; then
-	alias autoruns='start autoruns.exe'
-	alias ahk='AutoHotkey'
-	alias ahkr='ahk restart'
-	alias AutoItDoc="start $pdata/doc/AutoIt.chm"
-	alias cctray='CruiseControlTray'
-	alias ie='InternetExplorer'
-	alias npp='notepadpp start'
-	alias powershell="$WINDIR/system32/WindowsPowerShell/v1.0/powershell.exe"
-	alias rdesk='cygstart mstsc /f /v:'
-	alias wmic="$WINDIR/system32/wbem/WMIC.exe"
-
-	alias apps='explorer shell:AppsFolder'
-	alias cm='start CompMgmt.msc'
-	alias credm='start control /name Microsoft.CredentialManager'
-	alias dm='start DevMgmt.msc'
-	alias ev='start eventvwr.msc'
-	alias prog='product gui'
-	alias prop='os SystemProperties'
-	alias SystemRestore='vss'
-	alias WindowSpy="start Au3Info.exe"
-
-	alias ffw='elevate powershell FlipFlopWheel.ps1'
-
-	alias ws='wscript /nologo'
-	alias cs='cscript /nologo'
-
-	alias wsllr='wslconfig.exe /list /running'
-	alias wslt='wslconfig.exe /terminate Ubuntu-18.04'
-fi
-
 # Add an "alert" alias for long running commands.  sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
@@ -150,16 +117,15 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 alias fm='start "$p/7-Zip/7zFM.exe"'
 alias untar='tar -v -x --atime-preserve <'
-z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
-zbak() { local z="zip -r"; [[ "$PLATFORM" == "win" ]] && z="7z.exe a"
-	[[ $# == 1  ]] && eval $z "$1.zip" "$1" || eval $z "$1" "${@:2}"; }
-zrest() { [[ "$PLATFORM" == "win" ]] && 7z.exe x "${@}"|| unzip "${@}"; }
-zls() { [[ "$PLATFORM" == "win" ]] && 7z.exe l "${@}" || unzip -l "${@}"; }
-zll() { [[ "$PLATFORM" == "win" ]] && 7z.exe l -slt "${@}" || unzip -ll "${@}"; }
+zbak() { [[ $# == 1  ]] && zip -r "$1.zip" "$1" || zip -4 "$1" "${@:2}"; }
+zrest() { unzip "${@}"; }
+zls() { unzip -l "${@}"; }
+zll() { unzip -ll "${@}"; }
 
 #
 # performance
 #
+
 alias t='time pause'
 alias ton='TimerOn'
 alias toff='TimerOff'
@@ -167,19 +133,21 @@ alias toff='TimerOff'
 #
 # file management
 #
-alias cd='UncCd'
+
 alias ..='builtin cd ..'
 alias ...='builtin cd ../..'
 alias ....='builtin cd ../../..'
 alias .....='cbuiltin d ../../../..'
+
 alias c='cls'		# clear screen
 alias cb='builtin cd ~; cls' # clear screen and cd
 alias ch='cb; hw;' # clear both, hello world
+
 alias del='rm'
 alias md='mkdir'
 alias rd='rmdir'
-alias wln='start --direct "$BIN/win/ln.exe"' # Windows ln
-alias wh="$WIN_HOME"
+
+alias cd='UncCd'
 
 UncCd()
 {
@@ -307,8 +275,7 @@ alias etg='start exiftoolgui' # ExifToolGui
 # Windows
 #
 
-# set the X DISPLAY if not set and X is installed (in /usr/bin/XWin for Cygwin)
-[[ ! "$DISPLAY" && -f /usr/bin/XWin ]] && export DISPLAY=:0
+[[ ! "$DISPLAY" && -f /usr/bin/xclock ]] && export DISPLAY=:0 # xserver IsInstalled
 [[ "$DISPLAY" && -f /usr/bin/ssh-askpass ]] && export SUDO_ASKPASS=/usr/bin/ssh-askpass
 
 SetTitle() { printf "\e]2;$*\a"; }
@@ -324,36 +291,41 @@ if [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID"; then
 	SshAgent startup && . "$HOME/.ssh/environment"
 fi
 
-# connect
+alias sx=sshx;
+
+RemoteServerName() { nslookup "$(RemoteServer)" | grep "name =" | cut -d" " -f3; }
 sshf() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
 sshsudo() { ssh -t $1 sudo ${@:2}; }
-alias ssht='ssh -t' # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
+ssht() { ssh -t; } # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
+sshx() { DISPLAY=localhost:0 ssh -X $@ || ssh -X $@; } # connect with X forward
+sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; }
 
-alias sx=sshx; sshx() # connect with X forward
-{
-	IsPlatform win && DISPLAY=localhost:0 ssh -X $@|| ssh -X $@;
+# sshc() - ssh check: check and repair the ssh-agent
+sshc()
+{ 
+	[[ -S "$SSH_AUTH_SOCK" ]] && ProcessIdExists "$SSH_AGENT_PID" && return
+	SshAgent startup || return
+	eval "$(SshAgent initialize)"
+} 
+
+# ssh fix: force creation of a new ssh-agent
+sshf()
+{ 
+	SshAgent fix || return
+	ScriptEval SshAgent initialize
 }
-
-# agent
-sshc() { ! ( [[ -S "$SSH_AUTH_SOCK" ]] && ProcessIdExists "$SSH_AGENT_PID" ) && SshAgent startup && eval "$(SshAgent initialize)"; } # sshc() - ssh check: check and repair the ssh-agent
-sshf() { SshAgent fix || return; ScriptEval SshAgent initialize; } # ssh fix: force creation of a new ssh-agent
-
-# other
-RemoteServerName() { nslookup "$(RemoteServer)" | grep "name =" | cut -d" " -f3; }
-sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh";}
 
 #
 # network
 #
 
 alias hu='HostUtil'
-alias ipc='network ipc'
+u() { HostUpdate $1 || return; }
+
+# sync files
 alias slf='SyncLocalFiles'
 alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
-nu() { net use "$(ptw "$1")" "${@:2}"; } # NetUse
-alias NetConfig='control netconnections'
-alias NetStatus='ipconfig /all'
 
 #
 # prompt
@@ -419,7 +391,7 @@ SetPrompt
 # git
 #
 
-alias g='git' gl=g gw=g; [[ "$PLATFORM" == "win" ]] && alias gl='/usr/bin/git' gw='"$P/Git/cmd/git.exe"'
+alias g='git'
 alias gd='gc diff'
 alias gf='gc freeze'
 alias gl='g l'
@@ -490,15 +462,9 @@ hrest() # hrest HOST
 }
 
 #
-# node.js
-#
-alias node='\node --use-strict'
-alias npmls='npm ls --depth=0'
-
-#
 # package management
 #
-IsPlatform cygwin && alias apt-get='apt-cyg'
+
 IsPlatform mac && alias apt-get='brew'
 
 #
@@ -520,24 +486,22 @@ NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 #
 # process
 #
+
 elevate() { start --elevate "$@"; }
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
 procmon() { start -rid -e procmon; }
 
 #
-# raspberry pi
-#
-alias pcp="PiCheckPower"; alias PiCheckPower='! dmesg --time-format ctime | egrep -i volt' # check for under voltage in the log
-
-#
 # ruby
 #
-alias nruby='/usr/local/opt/ruby/bin/ruby'
+
+alias nruby='/usr/local/opt/ruby/bin/ruby' # new ruby
 alias unruby='export PATH="/usr/local/opt/ruby/bin:$PATH"' # use new ruby
 
 #
 # sound
 #
+
 playsound() { case "$PLATFORM" in win) cat "$1" > /dev/dsp;; mac) afplay "$1";; esac; }
 alias sound='os sound'
 alias TestSound='playsound "$data/setup/test.wav"'
@@ -545,12 +509,14 @@ alias TestSound='playsound "$data/setup/test.wav"'
 # 
 # tmux 
 #
+
 alias tmls='tmux list-session'								# tmux list session
 tmas() { tmux attach -t "${1:-0}"; } 	# tmux attach session
 
 #
 # xml
 #
+
 alias XmlValue='xml sel -t -v'
 alias XmlShow='xml sel -t -c'
 
@@ -558,21 +524,17 @@ alias XmlShow='xml sel -t -c'
 # wiggin
 #
 
-alias b='sudo WigginBackup'
-alias be='WigginBackup eject'
-alias sp='portable sync'
-alias mp='portable merge'
-alias ep='portable eject'
-alias eject='be; ep;'
-alias nsb='NasSyncBean'; alias NasSyncBean='scup; scpush; unc mount $nas/usbshare1/home && merge bean-udata; unc mount //nasc/usbshare1/public/documents/data && merge bean-data'
-alias nsi='NasSyncIntel'; alias NasSyncIntel='m install-nas-rrsprsps'
-alias nso='NasSyncOversoul'; alias NasSyncOversoul='m nas-oversoul'
+alias nbd='NasBackupDhcp'
+alias ned='NasEditDhcp'
+alias nud='NasUpdateDhcp'
 
-# DHCP
+alias nbdns='NasBackupDns'
+alias nedns="NasEditDns" 
+alias nudns='NasUpdateDns';
 
-alias ned='NasEditDhcp'; NasEditDhcp() { e ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf; }
+NasEditDhcp() { e ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf; }
 
-alias nbd='NasBackupDhcp'; NasBackupDhcp()
+NasBackupDhcp()
 { 
 	local h="$1" f="$1.dhcpd.zip" d="$cloud/systems/nas/dhcp/$1"
 
@@ -585,7 +547,7 @@ alias nbd='NasBackupDhcp'; NasBackupDhcp()
 	echo "Successfully backed up $h dhcpd configuration to $d/$f"
 }
 
-alias nud='NasUpdateDhcp'; NasUpdateDhcp() 
+NasUpdateDhcp() 
 { 
 	local h="$1" f="/tmp/dhcpd.conf"
 
@@ -601,12 +563,11 @@ alias nud='NasUpdateDhcp'; NasUpdateDhcp()
 	esac
 } 
 
-# DNS 
 
-alias nedns="NasEditDns"; NasEditDns() { e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net; }
-alias nbdns='NasBackupDns'; NasBackupDns() { scp "nas1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; }
+NasEditDns() { e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net; }
+NasBackupDns() { scp "nas1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; }
 
-alias nudns='NasUpdateDns'; NasUpdateDns() 
+NasUpdateDns() 
 {
 	local f=~/"Dropbox/systems/nas/dns/"
 	scp "$f/1.168.192.in-addr.arpa" "$f/hagerman.butare.net" "router:/var/packages/DNSServer/target/named/etc/zone/master"; 
@@ -616,6 +577,7 @@ alias nudns='NasUpdateDns'; NasUpdateDns()
 #
 # development
 #
+
 alias ss='SqlServer'
 alias ssms='SqlServerManagementStudio'
 alias sscd='ScriptCd SqlServer cd'
@@ -626,27 +588,28 @@ alias tup='cdup test'
 alias tc='cdc test'
 alias ts='cds test'
 
+# Android
+alias ab='as adb'
+
 # C
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# JAVA Development
+# DOT.NET Development
+alias vs='VisualStudio'
+
+build() { n build /verbosity:minimal /m "$code/$1"; }
+BuildClean() { n build /t:Clean /m "$code/$1"; }
+
+# JAVA
 alias j='JavaUtil'
 alias jd='j decompile'
 alias jdp='j decompile progress'
 alias jrun='j run'
 alias ec='eclipse'
 
-# Android Development
-alias ab='as adb'
-
-# .NET Development
-alias n='DotNetHelper'
-alias ncd='scd DotNet cd'
-alias gcd='scd DotNet GacCd'
-build() { n build /verbosity:minimal /m "$code/$1"; }
-BuildClean() { n build /t:Clean /m "$code/$1"; }
-alias vs='VisualStudio'
-s="$/"
+# node.js
+alias node='\node --use-strict'
+alias npmls='npm ls --depth=0'
 
 #
 # Juntos Holdings
@@ -654,98 +617,13 @@ s="$/"
 alias jh='"$cloud/group/Juntos Holdings"'
 
 #
-# Intel
-#
-alias BashAd="start runas '/env' '/user:amr\ad_"$USER"' mintty"
-alias SetIntelProxy='se intel SetProxy'
-s="$home/Syncplicity"; sdata="$s/data"; sql="$sdata/sql"; ssp="$sql/SCADA Portal"
-
-# vpn
-alias vpn="intel vpn"
-alias von="vpn on"
-alias voff="vpn off"
-
-# Profile Manager
-profiles="$P/ITBAS/Profiles"
-alias profiles='"$profiles"'
-alias pm='ProfileManager'
-alias pcd='"$profiles"'
-alias ProfileManagerConfig='TextEdit C:\winnt\system32\ProfileManager.xml'
-
-ProfileManager() 
-{
-	local p="$code/ProfileManager/bin/Debug/ProfileManager.exe"
-	[[ ! -f "$p" ]] && p="$P/ITBAS/ProfileManager/ProfileManager.exe"
-	if [[ $# == 1 && -f "$1" ]]; then
-		start "$p" \"$(utw $1)\"
-	elif [[ $# == 1 ]]; then
-		start "$p" \"$(utw $profiles/$1.profile)\"
-	else
-		start "$p"
-	fi
-} 
-
-# Magellan
-mc="$code/Magellan"
-ms="$mc/Source"
-alias mb='build Magellan/Source/Magellan.sln'
-alias mbc='BuildClean Magellan/Source/Magellan.sln'
-alias mlb='antidote App=Magellan BuildType=LocalBuild CacheBrokerAddress=@DatabaseServer@'
-alias mpu='cp "$mc/Profiles/"*.profile "$profiles"'
-
-# Antidote
-ac="$code/Antidote/Source"
-alias ab='build Antidote/source/Antidote.sln'
-alias abc='BuildClean Antidote/Antidote.sln'
-alias alb='antidote verbose App=Antidote BuildType=LocalBuild'
-alias ap='ProfileManager Antidote'
-alias apu='cp "$ac/deployment/profiles/"*.profile "$profiles"'
-alias aum='start "$ac/libraries/UpdateMagellan.cmd"'
-alias aumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.* $ac/../Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $ac/../Libraries/Silverlight" # Updte Magellan Core
-alias aumt="cp $mc/Source/Magellan.Threading/bin/Debug/Magellan.Threading.* $ac/../Libraries" # Antidote Update Magellan Threading
-alias aumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $ac/../Libraries;" # Update Magellan Service Management
-
-# SCADA Portal
-alias spi="ScadaPortalInstall"
-deploy() { pushd $spc/Deploy/Deploy/bin/Debug > /dev/null; start --direct ./deploy.exe "$@"; popd > /dev/null; }
-
-spb="I-continuous I-pf I-dev I-dqa I-eqa I-gold"
-spica() { for b in $spb; do git ic $b $1; done; } # integration clean all, reset all branches to VERSION, g icall VERSION
-spira() { for b in $spb; do git ic $b $1; done; } # integration reset all, reset all branches to their origin
-
-sp="$code/ScadaPortal"
-sps="$sp/DataScripts"
-spc="$sp/Source"
-
-alias spb='build ScadaPortal/Source/ScadaPortal.sln'
-alias spbc='BuildClean ScadaPortal/Source/ScadaPortal.sln'
-alias splb='antidote App=ScadaPortal BuildType=LocalBuild'
-alias sptb='antidote App=ScadaPortal BuildType=DeployToTest'
-
-alias spua='start "$sp/bin/UpdateAntidote.cmd"'
-alias spum='start "$sp/bin/UpdateMagellan.cmd"'
-alias spumc="cp $mc/Source/Magellan.Core/bin/Debug/Magellan.Core.{dll,pdb,xml} $sp/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $sp/Libraries/Silverlight"
-alias spumd="cp $mc/Source/Magellan.Data/bin/Debug/Magellan.Data.* $sp/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $sp/Libraries/Silverlight"
-alias spumt="cp $mc/Source/Magellan.Threading/bin/Debug/Magellan.Threading.* $sp/Libraries"
-alias spumsm="cp $mc/Source/Magellan.ServiceManagement/bin/Debug/Magellan.ServiceManagement.* $sp/Libraries; cp $mc/Source/Magellan.Silverlight.Data/bin/Debug/Magellan.Silverlight.Data.* $sp/Libraries/Silverlight"
-
-RunOnAllSql="$sp/DataScripts/Miscellaneous Scripts/sqlCommandToRun.sql"
-RunOnAllInput="$sp/DataScripts/Miscellaneous Scripts/prodinput.txt"
-alias ScadaRunOnAll='/cygdrive/c/Projects/ScadaPortal/Source/Utilities/ScadaRunOnAll/bin/Debug/ScadaRunOnAll.exe'
-alias ser="s \"$RunOnAllSql\"" # edit run on all
-alias seri="e \"$RunAllAllInput" # edit run on all input
-#sra() { ScadaRunOnAll InputFile="$(utw "$RunOnAllInput")" CommandFile="$(utw "$RunOnAllSql")"; }
-alias srt="sra Environment=Test"
-alias srp="sra include=AllProjects " # run on all projects
-alias srha="sra include=HistorianAccess" # run on Historian Access
-
-#
 # final
 #
 
+# platform specific .bashrc
 [[ -f "$UBIN/.bashrc.$PLATFORM" ]] && . "$UBIN/.bashrc.$PLATFORM"
-
-[[ ! $DISPLAY ]] && xserver IsInstalled && export DISPLAY=:0
+[[ -f "$UBIN/.bashrc.$PLATFORM_LIKE" ]] && . "$UBIN/.bashrc.$PLATFORM_LIKE"
+[[ -f "$UBIN/.bashrc.$PLATFORM_ID" ]] && . "$UBIN/.bashrc.$PLATFORM_ID"
 
 # cd to home directory if needed unless we are just updating aliases
 [[ "$1" != "update" && "$PWD" != "$HOME" ]] && cd "$HOME"

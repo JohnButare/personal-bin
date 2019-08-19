@@ -303,9 +303,10 @@ SetTitle() { printf "\e]2;$*\a"; }
 #
 
 # check and repair the ssh-agent - call this directly over the sshc function for speed
-[[ ! $SSH_AUTH_SOCK && -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+[[ (! $SSH_AUTH_SOCK || ! $SSH_AGENT_PID) && -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
 if [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID"; then
 	echo "Fixing the ssh-agent..."
+	#echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK SSH_AGENT_PID=$SSH_AGENT_PID $(ProcessIdExists "$SSH_AGENT_PID" && echo "EXISTS")"
 	SshAgent startup && . "$HOME/.ssh/environment"
 fi
 

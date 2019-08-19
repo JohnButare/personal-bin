@@ -307,7 +307,7 @@ SetTitle() { printf "\e]2;$*\a"; }
 if [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID"; then
 	echo "Fixing the ssh-agent..."
 	#echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK SSH_AGENT_PID=$SSH_AGENT_PID $(ProcessIdExists "$SSH_AGENT_PID" && echo "EXISTS")"
-	SshAgent startup && . "$HOME/.ssh/environment"
+	shAgent startup && . "$HOME/.ssh/environment"
 fi
 
 alias sx=sshx;
@@ -316,7 +316,8 @@ RemoteServerName() { nslookup "$(RemoteServer)" | grep "name =" | cut -d" " -f3;
 sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
 sshsudo() { ssh -t $1 sudo ${@:2}; }
 ssht() { ssh -t "$@"; } # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
-sshx() { DISPLAY=localhost:0 ssh -X $@ || ssh -X $@; } # connect with X forward
+sshx() { ssh -X $@; } # connect with X forward
+#sshx() { DISPLAY=localhost:0 ssh -X $@; } # macOS sshx does not work if DISPLAY is set, which hosts require it?
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; }
 
 # sshc() - ssh check: check and repair the ssh-agent

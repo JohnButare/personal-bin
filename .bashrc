@@ -42,12 +42,14 @@ case "$PLATFORM" in
 		;;
 
 	mac)
-		if [[ -f "/usr/local/etc/bash_completion.d/git-prompt.sh" ]] && ! IsFunction __git_ps1; then
-			. "/usr/local/etc/bash_completion.d/git-prompt.sh"
-			. "/usr/local/etc/bash_completion.d/git-completion.bash"
-			. "/usr/local/etc/bash_completion.d/hub.bash_completion.sh"
-			. "/usr/local/etc/bash_completion.d/tig-completion.bash"
+		d="/usr/local/etc/bash_completion.d"
+		if ! IsFunction __git_ps1; then
+			[[ -f "$d/git-prompt.sh" ]] && . "$d/git-prompt.sh"
+			[[ -f "$d/git-completion.bash" ]] && . "$d/git-completion.bash"
+			[[ -f "$d/hub.bash_completion.sh" ]] && . "$d/hub.bash_completion.sh"
+			[[ -f "$d/tig-completion.bash" ]] && . "$d/tig-completion.bash"
 		fi
+		unset d
 		;;
 esac
 

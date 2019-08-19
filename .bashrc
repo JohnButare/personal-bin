@@ -353,17 +353,6 @@ GitPrompt()
 	local red='\e[31m'
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
 
-	# use a basic prompt for systems where we have performance issues
-	if [[ "$PLATFORM" == "win" ]]; then 
-		[[ ! -d .git ]] && return
-		
-		# if [[ "$PLATFORM_LIKE" == "cygwin" ]] || IsVm; then
-		# 	echo "$gitColor ($(git rev-parse --abbrev-ref HEAD))"
-		# 	return 
-		# fi
-	fi
-
-	#gitColor="$(git status --porcelain 2> /dev/null | egrep .+ > /dev/null && echo -ne "$red")"
 	GIT_PS1_SHOWUPSTREAM="auto verbose"; # = at origin, < behind,  > ahead, <> diverged
 	GIT_PS1_SHOWDIRTYSTATE="true" # shows *
 	GIT_PS1_SHOWSTASHSTATE="true"	 # shows $

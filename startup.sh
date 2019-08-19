@@ -5,7 +5,7 @@ app -b $command AutoHotKey || return
 xserver $command || return
 
 case "$HOSTNAME" in
-	oversoul) app -b $command $common CorsairUtilityEngine IntelRapidStorage Discord || return;;
+	oversoul) app -b $command $common CorsairUtilityEngine IntelRapidStorage || return;;
 	bean) f.lux || return;;
 	jjbutare-wvm*) app -b $command $common || return;;
 esac

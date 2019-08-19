@@ -30,6 +30,7 @@ case "$PLATFORM" in
 	linux) 
 		if [[ -f /usr/lib/git-core/git-sh-prompt ]] && ! IsFunction __git_ps1; then
 			. /usr/lib/git-core/git-sh-prompt
+			. /usr/share/bash-completion/completions/git
 		fi
 		;;
 

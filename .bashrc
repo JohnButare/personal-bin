@@ -539,17 +539,17 @@ alias XmlShow='xml sel -t -c'
 # wiggin
 #
 
-alias nbd='NasBackupDhcp'
-alias ned='NasEditDhcp'
-alias nud='NasUpdateDhcp'
+alias ned='NasEditDhcp' # ned host
+alias nbd='NasBackupDhcp' # nbd host
+alias nud='NasUpdateDhcp' # nud host
 
-alias nbdns='NasBackupDns'
-alias nedns="NasEditDns" 
-alias nudns='NasUpdateDns';
+alias nedns="NasEditDns" # nedns host
+alias nbdns='NasBackupDns' # nbdns host
+alias nudns='NasUpdateDns'; # nudns host
 
 NasEditDhcp() { e ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf; }
 
-NasBackupDhcp()
+NasBackupDhcp() # NasBackupDhcp host
 { 
 	local h="$1" f="$1.dhcpd.zip" d="$cloud/systems/nas/dhcp/$1"
 
@@ -577,7 +577,6 @@ NasUpdateDhcp()
 		nas?) scp "$f" $h:/etc/dhcpd/dhcpd-eth0-static.conf;
 	esac
 } 
-
 
 NasEditDns() { e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net; }
 NasBackupDns() { scp "nas1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; }

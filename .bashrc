@@ -92,12 +92,17 @@ alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
 # configure
-alias sa='. ~/.bashrc update' ea='e ~/.bashrc'
-alias ef='e $bin/function.sh' sf='. function.sh'
-alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
+	
+alias sa='. ~/.bashrc update'
+ea() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; }
+
+alias sf='. function.sh'
+ef() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }
 
 alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;'
 alias estart="e /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.bashrc"
+
+alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
 
 alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
@@ -631,9 +636,7 @@ alias jh='"$cloud/group/Juntos Holdings"'
 #
 
 # platform specific .bashrc
-[[ -f "$UBIN/.bashrc.$PLATFORM" ]] && . "$UBIN/.bashrc.$PLATFORM"
-[[ -f "$UBIN/.bashrc.$PLATFORM_LIKE" ]] && . "$UBIN/.bashrc.$PLATFORM_LIKE"
-[[ -f "$UBIN/.bashrc.$PLATFORM_ID" ]] && . "$UBIN/.bashrc.$PLATFORM_ID"
+SourceIfExists "$UBIN/.bashrc." ".sh" || return
 
 # cd to home directory if needed unless we are just updating aliases
 [[ "$1" != "update" && "$PWD" != "$HOME" ]] && cd "$HOME"

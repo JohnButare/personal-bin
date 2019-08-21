@@ -38,6 +38,5 @@ alias wh="$WIN_HOME"
 z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 
 # wsl	
-alias wsllr='wslconfig.exe /list /running' # list running
-alias wslt='wslconfig.exe /terminate Ubuntu-18.04' # terminate
+wsll() { wsl.exe --list $(IsWsl2 && echo --verbose || echo "");} # WSL list
 wslv() { cb; echo "WSL $(IsWsl2 && echo 2 || echo 1)" | figlet | lolcat; } # version

@@ -312,7 +312,7 @@ SetTitle() { printf "\e]2;$*\a"; }
 if [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID"; then
 	echo "Fixing the ssh-agent..."
 	#echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK SSH_AGENT_PID=$SSH_AGENT_PID $(ProcessIdExists "$SSH_AGENT_PID" && echo "EXISTS")"
-	shAgent startup && . "$HOME/.ssh/environment"
+	SshAgent startup && . "$HOME/.ssh/environment"
 fi
 
 alias sx=sshx;

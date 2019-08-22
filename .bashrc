@@ -635,7 +635,7 @@ alias jh='"$cloud/group/Juntos Holdings"'
 #
 
 # platform specific .bashrc
-SourceIfExists "$UBIN/.bashrc." ".sh" || return
+SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 
 # cd to home directory if needed unless we are just updating aliases
 [[ "$1" != "update" && "$PWD" != "$HOME" ]] && cd "$HOME"

@@ -38,5 +38,16 @@ alias wh="$WIN_HOME"
 z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 
 # wsl	
-wsll() { wsl.exe --list $(IsWsl2 && echo --verbose || echo "");} # WSL list
-wslv() { cb; echo "WSL $(IsWsl2 && echo 2 || echo 1)" | figlet | lolcat; } # version
+wslv() { cb; echo "WSL $(IsWsl2 && echo 2 || echo 1)" | figlet | lolcat; } 					# WSL version
+wsll() { wsl.exe --list $(IsWsl2 && echo --verbose || echo ""); }; alias wl='wsll'; # list
+wsllr() { wsl.exe --list --running;} 																								# list running
+wsls() { wslm summary -n "$1"; } 																										# summary
+wsldir() { echo "$(utw "$(GetFullPath "$UDATA/wsl/$1")")"; }											# directory
+
+wslm() { LxRunOffline "$@"; }; alias wm='wslm'; 	# manage
+wslr() { wslm r -n "$@"; }; alias wr='wslr'; 			# run
+wslt() { wsl.exe --terminate "$@"; } 							# terminate
+
+wsldel() { ask "Delete the $1 distribution" && wslm uninstall -n "$1"; }; # delete
+wsldup() { wslm duplicate -n "$1" -N "$2" -d "$(wsldir "$2")" || wslm unregister -n "$2" ; };  		# duplicate
+wsli() { local i="$(i dir)" name="$1"; local distro="${2-$name}" version="${3:-default}"; wslm install -n "$name" -d "$(wsldir "$name")" -f "$(utw "$i/LINUX/wsl/$distro/$version.tar.gz")" || wslm unregister -n "$name"; } # install 

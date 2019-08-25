@@ -96,7 +96,7 @@ alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 alias sa='. ~/.bashrc update'
 ea() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; }
 
-alias sf='. function.sh'
+alias sf='. $bin/function.sh'
 ef() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }
 
 alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;'

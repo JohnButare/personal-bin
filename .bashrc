@@ -298,7 +298,7 @@ alias etg='start exiftoolgui' # ExifToolGui
 # Windows
 #
 
-[[ ! "$DISPLAY" && -f /usr/bin/xclock ]] && export DISPLAY=:0 # xserver IsInstalled
+[[ ! "$DISPLAY" && -f /usr/bin/xprop ]] && { export DISPLAY=:0; }
 [[ "$DISPLAY" && -f /usr/bin/ssh-askpass ]] && export SUDO_ASKPASS=/usr/bin/ssh-askpass
 
 SetTitle() { printf "\e]2;$*\a"; }

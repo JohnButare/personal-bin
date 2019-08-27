@@ -38,7 +38,7 @@ alias wh="$WIN_HOME"
 z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 
 # wsl	
-wslv() { cb; "WSL $(IsWsl2 && echo 2 || echo 1)" | figlet | lolcat; } 					# WSL version
+wslv() { cb; echo "WSL $(IsWsl2 && echo 2 || echo 1)" | figlet | lolcat; } 					# WSL version
 wsll() { wsl.exe --list $(IsWsl2 && echo --verbose || echo ""); }; alias wl='wsll'; # list
 wsllr() { wsl.exe --list --running;} 																								# list running
 wsls() { wslm summary -n "$1"; } 																										# summary

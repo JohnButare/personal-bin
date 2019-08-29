@@ -7,7 +7,7 @@ xserver $command || return
 case "$HOSTNAME" in
 	oversoul) app -b $command $common CorsairUtilityEngine IntelRapidStorage || return;;
 	bean) f.lux || return;;
-	jjbutare-wvm*) app -b $command $common || return;;
+	jjbutare-wvm*|jjbutare-mobl*) app -b $command $common || return;;
 esac
 
 return 0

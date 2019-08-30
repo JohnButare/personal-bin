@@ -321,7 +321,6 @@ RemoteServerName() { nslookup "$(RemoteServer)" | grep "name =" | cut -d" " -f3;
 sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
 sshsudo() { ssh -t $1 sudo ${@:2}; }
 ssht() { ssh -t "$@"; } # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
-#sshx() { DISPLAY=localhost:0 ssh -X $@; } # macOS sshx does not work if DISPLAY is set, which hosts require it?
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; }
 
 sshx() # connect with X forward
@@ -333,9 +332,6 @@ sshx() # connect with X forward
 		ssh -X $@
 	fi
 } 
-
-
-
 
 # sshc() - ssh check: check and repair the ssh-agent
 sshc()

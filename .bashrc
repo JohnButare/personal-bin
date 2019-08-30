@@ -415,6 +415,7 @@ SetPrompt
 #
 
 alias g='git'
+alias ga='g add'
 alias gd='gc diff'
 alias gf='gc freeze'
 alias gl='g l'

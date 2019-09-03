@@ -9,6 +9,10 @@ alias powershell="$WINDIR/system32/WindowsPowerShell/v1.0/powershell.exe"
 alias rdesk='cygstart mstsc /f /v:'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 
+# loctions
+alias wh="$WIN_HOME"
+alias wr="$WIN_ROOT"
+
 # network
 alias NetConfig='control netconnections'
 alias NetStatus='ipconfig /all'
@@ -46,7 +50,7 @@ wsls() { wslm summary -n "$1"; } 																										# summary
 wsldir() { [[ ! -d "$UDATA/wsl/$1" ]] && { md --parents "$UDATA/wsl/$1" || return; }; echo "$(utw "$(GetFullPath "$UDATA/wsl/$1")")"; }	# directory DIST
 
 wslm() { LxRunOffline "$@"; }; alias wm='wslm'; 	# manage
-wslr() { wslm r -n "$@"; }; alias wr='wslr'; 			# run
+wslr() { wslm r -n "$@"; }									 			# run
 wslt() { wsl.exe --terminate "$@"; } 							# terminate
 
 wsldel() { ask "Delete the $1 distribution" && wslm uninstall -n "$1"; }; # delete name

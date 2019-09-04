@@ -22,6 +22,7 @@ MailInit()
 #Include office.ahk
 #Include im.ahk
 #Include mail.ahk
+#Include vm.ahk
 
 Test()
 {
@@ -86,7 +87,7 @@ Init()
 #t::OpenTextEditor()
 #!t::OpenNotepadPp()
 ^#t::OpenNotepadPp()
-#v::WinActivate ".*VMware Workstation"
+#v::OpenVm()
 #!v::WinActivate ".* ASG-Remote Desktop 2012"
 #w::RunWord()
 #!w::RunWord()

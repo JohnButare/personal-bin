@@ -361,6 +361,10 @@ alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileCommand hide"
 
+# speed test
+alias iperfs='iperf -s -p 5002'
+alias iperfc='iperf -c nas1 -p 5002'
+
 #
 # prompt
 #

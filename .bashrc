@@ -325,9 +325,11 @@ sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using s
 
 sshx() # connect with X forward
 { 
-	# WSL does not support X sockets over ssh and requires localhost
-	if IsPlatform wsl; then
+
+	if IsPlatform wsl; then # WSL does not support X sockets over ssh and requires localhost
 		DISPLAY=localhost:0 ssh -X $@
+	elif IsPlatform mac; then # macOS XQuartz requires trusted X11 forwarding
+		ssh -Y $@
 	else
 		ssh -X $@
 	fi

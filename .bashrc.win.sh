@@ -55,5 +55,12 @@ wslt() { wsl.exe --terminate "$@"; } 							# terminate
 
 wsldel() { ask "Delete the $1 distribution" && wslm uninstall -n "$1"; }; # delete name
 wsldup() { wslm duplicate -n "$1" -N "$2" -d "$(wsldir "$2")" || wslm unregister -n "$2" ; }; # duplicate SRC DEST
-wsli() { local i="$(i dir)" name="$1"; local distro="${2-$name}" version="${3:-default}"; wslm install -n "$name" -d "$(wsldir "$name")" -f "$(utw "$i/LINUX/wsl/$distro/$version.tar.gz")" || wslm unregister -n "$name"; } # install name [distro]) ([version](default)
 wslup() { wsl.exe --set-version "$1" 2; } # upgrade to WSL 2, wslup name
+
+wsli() # install name [distro]) ([version](default)
+{
+	local i="$(i dir)" name="$1"
+	local distro="${2-$name}" version="${3:-default}"
+
+	wslm install -n "$name" -d "$(wsldir "$name")" -f "$(utw "$i/LINUX/wsl/image/$distro/$version.tar.gz")" || wslm unregister -n "$name"
+}

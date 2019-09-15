@@ -2,7 +2,7 @@
 alias autoruns='start autoruns.exe'
 alias ahk='AutoHotkey'
 alias ahkr='ahk restart'
-alias AutoItDoc="start $pdata/doc/AutoIt.chm"
+alias hv='hyperv'
 alias ie='InternetExplorer'
 alias npp='notepadpp start'
 alias powershell="$WINDIR/system32/WindowsPowerShell/v1.0/powershell.exe"

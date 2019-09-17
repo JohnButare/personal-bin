@@ -126,7 +126,7 @@ alias bc='BeyondCompare'
 alias f='firefox'
 alias h='HostUtil'
 alias m='merge'
-alias vm='VMware'
+vm() { VMware IsInstalled && VMware start || hyperv start; }
 
 alias grep='\grep --color=auto'
 alias egrep='\egrep --color=auto'
@@ -355,7 +355,7 @@ sshfix()
 #
 
 alias hu='HostUtil'
-u() { HostUpdate $1 || return; }
+u() { HostUpdate "$@" || return; }
 
 # sync files
 alias slf='SyncLocalFiles'

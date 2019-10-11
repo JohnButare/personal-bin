@@ -65,7 +65,7 @@ v="/Volumes"
 
 home="$HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
 bash="$udata/bash"
-code="$CODE"; c="$CODE"
+code="$CODE"
 ubin="$udata/bin"
 usm="$APPDATA/Microsoft/Windows/Start Menu" # UserStartMenu
 up="$usm/Programs" 													# UserPrograms

@@ -63,7 +63,7 @@ pd="$pub/Desktop" 	# PublicDesktop
 i="$data/install" 	# install
 v="/Volumes"
 
-home="$HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
+home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
 bash="$udata/bash"
 code="$CODE"
 ubin="$udata/bin"

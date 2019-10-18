@@ -126,7 +126,6 @@ alias bc='BeyondCompare'
 alias f='firefox'
 alias h='HostUtil'
 alias m='merge'
-vm() { VMware IsInstalled && VMware start || hyperv start; }
 
 alias grep='\grep --color=auto'
 alias egrep='\egrep --color=auto'
@@ -542,6 +541,14 @@ alias TestSound='playsound "$data/setup/test.wav"'
 
 alias tmls='tmux list-session'								# tmux list session
 tmas() { tmux attach -t "${1:-0}"; } 	# tmux attach session
+
+#
+# Virtual Machine
+#
+
+vm() { vmware IsInstalled && VMware start || hyperv start; }
+vmon() { vmware -n "$1" run start; } # on (start)
+vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 
 #
 # xml

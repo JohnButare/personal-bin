@@ -7,8 +7,8 @@
   title_use_system_font = False
 [keybindings]
   help = <Primary>F1
-  zoom_in = <Primary>KP_Add
-  zoom_out = <Primary>KP_Subtract
+  zoom_in = <Primary>equal
+  zoom_out = <Primary>minus
 [layouts]
   [[default]]
     [[[child1]]]

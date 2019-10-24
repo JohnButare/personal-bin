@@ -472,7 +472,8 @@ hbak() # hbak HOST
 
 	ssh $h "rm -f $f; zip -r $f .homebridge" || return
 	scp $h:~/$f "$d" || return
-	echo "Successfully backed up $h homebridge configuration to $d/$f"
+	ssh $h "rm -f $f" || return
+	echo "$h homebridge configuration saved to $d/$f"
 }
 
 hrest() # hrest HOST

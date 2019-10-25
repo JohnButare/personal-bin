@@ -460,6 +460,7 @@ alias hstop='sudo /etc/init.d/homebridge stop'
 alias hrestart='sudo /etc/init.d/homebridge restart'
 alias hlog='tail /var/log/homebridge.log'
 alias hlogerr='tail /var/log/homebridge.err'
+alias hlogclean='sudo rm /var/log/homebridge.*'
 alias hbakall='hbak jjbutare@pi1; hbak pi@pi2'
 
 hbak() # hbak HOST

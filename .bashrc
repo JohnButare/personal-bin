@@ -401,7 +401,7 @@ SetPrompt()
 	local host="${HOSTNAME#$USER-}"; host="${host#$SUDO_USER-}"; # remove the username from the hostname to shorten it
 	host="${host%%.*}" # remove DNS suffix
 
-	local title="\[\e]0;$host $dir\a\]"; # forces the title bar to update
+	local title="\[\e]0;bash $host $dir\a\]"; # forces the title bar to update
 
 	[[ $user ]] && user="@${user}"
 

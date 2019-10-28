@@ -6,8 +6,12 @@ alias hv='hyperv'
 alias ie='InternetExplorer'
 alias npp='notepadpp start'
 alias powershell="$WINDIR/system32/WindowsPowerShell/v1.0/powershell.exe"
-alias rdesk='mstsc.exe /f /v:'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
+
+rdesk()
+{ 
+	( mstsc.exe '/f' '/v:'"${@}" & )
+}
 
 # loctions
 alias wh="$WIN_HOME"

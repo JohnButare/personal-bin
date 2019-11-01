@@ -18,7 +18,7 @@ alias wh="$WIN_HOME"
 alias wr="$WIN_ROOT"
 
 # network
-alias NetConfig='control netconnections'
+alias NetConfig='control.exe netconnections'
 alias NetStatus='ipconfig /all'
 
 nu() { net use "$(ptw "$1")" "${@:2}"; } # NetUse
@@ -30,6 +30,7 @@ alias credm='start control /name Microsoft.CredentialManager'
 alias dm='start DevMgmt.msc'
 alias ev='start eventvwr.msc'
 alias ipconfig='ipconfig.exe'
+alias logoff='IsSsh && exit || logoff.exe'
 alias pfs='power fix sleep'
 alias pfw='power fix wake'
 alias prog='product gui'

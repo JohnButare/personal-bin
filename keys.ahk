@@ -81,7 +81,7 @@ Init()
 ^#m::RunTidal()
 ^#n::NewFolder()
 #o::OpenMail()
-#!p::run "procexp.exe"
+#!p::SetNextPrimary()
 #!q::run bash " quicken start",,min
 #!s::WinActivate ".*Microsoft SQL Server Management Studio"
 #t::OpenTextEditor()

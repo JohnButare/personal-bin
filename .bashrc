@@ -525,6 +525,7 @@ procmon() { start -rid -e procmon; }
 # ruby
 #
 
+export RUBYOPT=-W0 # fix lolcat deprecation warnings
 alias nruby='/usr/local/opt/ruby/bin/ruby' # new ruby
 alias unruby='export PATH="/usr/local/opt/ruby/bin:$PATH"' # use new ruby
 

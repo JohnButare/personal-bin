@@ -1,5 +1,5 @@
 # applications
-alias autoruns='start autoruns.exe'
+alias autoruns='start --elevate autoruns.exe'
 alias ahk='AutoHotkey'
 alias ahkr='ahk restart'
 alias hv='hyperv'

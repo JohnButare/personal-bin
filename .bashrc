@@ -454,27 +454,30 @@ complete -o default -o nospace -F _git g
 #
 
 hedit() { eval e "~$1/.homebridge/config.json"; }
-alias hstatus='sudo /etc/init.d/homebridge status'
-alias hstart='sudo /etc/init.d/homebridge start'
-alias hstop='sudo /etc/init.d/homebridge stop'
+alias hconfig="cd $c/systems/homebridge/config"
+alias hrestart="systemctl restart homebridge"
+alias hstart='sudo hb-service start'
+alias hstop='sudo hb-service stop'
 alias hrestart='hstop;hlogclean;hstart'
-alias hlog='tail /var/log/homebridge.log'
-alias hlogerr='tail /var/log/homebridge.err'
-alias hlogclean='sudo rm /var/log/homebridge.*'
-alias hbakall='hbak jjbutare@pi1; hbak pi@pi2'
+alias hlog='sudo hb-service logs'
+alias hbakall='hbak jjbutare@pi5'
 
 hbak() # hbak HOST
 { 
-	local h="$1" f="$1.homebridge.zip" d="$cloud/systems/homebridge/$1"
+	local f="$1.homebridge.zip" d="$cloud/systems/homebridge/backup"
+	local host="$1" stamp="$(GetDateStamp)"
 
-	[[ $h ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
+	[[ $host ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
 	[[ ! -d "$d" ]] && { mkdir "$d" || return; }
-	[[ -f "$d/$f" ]] && { bak --move "$d/$f" || return; }
 
-	ssh $h "rm -f $f; zip -r $f .homebridge" || return
-	scp $h:~/$f "$d" || return
-	ssh $h "rm -f $f" || return
-	echo "$h homebridge configuration saved to $d/$f"
+	local i=1
+	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
+	local df="$d/$stamp.$i.$f"
+
+	ssh $host "rm -f $f; zip -r $f .homebridge" || return
+	scp $host:~/$f "$df" || return
+	ssh $host "rm -f $f" || return
+	echo "$host homebridge configuration saved to $df"
 }
 
 hrest() # hrest HOST
@@ -645,9 +648,11 @@ alias jdp='j decompile progress'
 alias jrun='j run'
 alias ec='eclipse'
 
-# node.js
+# Node.js
 alias node='\node --use-strict'
 alias npmls='npm ls --depth=0'
+alias npmi='sudo npm install -g' # npm install
+alias npmu='sudo npm uninstall -g' # npm uninstall
 
 #
 # Juntos Holdings

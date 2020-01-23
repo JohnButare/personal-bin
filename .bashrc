@@ -355,6 +355,7 @@ sshfix()
 
 alias hu='HostUtil'
 u() { HostUpdate "$@" || return; }
+TestDhcpRenew() { ipconfig /release LAN; ipconfig /renew LAN; ipconfig /all; }
 
 # sync files
 alias slf='SyncLocalFiles'

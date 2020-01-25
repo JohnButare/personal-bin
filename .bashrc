@@ -567,54 +567,61 @@ alias XmlShow='xml sel -t -c'
 # wiggin
 #
 
-alias ned='NasEditDhcp' # ned host
-alias nbd='NasBackupDhcp' # nbd host
-alias nud='NasUpdateDhcp' # nud host
+nc="$cloud/network/dhcp" # network configuration
 
-alias nedns="NasEditDns" # nedns host
-alias nbdns='NasBackupDns' # nbdns host
-alias nudns='NasUpdateDns'; # nudns host
+alias nce='NetworkConfigurationEdit'
+alias ncb='NetworkConfigurationBackup'
+alias ncu='NetworkConfigurationUpdate'
 
-NasEditDhcp() { e ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf; }
+# DHCP Reservation.txt-> dhcpd-eth0-static.conf
+# DHCP Options.txt -> dhcpd-dns-dns.conf
+# DNS Forward.txt -> hagerman.butare.net
+# DNS Reverse.txt -> 100.168.192.in-addr.arpa
 
-NasBackupDhcp() # NasBackupDhcp host
+NetworkConfigurationEdit() { e "$nc/DNS Reverse.txt" "$nc/DNS Forward.txt" "$nc/DHCP Options.txt" "$nc/DHCP Reservations.txt"; }
+
+NetworkConfigurationBackup() # NetworkConfigurationBackup host
 { 
-	local h="$1" f="$1.dhcpd.zip" d="$cloud/systems/nas/dhcp/$1"
+	local h="$1" d="$nc/backup" stamp="$(GetDateStamp)"
 
-	[[ $h ]] || { EchoErr "USAGE: NasBackupDhcp HOST"; return 1; }
-	[[ ! -d "$d" ]] && { mkdir "$d" || return; }
-	[[ -f "$d/$f" ]] && { bak --move "$d/$f" || return; }
+	[[ $h ]] || { EchoErr "USAGE: NetworkConfigurationBackup HOST"; return 1; }
 
+	# DHCP
+	local f="$h.dhcpd.zip" i=1
+	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
 	ssh $h "rm -f $f; zip -r $f /etc/dhcpd" || return
-	scp $h:~/$f "$d" || return
-	echo "Successfully backed up $h dhcpd configuration to $d/$f"
+	scp $h:~/$f "$d/$stamp.$i.$f" || return
+
+	# DNS	
+	f="$h.dns.zip" i="1"
+	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
+	ssh $h "rm -f $f; zip -r $f /var/packages/DNSServer/target/named/etc/zone/master" || return
+	scp $h:~/$f "$d/$stamp.$i.$f" || return
+
+	echo "Successfully backed up $h network configuration"
 }
 
-NasUpdateDhcp() 
+NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 { 
-	local h="$1" f="/tmp/dhcpd.conf"
+	local h="$1" reservations="/tmp/reservations.txt"
 
-	[[ $h ]] || { EchoErr "USAGE: NasUpdateDhcp HOST"; return 1; }
+	[[ $h ]] || { EchoErr "USAGE: NetworkConfigurationUpdate HOST"; return 1; }
 
-	cat ~/Dropbox/systems/nas/dns/dhcpd-eth0-static.conf | sed '/^#/d' | sed '/^$/ d' > $f
+	cat "$nc/DHCP Reservation.txt" | sed '/^#/d' | sed '/^$/ d' > $f # cleanup reservations by removing comments and empty lines
 
-	scp "$f" root@$h:/etc/dhcpd
+	local target="root@$h:/etc/dhcpd"
+	scp "$nc/DHCP Options.txt" "$target/dhcpd-dns-dns.conf"
 
+	target="root@$h:/etc/dhcpd"
 	case "$h" in
-		router) scp "$f" $h:/etc/dhcpd/dhcpdStatic.ori; scp "$f" $h:/etc/dhcpd/dhcpd-static-static.conf;;
-		nas?) scp "$f" $h:/etc/dhcpd/dhcpd-eth0-static.conf;
+		router) scp "$reservation" "$target/dhcpdStatic.ori"; scp "$f" "$target/dhcpd-static-static.conf";;
+		nas?) scp "$reservation" "$target/dhcpd-eth0-static.conf";
 	esac
+
+	target="root@$h:/var/packages/DNSServer/target/named/etc/zone/master"
+	scp "$nc/DNS Forward.txt" "$target/hagerman.butare.net"
+	scp "$nc/DNS Reverse.txt" "$target/100.168.192.in-addr.arpa"
 } 
-
-NasEditDns() { e ~/Dropbox/systems/nas/dns/1.168.192.in-addr.arpa ~/Dropbox/systems/nas/dns/hagerman.butare.net; }
-NasBackupDns() { scp "nas1:/var/packages/DNSServer/target/named/etc/zone/master/*" ~/"Dropbox/systems/nas/dns/copy"; }
-
-NasUpdateDns() 
-{
-	local f=~/"Dropbox/systems/nas/dns/"
-	scp "$f/1.168.192.in-addr.arpa" "$f/hagerman.butare.net" "router:/var/packages/DNSServer/target/named/etc/zone/master"; 
-	scp "$f/1.168.192.in-addr.arpa" "$f/hagerman.butare.net" "nas1:/var/packages/DNSServer/target/named/etc/zone/master"; 
-}
 
 #
 # development

@@ -148,6 +148,7 @@ zll() { unzip -ll "${@}"; }
 # performance
 #
 
+sysmon() { case "$PLATFORM" in  linux) gnome-system-monitor &;; win) start taskmgr;; esac; }
 alias t='time pause'
 alias ton='TimerOn'
 alias toff='TimerOff'
@@ -454,18 +455,18 @@ complete -o default -o nospace -F _git g
 # homebridge
 #
 
-hedit() { eval e "~$1/.homebridge/config.json"; }
-alias hconfig="cd $c/systems/homebridge/config"
+alias hconfig="e $HOME/.homebridge/config.json"
+alias hcconfig="e $c/network/homebridge/config/config.json" # homebridge cloud configuration
 alias hrestart="systemctl restart homebridge"
 alias hstart='sudo hb-service start'
 alias hstop='sudo hb-service stop'
 alias hrestart='hstop;hlogclean;hstart'
 alias hlog='sudo hb-service logs'
-alias hbakall='hbak jjbutare@pi5'
+alias hbakall='hbak pi5'
 
 hbak() # hbak HOST
 { 
-	local f="$1.homebridge.zip" d="$cloud/systems/homebridge/backup"
+	local f="$1.homebridge.zip" d="$cloud/network/homebridge/backup"
 	local host="$1" stamp="$(GetDateStamp)"
 
 	[[ $host ]] || { EchoErr "USAGE: hbak HOST"; return 1; }

@@ -603,19 +603,19 @@ NetworkConfigurationBackup() # NetworkConfigurationBackup host
 
 NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 { 
-	local h="$1" reservations="/tmp/reservations.txt"
+	local h="$1" f="/tmp/reservations.txt"
 
 	[[ $h ]] || { EchoErr "USAGE: NetworkConfigurationUpdate HOST"; return 1; }
 
-	cat "$nc/DHCP Reservation.txt" | sed '/^#/d' | sed '/^$/ d' > $f # cleanup reservations by removing comments and empty lines
+	cat "$nc/DHCP Reservations.txt" | sed '/^#/d' | sed '/^$/ d' > "$f" # cleanup reservations by removing comments and empty lines
 
 	local target="root@$h:/etc/dhcpd"
 	scp "$nc/DHCP Options.txt" "$target/dhcpd-dns-dns.conf"
 
 	target="root@$h:/etc/dhcpd"
 	case "$h" in
-		router) scp "$reservation" "$target/dhcpdStatic.ori"; scp "$f" "$target/dhcpd-static-static.conf";;
-		nas?) scp "$reservation" "$target/dhcpd-eth0-static.conf";
+		router) scp "$f" "$target/dhcpdStatic.ori"; scp "$f" "$target/dhcpd-static-static.conf";;
+		nas?) scp "$f" "$target/dhcpd-eth0-static.conf";
 	esac
 
 	target="root@$h:/var/packages/DNSServer/target/named/etc/zone/master"

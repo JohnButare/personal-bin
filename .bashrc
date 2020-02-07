@@ -666,7 +666,7 @@ alias npmu='sudo npm uninstall -g' # npm uninstall
 #
 # Juntos Holdings
 #
-alias jh='"$cloud/group/Juntos Holdings"'
+alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
 
 #
 # final

@@ -17,6 +17,13 @@ rdesk()
 alias wh="$WIN_HOME"
 alias wr="$WIN_ROOT"
 
+# monitor
+alias monden='monprofile den'
+alias monstudy='monprofile study'
+
+alias moninfo='cs $win/UltraMon.js info'
+monprofile() { start "$cloud/data/UltraMon/$1.umprofile"; }
+
 # network
 alias NetConfig='control.exe netconnections'
 alias NetStatus='ipconfig /all'
@@ -39,8 +46,8 @@ alias SystemRestore='vss'
 alias WindowSpy="start Au3Info.exe"
 
 # VBA
-alias ws='wscript /nologo'
-alias cs='cscript /nologo'
+alias ws='start wscript.exe /nologo'
+alias cs='start cscript.exe /nologo'
 
 # utilities
 alias ffw='elevate powershell FlipFlopWheel.ps1'

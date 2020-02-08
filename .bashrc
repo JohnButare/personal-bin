@@ -568,7 +568,8 @@ alias XmlShow='xml sel -t -c'
 # wiggin
 #
 
-nc="$cloud/network/dhcp" # network configuration
+nc="$cloud/network" # network configuration
+ncd="$nc/dhcp"
 
 alias nce='NetworkConfigurationEdit'
 alias ncb='NetworkConfigurationBackup'
@@ -579,11 +580,11 @@ alias ncu='NetworkConfigurationUpdate'
 # DNS Forward.txt -> hagerman.butare.net
 # DNS Reverse.txt -> 100.168.192.in-addr.arpa
 
-NetworkConfigurationEdit() { e "$nc/DNS Reverse.txt" "$nc/DNS Forward.txt" "$nc/DHCP Options.txt" "$nc/DHCP Reservations.txt"; }
+NetworkConfigurationEdit() { e "$ncd/DNS Reverse.txt" "$ncd/DNS Forward.txt" "$ncd/DHCP Options.txt" "$ncd/DHCP Reservations.txt"; }
 
 NetworkConfigurationBackup() # NetworkConfigurationBackup host
 { 
-	local h="$1" d="$nc/backup" stamp="$(GetDateStamp)"
+	local h="$1" d="$ncd/backup" stamp="$(GetDateStamp)"
 
 	[[ $h ]] || { EchoErr "USAGE: NetworkConfigurationBackup HOST"; return 1; }
 
@@ -608,10 +609,10 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 
 	[[ $h ]] || { EchoErr "USAGE: NetworkConfigurationUpdate HOST"; return 1; }
 
-	cat "$nc/DHCP Reservations.txt" | sed '/^#/d' | sed '/^$/ d' > "$f" # cleanup reservations by removing comments and empty lines
+	cat "$ncd/DHCP Reservations.txt" | sed '/^#/d' | sed '/^$/ d' > "$f" # cleanup reservations by removing comments and empty lines
 
 	local target="root@$h:/etc/dhcpd"
-	scp "$nc/DHCP Options.txt" "$target/dhcpd-dns-dns.conf"
+	scp "$ncd/DHCP Options.txt" "$target/dhcpd-dns-dns.conf"
 
 	target="root@$h:/etc/dhcpd"
 	case "$h" in
@@ -620,8 +621,8 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 	esac
 
 	target="root@$h:/var/packages/DNSServer/target/named/etc/zone/master"
-	scp "$nc/DNS Forward.txt" "$target/hagerman.butare.net"
-	scp "$nc/DNS Reverse.txt" "$target/100.168.192.in-addr.arpa"
+	scp "$ncd/DNS Forward.txt" "$target/hagerman.butare.net"
+	scp "$ncd/DNS Reverse.txt" "$target/100.168.192.in-addr.arpa"
 } 
 
 #

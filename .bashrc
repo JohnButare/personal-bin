@@ -323,7 +323,7 @@ sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with
 sshsudo() { ssh -t $1 sudo ${@:2}; }
 ssht() { ssh -t "$@"; } # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; }
-sterminator() { sx -f pi7 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
+sterminator() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
 
 sshx() # connect with X forward
 { 

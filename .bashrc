@@ -625,6 +625,11 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 	target="root@$h:/var/packages/DNSServer/target/named/etc/zone/master"
 	scp "$ncd/DNS Forward.txt" "$target/hagerman.butare.net"
 	scp "$ncd/DNS Reverse.txt" "$target/100.168.192.in-addr.arpa"
+
+	# create /etc/ethers - sed removes spaces from empty lines to fix etherwake warnings
+	gawk '{ FS=","; gsub(/dhcp-host=/,""); print $1 " " $2 }' "$ncd/DHCP Reservations.txt" | sed 's/^ *$//g' > "$bin/ethers" || return
+
+	return 0
 } 
 
 #

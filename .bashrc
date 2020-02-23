@@ -121,6 +121,9 @@ alias st='startup --no-pause'
 # applications
 #
 
+! InPath cowsay && alias cowsay="echo"
+! InPath lolcat && alias lolcat="cat"
+
 alias e='TextEdit'
 alias bc='BeyondCompare'
 alias f='firefox'

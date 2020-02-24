@@ -19,7 +19,6 @@ set +a
 HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
-
 alias hc='HistoryClear'
 
 shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
@@ -81,6 +80,12 @@ alias ListFunctionsAll='declare -f'
 alias unexport='unset'
 alias unfunction='unset -f'
 
+# credential manager
+if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
+	export CREDENTIAL_MANAGER_CHECKED="true"
+	credential check >& /dev/null && export CREDENTIAL_MANAGER="true"
+fi
+
 # scripts
 alias scd='ScriptCd'
 alias se='ScriptEval'
@@ -126,6 +131,7 @@ alias st='startup --no-pause'
 
 alias e='TextEdit'
 alias bc='BeyondCompare'
+alias clock='xclock -title $HOSTNAME -digital -update 1 &'
 alias f='firefox'
 alias h='HostUtil'
 alias m='merge'
@@ -302,22 +308,14 @@ alias etg='start exiftoolgui' # ExifToolGui
 #
 
 [[ ! "$DISPLAY" && -f /usr/bin/xprop ]] && { export DISPLAY=:0; }
-[[ "$DISPLAY" && -f /usr/bin/ssh-askpass ]] && export SUDO_ASKPASS=/usr/bin/ssh-askpass
 
 SetTitle() { printf "\e]2;$*\a"; }
 
 #
-# ssh
+# SSH
 #
 
-# check and repair the ssh-agent - call this directly over the sshc function for speed
-[[ (! $SSH_AUTH_SOCK || ! $SSH_AGENT_PID) && -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-if [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID"; then
-	echo "Fixing the ssh-agent..."
-	#echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK SSH_AGENT_PID=$SSH_AGENT_PID $(ProcessIdExists "$SSH_AGENT_PID" && echo "EXISTS")"
-	SshAgent startup && . "$HOME/.ssh/environment"
-fi
-
+s() { sshcsshc; ssh "$@"; }
 alias sx=sshx
 alias sterm=sterminator
 
@@ -330,6 +328,7 @@ sterminator() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - star
 
 sshx() # connect with X forward
 { 
+	sshc # ensure the ssh-agent is running
 
 	if IsPlatform wsl; then # WSL does not support X sockets over ssh and requires localhost
 		DISPLAY=localhost:0 ssh -X $@
@@ -340,7 +339,9 @@ sshx() # connect with X forward
 	fi
 } 
 
-# sshc() - ssh check: check and repair the ssh-agent
+# SSH agent
+
+# sshc: check and repair the ssh-agent
 sshc()
 { 
 	[[ -S "$SSH_AUTH_SOCK" ]] && ProcessIdExists "$SSH_AGENT_PID" && return
@@ -355,12 +356,26 @@ sshfix()
 	ScriptEval SshAgent initialize
 }
 
+# repair ssh-agent if needed - call this directly over the sshc function for speed
+if [[ $CREDENTIAL_MANAGER && ! $SSH_AGENT_CHECKED ]]; then
+	export SSH_AGENT_CHECKED="true"
+
+	# read ssh-agent configuration if possible
+	[[ (! $SSH_AUTH_SOCK || ! $SSH_AGENT_PID) && -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+
+	# fix the ssh-agent if it is not running or configured corrected
+	if [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID"; then
+		echo "Fixing the ssh-agent..."
+		SshAgent startup && . "$HOME/.ssh/environment"
+	fi
+fi
+
 #
 # network
 #
 
 alias hu='HostUtil'
-u() { HostUpdate "$@" || return; }
+u() { sshc; HostUpdate "$@" || return; }
 TestDhcpRenew() { ipconfig /release LAN; ipconfig /renew LAN; ipconfig /all; }
 
 # sync files
@@ -512,14 +527,10 @@ IsPlatform mac && alias apt-get='brew'
 # hardware
 #
 
-alias boot='HostUtil boot'
-alias bw='HostUtil boot wait'
-alias connect='HostUtil connect'
-alias down='power shutdown'
-alias hib='power hibernate'
-alias reb='power reboot'
+alias on='power on'; alias boot='on'
+alias off='power off'; alias down='power off'
 alias slp='power sleep'
-alias pfs='power fix sleep'
+alias reb='power reboot'
 
 NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 
@@ -634,6 +645,9 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 
 	return 0
 } 
+
+# UniFi
+SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 #
 # development

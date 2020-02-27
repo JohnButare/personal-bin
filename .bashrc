@@ -358,18 +358,15 @@ sshfix()
 	ScriptEval SshAgent initialize
 }
 
-# repair ssh-agent if needed - call this directly over the sshc function for speed
-if [[ $CREDENTIAL_MANAGER && ! $SSH_AGENT_CHECKED ]]; then
+# restore ssh-agent configuration if possible
+[[ (! $SSH_AUTH_SOCK || ! $SSH_AGENT_PID) && -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+
+# fix the ssh-agent if it is not running or configured corrected
+if [[ $CREDENTIAL_MANAGER && ! $SSH_AGENT_CHECKED && ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID" ]]; then
 	export SSH_AGENT_CHECKED="true"
 
-	# read ssh-agent configuration if possible
-	[[ (! $SSH_AUTH_SOCK || ! $SSH_AGENT_PID) && -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-
-	# fix the ssh-agent if it is not running or configured corrected
-	if [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID"; then
-		echo "Fixing the ssh-agent..."
-		SshAgent startup && . "$HOME/.ssh/environment"
-	fi
+	echo "Fixing the ssh-agent..."
+	SshAgent startup && . "$HOME/.ssh/environment"
 fi
 
 #

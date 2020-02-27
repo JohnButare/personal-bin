@@ -477,8 +477,9 @@ complete -o default -o nospace -F _git g
 # homebridge
 #
 
-alias hconfig="e $HOME/.homebridge/config.json"
-alias hcconfig="e $c/network/homebridge/config/config.json" # homebridge cloud configuration
+alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
+alias hcconfig="e $c/network/homebridge/config/config.json" # edit cloud configuration
+alias hssh="sudo cp ~/.ssh/config ~/.ssh/known_hosts ~homebridge/.ssh && sudo chown homebridge ~homebridge/.ssh/config ~homebridge/.ssh/known_hosts" # update SSH configuration 
 alias hrestart="systemctl restart homebridge"
 alias hstart='sudo hb-service start'
 alias hstop='sudo hb-service stop'

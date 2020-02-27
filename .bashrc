@@ -376,9 +376,11 @@ fi
 # network
 #
 
-alias hu='HostUtil'
-u() { sshc; HostUpdate "$@" || return; }
 TestDhcpRenew() { ipconfig /release LAN; ipconfig /renew LAN; ipconfig /all; }
+
+# update
+ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && slf; popd; } # update bin directories
+u() { sshc; HostUpdate "$@" || return; }
 
 # sync files
 alias slf='SyncLocalFiles'

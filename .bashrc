@@ -315,9 +315,11 @@ SetTitle() { printf "\e]2;$*\a"; }
 # SSH
 #
 
-s() { sshcsshc; ssh "$@"; }
+s() { sshc; ssh "$@"; }
 alias sx=sshx
 alias sterm=sterminator
+alias sshconfig='e ~/.ssh/config'
+alias sshkh='e ~/.ssh/known_hosts'
 
 RemoteServerName() { nslookup "$(RemoteServer)" | grep "name =" | cut -d" " -f3; }
 sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown

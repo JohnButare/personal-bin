@@ -520,12 +520,6 @@ hrest() # hrest HOST
 }
 
 #
-# package management
-#
-
-IsPlatform mac && alias apt-get='brew'
-
-#
 # hardware
 #
 

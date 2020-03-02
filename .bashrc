@@ -184,7 +184,6 @@ alias cd='UncCd'
 UncCd()
 {
 	[[ "$PLATFORM" == "cygwin" ]] || ! IsUncPath "$1" && { builtin cd "$@"; return; }
-	[[ ! "$(GetUncShare "$1")" ]] && { unc list "$1"; return; }
 	ScriptCd unc mount "$1" || return
 }
 
@@ -197,7 +196,6 @@ UncLs()
 		return
 	fi
 
-	[[ ! "$(GetUncShare "$unc")" ]] && { unc list "$unc"; return; }
 	local dir; dir="$(unc mount "$unc")" || return
 	${G}ls --hide={desktop.ini,NTUSER.*,ntuser.*} -F --group-directories-first -Q --group-directories-first --color "${@:1:$#-1}" "$dir"
 }
@@ -362,7 +360,7 @@ sshfix()
 [[ (! $SSH_AUTH_SOCK || ! $SSH_AGENT_PID) && -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
 
 # fix the ssh-agent if it is not running or configured corrected
-if [[ $CREDENTIAL_MANAGER && ! $SSH_AGENT_CHECKED ]] && ( ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID" ); then
+if [[ $CREDENTIAL_MANAGER && ! $SSH_AGENT_CHECKED ]] && ( [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID" ); then
 	export SSH_AGENT_CHECKED="true"
 
 	echo "Fixing the ssh-agent..."
@@ -376,7 +374,7 @@ fi
 TestDhcpRenew() { ipconfig /release LAN; ipconfig /renew LAN; ipconfig /all; }
 
 # update
-ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && slf; popd; } # update bin directories
+ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories
 u() { sshc; HostUpdate "$@" || return; }
 
 # sync files

@@ -115,7 +115,6 @@ alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 # other
 #
 
-alias cf='CleanupFiles'
 alias cls=clear
 alias ei='e $bin/inst'
 alias ehp='start "$udata/replicate/default.htm"'
@@ -174,6 +173,7 @@ alias .....='cbuiltin d ../../../..'
 alias c='cls'		# clear screen
 alias cb='builtin cd ~; cls' # clear screen and cd
 alias ch='cb; hw;' # clear both, hello world
+alias cf='cb; fortune | cowsay | lolcat ;' # clear both, fortune
 
 alias del='rm'
 alias md='mkdir'

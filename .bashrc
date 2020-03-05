@@ -537,6 +537,12 @@ ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
 procmon() { start -rid -e procmon; }
 
 #
+# python
+#
+
+alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distutils error
+
+#
 # ruby
 #
 

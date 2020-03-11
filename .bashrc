@@ -64,7 +64,7 @@ v="/Volumes"
 
 home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
 bash="$udata/bash"
-code="$CODE"
+code="$CODE"; source="$CODE"; s="$CODE"
 ubin="$udata/bin"
 usm="$APPDATA/Microsoft/Windows/Start Menu" # UserStartMenu
 up="$usm/Programs" 													# UserPrograms
@@ -467,6 +467,8 @@ alias gg='GitHelper gui'
 alias gh='GitHelper'
 alias ghub='GitHelper hub'
 alias tgg='GitHelper tgui'
+
+alias gcn='GitHelper clone nas1' # clone a repository from nas1
 
 complete -o default -o nospace -F _git g
 

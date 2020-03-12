@@ -161,6 +161,13 @@ alias t='time pause'
 alias ton='TimerOn'
 alias toff='TimerOff'
 
+BenchDisk() 
+{
+	sudo hdparm -t /dev/$1 # read performance
+	sync; dd if=/dev/$1 of=tempfile bs=1M count=1024; sync # write performance
+}
+
+
 #
 # file management
 #

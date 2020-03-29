@@ -378,8 +378,6 @@ fi
 # network
 #
 
-TestDhcpRenew() { ipconfig /release LAN; ipconfig /renew LAN; ipconfig /all; }
-
 # update
 ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories
 u() { sshc; HostUpdate "$@" || return; }

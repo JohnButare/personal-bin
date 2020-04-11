@@ -389,8 +389,8 @@ alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileCommand hide"
 
 # speed test
-alias iperfs='iperf -s -p 5002'
-alias iperfc='iperf -c nas1 -p 5002'
+iperfs() { echo iPerf server is running on $(hostname); iperf -s -p 5002; } # server
+iperfc() { iperf -c $1 -p 5002; } # client
 
 #
 # prompt

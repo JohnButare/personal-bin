@@ -163,8 +163,18 @@ alias toff='TimerOff'
 
 BenchDisk() # df - list disks, /dev/...
 {
-	InPath hdparm && { sudo hdparm -t $1; } # read performance
-	sync; sudo dd if=$1 of=tempfile bs=1M count=1024; sync # write performance
+	local device="$1"
+
+	if [[ $devid ]]; then
+		InPath hdparm && { sudo hdparm -t $1; } # read performance
+		sync; sudo dd if=$1 of=tempfile bs=1M count=1024; sync # write performance
+	fi
+
+	if ask "Run bonnie++ tests"; then
+		bonnie++ | tee >> "$(HostUtil name)_performance_$(GetDateStamp).txt"
+	fi
+
+	return 0
 }
 
 

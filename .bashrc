@@ -601,6 +601,9 @@ alias XmlShow='xml sel -t -c'
 # wiggin
 #
 
+WigginOn() { on nas1; on nas3; on pi5; on UniFiController; }
+WigginOff() { off nas1; off nas3; off pi5; off UniFiController; }
+
 nc="$cloud/network" # network configuration
 ncd="$nc/dhcp"
 

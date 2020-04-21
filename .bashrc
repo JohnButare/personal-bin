@@ -658,7 +658,7 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 	scp "$ncd/DNS Reverse.txt" "$target/100.168.192.in-addr.arpa"
 
 	# create /etc/ethers - sed removes spaces from empty lines to fix etherwake warnings
-	gawk '{ FS=","; gsub(/dhcp-host=/,""); print $1 " " $2 }' "$ncd/DHCP Reservations.txt" | sed 's/^ *$//g' > "$bin/ethers" || return
+	gawk '{ FS=","; gsub(/dhcp-host=/,""); print $1 " " $2 }' "$ncd/DHCP Reservations.txt" | sed 's/^ *$//g' > "$bin/ethers" | tr A-Z a-z || return
 
 	return 0
 } 

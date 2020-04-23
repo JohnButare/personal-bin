@@ -220,6 +220,7 @@ UncLs()
 alias inf="FileInfo"
 alias l='explore'
 alias rc='CopyDir'
+lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
 
 #
 # directory management
@@ -308,15 +309,6 @@ alias ds='DirSize m'
 alias dsu='DiskSpaceUsage'
 alias dus='${G}du --summarize --human-readable'
 alias TestDisk='sudo bench32.exe'
-
-#
-# media
-#
-alias gp='media get'
-alias sm='merge "$pub/Music" "//nas/music"'
-alias sk='SyncKey'
-alias et='exiftool'
-alias etg='start exiftoolgui' # ExifToolGui
 
 #
 # Windows

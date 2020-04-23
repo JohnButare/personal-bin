@@ -391,6 +391,7 @@ fi
 # update
 ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories
 u() { sshc; HostUpdate "$@" || return; }
+un() { u nas; } # update nas
 
 # sync files
 alias slf='SyncLocalFiles'

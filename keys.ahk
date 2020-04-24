@@ -5,24 +5,19 @@
 
 Init()
 CommonInit()
-BrowserInit()
 BashInit()
-VmInit()
-
+BrowserInit()
 OfficeInit()
-ImInit()
-MailInit()
+VmInit()
 
 #Include C:\Users\Public\Documents\data\platform\win
 #Include common.ahk
-#Include browser.ahk
-#Include display.ahk
-#Include music.ahk
+
 #Include bash.ahk
+#Include browser.ahk
+#Include mail.ahk
 
 #Include office.ahk
-#Include im.ahk
-#Include mail.ahk
 #Include vm.ahk
 
 Test()
@@ -78,10 +73,8 @@ Init()
 #j::run eclipse.btm,,min
 #n::OpenNotion()
 +#n::OpenStandardNotes()
-^#m::RunTidal()
 ^#n::NewFolder()
 #o::OpenMail()
-#!p::SetNextPrimary()
 #!q::run bash " quicken start",,min
 #!s::WinActivate ".*Microsoft SQL Server Management Studio"
 #t::OpenTextEditor()
@@ -92,5 +85,4 @@ Init()
 #w::RunWord()
 #!w::RunWord()
 #!y::OpenRecycleBin()
-#z::OpenIm()
 ; +=Shift ^=Control #=Win !=Alt

@@ -25,6 +25,10 @@ shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 
 # completion
 
+# mock hosts(5) file for completion
+HOSTFILE=$UBIN/hosts
+complete -A hostname -o default curl dig host mosh netcat nslookup on off ping telnet
+
 case "$PLATFORM" in
 	linux) 
 		if [[ -f /usr/lib/git-core/git-sh-prompt ]] && ! IsFunction __git_ps1; then
@@ -52,7 +56,8 @@ case "$PLATFORM" in
 		;;
 esac
 
-complete -r cd >& /dev/null # cd should not complete variables without a leading $
+# cd should not complete variables without a leading $
+complete -r cd >& /dev/null 
 
 # locations - lower case (not exported), for cd'able variables ($<var><return or tab>) 
 p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA"

@@ -638,8 +638,16 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 
 	[[ $h ]] || { EchoErr "USAGE: NetworkConfigurationUpdate HOST"; return 1; }
 
-	cat "$ncd/DHCP Reservations.txt" | sed '/^#/d' | sed '/^$/ d' > "$f" # cleanup reservations by removing comments and empty lines
+ 	# cleanup reservations by removing comments, empty lines, and lines with only spaces (fix etherwake warning)
+	cat "$ncd/DHCP Reservations.txt" | sed '/^#/d' | sed '/^$/ d' | sed 's/^ *$//g' > "$f"
 
+	# update ethers - downcase to make etherwake case agnostic
+	gawk '{ FS=","; gsub(/dhcp-host=/,""); print $1 " " $2 }' "$f" | tr A-Z a-z > "$BIN/ethers" || return
+
+	# update hosts
+	gawk '{ FS=","; gsub(/dhcp-host=/,""); print $2 }' "$f" | sort > "$UBIN/hosts" || return
+
+	# update host
 	local target="root@$h:/etc/dhcpd"
 	scp "$ncd/DHCP Options.txt" "$target/dhcpd-dns-dns.conf"
 
@@ -652,9 +660,6 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 	target="root@$h:/var/packages/DNSServer/target/named/etc/zone/master"
 	scp "$ncd/DNS Forward.txt" "$target/hagerman.butare.net"
 	scp "$ncd/DNS Reverse.txt" "$target/100.168.192.in-addr.arpa"
-
-	# create /etc/ethers - sed removes spaces from empty lines to fix etherwake warnings
-	gawk '{ FS=","; gsub(/dhcp-host=/,""); print $1 " " $2 }' "$ncd/DHCP Reservations.txt" | sed 's/^ *$//g' > "$bin/ethers" | tr A-Z a-z || return
 
 	return 0
 } 

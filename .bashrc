@@ -623,12 +623,14 @@ NetworkConfigurationBackup() # NetworkConfigurationBackup host
 	[[ $h ]] || { EchoErr "USAGE: NetworkConfigurationBackup HOST"; return 1; }
 
 	# DHCP
+	echo "Backing up DHCP configuration from $h..."
 	local f="$h.dhcpd.zip" i=1
 	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
 	ssh $h "rm -f $f; zip -r $f /etc/dhcpd" || return
 	scp $h:~/$f "$d/$stamp.$i.$f" || return
 
 	# DNS	
+	echo "Backing up DNS configuration from $h..."
 	f="$h.dns.zip" i="1"
 	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
 	ssh $h "rm -f $f; zip -r $f /var/packages/DNSServer/target/named/etc/zone/master" || return
@@ -647,12 +649,13 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 	cat "$ncd/DHCP Reservations.txt" | sed '/^#/d' | sed '/^$/ d' | sed 's/^ *$//g' > "$f"
 
 	# update ethers - downcase to make etherwake case agnostic
+	echo "Updating the ethers configuration in $BIN..."
 	gawk '{ FS=","; gsub(/dhcp-host=/,""); print $1 " " $2 }' "$f" | tr A-Z a-z > "$BIN/ethers" || return
 
-	# update hosts
+	echo "Updating the host configuration in $UBIN/hosts..."
 	gawk '{ FS=","; gsub(/dhcp-host=/,""); print $2 }' "$f" | sort > "$UBIN/hosts" || return
 
-	# update host
+	echo "Updating DHCP configuration on $h..."
 	local target="root@$h:/etc/dhcpd"
 	scp "$ncd/DHCP Options.txt" "$target/dhcpd-dns-dns.conf"
 
@@ -662,6 +665,7 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 		nas?) scp "$f" "$target/dhcpd-eth0-static.conf";
 	esac
 
+	echo "Updating DNS configuration on $h..."
 	target="root@$h:/var/packages/DNSServer/target/named/etc/zone/master"
 	scp "$ncd/DNS Forward.txt" "$target/hagerman.butare.net"
 	scp "$ncd/DNS Reverse.txt" "$target/100.168.192.in-addr.arpa"

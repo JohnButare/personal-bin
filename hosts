@@ -39,8 +39,8 @@ FrontYardWestCamera
 GarageAppleTvWired
 GarageEcho
 GarageLeftSpeaker
-GaragePoeSwitch
 GarageRightSpeaker
+GarageSwitch
 GarageWaterHeater
 GarageWaterHeaterWiFi
 GoPro
@@ -97,6 +97,7 @@ PlayStationWiFi
 PoolVacuum
 PortableEcho
 SolarInverter
+SpareCamera
 SpareSwitch
 Sprinkler
 StudyAp

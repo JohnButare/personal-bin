@@ -225,6 +225,7 @@ UncLs()
 alias inf="FileInfo"
 alias l='explore'
 alias rc='CopyDir'
+alias rcp='rsync --info=progress2'
 lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
 
 #
@@ -598,6 +599,9 @@ alias XmlShow='xml sel -t -c'
 #
 # wiggin
 #
+
+gapp() { elevate "$P32/GIGABYTE/AppCenter/RunUpd.exe"; } # Gigabyte Application Center
+gfan() { elevate "$P32/GIGABYTE/siv/ThermalConsole.exe"; }
 
 WigginOn() { on nas1; on nas3; on pi5; on UniFiController; }
 WigginOff() { off nas1; off nas3; off pi5; off UniFiController; }

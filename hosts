@@ -2,6 +2,7 @@ AirthingsBridge
 AlmondBridge
 AnovaCooker
 BackShedCamera
+BackShedSwitch
 BackYardAp
 BackYardEastCamera
 BackYardEcho
@@ -29,8 +30,6 @@ DenVacuum
 DiningRoomHomePod
 DiningRoomVacuum
 ElectricityMonitor
-FrontDoorbell
-FrontGateDoorbell
 FrontPatioCamera
 FrontShedEcho
 FrontYardAp
@@ -79,7 +78,6 @@ LivingRoomBackLeftSpeaker
 LivingRoomBackRightSpeaker
 LivingRoomCamera
 LivingRoomCenterSpeaker
-LivingRoomDoorbellChime
 LivingRoomEcho
 LivingRoomSubwoofer
 LivingRoomTv
@@ -124,6 +122,7 @@ WeatherStation
 Xbox360
 bean
 dishwasher
+doorbell
 jane
 jane-wvm1
 micro

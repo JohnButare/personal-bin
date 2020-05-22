@@ -69,7 +69,7 @@ v="/Volumes"
 
 home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
 bash="$udata/bash"
-code="$CODE"; source="$CODE"; s="$CODE"
+code="$CODE"; source="$CODE"; s="$CODE"; ccode="$c/code" # code=local code (repositores), ccode=cloud code
 ubin="$udata/bin"
 usm="$APPDATA/Microsoft/Windows/Start Menu" # UserStartMenu
 up="$usm/Programs" 													# UserPrograms

@@ -302,19 +302,25 @@ FindCd()
 #
 # drives
 #
+
 alias d='drive'
 alias de='drive eject'
 alias dl='drive list'
 alias dr='drive list | egrep -i removable'
 
 #
-# disk usage
+# disk
 #
+
 alias duh='${G}du --human-readable'
 alias ds='DirSize m'
 alias dsu='DiskSpaceUsage'
 alias dus='${G}du --summarize --human-readable'
 alias TestDisk='sudo bench32.exe'
+
+ListPartitions() { sudo parted -l; }
+ListDisks() { sudo parted -l |& egrep -i '^Disk' |& egrep -v 'Error|Disk Flags' | cut -d' ' -f2 | cut -d: -f1; }
+ListFirstDisk() { ListDisks | head -1; }
 
 #
 # Windows
@@ -397,9 +403,19 @@ alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileCommand hide"
 
-# speed test
-iperfs() { echo iPerf server is running on $(hostname); iperf -s -p 5002; } # server
-iperfc() { iperf -c $1 -p 5002; } # client
+#
+# Performance
+# 
+
+DiskTest() { start --elevate ATTODiskBenchmark.exe; }
+
+# nas3=nvme0n1 pi=mmcblk0 (use less count)
+DiskTestRead() { sudo hdparm -t /dev/$1; } 
+DiskTestWrite() { sync; sudo dd if=/dev/${1:-sda} of=tempfile bs=1M count=${2:-1024}; sync; } 
+
+# network
+iperfs() { echo iPerf server is running on $(hostname); iperf3 -s -p 5002; } # server
+iperfc() { iperf3 -c $1 -p 5002; } # client
 
 #
 # prompt

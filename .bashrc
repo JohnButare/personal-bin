@@ -401,7 +401,7 @@ un() { u nas; } # update nas
 alias slf='SyncLocalFiles'
 alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
-alias HideSyncTxt="FindSyncTxt | xargs run.sh FileCommand hide"
+alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
 
 #
 # Performance

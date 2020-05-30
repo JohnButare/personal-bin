@@ -697,6 +697,12 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 #
+# media
+#
+
+alias mg="media get"
+
+#
 # development
 #
 

@@ -69,12 +69,12 @@ v="/Volumes"
 
 home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
 bash="$udata/bash"
-code="$CODE"; source="$CODE"; s="$CODE"; ccode="$c/code" # code=local code (repositores), ccode=cloud code
+code="$CODE"; source="$CODE"; s="$CODE"; # code=local code (repositores), ccode=cloud code
 ubin="$udata/bin"
 usm="$APPDATA/Microsoft/Windows/Start Menu" # UserStartMenu
 up="$usm/Programs" 													# UserPrograms
 ud="$home/Desktop" 													# UserDesktop
-db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"
+db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"
 alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
 
 # variables and functions

@@ -123,7 +123,6 @@ alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 alias cls=clear
 alias ei='e $bin/inst'
 alias ehp='start "$udata/replicate/default.htm"'
-alias hw='cowsay "Hello, World!" | lolcat'
 alias st='startup --no-pause'
 
 #
@@ -131,6 +130,7 @@ alias st='startup --no-pause'
 #
 
 ! InPath cowsay && alias cowsay="echo"
+! InPath fortune && alias fortune="echo \"Hello, World\""
 ! InPath lolcat && alias lolcat="cat"
 
 alias e='TextEdit'

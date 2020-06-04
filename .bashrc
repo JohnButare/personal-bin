@@ -60,7 +60,7 @@ esac
 complete -r cd >& /dev/null 
 
 # locations - lower case (not exported), for cd'able variables ($<var><return or tab>) 
-p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA"
+p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA" datad="$DATAD"
 psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
 pp="$psm/Programs" 	# PublicPrograms
 pd="$pub/Desktop" 	# PublicDesktop
@@ -162,26 +162,22 @@ zll() { unzip -ll "${@}"; }
 #
 
 sysmon() { case "$PLATFORM" in  linux) gnome-system-monitor &;; win) start taskmgr;; esac; }
+
+# time
 alias t='time pause'
 alias ton='TimerOn'
 alias toff='TimerOff'
 
-BenchDisk() # df - list disks, /dev/...
-{
-	local device="$1"
+# disk - nas3=nvme0n1 pi=mmcblk0
+DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); }
+DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
+DiskTestRead() { sudo hdparm -t /dev/$1; } 
+DiskTestWrite() { sync; sudo dd if=/dev/${1:-sda} of=tempfile bs=1M count=${2:-1024}; sync; } # use smaller count for Pi and other lower performance disks
+DiskTestAll() { bonnie++ | tee >> "$(HostUtil name)_performance_$(GetDateStamp).txt"; }
 
-	if [[ $devid ]]; then
-		InPath hdparm && { sudo hdparm -t $1; } # read performance
-		sync; sudo dd if=$1 of=tempfile bs=1M count=1024; sync # write performance
-	fi
-
-	if ask "Run bonnie++ tests"; then
-		bonnie++ | tee >> "$(HostUtil name)_performance_$(GetDateStamp).txt"
-	fi
-
-	return 0
-}
-
+# network
+iperfs() { echo iPerf server is running on $(hostname); iperf3 -s -p 5002; } # server
+iperfc() { iperf3 -c $1 -p 5002; } # client
 
 #
 # file management
@@ -402,20 +398,6 @@ alias slf='SyncLocalFiles'
 alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
-
-#
-# Performance
-# 
-
-DiskTest() { start --elevate ATTODiskBenchmark.exe; }
-
-# nas3=nvme0n1 pi=mmcblk0 (use less count)
-DiskTestRead() { sudo hdparm -t /dev/$1; } 
-DiskTestWrite() { sync; sudo dd if=/dev/${1:-sda} of=tempfile bs=1M count=${2:-1024}; sync; } 
-
-# network
-iperfs() { echo iPerf server is running on $(hostname); iperf3 -s -p 5002; } # server
-iperfc() { iperf3 -c $1 -p 5002; } # client
 
 #
 # prompt

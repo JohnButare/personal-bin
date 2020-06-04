@@ -4,5 +4,7 @@
 # Non-login startup script (BASH runtime control)
 [[ -f "$HOME/.bashrc" ]] && . "$HOME/.bashrc"
 
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+[[ -f "${HOME}/.iterm2_shell_integration.bash" ]] && . "${HOME}/.iterm2_shell_integration.bash"
 
+# QNAP Docket
+[[ -d /share/CACHEDEV1_DATA/.qpkg/container-station/bin ]] && PathAdd "/share/CACHEDEV1_DATA/.qpkg/container-station/bin"

@@ -137,7 +137,7 @@ alias e='TextEdit'
 alias bc='BeyondCompare'
 alias clock='xclock -title $HOSTNAME -digital -update 1 &'
 alias f='firefox'
-alias h='HostUtil'
+alias hu='HostUtil'
 alias m='merge'
 
 alias grep='\grep --color=auto'

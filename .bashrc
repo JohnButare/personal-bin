@@ -110,7 +110,7 @@ alias sf='. $bin/function.sh'
 ef() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }
 
 alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;'
-alias estart="e /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.bashrc"
+alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.bashrc"
 
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
 

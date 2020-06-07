@@ -176,7 +176,7 @@ DiskTestWrite() { sync; sudo dd if=/dev/${1:-sda} of=tempfile bs=1M count=${2:-1
 DiskTestAll() { bonnie++ | tee >> "$(HostUtil name)_performance_$(GetDateStamp).txt"; }
 
 # network
-iperfs() { echo iPerf server is running on $(hostname); iperf3 -s -p 5002; } # server
+iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002; } # server
 iperfc() { iperf3 -c $1 -p 5002; } # client
 
 #
@@ -387,6 +387,8 @@ fi
 #
 # network
 #
+
+alias ProxySetup="ScriptEval network proxy enable; network proxy status"
 
 # update
 ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories

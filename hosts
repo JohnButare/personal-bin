@@ -14,8 +14,6 @@ BensRoomEcho
 BensTablet
 ChickenYardNorthCamera
 ChickenYardSouthCamera
-CoptersLaptop
-CoptersPhone
 DenAppleTv
 DenAppleTvWiFi
 DenBackLeftSpeaker
@@ -46,7 +44,7 @@ GoPro
 GuestBedroomAppleTv
 GuestBedroomBed
 GuestBedroomEcho
-GuestBedroomNotebook
+GuestBedroomLaptop
 GuestBedroomSpeaker
 GuestBedroomTv
 GuestBedroomVacuum
@@ -105,10 +103,10 @@ StudyClosetUps
 StudyColorPrinter
 StudyDeskSwitch
 StudyEnvironment
+StudyLaptop
+StudyLaptop1g
 StudyLeftSpeaker
 StudyLightPanel
-StudyNotebook
-StudyNotebook1g
 StudyPrinter
 StudyPrinterWiFi
 StudyRightSpeaker
@@ -139,6 +137,7 @@ oversoulw1
 oversoulw2
 oversoulw4
 oversoulwifi
+pants
 pi1
 pi1wifi
 pi2

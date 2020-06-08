@@ -671,9 +671,17 @@ NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
 	esac
 
 	echo "Updating DNS configuration on $h..."
-	target="root@$h:/var/packages/DNSServer/target/named/etc/zone/master"
+	local target="root@$h:/var/packages/DNSServer/target/named/etc/zone/master"
 	scp "$ncd/DNS Forward.txt" "$target/hagerman.butare.net"
-	scp "$ncd/DNS Reverse.txt" "$target/100.168.192.in-addr.arpa"
+
+	local reverse="$ncd/DNS Reverse.txt" t="$ncd/template"
+	{ cat "$t/100.txt"; grep 100.168.192 "$reverse"; } > "/tmp/100.txt"
+	{ cat "$t/101.txt"; grep 101.168.192 "$reverse"; } > "/tmp/101.txt"
+	{ cat "$t/102.txt"; grep 102.168.192 "$reverse"; } > "/tmp/102.txt"
+
+	scp "/tmp/100.txt" "$target/100.168.192.in-addr.arpa"
+	scp "/tmp/101.txt" "$target/101.168.192.in-addr.arpa"
+	scp "/tmp/102.txt" "$target/102.168.192.in-addr.arpa"
 
 	return 0
 } 

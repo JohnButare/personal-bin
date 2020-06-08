@@ -388,8 +388,12 @@ fi
 # network
 #
 
-alias ProxySetup="ScriptEval network proxy enable; network proxy status"
+alias ProxySetup="ScriptEval network proxy vars --enable; network proxy vars --status"
+alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars --status"
+
+ApacheLog() { tail -f /usr/local/apache/logs/main_log; } # specific to QNAP location for now
 DhcpOptions() { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; }
+SquidLog() { tail -f /usr/local/squid/var/logs/access.log; } # specific to QNAP location for now
 
 # update
 ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories

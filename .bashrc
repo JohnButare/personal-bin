@@ -389,6 +389,7 @@ fi
 #
 
 alias ProxySetup="ScriptEval network proxy enable; network proxy status"
+DhcpOptions() { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; }
 
 # update
 ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories

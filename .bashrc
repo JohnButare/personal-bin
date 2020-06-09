@@ -64,7 +64,6 @@ p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" da
 psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
 pp="$psm/Programs" 	# PublicPrograms
 pd="$pub/Desktop" 	# PublicDesktop
-i="$data/install" 	# install
 v="/Volumes"
 
 home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
@@ -137,7 +136,6 @@ alias e='TextEdit'
 alias bc='BeyondCompare'
 alias clock='xclock -title $HOSTNAME -digital -update 1 &'
 alias f='firefox'
-alias hu='HostUtil'
 alias m='merge'
 
 alias grep='\grep --color=auto'
@@ -173,7 +171,7 @@ DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); }
 DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
 DiskTestRead() { sudo hdparm -t /dev/$1; } 
 DiskTestWrite() { sync; sudo dd if=/dev/${1:-sda} of=tempfile bs=1M count=${2:-1024}; sync; } # use smaller count for Pi and other lower performance disks
-DiskTestAll() { bonnie++ | tee >> "$(HostUtil name)_performance_$(GetDateStamp).txt"; }
+DiskTestAll() { bonnie++ | tee >> "$(os name)_performance_$(GetDateStamp).txt"; }
 
 # network
 iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002; } # server
@@ -393,7 +391,11 @@ alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars 
 
 ApacheLog() { tail -f /usr/local/apache/logs/main_log; } # specific to QNAP location for now
 DhcpOptions() { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; }
+
 SquidLog() { tail -f /usr/local/squid/var/logs/access.log; } # specific to QNAP location for now
+SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
+SquidUtilization() { squidclient -h "$1" cache_object://localhost/ mgr:utilization; }
+SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
 
 # update
 ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories

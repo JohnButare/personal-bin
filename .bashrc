@@ -386,8 +386,9 @@ fi
 # network
 #
 
-alias ProxySetup="ScriptEval network proxy vars --enable; network proxy vars --status"
+alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
 alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars --status"
+alias ProxyStatus="network proxy vars --status"
 
 ApacheLog() { tail -f /usr/local/apache/logs/main_log; } # specific to QNAP location for now
 DhcpOptions() { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; }

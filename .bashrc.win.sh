@@ -63,7 +63,7 @@ wsllr() { wsl.exe --list --running;} 																								# list running
 wsls() { wslm summary -n "$1"; } 																										# summary
 wsldir() { [[ ! -d "$UDATA/wsl/$1" ]] && { md --parents "$UDATA/wsl/$1" || return; }; echo "$(utw "$(GetFullPath "$UDATA/wsl/$1")")"; }	# directory DIST
 
-wslm() { LxRunOffline "$@"; }; alias wm='wslm'; 	# manage
+wslm() { LxRunOffline.exe "$@"; }; alias wm='wslm'; 	# manage
 wslr() { wslm r -n "$@"; }									 			# run
 wslt() { wsl.exe --terminate "$@"; } 							# terminate
 

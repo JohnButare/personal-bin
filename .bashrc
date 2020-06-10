@@ -1,10 +1,6 @@
 # ~/.bashrc, user intialization
 
-# sytem-wide configuration - if not done in /etc/bash.bashrc
-if [[ ! $BIN ]]; then
-	[[ "$-" == *i* ]] && echo ".bashrc: system configuration was not set in /etc/bash.bashrc" > /dev/stderr
-	[[ -f /usr/local/data/bin/bash.bashrc ]] && . "/usr/local/data/bin/bash.bashrc"
-fi
+[[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
 
 # non-interactive initialization - available from child processes and scripts, i.e. ssh <script>
 set -a
@@ -15,17 +11,30 @@ set +a
 # interactive initialization - remainder not needed in child processes or scripts
 [[ "$-" != *i* ]] && return
 
+# shell options
+shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
+
+# credential manager
+if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
+	export CREDENTIAL_MANAGER_CHECKED="true"
+	credential check >& /dev/null && export CREDENTIAL_MANAGER="true"
+fi
+
+#
 # history
+#
+
 HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
-alias hc='HistoryClear'
 
-shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
+alias hc='HistoryClear'; HistoryClear() { cat /dev/null > ~/.bash_history && history -c; }
 
+#
 # completion
+#
 
-# mock hosts(5) file for completion
+#  hosts(5) file for completion
 HOSTFILE=$UBIN/hosts
 complete -A hostname -o default curl dig host mosh netcat nslookup on off ping telnet
 
@@ -59,7 +68,10 @@ esac
 # cd should not complete variables without a leading $
 complete -r cd >& /dev/null 
 
-# locations - lower case (not exported), for cd'able variables ($<var><return or tab>) 
+#
+# cd'able variables - lower case (not exported), $<var><return or tab>
+#
+
 p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA" datad="$DATAD"
 psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
 pp="$psm/Programs" 	# PublicPrograms
@@ -74,9 +86,13 @@ usm="$APPDATA/Microsoft/Windows/Start Menu" # UserStartMenu
 up="$usm/Programs" 													# UserPrograms
 ud="$home/Desktop" 													# UserDesktop
 db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"
+
 alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
 
+#
 # variables and functions
+#
+
 alias ListVars='declare -p | egrep -v "\-x"'
 alias ListExportVars='export'
 alias ListFunctions='declare -F'
@@ -84,13 +100,10 @@ alias ListFunctionsAll='declare -f'
 alias unexport='unset'
 alias unfunction='unset -f'
 
-# credential manager
-if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
-	export CREDENTIAL_MANAGER_CHECKED="true"
-	credential check >& /dev/null && export CREDENTIAL_MANAGER="true"
-fi
-
+#
 # scripts
+#
+
 alias scd='ScriptCd'
 alias se='ScriptEval'
 alias slist='file * .* | FilterShellScript | cut -d: -f1'
@@ -100,19 +113,15 @@ alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
-# configure
-	
-alias sa='. ~/.bashrc update'
-ea() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; }
+#
+# configuration
+#
 
-alias sf='. $bin/function.sh'
-ef() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }
-
+alias sa='. ~/.bashrc update'; ea() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; }
+alias sf='. $bin/function.sh'; ef() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }
 alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;'
 alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.bashrc"
-
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
-
 alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
 #
@@ -143,6 +152,42 @@ alias egrep='\egrep --color=auto'
 
 # Add an "alert" alias for long running commands.  sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+i() # i [--find|--cd] - invoke the installer script (inst) saving the INSTALL_DIR
+{ 
+	local find force noRun select
+	if [[ "$1" == "--help" ]]; then echot "\
+usage: i [APP*|cd|dir|force|info|select]
+  Install applications
+  -nr, --no-run do not find or run the installation program
+  -f, --force		check for a new installation location
+  -s, --select	select the install location"
+	return 0
+	fi
+
+  [[ "$1" == @(--no-run|-nr) ]] && { noRun="$1"; shift; }
+	[[ "$1" == @(--force|-f) ]] && { force="true"; shift; }
+	[[ "$1" == @(--select|-s) ]] && { select="--select"; shift; }
+	[[ "$1" == @(select) ]] && { select="--select"; }
+	[[ "$1" == @(force) ]] && { force="true"; }
+
+	if [[ ! $noRun && ($force || $select || ! $InstallDir) ]]; then
+		ScriptEval FindInstallFile --eval $select || return
+		export INSTALL_DIR="$InstallDir"
+	fi
+
+	[[ "$1" == @(force|select) ]] && return 0
+	
+	if [[ $# == 0 || "$1" == @(cd) ]]; then
+		cd "$InstallDir"
+	elif [[ "$1" == @(dir) ]]; then
+		echo "$InstallDir"
+	elif [[ "$1" == @(info) ]]; then
+		echo "The installation directory is $InstallDir"
+	elif [[ ! $find ]]; then
+		inst --hint "$InstallDir" $noRun "$@"
+	fi
+}
 
 #
 # archive

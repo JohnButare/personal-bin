@@ -22,10 +22,8 @@ VmInit()
 
 Test()
 {
-	;global
-	;EnvGet test, timerest
-	;MsgBox test=%test% PROGRAMS64=%PROGRAMS64%
-	run notepad.exe
+	test := EnvGet("TEST")
+	MsgBox "TEST=" TEST
 }
 
 Init()

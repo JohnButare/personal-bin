@@ -4,6 +4,7 @@ alias autoruns='start --elevate autoruns.exe'
 alias powershell="$WINDIR/system32/WindowsPowerShell/v1.0/powershell.exe"
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 rdesk() { ( mstsc.exe '/f' '/v:'"${@}" & ) }
+wsld="$DATAD/data/wsl"
 
 # monitor
 alias monden='monprofile den'

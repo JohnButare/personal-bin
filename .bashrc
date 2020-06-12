@@ -396,14 +396,16 @@ fi
 # network
 #
 
+LogShow() { setterm --linewrap off; tail -f "$1";  setterm --linewrap on; }
+
 alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
 alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars --status"
 alias ProxyStatus="network proxy vars --status"
 
-ApacheLog() { tail -f /usr/local/apache/logs/main_log; } # specific to QNAP location for now
+ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
 DhcpOptions() { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; }
 
-SquidLog() { tail -f /usr/local/squid/var/logs/access.log; } # specific to QNAP location for now
+SquidLog() { LogShow "/usr/local/squid/var/logs/access.log"; } # specific to QNAP location for now
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
 SquidUtilization() { squidclient -h "$1" cache_object://localhost/ mgr:utilization; }
 SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }

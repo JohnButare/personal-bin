@@ -330,7 +330,15 @@ ListFirstDisk() { ListDisks | head -1; }
 # Windows
 #
 
-[[ ! "$DISPLAY" && -f /usr/bin/xprop ]] && { export DISPLAY=:0; }
+if [[ ! "$DISPLAY" && -f /usr/bin/xprop ]]; then
+	if [[ "$WSL" == "1" ]]; then
+		export DISPLAY=:0
+	else
+		export WSL_HOST="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null)"
+		export DISPLAY="${WSL_HOST}:0"
+		export LIBGL_ALWAYS_INDIRECT=1
+	fi
+fi
 
 SetTitle() { printf "\e]2;$*\a"; }
 
@@ -355,11 +363,11 @@ sshx() # connect with X forward
 { 
 	sshc # ensure the ssh-agent is running
 
-	if IsPlatform wsl; then # WSL does not support X sockets over ssh and requires localhost
+	if IsPlatform wsl1; then # WSL 1 does not support X sockets over ssh and requires localhost
 		DISPLAY=localhost:0 ssh -X $@
-	elif IsPlatform mac; then # macOS XQuartz requires trusted X11 forwarding
+	elif IsPlatform mac,wsl2; then # macOS XQuartz requires trusted X11 forwarding
 		ssh -Y $@
-	else
+	else # use use untrusted (X programs are not trusted to use all X features on the host)
 		ssh -X $@
 	fi
 } 
@@ -374,9 +382,10 @@ sshc()
 	eval "$(SshAgent initialize)"
 } 
 
-# ssh fix: force creation of a new ssh-agent
-sshfix()
+# ssh check: check ssh-agent and fix it if needed
+sshc()
 { 
+	[[ ! "$1" =~ (-f|--force) ]] && { SshAgent check && return; }
 	SshAgent fix || return
 	ScriptEval SshAgent initialize
 }
@@ -386,6 +395,7 @@ sshfix()
 
 # fix the ssh-agent if it is not running or configured corrected
 if [[ $CREDENTIAL_MANAGER && ! $SSH_AGENT_CHECKED ]] && ( [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID" ); then
+	#echo WSL=$WSL	CREDENTIAL_MANAGER=$CREDENTIAL_MANAGER SSH_AGENT_CHECKED=$SSH_AGENT_CHECKED SSH_AUTH_SOCK=$SSH_AUTH_SOCK SSH_AGENT_PID=$SSH_AGENT_PID $(ProcessIdExists "$SSH_AGENT_PID" && echo "running" || echo "NOT running")
 	export SSH_AGENT_CHECKED="true"
 
 	echo "Fixing the ssh-agent..."

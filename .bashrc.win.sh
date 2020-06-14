@@ -38,8 +38,11 @@ z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "
 wsld="$DATAD/data/wsl" # dir
 
 # test1 distribution
-alias wi="wsl init test1" # Initialize
-alias wr="wsl run test1" # Run
-alias wt="wslr test1 ubuntu-focal" # reseT
+wi() { wsl init test1 "$@"; } 					# Initialize
+wt() { wslr test1 ubuntu-focal "$@"; } 	# reseT
+wr() { wsl run test1 "$@"; } 						# Run
 
-wslr() { wsl --no-prompt delete "$1"; wsl restore "$1" "$2" 2; wsl init "$1"; } # reset DIST SRC
+alias wsldown="wsl.exe --shutdown"
+alias wv="wsl version"
+
+wslr() { wsl delete "$1" "$@"; wsl restore "$1" "$2" 2; wsl init "$1"; } # reset DIST SRC

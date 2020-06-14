@@ -28,7 +28,7 @@ HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
 
-alias hc='HistoryClear'; HistoryClear() { cat /dev/null > ~/.bash_history && history -c; }
+HistoryClear() { cat /dev/null > ~/.bash_history && history -c; }
 
 #
 # completion
@@ -423,6 +423,8 @@ SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
 ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories
 u() { sshc; HostUpdate "$@" || return; }
 un() { u nas; } # update nas
+
+hc() { HostCleanup "$@" || return; }
 
 # sync files
 alias slf='SyncLocalFiles'

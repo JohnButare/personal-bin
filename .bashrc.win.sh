@@ -43,6 +43,8 @@ wt() { wslr test1 ubuntu-focal "$@"; } 	# reseT
 wr() { wsl run test1 "$@"; } 						# Run
 
 alias wsldown="wsl.exe --shutdown"
-alias wv="wsl version"
 
+wn() { echo "$(wsl name) (WSL 1)"; }
+wv() { echo "WSL $(wsl version)" | figlet | lolcat; }
+ 
 wslr() { wsl delete "$1" "$@"; wsl restore "$1" "$2" 2; wsl init "$1"; } # reset DIST SRC

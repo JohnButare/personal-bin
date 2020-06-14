@@ -601,9 +601,18 @@ alias unruby='export PATH="/usr/local/opt/ruby/bin:$PATH"' # use new ruby
 # sound
 #
 
-playsound() { case "$PLATFORM" in win) cat "$1" > /dev/dsp;; mac) afplay "$1";; esac; }
 alias sound='os sound'
 alias TestSound='playsound "$data/setup/test.wav"'
+
+playsound()
+{ 
+	InPath play && { play "$@"; return; }
+	IsPlatform mac && { afplay "$@"; return; }
+	IsPlatform cygwin && { cat "$1" > /dev/dsp; return; }
+	
+	EchoErr "No audio program was found"; return 1
+}
+
 
 # 
 # tmux 

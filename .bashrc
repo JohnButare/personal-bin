@@ -318,7 +318,7 @@ alias dr='drive list | egrep -i removable'
 
 alias duh='${G}du --human-readable'
 alias dsu='DiskSpaceUsage'
-alias dus='${G}du --summarize --human-readable'
+dus() { ${G}du --summarize --human-readable "$@" |& egrep -v "Permission denied|Transport endpoint is not connected"; }
 alias TestDisk='sudo bench32.exe'
 
 ListPartitions() { sudo parted -l; }

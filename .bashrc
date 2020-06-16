@@ -16,8 +16,8 @@ shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 
 # credential manager
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
-	export CREDENTIAL_MANAGER_CHECKED="true"
 	credential check >& /dev/null && export CREDENTIAL_MANAGER="true"
+	export CREDENTIAL_MANAGER_CHECKED="true"
 fi
 
 #
@@ -384,9 +384,12 @@ sshc()
 # ssh check: check ssh-agent and fix it if needed
 sshc()
 { 
-	[[ ! "$1" =~ (-f|--force) ]] && { SshAgent check && return; }
-	SshAgent fix || return
-	ScriptEval SshAgent initialize
+	if [[ "$1" =~ (-f|--force) ]]; then\
+		SshAgent fix
+	else
+		! SshAgent check && SshAgent fix
+		ScriptEval SshAgent initialize
+	fi
 }
 
 # restore ssh-agent configuration if possible

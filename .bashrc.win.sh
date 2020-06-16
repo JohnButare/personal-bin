@@ -38,6 +38,7 @@ z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "
 wsld="$DATAD/data/wsl" # dir
 
 # test1 distribution
+alias wt="wreset2"
 wreset1() { wslr test1 ubuntu-bionic 1 "$@"; } 	# reset as Ubuntu-Bionic (18.04) WSL 1
 wreset2() { wslr test1 ubuntu-focal 2 "$@"; } 	# reset as Ubuntu-Focal (20.04) WSL 2
 wi() { wsl init test1 "$@"; } 									# initialize test1 - run bootstrap-init

@@ -37,15 +37,18 @@ z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "
 # wsl
 wsld="$DATAD/data/wsl" # dir
 
-# test1 distribution
-alias wt="wreset2"
-wreset1() { wslr test1 ubuntu-bionic 1 "$@"; } 	# reset as Ubuntu-Bionic (18.04) WSL 1
-wreset2() { wslr test1 ubuntu-focal 2 "$@"; } 	# reset as Ubuntu-Focal (20.04) WSL 2
-wi() { wsl init test1 "$@"; } 									# initialize test1 - run bootstrap-init
-wr() { wsl run test1 "$@"; } 										# run test1
-
 wn() { echo "$(wsl name) (WSL $WSL)"; } 							# name of current distribution
+wr2() { wsl run2; }																		# run the first WSL 2 distribution
 wv() { echo "WSL $(wsl version)" | figlet | lolcat; } # version of current distribution
 
-wsldown() { wsl.exe --shutdown; } 										# shutdown all distributions
+wsldown() { wsl.exe --shutdown; } # shutdown all distributions
+wslimage() { i info >& /dev/null; "$INSTALL_DIR/LINUX/wsl/image/ubuntu"; } # image directory
 wslr() { wsl delete "$1" "$@"; wsl restore "$1" "$2" "${3:-2}"; wsl init "$1"; } # reset DIST SRC
+
+# test1 distribution
+wslTestDist="test1"
+wt() { wt2 --no-prompt; }
+wt1() { wslr $wslTestDist ubuntu-bionic 1 "$@"; } # reset test distribution to Ubuntu-Bionic (18.04) WSL 1 image
+wt2() { wslr $wslTestDist ubuntu-focal 2 "$@"; } 	# reset test distribution to Ubuntu-Focal (20.04) WSL 2 image
+wi() { wsl init $wslTestDist "$@"; } 							# initialize test distribution by running bootstrap-init
+wr() { wsl run test1 "$@"; } 											# run test distruvtion

@@ -2,7 +2,6 @@
 # applications
 alias cmd="cmd.exe"
 alias autoruns='start --elevate autoruns.exe'
-alias powershell="$WINDIR/system32/WindowsPowerShell/v1.0/powershell.exe"
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 rdesk() { ( mstsc.exe '/f' '/v:'"${@}" & ) }
 
@@ -38,8 +37,8 @@ z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "
 wsld="$DATAD/data/wsl" # dir
 
 wn() { echo "$(wsl name) (WSL $WSL)"; } 							# name of current distribution
-wr2() { wsl run2; }																		# run the first WSL 2 distribution
 wv() { echo "WSL $(wsl version)" | figlet | lolcat; } # version of current distribution
+w2() { wsl run2; }																		# run the first WSL 2 distribution
 
 wsldown() { wsl.exe --shutdown; } # shutdown all distributions
 wslimage() { i info >& /dev/null; "$INSTALL_DIR/LINUX/wsl/image/ubuntu"; } # image directory

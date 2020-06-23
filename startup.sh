@@ -1,3 +1,3 @@
 xserver $command || return
-app -b $command AutoHotKey AquaSnap CorsairUtilityEngine duet TidyTabs AltTabTerminator LogitechOptions PowerPanel word Greenshot PuttyAgent sshd DropBox terminator || return
+app -b $command AutoHotKey AquaSnap DropBox LogitechOptions word Greenshot PuttyAgent sshd terminator || return
 return 0

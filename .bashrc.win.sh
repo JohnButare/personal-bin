@@ -3,6 +3,9 @@
 alias cmd="cmd.exe"
 alias autoruns='start --elevate autoruns.exe'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
+alias ahkr="ahk /restart \"$DOC/data/bin/keys.ahk\""  # AutoHotKey Restart
+
+ahk() { start "$P/AutoHotkey/AutoHotkeyU64.exe" "$@"; } # AutoHotKey
 rdesk() { ( mstsc.exe '/f' '/v:'"${@}" & ) }
 
 # monitor

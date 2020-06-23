@@ -373,23 +373,11 @@ sshx() # connect with X forward
 
 # SSH agent
 
-# sshc: check and repair the ssh-agent
-sshc()
-{ 
-	[[ -S "$SSH_AUTH_SOCK" ]] && ProcessIdExists "$SSH_AGENT_PID" && return
-	SshAgent startup || return
-	eval "$(SshAgent initialize)"
-} 
-
 # ssh check: check ssh-agent and fix it if needed
 sshc()
 { 
-	if [[ "$1" =~ (-f|--force) ]]; then\
-		SshAgent fix
-	else
-		! SshAgent check && SshAgent fix
-		ScriptEval SshAgent initialize
-	fi
+	{ [[ "$1" =~ (-f|--force) ]] || ! SshAgent check; } && SshAgent fix
+	ScriptEval SshAgent initialize
 }
 
 # restore ssh-agent configuration if possible

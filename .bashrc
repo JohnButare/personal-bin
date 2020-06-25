@@ -416,6 +416,7 @@ u() { sshc; HostUpdate "$@" || return; }
 un() { u nas; } # update nas
 
 hc() { HostCleanup "$@" || return; }
+hcg() { HostCleanup gui; }
 
 # sync files
 alias slf='SyncLocalFiles'

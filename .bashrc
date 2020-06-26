@@ -779,6 +779,8 @@ alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
 # platform specific .bashrc
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 
+. "$BIN/z.sh" # z
+
 # cd to home directory if needed unless we are just updating aliases
 [[ "$PWD" == "$WINDIR/system32" ]] && cd "$HOME"
 #[[ "$1" != "update" && "$PWD" != "$HOME" ]] && cd "$HOME"

@@ -482,7 +482,8 @@ alias g='git'
 alias ga='g add'
 alias gd='gc diff'
 alias gf='gc freeze'
-alias gl='g l'
+alias gl='g logb; echo'					# log
+alias gla='g loga'							# log all
 alias gca='g ca'								# commit all
 alias gcam='g amendAll'					# commit ammend all
 alias gs='g s' 									# status
@@ -779,4 +780,5 @@ alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 
 # cd to home directory if needed unless we are just updating aliases
-[[ "$1" != "update" && "$PWD" != "$HOME" ]] && cd "$HOME"
+[[ "$PWD" == "$WINDIR/system32" ]] && cd "$HOME"
+#[[ "$1" != "update" && "$PWD" != "$HOME" ]] && cd "$HOME"

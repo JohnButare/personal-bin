@@ -3,16 +3,14 @@
 [[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
 
 # non-interactive initialization - available from child processes and scripts, i.e. ssh <script>
-set -a
-LESS='-R'
-LESSOPEN='|~/.lessfilter %s'
-set +a
+export LESS='-R'
+export LESSOPEN='|~/.lessfilter %s'
 
 # interactive initialization - remainder not needed in child processes or scripts
 [[ "$-" != *i* ]] && return
 
 # shell options
-shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
+IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 
 # credential manager
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
@@ -21,55 +19,70 @@ if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
 fi
 
 #
+# Key Bindings
+#
+
+if IsZsh; then
+	bindkey "^H" backward-kill-word
+fi
+
+#
 # history
 #
 
-HISTCONTROL=ignoreboth
-HISTSIZE=1000
-HISTFILESIZE=2000
+IsBash && HISTCONTROL=ignoreboth
+IsZsh && setopt HIST_IGNORE_DUPS
 
-HistoryClear() { cat /dev/null > ~/.bash_history && history -c; }
+HISTSIZE=5000
+HISTFILESIZE=10000
+
+HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 
 #
 # completion
 #
 
-#  hosts(5) file for completion
+#  hosts
 HOSTFILE=$UBIN/hosts
 complete -A hostname -o default curl dig host mosh netcat nslookup on off ping telnet
 
-case "$PLATFORM" in
-	linux) 
-		if [[ -f /usr/lib/git-core/git-sh-prompt ]] && ! IsFunction __git_ps1; then
-			. /usr/lib/git-core/git-sh-prompt
-			. /usr/share/bash-completion/completions/git
-		fi
-		;;
+if IsBash; then
 
-	win|raspbian) 
-		if [[ -f "/usr/share/bash-completion/completions/git" ]] && ! IsFunction __git_ps1; then
-			. "/usr/share/bash-completion/completions/git"
-			. "$BIN/git-prompt.sh"
-		fi
-		;;
+	# git
+	case "$PLATFORM" in
+		linux) 
+			if [[ -f /usr/lib/git-core/git-sh-prompt ]] && ! IsFunction __git_ps1; then
+				. /usr/lib/git-core/git-sh-prompt
+				. /usr/share/bash-completion/completions/git
+			fi
+			;;
 
-	mac)
-		d="/usr/local/etc/bash_completion.d"
-		if ! IsFunction __git_ps1; then
-			[[ -f "$d/git-prompt.sh" ]] && . "$d/git-prompt.sh"
-			[[ -f "$d/git-completion.bash" ]] && . "$d/git-completion.bash"
-			[[ -f "$d/hub.bash_completion.sh" ]] && . "$d/hub.bash_completion.sh"
-			[[ -f "$d/tig-completion.bash" ]] && . "$d/tig-completion.bash"
-		fi
-		unset d
-		;;
-esac
+		win|raspbian) 
+			if [[ -f "/usr/share/bash-completion/completions/git" ]] && ! IsFunction __git_ps1; then
+				. "/usr/share/bash-completion/completions/git"
+				. "$BIN/git-prompt.sh"
+			fi
+			;;
 
-# cd should not complete variables without a leading $
-complete -r cd >& /dev/null 
+		mac)
+			d="/usr/local/etc/bash_completion.d"
+			if ! IsFunction __git_ps1; then
+				[[ -f "$d/git-prompt.sh" ]] && . "$d/git-prompt.sh"
+				[[ -f "$d/git-completion.bash" ]] && . "$d/git-completion.bash"
+				[[ -f "$d/hub.bash_completion.sh" ]] && . "$d/hub.bash_completion.sh"
+				[[ -f "$d/tig-completion.bash" ]] && . "$d/tig-completion.bash"
+			fi
+			unset d
+			;;
+	esac
+
+	# cd should not complete variables without a leading $
+	complete -r cd >& /dev/null 
+
+fi
 
 #
-# cd'able variables - lower case (not exported), $<var><return or tab>
+# variables
 #
 
 p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA" datad="$DATAD"
@@ -92,6 +105,8 @@ alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
 #
 # variables and functions
 #
+
+def() { IsBash && type "$1" || whence -f "$1"; }
 
 alias ListVars='declare -p | egrep -v "\-x"'
 alias ListExportVars='export'
@@ -117,10 +132,13 @@ alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 # configuration
 #
 
-alias sa='. ~/.bashrc update'; ea() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; }
-alias sf='. $bin/function.sh'; ef() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }
+# edit/set 
+alias sa=". ~/.bashrc update" ea="e ~/.bashrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; 
+eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 				# edit all aliases
+efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  # edit all functions
+
 alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;'
-alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.bashrc"
+alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.zshrc $UBIN/.bashrc"
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
 alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
@@ -153,6 +171,8 @@ alias egrep='\egrep --color=auto'
 
 # Add an "alert" alias for long running commands.  sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+IsZsh && alias help="run-help"
 
 #
 # archive
@@ -209,21 +229,20 @@ alias cd='UncCd'
 
 UncCd()
 {
-	[[ "$PLATFORM" == "cygwin" ]] || ! IsUncPath "$1" && { builtin cd "$@"; return; }
-	ScriptCd unc mount "$1" || return
+	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }
+	builtin cd "$@"
 }
 
 UncLs()
 {
-	local unc="${@: -1}"
+	local unc="${@: -1}" # last argument
 	
-	if [[ "$PLATFORM" == "cygwin" ]] || ! IsUncPath "$unc"; then
-		command ${G}ls --hide={desktop.ini,NTUSER.*,ntuser.*} -F -Q --group-directories-first --color "$@"
-		return
+	if IsUncPath "$unc"; then
+		local dir; dir="$(unc mount "$unc")" || return	
+		set -- "${@:1:(( $# - 1 ))}" "$dir"
 	fi
-
-	local dir; dir="$(unc mount "$unc")" || return
-	${G}ls --hide={desktop.ini,NTUSER.*,ntuser.*} -F --group-directories-first -Q --group-directories-first --color "${@:1:$#-1}" "$dir"
+	
+	command ${G}ls --hide="desktop.ini" -F --group-directories-first --color "$@"
 }
 
 alias inf="FileInfo"
@@ -236,7 +255,7 @@ lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}"
 # directory management
 #
 
-which dircolors >& /dev/null && eval $(dircolors $ubin/default.dircolors) # ls colors
+InPath dircolors && eval "$(dircolors $ubin/default.dircolors)" # ls colors
 
 alias ls='UncLs'									# list 
 alias la='UncLs -Al'							# list all
@@ -249,7 +268,6 @@ alias dir='cmd.exe /c dir' # Windows dir
 alias dirss="UncLs -1s --sort=size --reverse --human-readable -l" # sort by size
 alias dirst='UncLs -l --sort=time --reverse' # sort by last modification time
 alias dirsct='UncLs -l --time=ctime --sort=time --reverse' # sort by creation  time
- #-l | awk '{ print \$5 \"\t\" \$9 }'
 
 #
 # find
@@ -277,7 +295,7 @@ eai() { fte "0.0.0.0" "VersionInfo.cs"; } # EditAssemblyInfo that are set to dep
 FindText() # TEXT FILE_PATTERN [START_DIR](.)
 { 
 	local startDir="${@:3}"
-	egrep --color -i -r -e "$1" --include=$2 "${startDir:-.}"
+	egrep --color -i -r -e "$1" --include="$2" "${startDir:-.}"
 }
 
 FindAll()
@@ -326,19 +344,10 @@ ListDisks() { sudo parted -l |& egrep -i '^Disk' |& egrep -v 'Error|Disk Flags' 
 ListFirstDisk() { ListDisks | head -1; }
 
 #
-# Windows
+# windows
 #
 
-if [[ ! "$DISPLAY" && -f /usr/bin/xprop ]]; then
-	if [[ "$WSL" == "1" ]]; then
-		export DISPLAY=:0
-	else
-		export WSL_HOST="$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null)"
-		export DISPLAY="${WSL_HOST}:0"
-		export LIBGL_ALWAYS_INDIRECT=1
-	fi
-fi
-
+InitializeXServer || return
 SetTitle() { printf "\e]2;$*\a"; }
 
 #
@@ -459,7 +468,7 @@ SetPrompt()
 	local host="${HOSTNAME#$USER-}"; host="${host#$SUDO_USER-}"; # remove the username from the hostname to shorten it
 	host="${host%%.*}" # remove DNS suffix
 
-	local title="\[\e]0;bash $host $dir\a\]"; # forces the title bar to update
+	local title="\[\e]0;terminal $host $dir\a\]"; # forces the title bar to update
 
 	[[ $user ]] && user="@${user}"
 
@@ -469,7 +478,7 @@ SetPrompt()
 	PROMPT_COMMAND='history -a; history -r;' 
 }
 
-SetPrompt
+IsBash && SetPrompt
 
 [[ "$PWD" == @(/cygdrive/c|/usr/bin) ]] && cd ~
 [[ $SET_PWD ]] && { cd "$SET_PWD"; unset SET_PWD; }
@@ -496,7 +505,6 @@ alias grc='g rbc' 							# rebase continue
 alias grf='g rf' 								# create a rebase fixup commit
 alias grs='g rsq' 							# create a rebase squash commit
 alias gmt='g mergetool'
-alias gp='g push'
 alias gpf='g push --force'			# push force
 alias grft='grf && g i Test' 		# fixup commit and push to test
 alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
@@ -517,6 +525,7 @@ complete -o default -o nospace -F _git g
 
 alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
 alias hcconfig="e $c/network/homebridge/config/config.json" # edit cloud configuration
+alias hlogclean="rm /var/lib/homebridge/homebridge.log"
 alias hssh="sudo cp ~/.ssh/config ~/.ssh/known_hosts ~homebridge/.ssh && sudo chown homebridge ~homebridge/.ssh/config ~homebridge/.ssh/known_hosts" # update SSH configuration 
 alias hrestart="systemctl restart homebridge"
 alias hstart='sudo hb-service start'
@@ -525,7 +534,7 @@ alias hrestart='hstop;hlogclean;hstart'
 alias hlog='sudo hb-service logs'
 alias hbakall='hbak pi5'
 
-hbak() # hbak HOST
+hbak() # hbak HOST - backup homebridge configuration from HOST
 { 
 	local f="$1.homebridge.zip" d="$cloud/network/homebridge/backup"
 	local host="$1" stamp="$(GetDateStamp)"
@@ -543,7 +552,7 @@ hbak() # hbak HOST
 	echo "$host homebridge configuration saved to $df"
 }
 
-hrest() # hrest HOST
+hrest() # hrest HOST - restore homebridge configuration to HOST
 { 
 	local h="$1";
 	local f="$h.homebridge.zip" d="$cloud/systems/homebridge/$h" bakFile="$h.$(GetTimeStamp).homebridge" hb="/etc/init.d/homebridge"
@@ -573,7 +582,6 @@ NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 # process
 #
 
-elevate() { start --elevate "$@"; }
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
 procmon() { start -rid -e procmon; }
 
@@ -776,11 +784,8 @@ alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
 # final
 #
 
-# platform specific .bashrc
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
+SourceIfExists "$HOME/.fzf.$PLATFORM_SHELL"
+SourceIfExists "$BIN/z.sh"
 
-. "$BIN/z.sh" # z
-
-# cd to home directory if needed unless we are just updating aliases
-[[ "$PWD" == "$WINDIR/system32" ]] && cd "$HOME"
-#[[ "$1" != "update" && "$PWD" != "$HOME" ]] && cd "$HOME"
+IsBash && { [[ "$1" != "update" && "$PWD" == "$WINDIR/system32" ]] && cd; }

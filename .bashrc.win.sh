@@ -26,7 +26,6 @@ alias ipconfig='ipconfig.exe'
 alias prog='product gui'
 alias vss='vss.exe'
 alias wh="$WIN_HOME"
-alias WindowSpy="start Au3Info.exe"
 
 # VBA
 alias ws='start wscript.exe /nologo'

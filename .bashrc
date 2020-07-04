@@ -496,9 +496,6 @@ SetPrompt()
 
 IsBash && SetPrompt
 
-[[ "$PWD" == @(/cygdrive/c|/usr/bin) ]] && cd ~
-[[ $SET_PWD ]] && { cd "$SET_PWD"; unset SET_PWD; }
-
 #
 # git
 #
@@ -804,5 +801,7 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 SourceIfExists "$HOME/.fzf.$PLATFORM_SHELL"
 SourceIfExists "$BIN/z.sh"
 
-IsBash && { [[ "$1" != "update" && "$PWD" == "$WINDIR/system32" ]] && cd; }
+IsBash && { [[ ! $SET_PWD && "$1" != "update" && "$PWD" == "$WINDIR/system32" ]] && cd; }
+[[ $SET_PWD ]] && { cd "$SET_PWD"; unset SET_PWD; }
+
 return 0

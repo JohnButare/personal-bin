@@ -26,6 +26,7 @@ if IsZsh; then
 	bindkey "^H" backward-kill-word
 fi
 
+
 #
 # history
 #
@@ -46,7 +47,7 @@ HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 HOSTFILE=$UBIN/hosts
 complete -A hostname -o default curl dig host mosh netcat nslookup on off ping telnet
 
-InPath colorls && { . "$(GetFilePath "$(gem which colorls)")/tab_complete.sh"; }
+InPath colorls && { . "$(GetFilePath "$(gem which colorls 2> /dev/null)")/tab_complete.sh"; }
 
 if IsBash; then
 
@@ -238,15 +239,34 @@ lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}"
 # directory management
 #
 
-alias cd='UncCd'
+alias cd='DoCd'										
+alias ls='DoLs'
 
-UncCd()
+InPath dircolors && eval "$(dircolors $ubin/default.dircolors)" # ls colors
+
+alias lsc='DoLs'											# list with colorls
+alias lsn='DoLs --native'							# list native (do not use colorls)
+
+alias la='DoLs -Al'										# list all
+alias lg="DoLs -A --git-status" 			# list git status
+alias ll='DoLs -l'										# list long
+alias llh='DoLs -d -l .*'							# list long hidden
+alias lh='DoLs -d .*' 								# list hiden
+alias lt='DoLs --tree --dirs'					# list tree
+alias ltime='DoLs --full-time -Ah'		# list time
+
+alias dir='cmd.exe /c dir' # Windows dir
+alias dirss="DoLs -l --sort=size --reverse --human-readable" 				# sort by size
+alias dirst='DoLs -l --sort=time --reverse' 												# sort by last modification time
+alias dirsct='DoLs --native -l --time=ctime --sort=time --reverse' 	# sort by creation time
+
+DoCd()
 {
 	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }
 	builtin cd "$@"
 }
 
-UncLs()
+DoLs()
 {
 	local unc="${@: -1}" # last argument
 	
@@ -254,22 +274,14 @@ UncLs()
 		local dir; dir="$(unc mount "$unc")" || return	
 		set -- "${@:1:(( $# - 1 ))}" "$dir"
 	fi
-	
-	command ${G}ls --hide="desktop.ini" -F --group-directories-first --color "$@"
+
+	if [[ "$1" == "-d" || "$1" == "--native" || "$1" == "--full-time" ]]; then
+		[[ "$1" == "--native" ]] && shift
+		command ${G}ls --hide="desktop.ini" -F --group-directories-first --color "$@"
+	else
+		colorls --group-directories-first "$@"
+	fi
 }
-
-alias ls='UncLs'									# list 
-alias lsc='colorls'
-alias la='UncLs -Al'							# list all
-alias ll='UncLs -l'								# list long
-alias llh='UncLs -d .*'						# list long hidden
-alias lh='UncLs -d .*' 						# list hiden
-alias lt='UncLs -Ah --full-time'	# list time
-
-alias dir='cmd.exe /c dir' # Windows dir
-alias dirss="UncLs -1s --sort=size --reverse --human-readable -l" # sort by size
-alias dirst='UncLs -l --sort=time --reverse' # sort by last modification time
-alias dirsct='UncLs -l --time=ctime --sort=time --reverse' # sort by creation  time
 
 #
 # find

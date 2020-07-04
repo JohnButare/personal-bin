@@ -133,7 +133,7 @@ alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 #
 
 # edit/set 
-alias sa=". ~/.bashrc update" ea="e ~/.bashrc" sz=". ~/.zahrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; 
+alias sa=". ~/.bashrc update" ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; 
 eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 				# edit all aliases
 efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  # edit all functions
 

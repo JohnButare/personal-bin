@@ -790,3 +790,4 @@ SourceIfExists "$HOME/.fzf.$PLATFORM_SHELL"
 SourceIfExists "$BIN/z.sh"
 
 IsBash && { [[ "$1" != "update" && "$PWD" == "$WINDIR/system32" ]] && cd; }
+return 0

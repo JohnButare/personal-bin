@@ -356,8 +356,9 @@ SetTitle() { printf "\e]2;$*\a"; }
 # SSH
 #
 
-s() { sshc; ssh "$@"; }
-alias sx=sshx
+s() { sshc; mosh "$@"; }
+alias sx=sshx # connect with  X forwarding
+alias sm=mosh # connect with mosh
 alias sterm=sterminator
 alias sshconfig='e ~/.ssh/config'
 alias sshkh='e ~/.ssh/known_hosts'
@@ -369,16 +370,17 @@ ssht() { ssh -t "$@"; } # connect and allocate a pseudo-tty for screen based pro
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
 sterminator() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
 
-sshx() # connect with X forward
+sshx() # connect with X forwarding
 { 
 	sshc # ensure the ssh-agent is running
 
+	# -y send diagnostic messages to syslog - supresses "Warning: No xauth data; using fake authentication data for X11 forwarding."
 	if IsPlatform wsl1; then # WSL 1 does not support X sockets over ssh and requires localhost
-		DISPLAY=localhost:0 ssh -X $@
+		DISPLAY=localhost:0 ssh -Xy $@
 	elif IsPlatform mac,wsl2; then # macOS XQuartz requires trusted X11 forwarding
-		ssh -Y $@
+		ssh -Yy $@
 	else # use use untrusted (X programs are not trusted to use all X features on the host)
-		ssh -X $@
+		ssh -Xy $@
 	fi
 } 
 

@@ -46,6 +46,8 @@ HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 HOSTFILE=$UBIN/hosts
 complete -A hostname -o default curl dig host mosh netcat nslookup on off ping telnet
 
+InPath colorls && { . "$(GetFilePath "$(gem which colorls)")/tab_complete.sh"; }
+
 if IsBash; then
 
 	# git
@@ -226,6 +228,16 @@ alias del='rm'
 alias md='mkdir'
 alias rd='rmdir'
 
+alias inf="FileInfo"
+alias l='explore'
+alias rc='CopyDir'
+alias rcp='rsync --info=progress2'
+lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
+
+#
+# directory management
+#
+
 alias cd='UncCd'
 
 UncCd()
@@ -246,19 +258,8 @@ UncLs()
 	command ${G}ls --hide="desktop.ini" -F --group-directories-first --color "$@"
 }
 
-alias inf="FileInfo"
-alias l='explore'
-alias rc='CopyDir'
-alias rcp='rsync --info=progress2'
-lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
-
-#
-# directory management
-#
-
-InPath dircolors && eval "$(dircolors $ubin/default.dircolors)" # ls colors
-
 alias ls='UncLs'									# list 
+alias lsc='colorls'
 alias la='UncLs -Al'							# list all
 alias ll='UncLs -l'								# list long
 alias llh='UncLs -d .*'						# list long hidden

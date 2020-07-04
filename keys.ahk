@@ -54,9 +54,7 @@ Init()
 ; Win
 #1::WinClose "A" ; Close active window
 #2::WinMinimize "A" ; Close active window
-^#3::NewElevatedBash()
 #3::OpenBash()
-#!3::NewBash()
 #+3::NewBash()
 
 ; +=Shift ^=Control #=Win !=Alt
@@ -66,21 +64,8 @@ Init()
 #!a::WinActivate Antidote
 #!g::WinActivate ".*Git Extensions"
 ^#h::reload ; Reload AutoHotKeys
-#i::OpenIe()
-#!i::NewIe()
-#j::run eclipse.btm,,min
 #n::OpenNotion()
-+#n::OpenStandardNotes()
-^#n::NewFolder()
-#o::OpenMail()
-#!q::run bash " quicken start",,min
-#!s::WinActivate ".*Microsoft SQL Server Management Studio"
 #t::OpenTextEditor()
-#!t::OpenNotepadPp()
-^#t::OpenNotepadPp()
 #v::OpenVm()
-#!v::WinActivate ".* ASG-Remote Desktop 2012"
 #w::RunWord()
-#!w::RunWord()
-#!y::OpenRecycleBin()
-; +=Shift ^=Control #=Win !=Alt
+; +=Shift ^=Control #=Cmd !=Alt

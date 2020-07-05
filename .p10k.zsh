@@ -31,11 +31,12 @@
 
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-    #os_icon                 # os identifier
+    #os_icon                # os identifier
     dir                     # current directory
     vcs                     # git status
-    # prompt_char           # prompt symbol
+    #prompt_char            # prompt symbol
   )
+  IsPlatform qnap && RemoveFromArray vcs POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
 
   # The list of segments shown on the right. Fill it with less important segments.
   # Right prompt on the last prompt line (where you are typing your commands) gets

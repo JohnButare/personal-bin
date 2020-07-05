@@ -48,8 +48,8 @@ wslr() { wsl delete "$1" "$@"; wsl restore "$1" "$2" "${3:-2}"; wsl init "$1"; }
 
 # test1 distribution
 wslTestDist="test1"
-wt() { wt2 --no-prompt; }
+wtinit() { wt2 --no-prompt; }
 wt1() { wslr $wslTestDist ubuntu-bionic 1 "$@"; } # reset test distribution to Ubuntu-Bionic (18.04) WSL 1 image
 wt2() { wslr $wslTestDist ubuntu-focal 2 "$@"; } 	# reset test distribution to Ubuntu-Focal (20.04) WSL 2 image
-wi() { wsl init $wslTestDist "$@"; } 							# initialize test distribution by running bootstrap-init
-wr() { wsl run test1 "$@"; } 											# run test distruvtion
+wtb() { wsl init $wslTestDist "$@"; } 						# initialize test distribution by running bootstrap-init
+wt() { wsl run test1 "$@"; } 											# run test distruvtion

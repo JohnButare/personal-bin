@@ -22,9 +22,13 @@ HIST_STAMPS="mm/dd/yyyy"
 # Oh My Zsh
 [[ -f "$ZSH/oh-my-zsh.sh" ]] && . "$ZSH/oh-my-zsh.sh"
 
-# title - must be after oh-my-zsh.sh
+# set terminal title after oh-my-zsh.sh
 ZSH_THEME_TERM_TAB_TITLE_IDLE="terminal %15<..<%~%<<" #15 char left truncated PWD
 ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"
+
+# zsh specific aliases
+IsPlatform qnap && alias bash="/opt/bin/bash -l"
+IsPlatform mac && alias bash="/usr/local/bin/bash -l"
 
 # scripts
 [[ -f ~/.bashrc ]] && . ~/.bashrc

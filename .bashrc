@@ -47,7 +47,8 @@ HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 HOSTFILE=$UBIN/hosts
 complete -A hostname -o default curl dig host mosh netcat nslookup on off ping telnet
 
-InPath colorls && { . "$(GetFilePath "$(gem which colorls 2> /dev/null)")/tab_complete.sh"; }
+unset COLORLS
+InPath colorls && { COLORLS="true"; . "$(GetFilePath "$(gem which colorls 2> /dev/null)")/tab_complete.sh"; }
 
 if IsBash; then
 
@@ -275,7 +276,7 @@ DoLs()
 		set -- "${@:1:(( $# - 1 ))}" "$dir"
 	fi
 
-	if [[ "$1" == "-d" || "$1" == "--native" || "$1" == "--full-time" ]]; then
+	if [[ ! $COLORLS || "$1" == "-d" || "$1" == "--native" || "$1" == "--full-time" ]]; then
 		[[ "$1" == "--native" ]] && shift
 		command ${G}ls --hide="desktop.ini" -F --group-directories-first --color "$@"
 	else

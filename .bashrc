@@ -85,6 +85,12 @@ if IsBash; then
 
 fi
 
+if [[ -d ~/.fzf ]]; then
+	. "$HOME/.fzf.$PLATFORM_SHELL"
+	_fzf_complete_ssh() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
+	_fzf_complete_ping() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
+fi
+
 #
 # variables
 #
@@ -799,7 +805,6 @@ alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
 #
 
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
-SourceIfExists "$HOME/.fzf.$PLATFORM_SHELL"
 SourceIfExists "$BIN/z.sh"
 
 IsBash && { [[ ! $SET_PWD && "$1" != "update" && "$PWD" == "$WINDIR/system32" ]] && cd; }

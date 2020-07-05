@@ -11,6 +11,7 @@ export LESSOPEN='|~/.lessfilter %s'
 
 # shell options
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
+IsZsh && setopt no_beep
 
 # credential manager
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
@@ -25,7 +26,6 @@ fi
 if IsZsh; then
 	bindkey "^H" backward-kill-word
 fi
-
 
 #
 # history
@@ -43,14 +43,14 @@ HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 # completion
 #
 
-#  hosts
-HOSTFILE=$UBIN/hosts
-complete -A hostname -o default curl dig host mosh netcat nslookup on off ping telnet
-
 unset COLORLS
 InPath colorls && { COLORLS="true"; . "$(GetFilePath "$(gem which colorls 2> /dev/null)")/tab_complete.sh"; }
 
 if IsBash; then
+	#  hosts
+
+	HOSTFILE=$UBIN/hosts
+	complete -A hostname -o default curl dig host mosh netcat nslookup on off ping telnet
 
 	# git
 	case "$PLATFORM" in

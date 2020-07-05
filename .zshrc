@@ -22,6 +22,12 @@ HIST_STAMPS="mm/dd/yyyy"
 # Oh My Zsh
 [[ -f "$ZSH/oh-my-zsh.sh" ]] && . "$ZSH/oh-my-zsh.sh"
 
+# completion
+zstyle ':completion:*' known-hosts-files "$UBIN/hosts"
+
+_fzf_complete_ssh() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
+_fzf_complete_ping() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
+
 # set terminal title after oh-my-zsh.sh
 ZSH_THEME_TERM_TAB_TITLE_IDLE="terminal %15<..<%~%<<" #15 char left truncated PWD
 ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"

@@ -192,3 +192,5 @@
 	recentlySeenVersion = 2.20.1.windows.1
 [cola]
 	spellcheck = false
+[pull]
+	ff = only

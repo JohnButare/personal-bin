@@ -420,9 +420,7 @@ sshc()
 if [[ $CREDENTIAL_MANAGER && ! $SSH_AGENT_CHECKED ]] && ( [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID" ); then
 	#echo WSL=$WSL	CREDENTIAL_MANAGER=$CREDENTIAL_MANAGER SSH_AGENT_CHECKED=$SSH_AGENT_CHECKED SSH_AUTH_SOCK=$SSH_AUTH_SOCK SSH_AGENT_PID=$SSH_AGENT_PID $(ProcessIdExists "$SSH_AGENT_PID" && echo "running" || echo "NOT running")
 	export SSH_AGENT_CHECKED="true"
-
-	echo "Fixing the ssh-agent..."
-	SshAgent startup && . "$HOME/.ssh/environment"
+	SshAgent startup && . "$HOME/.ssh/environment" >& /dev/null
 fi
 
 #

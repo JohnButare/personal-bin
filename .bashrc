@@ -667,6 +667,11 @@ gfan() { elevate "$P32/GIGABYTE/siv/ThermalConsole.exe"; }
 WigginOn() { on nas1; on nas3; on pi5; on UniFiController; }
 WigginOff() { off nas1; off nas3; off pi5; off UniFiController; }
 
+# synology opt interferes with Domotz Agent
+OptOn() { [[ -d "/opt/lib.hold" ]] && sudo mv "/opt/lib.hold" "/opt/lib"; }
+OptOff() { [[ -d "/opt/lib" ]] && sudo mv "/opt/lib" "/opt/lib.hold"; }
+
+# network configuration
 nc="$cloud/network" # network configuration
 ncd="$nc/dhcp"
 

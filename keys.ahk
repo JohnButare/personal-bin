@@ -40,12 +40,26 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 #1::WinClose "A" 											; close the active window
 #2::WinMoveBottom "A" 								; move the active window to the back
 
-#3::OpenTerminal()										; terminal
-#b::OpenBrowser()											; browser
-#g::WinActivate "Fork" 								; git
-#m::OpenThunderbird() 								; mail
-#n::OpenNotion() 											; notes
-#t::OpenTextEditor()									; text editor
-#v::OpenVm()													; virtual machine
-#w::RunWord()													; word
+RShift & 3::													; terminal
+#3::OpenTerminal()										
 
+RShift & b::													; browser
+#b::OpenBrowser()
+
+RShift & g::													; git
+#g::WinActivate "Fork"
+
+RShift & m::													; mail
+#m::OpenThunderbird()
+
+RShift & n::													; notions
+#n::OpenNotion()
+
+RShift & t::													; text editor
+#t::OpenTextEditor()
+
+RShift & v::													; virtual machine
+#v::OpenVm()
+
+RShift & w::													; word
+#w::RunWord()

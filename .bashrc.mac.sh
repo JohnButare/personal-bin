@@ -10,3 +10,5 @@ GetPreferenceChange() # determine the configure domain for a preferences change
 	defaults read > /tmp/new.txt
 	BeyondCompare /tmp/orig.txt /tmp/new.txt
 }
+
+alias karabiner='"/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli"'

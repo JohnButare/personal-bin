@@ -40,26 +40,52 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 #1::WinClose "A" 											; close the active window
 #2::WinMoveBottom "A" 								; move the active window to the back
 
-RShift & 3::													; terminal
+;
+; Applications
+;
+
+; Terminal
+RShift & 3::
 #3::OpenTerminal()										
 
-RShift & b::													; browser
+; Browser
+RShift & b::
 #b::OpenBrowser()
 
-RShift & g::													; git
+; Git
+RShift & g::
 #g::WinActivate "Fork"
 
-RShift & m::													; mail
+; Mail
+RShift & m::
 #m::OpenThunderbird()
 
-RShift & n::													; notions
+; Notes
+RShift & n::
 #n::OpenNotion()
 
-RShift & t::													; text editor
+; Text Editor
+RShift & t::
 #t::OpenTextEditor()
 
-RShift & v::													; virtual machine
+; Virtual Machine
+RShift & v::
 #v::OpenVm()
 
-RShift & w::													; word
+; word
+RShift & w::
 #w::RunWord()
+
+;
+; Windows
+;
+
+RWin & q::Send "#{Numpad7}"
+RWin & w::Send "#{Numpad8}"
+RWin & e::Send "#{Numpad9}"
+RWin & a::Send "#{Numpad4}"
+RWin & s::Send "#{Numpad5}"
+RWin & d::Send "#{Numpad6}"
+RWin & z::Send "#{Numpad1}"
+RWin & x::Send "#{Numpad2}"
+RWin & c::Send "#{Numpad3}"

@@ -376,10 +376,7 @@ SetTitle() { printf "\e]2;$*\a"; }
 # SSH
 #
 
-s() { sshc; mosh "$@"; }
-alias sx=sshx # connect with  X forwarding
-alias sm=mosh # connect with mosh
-alias sterm=sterminator
+alias s=sx	# connect with ssh
 alias sshconfig='e ~/.ssh/config'
 alias sshkh='e ~/.ssh/known_hosts'
 
@@ -388,9 +385,11 @@ sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with
 sshsudo() { ssh -t $1 sudo ${@:2}; }
 ssht() { ssh -t "$@"; } # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
-sterminator() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
+sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
 
-sshx() # connect with X forwarding
+sm() { sshc; mosh; } # connect with mosh
+
+sx() # connect with X forwarding
 { 
 	sshc # ensure the ssh-agent is running
 

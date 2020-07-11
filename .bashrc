@@ -387,11 +387,13 @@ ssht() { ssh -t "$@"; } # connect and allocate a pseudo-tty for screen based pro
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
 sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
 
-sm() { sshc; mosh; } # connect with mosh
+sm() { sshc; mosh "$@"; } # connect with mosh
 
 sx() # connect with X forwarding
 { 
 	sshc # ensure the ssh-agent is running
+
+	! IsAvailable "$1" && { on --wait "$1" || return; }
 
 	# -y send diagnostic messages to syslog - supresses "Warning: No xauth data; using fake authentication data for X11 forwarding."
 	if IsPlatform wsl1; then # WSL 1 does not support X sockets over ssh and requires localhost

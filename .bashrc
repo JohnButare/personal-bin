@@ -391,9 +391,9 @@ sm() { sshc; mosh "$@"; } # connect with mosh
 
 sx() # connect with X forwarding
 { 
-	sshc # ensure the ssh-agent is running
+	sshc
 
-	! IsAvailable "$1" && { on --wait "$1" || return; }
+	! IsAvailable "$1" && { power on --wait "$1" || return; }
 
 	# -y send diagnostic messages to syslog - supresses "Warning: No xauth data; using fake authentication data for X11 forwarding."
 	if IsPlatform wsl1; then # WSL 1 does not support X sockets over ssh and requires localhost
@@ -405,24 +405,30 @@ sx() # connect with X forwarding
 	fi
 } 
 
+#
 # SSH agent
+#
 
-# ssh check: check ssh-agent and fix it if needed
-sshc()
+# load the SSH Agent configuration
+[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+
+# ssha - wrapper for SshAgent which ensures the correct variables are set in the calling shell
+ssha()
 { 
-	{ [[ "$1" =~ (-f|--force) ]] || ! SshAgent check; } && SshAgent fix
-	ScriptEval SshAgent initialize
+	[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+	SshAgent "$@" && . "$HOME/.ssh/environment"
 }
 
-# restore ssh-agent configuration if possible
-[[ (! $SSH_AUTH_SOCK || ! $SSH_AGENT_PID) && -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+# sshc - check and start the SSH Agent if needed
+sshc()
+{
+	[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+	ssh-add -L >& /dev/null && return
+	ssha start --verbose --quiet
+}
 
-# fix the ssh-agent if it is not running or configured corrected
-if [[ $CREDENTIAL_MANAGER && ! $SSH_AGENT_CHECKED ]] && ( [[ ! -S "$SSH_AUTH_SOCK" ]] || ! ProcessIdExists "$SSH_AGENT_PID" ); then
-	#echo WSL=$WSL	CREDENTIAL_MANAGER=$CREDENTIAL_MANAGER SSH_AGENT_CHECKED=$SSH_AGENT_CHECKED SSH_AUTH_SOCK=$SSH_AUTH_SOCK SSH_AGENT_PID=$SSH_AGENT_PID $(ProcessIdExists "$SSH_AGENT_PID" && echo "running" || echo "NOT running")
-	export SSH_AGENT_CHECKED="true"
-	SshAgent startup >& /dev/null && . "$HOME/.ssh/environment"
-fi
+# check and start the SSH Agent if there is a credential manager install to avoid a password prompt
+[[ $CREDENTIAL_MANAGER ]] && ! ssh-add -L >& /dev/null && ssha start --quiet
 
 #
 # network

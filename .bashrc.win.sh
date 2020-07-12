@@ -16,6 +16,7 @@ monprofile() { start "$cloud/data/UltraMon/$1.umprofile"; }
 
 # network
 alias NetConfig='control.exe netconnections'
+alias ehosts='elevate RunScript TextEdit /mnt/c/Windows/System32/drivers/etc/hosts'
 
 # operating system
 alias cm='start CompMgmt.msc'

@@ -1,4 +1,5 @@
 # ~/.bashrc, user intialization
+#zmodload zsh/zprof; zprof -c # profile
 
 [[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
 
@@ -43,8 +44,14 @@ HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 # completion
 #
 
-unset COLORLS
-InPath colorls && { COLORLS="true"; . "$(GetFilePath "$(gem which colorls 2> /dev/null)")/tab_complete.sh"; }
+if [[ ! $COLORLS_CHECK ]]; then
+	COLORLS_CHECK="true"
+	unset COLORLS
+	if InPath colorls; then
+		COLORLS="true"
+		. "$(GetFilePath "$(gem which colorls 2> /dev/null)")/tab_complete.sh" # slow .1s
+	fi
+fi
 
 if IsBash; then
 	#  hosts
@@ -85,8 +92,9 @@ if IsBash; then
 
 fi
 
-if [[ -d ~/.fzf ]]; then
-	. "$HOME/.fzf/shell/completion.$PLATFORM_SHELL" || return
+if [[ ! $FZF_CHECK && -d ~/.fzf ]]; then
+	FZF_CHECK="true"
+	. "$HOME/.fzf/shell/completion.$PLATFORM_SHELL" || return # slow .2s
 	. "$HOME/.fzf/shell/key-bindings.$PLATFORM_SHELL" || return
 	_fzf_complete_ssh() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
 	_fzf_complete_ping() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
@@ -161,16 +169,19 @@ alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 alias cls=clear
 alias ei='e $bin/inst'
 alias ehp='start "$udata/replicate/default.htm"'
-alias logoff='IsPlatform win && { IsSsh && exit || logoff.exe; }'
 alias st='startup --no-pause'
+
+logoff()
+{
+	IsSsh && exit
+	IsPlatform win && { logoff.exe; return; }
+	IsPlatform ubuntu && { gnome-session-quit --no-prompt; return; }
+}
+
 
 #
 # applications
 #
-
-! InPath cowsay && alias cowsay="echo"
-! InPath fortune && alias fortune="echo \"Hello, World\""
-! InPath lolcat && alias lolcat="cat"
 
 alias e='TextEdit'
 alias bc='BeyondCompare'
@@ -231,7 +242,7 @@ alias .....='cbuiltin d ../../../..'
 alias c='cls'		# clear screen
 alias cb='builtin cd ~; cls' # clear screen and cd
 alias ch='cb; hw;' # clear both, hello world
-alias cf='cb; fortune | cowsay | lolcat ;' # clear both, fortune
+alias cf='cb; InPath fortune && InPath cowsay && InPath lolcat && fortune | cowsay | lolcat ;' # clear both, fortune
 
 alias del='rm'
 alias md='mkdir'
@@ -250,7 +261,7 @@ lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}"
 alias cd='DoCd'										
 alias ls='DoLs'
 
-InPath dircolors && eval "$(dircolors $ubin/default.dircolors)" # ls colors
+[[ ! $LS_COLORS ]] && InPath dircolors && eval "$(dircolors $ubin/default.dircolors)"
 
 alias lsc='DoLs'											# list with colorls
 alias lsn='DoLs --native'							# list native (do not use colorls)
@@ -392,9 +403,6 @@ sm() { sshc; mosh "$@"; } # connect with mosh
 sx() # connect with X forwarding
 { 
 	sshc
-
-	! IsAvailable "$1" && { power on --wait "$1" || return; }
-
 	# -y send diagnostic messages to syslog - supresses "Warning: No xauth data; using fake authentication data for X11 forwarding."
 	if IsPlatform wsl1; then # WSL 1 does not support X sockets over ssh and requires localhost
 		DISPLAY=localhost:0 ssh -Xy $@
@@ -433,6 +441,8 @@ sshc()
 #
 # network
 #
+
+alias ehosts='sudo nano /etc/hosts' # edit hosts file
 
 LogShow() { setterm --linewrap off; tail -f "$1";  setterm --linewrap on; }
 
@@ -507,7 +517,10 @@ SetPrompt()
 	PROMPT_COMMAND='history -a; history -r;' 
 }
 
-IsBash && SetPrompt
+if [[ ! $SET_PROMPT_CHECK ]]; then
+	SET_PROMPT_CHECK="true"
+	IsBash && SetPrompt # slow .1s
+fi
 
 #
 # git
@@ -548,7 +561,6 @@ complete -o default -o nospace -F _git g
 #
 # homebridge
 #
-
 alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
 alias hcconfig="e $c/network/homebridge/config/config.json" # edit cloud configuration
 alias hlogclean="rm /var/lib/homebridge/homebridge.log"
@@ -821,4 +833,5 @@ SourceIfExists "$BIN/z.sh"
 IsBash && { [[ ! $SET_PWD && "$1" != "update" && "$PWD" == "$WINDIR/system32" ]] && cd; }
 [[ $SET_PWD ]] && { cd "$SET_PWD"; unset SET_PWD; }
 
+#zprof # profile
 return 0

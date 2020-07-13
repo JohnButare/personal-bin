@@ -451,12 +451,25 @@ alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars 
 alias ProxyStatus="network proxy vars --status"
 
 ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
-DhcpOptions() { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; }
+
+mdnsStart() { sudo /etc/init.d/dbus start; sudoc avahi-daemon &; }
+mdnsList() {  avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
+mdnsListFull() {  avahi-browse -p --all -c -r; }
+mdnsResolve() { avahi-resolve-address -4 -n $1.local | awk '{ print $2; }'; }
+mdnsPublishHostname() { avahi-publish-address -c $HOSTNAME.local "$(GetPrimaryIpAddress eth0)"; }
 
 SquidLog() { LogShow "/usr/local/squid/var/logs/access.log"; } # specific to QNAP location for now
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
 SquidUtilization() { squidclient -h "$1" cache_object://localhost/ mgr:utilization; }
 SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
+
+DhcpOptions()
+{ 
+	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }
+	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
+}
+
+
 
 # update
 ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories

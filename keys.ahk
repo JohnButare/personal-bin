@@ -41,6 +41,20 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 #2::WinMoveBottom "A" 								; move the active window to the back
 
 ;
+; Windows
+;
+
+RWin & q::Send "#{Numpad7}"
+RWin & w::Send "#{Numpad8}"
+RWin & e::Send "#{Numpad9}"
+RWin & a::Send "#{Numpad4}"
+RWin & s::Send "#{Numpad5}"
+RWin & d::Send "#{Numpad6}"
+RWin & z::Send "#{Numpad1}"
+RWin & x::Send "#{Numpad2}"
+RWin & c::Send "#{Numpad3}"
+
+;
 ; Applications
 ;
 
@@ -75,17 +89,3 @@ RShift & v::
 ; word
 RShift & w::
 #w::RunWord()
-
-;
-; Windows
-;
-
-RWin & q::Send "#{Numpad7}"
-RWin & w::Send "#{Numpad8}"
-RWin & e::Send "#{Numpad9}"
-RWin & a::Send "#{Numpad4}"
-RWin & s::Send "#{Numpad5}"
-RWin & d::Send "#{Numpad6}"
-RWin & z::Send "#{Numpad1}"
-RWin & x::Send "#{Numpad2}"
-RWin & c::Send "#{Numpad3}"

@@ -391,52 +391,14 @@ alias s=sx	# connect with ssh
 alias sshconfig='e ~/.ssh/config'
 alias sshkh='e ~/.ssh/known_hosts'
 
-RemoteServerName() { nslookup "$(RemoteServer)" | grep "name =" | cut -d" " -f3; }
+sm() { SshHelper --mosh "$@"; } # connect with mosh
+sx() { SshHelper -x "$@"; } 		# connect with X forwarding
+
 sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
 sshsudo() { ssh -t $1 sudo ${@:2}; }
 ssht() { ssh -t "$@"; } # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
 sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
-
-sm() { sshc; mosh "$@"; } # connect with mosh
-
-sx() # connect with X forwarding
-{ 
-	sshc
-	# -y send diagnostic messages to syslog - supresses "Warning: No xauth data; using fake authentication data for X11 forwarding."
-	if IsPlatform wsl1; then # WSL 1 does not support X sockets over ssh and requires localhost
-		DISPLAY=localhost:0 ssh -Xy $@
-	elif IsPlatform mac,wsl2; then # macOS XQuartz requires trusted X11 forwarding
-		ssh -Yy $@
-	else # use use untrusted (X programs are not trusted to use all X features on the host)
-		ssh -Xy $@
-	fi
-} 
-
-#
-# SSH agent
-#
-
-# load the SSH Agent configuration
-[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-
-# ssha - wrapper for SshAgent which ensures the correct variables are set in the calling shell
-ssha()
-{ 
-	[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-	SshAgent "$@" && . "$HOME/.ssh/environment"
-}
-
-# sshc - check and start the SSH Agent if needed
-sshc()
-{
-	[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-	ssh-add -L >& /dev/null && return
-	ssha start --verbose --quiet
-}
-
-# check and start the SSH Agent if there is a credential manager install to avoid a password prompt
-[[ $CREDENTIAL_MANAGER ]] && ! ssh-add -L >& /dev/null && ssha start --quiet
 
 #
 # network
@@ -452,11 +414,15 @@ alias ProxyStatus="network proxy vars --status"
 
 ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
 
-mdnsStart() { sudo /etc/init.d/dbus start; sudoc avahi-daemon &; }
-mdnsList() {  avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
-mdnsListFull() {  avahi-browse -p --all -c -r; }
-mdnsResolve() { avahi-resolve-address -4 -n $1.local | awk '{ print $2; }'; }
-mdnsPublishHostname() { avahi-publish-address -c $HOSTNAME.local "$(GetPrimaryIpAddress eth0)"; }
+MdnsList() {  avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
+MdnsListFull() {  avahi-browse -p --all -c -r; }
+MdnsPublishHostname() { avahi-publish-address -c $HOSTNAME.local "$(GetPrimaryIpAddress eth0)"; }
+
+mdnsStart()
+{ 
+	sudo /etc/init.d/dbus start
+	sudoc avahi-daemon &
+}
 
 SquidLog() { LogShow "/usr/local/squid/var/logs/access.log"; } # specific to QNAP location for now
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
@@ -469,11 +435,9 @@ DhcpOptions()
 	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
 }
 
-
-
 # update
 ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories
-u() { sshc; HostUpdate "$@" || return; }
+u() { SshAgentCheck; HostUpdate "$@" || return; }
 un() { u nas; } # update nas
 
 hc() { HostCleanup "$@" || return; }
@@ -484,6 +448,10 @@ alias slf='SyncLocalFiles'
 alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
+
+# SSH Agent - check and start the SSH Agent if there is a credential manager install to avoid a password prompt
+[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+[[ $CREDENTIAL_MANAGER ]] && ! ssh-add -L >& /dev/null && SshAgentHelper start --quiet
 
 #
 # prompt

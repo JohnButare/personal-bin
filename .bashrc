@@ -664,92 +664,14 @@ alias XmlShow='xml sel -t -c'
 gapp() { elevate "$P32/GIGABYTE/AppCenter/RunUpd.exe"; } # Gigabyte Application Center
 gfan() { elevate "$P32/GIGABYTE/siv/ThermalConsole.exe"; }
 
-WigginOn() { on nas1; on nas3; on pi5; on UniFiController; }
-WigginOff() { off nas1; off nas3; off pi5; off UniFiController; }
-
 # synology opt interferes with Domotz Agent
 OptOn() { [[ -d "/opt/lib.hold" ]] && sudo mv "/opt/lib.hold" "/opt/lib"; }
 OptOff() { [[ -d "/opt/lib" ]] && sudo mv "/opt/lib" "/opt/lib.hold"; }
 
-# network configuration
-nc="$cloud/network" # network configuration
-ncd="$nc/dhcp"
-
-alias nce='NetworkConfigurationEdit'
-alias ncb='NetworkConfigurationBackup'
-alias ncu='NetworkConfigurationUpdate'
-
-# DHCP Reservation.txt-> dhcpd-eth0-static.conf
-# DHCP Options.txt -> dhcpd-dns-dns.conf
-# DNS Forward.txt -> hagerman.butare.net
-# DNS Reverse.txt -> 100.168.192.in-addr.arpa
-
-NetworkConfigurationEdit() { e "$ncd/DNS Reverse.txt" "$ncd/DNS Forward.txt" "$ncd/DHCP Options.txt" "$ncd/DHCP Reservations.txt"; }
-
-NetworkConfigurationBackup() # NetworkConfigurationBackup host
-{ 
-	local h="$1" d="$ncd/backup" stamp="$(GetDateStamp)"
-
-	[[ $h ]] || { EchoErr "USAGE: NetworkConfigurationBackup HOST"; return 1; }
-
-	# DHCP
-	echo "Backing up DHCP configuration from $h..."
-	local f="$h.dhcpd.zip" i=1
-	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
-	ssh $h "rm -f $f; zip -r $f /etc/dhcpd" || return
-	scp $h:~/$f "$d/$stamp.$i.$f" || return
-
-	# DNS	
-	echo "Backing up DNS configuration from $h..."
-	f="$h.dns.zip" i="1"
-	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
-	ssh $h "rm -f $f; zip -r $f /var/packages/DNSServer/target/named/etc/zone/master" || return
-	scp $h:~/$f "$d/$stamp.$i.$f" || return
-
-	echo "Successfully backed up $h network configuration"
-}
-
-NetworkConfigurationUpdate() # NetworkConfigurationUpdate host
-{ 
-	local h="$1" f="/tmp/reservations.txt"
-
-	[[ $h ]] || { EchoErr "USAGE: NetworkConfigurationUpdate HOST"; return 1; }
-
- 	# cleanup reservations by removing comments, empty lines, and lines with only spaces (fix etherwake warning)
-	cat "$ncd/DHCP Reservations.txt" | sed '/^#/d' | sed '/^$/ d' | sed 's/^ *$//g' > "$f"
-
-	# update ethers - downcase to make etherwake case agnostic
-	echo "Updating the ethers configuration in $BIN..."
-	gawk '{ FS=","; gsub(/dhcp-host=/,""); print $1 " " $2 }' "$f" | tr A-Z a-z > "$BIN/ethers" || return
-
-	echo "Updating the host configuration in $UBIN/hosts..."
-	gawk '{ FS=","; gsub(/dhcp-host=/,""); print $2 }' "$f" | sort > "$UBIN/hosts" || return
-
-	echo "Updating DHCP configuration on $h..."
-	local target="root@$h:/etc/dhcpd"
-	scp "$ncd/DHCP Options.txt" "$target/dhcpd-dns-dns.conf"
-
-	target="root@$h:/etc/dhcpd"
-	case "$h" in
-		router) scp "$f" "$target/dhcpdStatic.ori"; scp "$f" "$target/dhcpd-static-static.conf";;
-		nas?) scp "$f" "$target/dhcpd-eth0-static.conf";
-	esac
-
-	echo "Updating DNS configuration on $h..."
-	local target="root@$h:/var/packages/DNSServer/target/named/etc/zone/master"
-	scp "$ncd/DNS Forward.txt" "$target/hagerman.butare.net"
-
-	local reverse="$ncd/DNS Reverse.txt" t="$ncd/template"
-	{ cat "$t/100.txt"; grep 100.168.192 "$reverse"; } > "/tmp/100.txt"
-	{ cat "$t/101.txt"; grep 101.168.192 "$reverse"; } > "/tmp/101.txt"
-	{ cat "$t/102.txt"; grep 102.168.192 "$reverse"; } > "/tmp/102.txt"
-
-	scp "/tmp/100.txt" "$target/100.168.192.in-addr.arpa"
-	scp "/tmp/101.txt" "$target/101.168.192.in-addr.arpa"
-	scp "/tmp/102.txt" "$target/102.168.192.in-addr.arpa"
-
-	return 0
-} 
+# configuration
+alias nce='wiggin config edit'
+alias ncb='wiggin config backup'
+alias ncu='wiggin config update'
 
 # UniFi
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }

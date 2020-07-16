@@ -424,6 +424,18 @@ mdnsStart()
 	sudoc avahi-daemon &
 }
 
+if IsPlatform win; then
+	ping()
+	{
+		local host="$1"; shift
+
+		# resolve .local host - WSL getent does not currently resolve mDns (.local) addresses
+		IsPlatform win && IsLocalAddress "$host" && { host="$(MdnsResolve "$host")" || return; }
+
+		command ping "$host" "$@"
+	}
+fi
+
 SquidLog() { LogShow "/usr/local/squid/var/logs/access.log"; } # specific to QNAP location for now
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
 SquidUtilization() { squidclient -h "$1" cache_object://localhost/ mgr:utilization; }

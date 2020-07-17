@@ -440,6 +440,8 @@ SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
 SquidUtilization() { squidclient -h "$1" cache_object://localhost/ mgr:utilization; }
 SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
 
+DhcpMonitor() {	IsPlatform win && { DhcpTest.exe "$@"; return; }; }
+
 DhcpOptions()
 { 
 	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }

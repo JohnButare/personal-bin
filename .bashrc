@@ -258,14 +258,13 @@ lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}"
 # directory management
 #
 
-alias cd='DoCd'										
-alias ls='DoLs'
-
 [[ ! $LS_COLORS ]] && InPath dircolors && eval "$(dircolors $ubin/default.dircolors)"
 
+alias cd='DoCd'
+
+alias ls='DoLs'
 alias lsc='DoLs'											# list with colorls
 alias lsn='DoLs --native'							# list native (do not use colorls)
-
 alias la='DoLs -Al'										# list all
 alias lg="DoLs -A --git-status" 			# list git status
 alias ll='DoLs -l'										# list long

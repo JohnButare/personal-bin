@@ -20,6 +20,12 @@ if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
 	export CREDENTIAL_MANAGER_CHECKED="true"
 fi
 
+# editor
+if [[ ! $EDITOR_CHECKED ]]; then	
+	SetTextEditor || return
+	EDITOR_CHECKED="true"
+fi
+
 #
 # Key Bindings
 #
@@ -44,8 +50,8 @@ HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 # completion
 #
 
-if [[ ! $COLORLS_CHECK ]]; then
-	COLORLS_CHECK="true"
+if [[ ! $COLORLS_CHECKED ]]; then
+	COLORLS_CHECKED="true"
 	unset COLORLS
 	if InPath colorls; then
 		COLORLS="true"
@@ -92,8 +98,8 @@ if IsBash; then
 
 fi
 
-if [[ ! $FZF_CHECK && -d ~/.fzf ]]; then
-	FZF_CHECK="true"
+if [[ ! $FZF_CHECKED && -d ~/.fzf ]]; then
+	FZF_CHECKED="true"
 	. "$HOME/.fzf/shell/completion.$PLATFORM_SHELL" || return # slow .2s
 	. "$HOME/.fzf/shell/key-bindings.$PLATFORM_SHELL" || return
 	_fzf_complete_ssh() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
@@ -157,10 +163,21 @@ alias s10k="sz" e10k="e ~/.p10k.zsh"
 eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 				# edit all aliases
 efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  # edit all functions
 
-alias bstart='. "$bin/bash.bashrc"; . ~/.bash_profile; kstart;'
 alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.zshrc $UBIN/.bashrc"
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
 alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
+
+fstart() # full start
+{
+	# force load	
+	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""
+	declare {CHROOT_CHECKED,VM_TYPE_CHECKED}=""
+	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,FZF_CHECKED}=""
+
+	. "$bin/bash.bashrc"
+	IsZsh && { . ~/.zshrc; } || { kstart; . ~/.bash_profile; }
+}
+
 
 #
 # other
@@ -241,7 +258,6 @@ alias .....='cbuiltin d ../../../..'
 
 alias c='cls'		# clear screen
 alias cb='builtin cd ~; cls' # clear screen and cd
-alias ch='cb; hw;' # clear both, hello world
 alias cf='cb; InPath fortune && InPath cowsay && InPath lolcat && fortune | cowsay | lolcat ;' # clear both, fortune
 
 alias del='rm'
@@ -659,6 +675,7 @@ tmas() { tmux attach -t "${1:-0}"; } 	# tmux attach session
 # Virtual Machine
 #
 
+alias cr="ChrootHelper"
 vm() { vmware IsInstalled && VMware start || hyperv start; }
 vmon() { vmware -n "$1" run start; } # on (start)
 vmoff() { vmware -n "$1" run suspend; } # off (suspend)

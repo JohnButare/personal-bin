@@ -22,7 +22,7 @@ fi
 
 # editor
 if [[ ! $EDITOR_CHECKED ]]; then	
-	SetTextEditor || return
+	SetTextEditor
 	EDITOR_CHECKED="true"
 fi
 

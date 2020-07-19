@@ -7,10 +7,13 @@
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 
-# interactive initialization - remainder not needed in child processes or scripts
-[[ "$-" != *i* ]] && return
+[[ "$-" != *i* ]] && return # return if not interactive
 
-# shell options
+#
+# Interactive Configuration
+#
+
+# options
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 IsZsh && setopt no_beep
 
@@ -26,23 +29,93 @@ if [[ ! $EDITOR_CHECKED ]]; then
 	EDITOR_CHECKED="true"
 fi
 
-#
-# Key Bindings
-#
-
+# keyboard
 IsZsh && bindkey "^H" backward-kill-word
 
 #
-# history
+# locations
 #
 
-IsBash && HISTCONTROL=ignoreboth
-IsZsh && setopt HIST_IGNORE_DUPS
+p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA" datad="$DATAD"
+psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
+pp="$psm/Programs" 	# PublicPrograms
+pd="$pub/Desktop" 	# PublicDesktop
+v="/Volumes"
 
-HISTSIZE=5000
-HISTFILESIZE=10000
+home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
+bash="$udata/bash"
+code="$CODE"; source="$CODE"; s="$CODE"; # code=local code (repositores), ccode=cloud code
+ubin="$udata/bin"
+usm="$APPDATA/Microsoft/Windows/Start Menu" # UserStartMenu
+up="$usm/Programs" 													# UserPrograms
+ud="$home/Desktop" 													# UserDesktop
+db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"
 
-HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
+alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
+alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
+
+#
+# other
+#
+
+alias cls=clear
+alias ei='e $bin/inst'
+alias ehp='start "$udata/replicate/default.htm"'
+alias st='startup --no-pause'
+
+#
+# applications
+#
+
+alias e='TextEdit'
+alias bc='BeyondCompare'
+alias clock='xclock -title $HOSTNAME -digital -update 1 &'
+alias f='firefox'
+alias m='merge'
+
+alias grep='\grep --color=auto'
+alias egrep='\egrep --color=auto'
+
+# Add an "alert" alias for long running commands.  sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+IsZsh && alias help="run-help"
+
+#
+# archive
+#
+
+alias fm='start "$p/7-Zip/7zFM.exe"'
+alias untar='tar -v -x --atime-preserve <'
+zbak() { [[ $# == 1  ]] && zip -r "$1.zip" "$1" || zip -4 "$1" "${@:2}"; }
+zrest() { unzip "${@}"; }
+zls() { unzip -l "${@}"; }
+zll() { unzip -ll "${@}"; }
+
+#
+# configuration
+#
+
+# edit/set 
+alias sa=". ~/.bashrc update" ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; 
+alias s10k="sz" e10k="e ~/.p10k.zsh"
+eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 				# edit all aliases
+efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  # edit all functions
+
+alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.zshrc $UBIN/.bashrc"
+alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
+alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
+
+fstart() # full start
+{
+	# force load	
+	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""		# bash.bashrc
+	declare {CHROOT_CHECKED,VM_TYPE_CHECKED}=""				# function.sh
+	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,PROXY_CHECKED,FZF_CHECKED}="" # .bashrc
+
+	. "$bin/bash.bashrc"
+	IsZsh && { . ~/.zshrc; } || { kstart; . ~/.bash_profile; }
+}
 
 #
 # completion
@@ -94,6 +167,9 @@ if IsBash; then
 	# cd should not complete variables without a leading $
 	complete -r cd >& /dev/null 
 
+	# git
+	complete -o default -o nospace -F _git g 
+
 fi
 
 if [[ ! $FZF_CHECKED && -d ~/.fzf ]]; then
@@ -105,170 +181,43 @@ if [[ ! $FZF_CHECKED && -d ~/.fzf ]]; then
 fi
 
 #
-# variables
+# development
 #
 
-p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA" datad="$DATAD"
-psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
-pp="$psm/Programs" 	# PublicPrograms
-pd="$pub/Desktop" 	# PublicDesktop
-v="/Volumes"
+alias ss='SqlServer'
+alias ssms='SqlServerManagementStudio'
+alias sscd='ScriptCd SqlServer cd'
+alias ssp='SqlServer profiler express'
 
-home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
-bash="$udata/bash"
-code="$CODE"; source="$CODE"; s="$CODE"; # code=local code (repositores), ccode=cloud code
-ubin="$udata/bin"
-usm="$APPDATA/Microsoft/Windows/Start Menu" # UserStartMenu
-up="$usm/Programs" 													# UserPrograms
-ud="$home/Desktop" 													# UserDesktop
-db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"
+test="$code/test"
+alias tup='cdup test'
+alias tc='cdc test'
+alias ts='cds test'
 
-alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
+# Android
+alias ab='as adb'
 
-#
-# variables and functions
-#
+# C
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-def() { IsBash && type "$1" || whence -f "$1"; }
+# DOT.NET Development
+alias vs='VisualStudio'
 
-alias ListVars='declare -p | egrep -v "\-x"'
-alias ListExportVars='export'
-alias ListFunctions='declare -F'
-alias ListFunctionsAll='declare -f'
-alias unexport='unset'
-alias unfunction='unset -f'
+build() { n build /verbosity:minimal /m "$code/$1"; }
+BuildClean() { n build /t:Clean /m "$code/$1"; }
 
-#
-# scripts
-#
+# JAVA
+alias j='JavaUtil'
+alias jd='j decompile'
+alias jdp='j decompile progress'
+alias jrun='j run'
+alias ec='eclipse'
 
-alias scd='ScriptCd'
-alias se='ScriptEval'
-alias slist='file * .* | FilterShellScript | cut -d: -f1'
-alias sfind='slist | xargs egrep'
-sfindl() { sfind --color=always "$1" | less -R; }
-alias sedit='slist | xargs RunFunction.sh TextEdit'
-alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
-alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
-
-FindUsages() { FindText "$1" "*" "$BIN"; FindText "$1" ".*" "$UBIN"; FindText "$1" "*" "$UBIN"; }
-
-#
-# configuration
-#
-
-# edit/set 
-alias sa=". ~/.bashrc update" ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; 
-alias s10k="sz" e10k="e ~/.p10k.zsh"
-eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 				# edit all aliases
-efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  # edit all functions
-
-alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.zshrc $UBIN/.bashrc"
-alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
-alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
-
-fstart() # full start
-{
-	# force load	
-	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""
-	declare {CHROOT_CHECKED,VM_TYPE_CHECKED}=""
-	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,FZF_CHECKED}=""
-
-	. "$bin/bash.bashrc"
-	IsZsh && { . ~/.zshrc; } || { kstart; . ~/.bash_profile; }
-}
-
-
-#
-# other
-#
-
-alias cls=clear
-alias ei='e $bin/inst'
-alias ehp='start "$udata/replicate/default.htm"'
-alias st='startup --no-pause'
-
-logoff()
-{
-	IsSsh && exit
-	IsPlatform win && { logoff.exe; return; }
-	IsPlatform ubuntu && { gnome-session-quit --no-prompt; return; }
-}
-
-
-#
-# applications
-#
-
-alias e='TextEdit'
-alias bc='BeyondCompare'
-alias clock='xclock -title $HOSTNAME -digital -update 1 &'
-alias f='firefox'
-alias m='merge'
-
-alias grep='\grep --color=auto'
-alias egrep='\egrep --color=auto'
-
-# Add an "alert" alias for long running commands.  sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-IsZsh && alias help="run-help"
-
-#
-# archive
-#
-
-alias fm='start "$p/7-Zip/7zFM.exe"'
-alias untar='tar -v -x --atime-preserve <'
-zbak() { [[ $# == 1  ]] && zip -r "$1.zip" "$1" || zip -4 "$1" "${@:2}"; }
-zrest() { unzip "${@}"; }
-zls() { unzip -l "${@}"; }
-zll() { unzip -ll "${@}"; }
-
-#
-# performance
-#
-
-sysmon() { case "$PLATFORM" in  linux) gnome-system-monitor &;; win) start taskmgr;; esac; }
-
-# time
-alias t='time pause'
-alias ton='TimerOn'
-alias toff='TimerOff'
-
-# disk - nas3=nvme0n1 pi=mmcblk0
-DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); }
-DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
-DiskTestRead() { sudo hdparm -t /dev/$1; } 
-DiskTestWrite() { sync; sudo dd if=/dev/${1:-sda} of=tempfile bs=1M count=${2:-1024}; sync; } # use smaller count for Pi and other lower performance disks
-DiskTestAll() { bonnie++ | tee >> "$(os name)_performance_$(GetDateStamp).txt"; }
-
-# network
-iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002; } # server
-iperfc() { iperf3 -c $1 -p 5002; } # client
-
-#
-# file management
-#
-
-alias ..='builtin cd ..'
-alias ...='builtin cd ../..'
-alias ....='builtin cd ../../..'
-alias .....='cbuiltin d ../../../..'
-
-alias c='cls'		# clear screen
-alias cb='builtin cd ~; cls' # clear screen and cd
-alias cf='cb; InPath fortune && InPath cowsay && InPath lolcat && fortune | cowsay | lolcat ;' # clear both, fortune
-
-alias del='rm'
-alias md='mkdir'
-alias rd='rmdir'
-
-alias inf="FileInfo"
-alias l='explore'
-alias rc='CopyDir'
-alias rcp='rsync --info=progress2'
-lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
+# Node.js
+alias node='\node --use-strict'
+alias npmls='npm ls --depth=0'
+alias npmi='sudo npm install -g' # npm install
+alias npmu='sudo npm uninstall -g' # npm uninstall
 
 #
 # directory management
@@ -316,6 +265,92 @@ DoLs()
 		colorls --group-directories-first "$@"
 	fi
 }
+
+#
+# disk
+#
+
+alias duh='${G}du --human-readable'
+alias dsu='DiskSpaceUsage'
+dus() { ${G}du --summarize --human-readable "$@" |& egrep -v "Permission denied|Transport endpoint is not connected"; }
+alias TestDisk='sudo bench32.exe'
+
+ListPartitions() { sudo parted -l; }
+ListDisks() { sudo parted -l |& egrep -i '^Disk' |& egrep -v 'Error|Disk Flags' | cut -d' ' -f2 | cut -d: -f1; }
+ListFirstDisk() { ListDisks | head -1; }
+
+#
+# drives
+#
+
+alias d='drive'
+alias de='drive eject'
+alias dl='drive list'
+alias dr='drive list | egrep -i removable'
+
+#
+# file management
+#
+
+alias ..='builtin cd ..'
+alias ...='builtin cd ../..'
+alias ....='builtin cd ../../..'
+alias .....='cbuiltin d ../../../..'
+
+alias c='cls'		# clear screen
+alias cb='builtin cd ~; cls' # clear screen and cd
+alias cf='cb; InPath fortune && InPath cowsay && InPath lolcat && fortune | cowsay | lolcat ;' # clear both, fortune
+
+alias del='rm'
+alias md='mkdir'
+alias rd='rmdir'
+
+alias inf="FileInfo"
+alias l='explore'
+alias rc='CopyDir'
+alias rcp='rsync --info=progress2'
+lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
+
+#
+# functions
+#
+
+def() { IsBash && type "$1" || whence -f "$1"; }
+alias unexport='unset'
+alias unfunction='unset -f'
+
+#
+# history
+#
+
+HISTSIZE=5000
+HISTFILESIZE=10000
+IsBash && HISTCONTROL=ignoreboth
+IsZsh && setopt HIST_IGNORE_DUPS
+
+HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
+
+#
+# performance
+#
+
+sysmon() { case "$PLATFORM" in  linux) gnome-system-monitor &;; win) start taskmgr;; esac; }
+
+# time
+alias t='time pause'
+alias ton='TimerOn'
+alias toff='TimerOff'
+
+# disk - nas3=nvme0n1 pi=mmcblk0
+DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); }
+DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
+DiskTestRead() { sudo hdparm -t /dev/$1; } 
+DiskTestWrite() { sync; sudo dd if=/dev/${1:-sda} of=tempfile bs=1M count=${2:-1024}; sync; } # use smaller count for Pi and other lower performance disks
+DiskTestAll() { bonnie++ | tee >> "$(os name)_performance_$(GetDateStamp).txt"; }
+
+# network
+iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002; } # server
+iperfc() { iperf3 -c $1 -p 5002; } # client
 
 #
 # find
@@ -370,50 +405,95 @@ FindCd()
 }
 
 #
-# drives
+# git
 #
 
-alias d='drive'
-alias de='drive eject'
-alias dl='drive list'
-alias dr='drive list | egrep -i removable'
+alias g='git'
+alias ga='g add'
+alias gd='gc diff'
+alias gf='gc freeze'
+alias gl='g logb; echo'					# log
+alias gla='g loga'							# log all
+alias gca='g ca'								# commit all
+alias gcam='g amendAll'					# commit ammend all
+alias gcn='GitHelper clone nas1' # clone a repository from nas1
+alias gs='g s' 									# status
+alias gbs='g bs'								# branch status [PATTERN]
+alias gr='g rb' 								# rebase
+alias gr1='g rb HEAD~1 --onto' 	# rebase first commit onto specified branch
+alias gri='g rbi' 							# rebase interactive
+alias gria='g rbia' 						# rebase interactive auto, rebase all fixup! commits
+alias grc='g rbc' 							# rebase continue
+alias grf='g rf' 								# create a rebase fixup commit
+alias grs='g rsq' 							# create a rebase squash commit
+alias gmt='g mergetool'
+alias gpf='g push --force'			# push force
+alias grft='grf && g i Test' 		# fixup commit and push to test
+alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
+alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
+alias eg='e ~/.gitconfig'
+alias gg='GitHelper gui'
+alias gh='GitHelper'
+alias ghub='GitHelper hub'
+alias tgg='GitHelper tgui'
 
 #
-# disk
+# homebridge
 #
 
-alias duh='${G}du --human-readable'
-alias dsu='DiskSpaceUsage'
-dus() { ${G}du --summarize --human-readable "$@" |& egrep -v "Permission denied|Transport endpoint is not connected"; }
-alias TestDisk='sudo bench32.exe'
+alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
+alias hcconfig="e $c/network/homebridge/config/config.json" # edit cloud configuration
+alias hlogclean="rm /var/lib/homebridge/homebridge.log"
+alias hssh="sudo cp ~/.ssh/config ~/.ssh/known_hosts ~homebridge/.ssh && sudo chown homebridge ~homebridge/.ssh/config ~homebridge/.ssh/known_hosts" # update SSH configuration 
+alias hrestart="systemctl restart homebridge"
+alias hstart='sudo hb-service start'
+alias hstop='sudo hb-service stop'
+alias hrestart='hstop;hlogclean;hstart'
+alias hlog='sudo hb-service logs'
+alias hbakall='hbak pi5'
 
-ListPartitions() { sudo parted -l; }
-ListDisks() { sudo parted -l |& egrep -i '^Disk' |& egrep -v 'Error|Disk Flags' | cut -d' ' -f2 | cut -d: -f1; }
-ListFirstDisk() { ListDisks | head -1; }
+hbak() # hbak HOST - backup homebridge configuration from HOST
+{ 
+	local f="$1.homebridge.zip" d="$cloud/network/homebridge/backup"
+	local host="$1" stamp="$(GetDateStamp)"
+
+	[[ $host ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
+	[[ ! -d "$d" ]] && { mkdir "$d" || return; }
+
+	local i=1
+	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
+	local df="$d/$stamp.$i.$f"
+
+	ssh $host "rm -f $f; zip -r $f .homebridge" || return
+	scp $host:~/$f "$df" || return
+	ssh $host "rm -f $f" || return
+	echo "$host homebridge configuration saved to $df"
+}
+
+hrest() # hrest HOST - restore homebridge configuration to HOST
+{ 
+	local h="$1";
+	local f="$h.homebridge.zip" d="$cloud/systems/homebridge/$h" bakFile="$h.$(GetTimeStamp).homebridge" hb="/etc/init.d/homebridge"
+
+	[[ $h ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
+	[[ -f "$d/$f" ]] || { EchoErr "$f does not exist"; return 1; }
+	ask -dr n "Are you sure you want to restore $f to $h" || return
+
+	ssh $h "[[ -d .bak ]] || mkdir .bak; zip -r .bak/$bakFile ~/.homebridge" || return
+	scp "$d/$f" $h:~ || return
+	ssh $h "rm -fr ~/.homebridge && unzip -o $f" || return
+	echo "Successfully restored $f homebridge configuration to $h"
+}
 
 #
-# windows
+# host
 #
 
-InitializeXServer || return
-SetTitle() { printf "\e]2;$*\a"; }
+u() { SshAgentCheck; HostUpdate "$@" || return; }
+un() { u nas; } # update nas
 
-#
-# SSH
-#
-
-alias s=sx	# connect with ssh
-alias sshconfig='e ~/.ssh/config'
-alias sshkh='e ~/.ssh/known_hosts'
-
-sm() { SshHelper --mosh "$@"; } # connect with mosh
-sx() { SshHelper -x "$@"; } 		# connect with X forwarding
-
-sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
-sshsudo() { ssh -t $1 sudo ${@:2}; }
-ssht() { ssh -t "$@"; } # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
-sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
-sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
+hc() { HostCleanup "$@" || return; }
+hcg() { HostCleanup gui; }
 
 #
 # network
@@ -421,14 +501,18 @@ sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start term
 
 alias ehosts='sudo nano /etc/hosts' # edit hosts file
 
-LogShow() { setterm --linewrap off; tail -f "$1";  setterm --linewrap on; }
-
-alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
-alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars --status"
-alias ProxyStatus="network proxy vars --status"
-
 ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
 
+# DHCP
+DhcpMonitor() {	IsPlatform win && { DhcpTest.exe "$@"; return; }; }
+
+DhcpOptions()
+{ 
+	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }
+	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
+}
+
+# mDNS
 MdnsList() {  avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
 MdnsListFull() {  avahi-browse -p --all -c -r; }
 MdnsPublishHostname() { avahi-publish-address -c $HOSTNAME.local "$(GetPrimaryIpAddress eth0)"; }
@@ -451,36 +535,24 @@ if IsPlatform win; then
 	}
 fi
 
+# network proxy
+alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
+alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars --status"
+alias ProxyStatus="network proxy vars --status"
+
+! [[ $PROXY_CHECKED ]] && { ProxyEnable >& /dev/null; PROXY_CHECKED="true"; }
+
+# Squid
 SquidLog() { LogShow "/usr/local/squid/var/logs/access.log"; } # specific to QNAP location for now
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
 SquidUtilization() { squidclient -h "$1" cache_object://localhost/ mgr:utilization; }
 SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
-
-DhcpMonitor() {	IsPlatform win && { DhcpTest.exe "$@"; return; }; }
-
-DhcpOptions()
-{ 
-	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }
-	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
-}
-
-# update
-ub() { pushd . && cd "$BIN" && git pull && cd "$UBIN" && git pull && SyncLocalFiles; popd; } # update bin directories
-u() { SshAgentCheck; HostUpdate "$@" || return; }
-un() { u nas; } # update nas
-
-hc() { HostCleanup "$@" || return; }
-hcg() { HostCleanup gui; }
 
 # sync files
 alias slf='SyncLocalFiles'
 alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
-
-# SSH Agent - check and start the SSH Agent if there is a credential manager install to avoid a password prompt
-[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-[[ $CREDENTIAL_MANAGER ]] && ! ssh-add -L >& /dev/null && SshAgentHelper start --quiet
 
 #
 # prompt
@@ -533,89 +605,6 @@ if [[ ! $SET_PROMPT_CHECK ]]; then
 fi
 
 #
-# git
-#
-
-alias g='git'
-alias ga='g add'
-alias gd='gc diff'
-alias gf='gc freeze'
-alias gl='g logb; echo'					# log
-alias gla='g loga'							# log all
-alias gca='g ca'								# commit all
-alias gcam='g amendAll'					# commit ammend all
-alias gs='g s' 									# status
-alias gbs='g bs'								# branch status [PATTERN]
-alias gr='g rb' 								# rebase
-alias gr1='g rb HEAD~1 --onto' 	# rebase first commit onto specified branch
-alias gri='g rbi' 							# rebase interactive
-alias gria='g rbia' 						# rebase interactive auto, rebase all fixup! commits
-alias grc='g rbc' 							# rebase continue
-alias grf='g rf' 								# create a rebase fixup commit
-alias grs='g rsq' 							# create a rebase squash commit
-alias gmt='g mergetool'
-alias gpf='g push --force'			# push force
-alias grft='grf && g i Test' 		# fixup commit and push to test
-alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
-alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
-alias eg='e ~/.gitconfig'
-alias gg='GitHelper gui'
-alias gh='GitHelper'
-alias ghub='GitHelper hub'
-alias tgg='GitHelper tgui'
-
-alias gcn='GitHelper clone nas1' # clone a repository from nas1
-
-complete -o default -o nospace -F _git g
-
-#
-# homebridge
-#
-alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
-alias hcconfig="e $c/network/homebridge/config/config.json" # edit cloud configuration
-alias hlogclean="rm /var/lib/homebridge/homebridge.log"
-alias hssh="sudo cp ~/.ssh/config ~/.ssh/known_hosts ~homebridge/.ssh && sudo chown homebridge ~homebridge/.ssh/config ~homebridge/.ssh/known_hosts" # update SSH configuration 
-alias hrestart="systemctl restart homebridge"
-alias hstart='sudo hb-service start'
-alias hstop='sudo hb-service stop'
-alias hrestart='hstop;hlogclean;hstart'
-alias hlog='sudo hb-service logs'
-alias hbakall='hbak pi5'
-
-hbak() # hbak HOST - backup homebridge configuration from HOST
-{ 
-	local f="$1.homebridge.zip" d="$cloud/network/homebridge/backup"
-	local host="$1" stamp="$(GetDateStamp)"
-
-	[[ $host ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
-	[[ ! -d "$d" ]] && { mkdir "$d" || return; }
-
-	local i=1
-	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
-	local df="$d/$stamp.$i.$f"
-
-	ssh $host "rm -f $f; zip -r $f .homebridge" || return
-	scp $host:~/$f "$df" || return
-	ssh $host "rm -f $f" || return
-	echo "$host homebridge configuration saved to $df"
-}
-
-hrest() # hrest HOST - restore homebridge configuration to HOST
-{ 
-	local h="$1";
-	local f="$h.homebridge.zip" d="$cloud/systems/homebridge/$h" bakFile="$h.$(GetTimeStamp).homebridge" hb="/etc/init.d/homebridge"
-
-	[[ $h ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
-	[[ -f "$d/$f" ]] || { EchoErr "$f does not exist"; return 1; }
-	ask -dr n "Are you sure you want to restore $f to $h" || return
-
-	ssh $h "[[ -d .bak ]] || mkdir .bak; zip -r .bak/$bakFile ~/.homebridge" || return
-	scp "$d/$f" $h:~ || return
-	ssh $h "rm -fr ~/.homebridge && unzip -o $f" || return
-	echo "Successfully restored $f homebridge configuration to $h"
-}
-
-#
 # hardware
 #
 
@@ -624,7 +613,26 @@ alias off='power off'; alias down='power off'
 alias slp='power sleep'
 alias reb='power reboot'
 
+logoff()
+{
+	IsSsh && exit
+	IsPlatform win && { logoff.exe; return; }
+	IsPlatform ubuntu && { gnome-session-quit --no-prompt; return; }
+}
+
 NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
+
+#
+# media
+#
+
+alias mg="media get"
+
+#
+# monitoring
+#
+
+LogShow() { setterm --linewrap off; tail -f "$1";  setterm --linewrap on; }
 
 #
 # process
@@ -648,6 +656,44 @@ alias nruby='/usr/local/opt/ruby/bin/ruby' # new ruby
 alias unruby='export PATH="/usr/local/opt/ruby/bin:$PATH"' # use new ruby
 
 #
+# scripts
+#
+
+alias scd='ScriptCd'
+alias se='ScriptEval'
+alias slist='file * .* | FilterShellScript | cut -d: -f1'
+alias sfind='slist | xargs egrep'
+sfindl() { sfind --color=always "$1" | less -R; }
+alias sedit='slist | xargs RunFunction.sh TextEdit'
+alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
+alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
+
+FindUsages() { FindText "$1" "*" "$BIN"; FindText "$1" ".*" "$UBIN"; FindText "$1" "*" "$UBIN"; }
+
+#
+# SSH
+#
+
+alias s=sx	# connect with ssh
+alias sshconfig='e ~/.ssh/config'
+alias sshkh='e ~/.ssh/known_hosts'
+
+sm() { SshHelper --mosh "$@"; } # connect with mosh
+sx() { SshHelper -x "$@"; } 		# connect with X forwarding
+
+sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
+sshsudo() { ssh -t $1 sudo ${@:2}; }
+ssht() { ssh -t "$@"; } # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
+sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
+sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
+
+# SSH Agent - check and start the SSH Agent 
+# - avoid password prompt - only start if there is a credential manager installed
+# - avoid output - for clean PowerLevel 10K startup
+[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+[[ $CREDENTIAL_MANAGER ]] && ! ssh-add -L >& /dev/null && SshAgentHelper start --quiet
+
+#
 # sound
 #
 
@@ -663,7 +709,6 @@ playsound()
 	EchoErr "No audio program was found"; return 1
 }
 
-
 # 
 # tmux 
 #
@@ -672,20 +717,24 @@ alias tmls='tmux list-session'								# tmux list session
 tmas() { tmux attach -t "${1:-0}"; } 	# tmux attach session
 
 #
+# variables
+#
+
+alias ListVars='declare -p | egrep -v "\-x"'
+alias ListExportVars='export'
+alias ListFunctions='declare -F'
+alias ListFunctionsAll='declare -f'
+
+#
 # Virtual Machine
 #
 
-alias cr="ChrootHelper"
 vm() { vmware IsInstalled && VMware start || hyperv start; }
 vmon() { vmware -n "$1" run start; } # on (start)
 vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 
-#
-# xml
-#
-
-alias XmlValue='xml sel -t -v'
-alias XmlShow='xml sel -t -c'
+alias cr="ChrootHelper"
+alias crdown="schroot --all-sessions --end-session"
 
 #
 # wiggin
@@ -707,54 +756,18 @@ alias ncu='wiggin config update'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 #
-# media
+# windows
 #
 
-alias mg="media get"
+InitializeXServer || return
+SetTitle() { printf "\e]2;$*\a"; }
 
 #
-# development
+# xml
 #
 
-alias ss='SqlServer'
-alias ssms='SqlServerManagementStudio'
-alias sscd='ScriptCd SqlServer cd'
-alias ssp='SqlServer profiler express'
-
-test="$code/test"
-alias tup='cdup test'
-alias tc='cdc test'
-alias ts='cds test'
-
-# Android
-alias ab='as adb'
-
-# C
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# DOT.NET Development
-alias vs='VisualStudio'
-
-build() { n build /verbosity:minimal /m "$code/$1"; }
-BuildClean() { n build /t:Clean /m "$code/$1"; }
-
-# JAVA
-alias j='JavaUtil'
-alias jd='j decompile'
-alias jdp='j decompile progress'
-alias jrun='j run'
-alias ec='eclipse'
-
-# Node.js
-alias node='\node --use-strict'
-alias npmls='npm ls --depth=0'
-alias npmi='sudo npm install -g' # npm install
-alias npmu='sudo npm uninstall -g' # npm uninstall
-
-#
-# Juntos Holdings
-#
-alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
+alias XmlValue='xml sel -t -v'
+alias XmlShow='xml sel -t -c'
 
 #
 # final

@@ -30,9 +30,7 @@ fi
 # Key Bindings
 #
 
-if IsZsh; then
-	bindkey "^H" backward-kill-word
-fi
+IsZsh && bindkey "^H" backward-kill-word
 
 #
 # history
@@ -152,6 +150,8 @@ sfindl() { sfind --color=always "$1" | less -R; }
 alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
+
+FindUsages() { FindText "$1" "*" "$BIN"; FindText "$1" ".*" "$UBIN"; FindText "$1" "*" "$UBIN"; }
 
 #
 # configuration
@@ -343,7 +343,7 @@ eai() { fte "0.0.0.0" "VersionInfo.cs"; } # EditAssemblyInfo that are set to dep
 FindText() # TEXT FILE_PATTERN [START_DIR](.)
 { 
 	local startDir="${@:3}"
-	egrep --color -i -r -e "$1" --include="$2" "${startDir:-.}"
+	egrep --color -i -r -e "$1" --include="$2" --exclude-dir=".git" "${startDir:-.}"
 }
 
 FindAll()

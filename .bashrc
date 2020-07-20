@@ -114,6 +114,7 @@ fstart() # full start
 	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,PROXY_CHECKED,FZF_CHECKED}="" # .bashrc
 
 	. "$bin/bash.bashrc"
+	. "$bin/function.sh"
 	IsZsh && { . ~/.zshrc; } || { kstart; . ~/.bash_profile; }
 }
 
@@ -733,6 +734,7 @@ vm() { vmware IsInstalled && VMware start || hyperv start; }
 vmon() { vmware -n "$1" run start; } # on (start)
 vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 
+# chroot
 alias cr="ChrootHelper"
 alias crdown="schroot --all-sessions --end-session"
 

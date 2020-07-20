@@ -775,8 +775,8 @@ alias XmlShow='xml sel -t -c'
 # final
 #
 
+SourceIfExists "$BIN/z.sh" || return
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
-SourceIfExists "$BIN/z.sh"
 
 IsBash && { [[ ! $SET_PWD && "$1" != "update" && "$PWD" == "$WINDIR/system32" ]] && cd; }
 [[ $SET_PWD ]] && { cd "$SET_PWD"; unset SET_PWD; }

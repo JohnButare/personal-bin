@@ -1,3 +1,1 @@
-alias pcp="PiCheckPower"
-
 PiCheckPower() { ! dmesg --time-format ctime | egrep -i volt; } # check for under voltage in the log

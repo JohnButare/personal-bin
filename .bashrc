@@ -19,6 +19,7 @@ IsZsh && setopt no_beep
 
 # credential manager
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
+	export GPG_ID="johns@butare.net"
 	credential check >& /dev/null && export CREDENTIAL_MANAGER="true"
 	export CREDENTIAL_MANAGER_CHECKED="true"
 fi
@@ -97,16 +98,16 @@ zll() { unzip -ll "${@}"; }
 #
 
 # edit/set 
-alias sa=". ~/.bashrc update" ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; 
+alias sa=". ~/.bashrc update" ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; # set aliases
 alias s10k="sz" e10k="e ~/.p10k.zsh"
-eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 				# edit all aliases
-efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  # edit all functions
+eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; }										# edit all aliases
+efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }						# edit all functions
 
 alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.zshrc $UBIN/.bashrc"
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
 alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
-fstart() # full start
+sfull() # set full
 {
 	# force load	
 	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""		# bash.bashrc

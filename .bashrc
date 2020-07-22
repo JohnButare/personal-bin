@@ -100,8 +100,8 @@ zll() { unzip -ll "${@}"; }
 # edit/set 
 alias sa=". ~/.bashrc update" ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; # set aliases
 alias s10k="sz" e10k="e ~/.p10k.zsh"
-eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; }										# edit all aliases
-efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }						# edit all functions
+eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 					# edit all aliases
+efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  			# edit all functions
 
 alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.zshrc $UBIN/.bashrc"
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
@@ -691,9 +691,9 @@ sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start term
 
 # SSH Agent - check and start the SSH Agent 
 # - avoid password prompt - only start if there is a credential manager installed
-# - avoid output - for clean PowerLevel 10K startup
+# - avoid output - for clean PowerLevel 10K startup (Pass credential prompt requires output and input)
 [[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-[[ $CREDENTIAL_MANAGER ]] && ! ssh-add -L >& /dev/null && SshAgentHelper start --quiet
+[[ $CREDENTIAL_MANAGER ]] && [[ "$(credential type)" != "Pass" ]] && ! ssh-add -L >& /dev/null && SshAgentHelper start --quiet
 
 #
 # sound

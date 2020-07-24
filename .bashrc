@@ -677,6 +677,7 @@ FindUsages() { FindText "$1" "*" "$BIN"; FindText "$1" ".*" "$UBIN"; FindText "$
 #
 
 alias s=sx	# connect with ssh
+alias hs="hyperv ssh" # connect to a Hyper-V host with ssh
 alias sshconfig='e ~/.ssh/config'
 alias sshkh='e ~/.ssh/known_hosts'
 
@@ -731,13 +732,18 @@ alias ListFunctionsAll='declare -f'
 # Virtual Machine
 #
 
-vm() { vmware IsInstalled && VMware start || hyperv start; }
-vmon() { vmware -n "$1" run start; } # on (start)
-vmoff() { vmware -n "$1" run suspend; } # off (suspend)
-
 # chroot
 alias cr="ChrootHelper"
 alias crdown="schroot --all-sessions --end-session"
+
+# hyper-v
+alias h="hyperv"
+alias hconn="hyperv console"
+
+# vmware
+vm() { vmware IsInstalled && VMware start || hyperv start; }
+vmon() { vmware -n "$1" run start; } # on (start)
+vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 
 #
 # wiggin

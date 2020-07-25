@@ -19,7 +19,7 @@ IsZsh && setopt no_beep
 
 # credential manager
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
-	export GPG_ID="johns@butare.net"
+	IsSsh && InPath dbus-update-activation-environment && { dbus-update-activation-environment --systemd DISPLAY || return; } # ensure get Ubuntu gnome keyring password prompt over ssh 
 	credential check >& /dev/null && export CREDENTIAL_MANAGER="true"
 	export CREDENTIAL_MANAGER_CHECKED="true"
 fi

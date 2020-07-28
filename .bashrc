@@ -504,6 +504,7 @@ hcg() { HostCleanup gui; }
 alias ehosts='sudo nano /etc/hosts' # edit hosts file
 
 ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
+PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 
 # DHCP
 DhcpMonitor() {	IsPlatform win && { DhcpTest.exe "$@"; return; }; }
@@ -634,7 +635,26 @@ alias mg="media get"
 # monitoring
 #
 
-LogShow() { setterm --linewrap off; tail -f "$1";  setterm --linewrap on; }
+alias ev='EventViewer'
+EventViewer() { IsPlatform win && start eventvwr.msc; InPath ksystemlog && sudox "ksystemlog"; }
+
+LogShow() { setterm --linewrap off; tail -f "$1"; setterm --linewrap on; }
+LogNetConsole() { netconsole -l -u $(GetIpAddress) 6666 | sudoc tee /var/log/netconsole.log; }
+
+NetConsoleEnable() # HOST
+{
+	local host="$1"
+	[[ ! $host ]] && { MissingOperand "host" "EnableNetConsole"; return 1; }
+
+	! grep "netconsole" /etc/modules && { echo "netconsole" | sudo tee -a "/etc/modules" || return; }
+	echo "options netconsole netconsole=6666@$(GetIpAddress)/$(GetPrimaryAdapterName),6666@$(GetIpAddress "$host")/$(GetMacAddress "$host")" | sudo tee "/etc/modprobe.d/netconsole.conf"
+}
+
+NetConsoleDisable()
+{
+	sudo sed -i "/^netconsole/d" "/etc/modules" || return
+	sudo rm -f "/etc/modprobe.d/netconsole.conf"
+}
 
 #
 # process

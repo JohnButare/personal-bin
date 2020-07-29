@@ -611,10 +611,19 @@ fi
 # hardware
 #
 
-alias on='power on'; alias boot='on'
-alias off='power off'; alias down='power off'
-alias slp='power sleep'
-alias reb='power reboot'
+# on|off|sleep|reb HOST [HOST...] [OPTIONS]
+on() { PowerCommand on "$@"; }; alias boot='on'
+off() { PowerCommand off "$@"; }; alias down='power off'
+sleep() { PowerCommand sleep "$@"; }
+reb() { PowerCommand reboot "$@"; }
+
+PowerCommand()
+{ 
+	local cmd="$1" args=() hosts=() a h; shift; 
+	for a in "$@"; do IsOption "$a" && args+=( $a ) || hosts+=( $a ); done
+	[[ ! "${hosts[@]}" ]] && { power $cmd "${args[@]}"; return; }
+	for h in "${hosts[@]}"; do power $cmd "${args[@]}" "$h" || return; done
+}
 
 logoff()
 {

@@ -75,7 +75,6 @@ alias f='firefox'
 alias m='merge'
 
 alias grep='\grep --color=auto'
-alias egrep='\egrep --color=auto'
 
 # Add an "alert" alias for long running commands.  sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -274,11 +273,11 @@ DoLs()
 
 alias duh='${G}du --human-readable'
 alias dsu='DiskSpaceUsage'
-dus() { ${G}du --summarize --human-readable "$@" |& egrep -v "Permission denied|Transport endpoint is not connected"; }
+dus() { ${G}du --summarize --human-readable "$@" |& grep -Ev "Permission denied|Transport endpoint is not connected"; }
 alias TestDisk='sudo bench32.exe'
 
 ListPartitions() { sudo parted -l; }
-ListDisks() { sudo parted -l |& egrep -i '^Disk' |& egrep -v 'Error|Disk Flags' | cut -d' ' -f2 | cut -d: -f1; }
+ListDisks() { sudo parted -l |& grep -i '^Disk' |& grep -Ev 'Error|Disk Flags' | cut -d' ' -f2 | cut -d: -f1; }
 ListFirstDisk() { ListDisks | head -1; }
 
 #
@@ -288,7 +287,7 @@ ListFirstDisk() { ListDisks | head -1; }
 alias d='drive'
 alias de='drive eject'
 alias dl='drive list'
-alias dr='drive list | egrep -i removable'
+alias dr='drive list | grep -i removable'
 
 #
 # file management
@@ -366,27 +365,26 @@ alias ft='FindText'
 fclip() { IFS=$'\n' files=( $(FindAll "$1") ) && clipw "${files[@]}"; } # FindClip
 fe() { IFS=$'\n' files=( $(FindAll "$1") ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindAllEdit
 fte() { IFS=$'\n' files=( $(FindText "$@" | cut -d: -f1) ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindTextEdit
-ftl() { egrep -i "$@" *; } # Find Text Local - find specified text in the current directory
+ftl() { grep -iE "$@" *; } # Find Text Local - find specified text in the current directory
 
 fsql() { ft "$1" "*.sql"; } # FindSql TET
 esql() { fte "$1" "*.sql"; } # EditSql TEXT
 fsqlv() { fsql "-- version $1"; } # FindSqlVersion [VERSION]
 esqlv() { esql "-- version $1"; } # EditSqlVersion [VERSION]
-msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | egrep -i -v "deploy|skip|ignore|NonVersioned" | sort | tail -1; } # MaxSqlVersion
+msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | grep -Eiv "deploy|skip|ignore|NonVersioned" | sort | tail -1; } # MaxSqlVersion
 
-alias ftd="egrep --color -r --binary-files=without-match -e 'TODO:' --exclude={*.idt,*.jpg,*.png} --exclude-dir={.git,bin,Bin,Components,Libraries,obj,packages} --include=. | egrep -v 'find and remove all TODO'" # Find TODO text
 eai() { fte "0.0.0.0" "VersionInfo.cs"; } # EditAssemblyInfo that are set to deploy (v0.0.0.0)
 
 FindText() # TEXT FILE_PATTERN [START_DIR](.)
 { 
 	local startDir="${@:3}"
-	egrep --color -i -r -e "$1" --include="$2" --exclude-dir=".git" "${startDir:-.}"
+	grep --color -ire "$1" --include="$2" --exclude-dir=".git" "${startDir:-.}"
 }
 
 FindAll()
 {
 	[[ $# == 0 ]] && { echo "No file specified"; return; }
-	find . -iname "$@" |& egrep -v "Permission denied"
+	find . -iname "$@" |& grep -v "Permission denied"
 }
 
 FindStart()
@@ -693,10 +691,10 @@ alias unruby='export PATH="/usr/local/opt/ruby/bin:$PATH"' # use new ruby
 alias scd='ScriptCd'
 alias se='ScriptEval'
 alias slist='file * .* | FilterShellScript | cut -d: -f1'
-alias sfind='slist | xargs egrep'
+alias sfind='slist | xargs grep'
 sfindl() { sfind --color=always "$1" | less -R; }
 alias sedit='slist | xargs RunFunction.sh TextEdit'
-alias slistapp='slist | xargs egrep -i "IsInstalledCommand\(\)" | cut -d: -f1'
+alias slistapp='slist | xargs grep -iE "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
 FindUsages() { FindText "$1" "*" "$BIN"; FindText "$1" ".*" "$UBIN"; FindText "$1" "*" "$UBIN"; }
@@ -752,7 +750,7 @@ tmas() { tmux attach -t "${1:-0}"; } 	# tmux attach session
 # variables
 #
 
-alias ListVars='declare -p | egrep -v "\-x"'
+alias ListVars='declare -p | grep -v "\-x"'
 alias ListExportVars='export'
 alias ListFunctions='declare -F'
 alias ListFunctionsAll='declare -f'

@@ -41,10 +41,10 @@
 	ufr = "!f() { echo git brmv "$1" "${1/Frozen-/}"; }; f" # branch rename without Frozen-
 
 	# branch list
-	ls = "!f()   { git show-ref | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | egrep '^[ ]*'$1; }; f" # list, ls PATTERN
-	tls = "!f()  { git show-ref | grep 'refs/tags' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sed 's/v//' | sed 's/\\./,/g' | sort -n | sed 's/,/\\./g' | egrep '^[ ]*'$1; }; f" # list tag, tls [PATTERN]
-	bls = "!f()  { git show-ref | grep 'refs/heads' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | egrep '^[ ]*'$1;  }; f" # list branch, bls PATTERN
-	rbls = "!f() { git show-ref | grep 'refs/remotes/origin' | cut -f 2 -d' ' | cut -f 4-5 -d'/' | sort | egrep '^[ ]*'$1; }; f" # list remote branch, rbls PATTERN
+	ls = "!f()   { git show-ref | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | grep -E '^[ ]*'$1; }; f" # list, ls PATTERN
+	tls = "!f()  { git show-ref | grep 'refs/tags' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sed 's/v//' | sed 's/\\./,/g' | sort -n | sed 's/,/\\./g' | grep -E '^[ ]*'$1; }; f" # list tag, tls [PATTERN]
+	bls = "!f()  { git show-ref | grep 'refs/heads' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | grep -E '^[ ]*'$1;  }; f" # list branch, bls PATTERN
+	rbls = "!f() { git show-ref | grep 'refs/remotes/origin' | cut -f 2 -d' ' | cut -f 4-5 -d'/' | sort | grep -E '^[ ]*'$1; }; f" # list remote branch, rbls PATTERN
 
 	# branch integrate
 	i = integrate # i INTEGRATION_BRANCH, integrate current branch to integration branch,
@@ -110,7 +110,7 @@
 	rbc = rebase --continue
 	rbs = rebase --skip
 	rbi = rebase --interactive --autosquash
-	rbia = "!f() { git rebase --interactive --autosquash HEAD~$((1 + $(git --no-pager log --pretty=format:'%s' --abbrev-commit -40 | egrep '^fixup!' | wc -l))); }; f" # rebase interactive auto, rebase all fixup! commits
+	rbia = "!f() { git rebase --interactive --autosquash HEAD~$((1 + $(git --no-pager log --pretty=format:'%s' --abbrev-commit -40 | grep '^fixup!' | wc -l))); }; f" # rebase interactive auto, rebase all fixup! commits
 	rbo = rebase HEAD~1 --onto # rebase onto
 	rf = "!f() { git commit -am \"fixup! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # fixup [COMMIT] [MESSAGE] - rebase fix, commit changes as a fixup commit
 	rsq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # squash [COMMIT] [MESSAGE] - rebase squas, commit changes as a squash commit

@@ -1,4 +1,4 @@
-PiCheckPower() { ! dmesg --time-format ctime | egrep -i volt; } # check for under voltage in the log
+PiCheckPower() { ! dmesg --time-format ctime | grep -i volt; } # check for under voltage in the log
 
 PI_FIRMWARE_CHANNEL="/etc/default/rpi-eeprom-update"
 PI_FIRMWARE_DIR="/lib/firmware/raspberrypi/bootloader"

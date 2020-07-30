@@ -40,6 +40,7 @@ wsld="$DATAD/data/wsl" # dir
 
 wn() { echo "$(wsl name) (WSL $WSL)"; } 							# name of current distribution
 wv() { echo "WSL $(wsl version)" | figlet | lolcat; } # version of current distribution
+w1() { wsl run1; }																		# run the first WSL 1 distribution
 w2() { wsl run2; }																		# run the first WSL 2 distribution
 
 wsldown() { wsl.exe --shutdown; } # shutdown all distributions

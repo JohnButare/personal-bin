@@ -87,10 +87,14 @@ IsZsh && alias help="run-help"
 
 alias fm='start "$p/7-Zip/7zFM.exe"'
 alias untar='tar -v -x --atime-preserve <'
-zbak() { [[ $# == 1  ]] && zip -r "$1.zip" "$1" || zip -4 "$1" "${@:2}"; }
+zbak() { [[ $# == 1  ]] && zip -r "$1.zip" "$1" || zip -4 "$1" "${@:2}"; } # zbak DIR [FILE]
 zrest() { unzip "${@}"; }
 zls() { unzip -l "${@}"; }
 zll() { unzip -ll "${@}"; }
+
+tls() { sudo tar --list --gunzip --verbose --file="$1"; }
+tbak() { sudo tar --create --preserve-permissions --numeric-owner --verbose --gzip --file="${2:-$1.tar.gz}" "$1"; } # tak DIR [FILE]
+trest() { local dir; [[ $2 ]] && dir=( --directory "$2" ); sudo tar --extract --preserve-permissions --verbose --gunzip --file="$1" "${dir[@]}"; }
 
 #
 # configuration
@@ -309,7 +313,7 @@ alias rd='rmdir'
 alias inf="FileInfo"
 alias l='explore'
 alias rc='CopyDir'
-alias rcp='rsync --info=progress2'
+
 lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
 
 #

@@ -613,8 +613,8 @@ fi
 
 # on|off|sleep|reb HOST [HOST...] [OPTIONS]
 on() { PowerCommand on "$@"; }; alias boot='on'
-off() { PowerCommand off "$@"; }; alias down='power off'
-sleep() { PowerCommand sleep "$@"; }
+off() { PowerCommand off "$@"; }; alias down='off'
+slp() { PowerCommand sleep "$@"; }
 reb() { PowerCommand reboot "$@"; }
 
 PowerCommand()

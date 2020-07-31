@@ -22,7 +22,7 @@ PiFirmwareEdit()
 		
 	# select the firmware file
 	local file="$1"; shift
-	[[ ! "$file" ]] && { $(dialog --title "Select Firmware" --stdout --fselect ""$dir/"" $(($LINES-12)) 100); clear; }
+	[[ ! "$file" ]] && { file="$(dialog --title "Select Firmware" --stdout --fselect ""$dir/"" $(($LINES-12)) 100)"; clear; }
 	[[ ! "$file" ]] && { MissingOperand "file" "PiFirmwareEdit"; return 1; }
 	[[ ! -f "$file" ]] && { EchoErr "PiFirmwareEdit: firmware file \"$file\" does not exist"; return 1; }
 	

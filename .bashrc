@@ -13,6 +13,8 @@ export LESSOPEN='|~/.lessfilter %s'
 # Interactive Configuration
 #
 
+IsPlatform wsl2 && { LANG="C.UTF-8"; } # fix locale errors
+
 # options
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 IsZsh && setopt no_beep

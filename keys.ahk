@@ -9,7 +9,6 @@ TerminalInit()
 TextEditorInit()
 VmInit()
 
-#Include C:\Users\Public\Documents\data\platform\win
 #Include common.ahk
 #Include ToggleTaskBar.ahk
 

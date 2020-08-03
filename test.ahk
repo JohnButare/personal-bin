@@ -1,0 +1,2 @@
+
+BashTitle := "bash "

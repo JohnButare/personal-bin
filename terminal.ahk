@@ -9,7 +9,7 @@ TerminalInit()
 	;	TerminalArgs := "-"
 
 	terminal := "WindowsTerminal"
-	;terminal := "Terminator"
+	terminal := "Terminator"
 
 	%terminal%Init() 
 }
@@ -19,6 +19,10 @@ OpenTerminal()
 	global
 	%terminal%Open() 
 }
+
+;
+; Windows Terminal
+;
 
 WindowsTerminalInit()
 {
@@ -47,23 +51,25 @@ TerminalNew()
   run WindowsTerminal
 }
 
+;
+; Terminator
+;
+
 TerminatorInit()
 {
 	global
 
-	TerminalProcess := "wscript.exe"
-	TerminalArgs := "c:\Users\Public\Documents\data\platform\win\terminator.vbs"
+	TerminatorProcess := "wscript.exe c:\ProgramData\terminator\terminator.vbs"
 
-	TerminalProcess := "Terminal.exe"
-	TerminalTitle := "terminal "
-	TerminalClass := "terminator.Terminator"
+	TerminatorTitle := "terminal* ahk_class X410_XAppWin"
+	TerminatorClass := "terminator.Terminator"
 }
 
 TerminatorOpen()
 {
 	global
 
-	if WinExist(TerminalTitle)
+	if WinExist(TerminatorTitle)
 		TerminatorActivate()
 	else
 		TerminatorNew()
@@ -72,20 +78,31 @@ TerminatorOpen()
 TerminatorNew()
 {
 	global
-	run TerminalProcess " " TerminalArgs, , Normal, pid
+	run TerminatorProcess
 }
 
 TerminatorActivate()
 {
 	global
 
-	; Assumes terminal starts with TerminalTitle, which depends on shell configuration 
+	; Assumes terminal starts with TerminatorTitle, which depends on shell configuration 
 	; and is not the case a command is running.
-	if TopActive(TerminalTitle)
-		return
+	;if TopActive(TerminatorTitle)
+	;	return
 
-	run "cmdow.exe terminal* /res /act", , "Hide"
+	;WinActivate TerminatorTitle
+
+	; making it top most and not top most works in WSL 2
+	WinActivate TerminatorTitle
+	WinSetAlwaysOnTop 1, TerminatorTitle
+	WinSetAlwaysOnTop 0, TerminatorTitle
+
+	;run "cmdow.exe terminator* /res /top /not", , "Hide"
 
 	; Uses the X window class but is slower
-	;run "wsl.exe /usr/local/data/bin/RunScript -x WinSetState " TerminalClass " -a", , "Hide"
+	;run "wsl.exe /usr/local/data/bin/RunScript -x WinSetState " TerminatorClass " -a", , "Hide"
+
+	; manipulate the X Server
+	;WinActivate "X410_XAppWin"
+	;TopActive("X410_XAppWin")
 }

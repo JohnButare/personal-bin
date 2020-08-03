@@ -616,6 +616,7 @@ fi
 #
 
 # on|off|sleep|reb HOST [HOST...] [OPTIONS]
+hib() { PowerCommand hibernate "$@"; }
 on() { PowerCommand on "$@"; }; alias boot='on'
 off() { PowerCommand off "$@"; }; alias down='off'
 slp() { PowerCommand sleep "$@"; }

@@ -352,8 +352,19 @@ alias toff='TimerOff'
 DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); }
 DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
 DiskTestRead() { sudo hdparm -t /dev/$1; } 
-DiskTestWrite() { sync; sudo dd if=/dev/${1:-sda} of=tempfile bs=1M count=${2:-1024}; sync; } # use smaller count for Pi and other lower performance disks
 DiskTestAll() { bonnie++ | tee >> "$(os name)_performance_$(GetDateStamp).txt"; }
+
+DiskTestWrite() # [DEST](disktest) [COUNT] - # use smaller count for Pi and other lower performance disks
+{
+	local file="$1"; [[ ! $file ]] && file="disktest"
+	local count="$2"; [[ ! $count ]] && count="1024" 
+	
+	sync
+	dd if=/dev/zero of="$file" bs=1M count="$count"
+	if=/dev/zero of=tempfile bs=1M count=1024
+	sync
+	rm "$file"
+} 
 
 # network
 iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002; } # server

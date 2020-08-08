@@ -2,7 +2,7 @@ PI_FIRMWARE_CHANNEL="/etc/default/rpi-eeprom-update"
 PI_FIRMWARE_DIR="/lib/firmware/raspberrypi/bootloader"
 
 PiCheckPower() { ! dmesg --time-format ctime | grep -i volt; } # check for under voltage in the log
-piclone() { sudox dbus-launch piclone &; }
+PiClone() { coproc sudox dbus-launch piclone; }
 
 PiFirmwareInfo()
 {
@@ -43,7 +43,6 @@ PiFirmwareEdit()
 	# apply the firmware
 	sudo rpi-eeprom-update -d -f "$dir/new-config.bin" || return
 }
-
 
 PiFirmwareDir() { cd "$PI_FIRMWARE_DIR"; }
 PiFirmwareEditChannel() { sudoedit "$PI_FIRMWARE_CHANNEL"; }

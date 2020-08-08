@@ -21,7 +21,7 @@ IsZsh && setopt no_beep
 
 # credential manager
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
-	IsSsh && InPath dbus-update-activation-environment && { dbus-update-activation-environment --systemd DISPLAY || return; } # ensure get Ubuntu gnome keyring password prompt over ssh 
+	IsSsh && InPath dbus-launch dbus-update-activation-environment && { dbus-update-activation-environment --systemd DISPLAY || return; } # ensure get Ubuntu gnome keyring password prompt over ssh 
 	credential check >& /dev/null && export CREDENTIAL_MANAGER="true"
 	export CREDENTIAL_MANAGER_CHECKED="true"
 fi
@@ -693,6 +693,11 @@ procmon() { start -rid -e procmon; }
 #
 
 alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distutils error
+
+#
+# Raspberry Pi
+#
+PiImageLite() { pi image "$(i dir)/platform/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
 
 #
 # ruby

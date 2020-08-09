@@ -23,7 +23,6 @@ alias ewhosts='elevate RunScript TextEdit /mnt/c/Windows/System32/drivers/etc/ho
 alias cm='start CompMgmt.msc'
 alias credm='start control /name Microsoft.CredentialManager'
 alias dm='start DevMgmt.msc'
-alias ipconfig='ipconfig.exe'
 alias prog='product gui'
 alias vss='vss.exe'
 alias wh="$WIN_HOME"

@@ -661,7 +661,7 @@ alias mg="media get"
 #
 
 alias ev='EventViewer'
-EventViewer() { IsPlatform win && start eventvwr.msc; InPath ksystemlog && coprox sudox "ksystemlog"; }
+EventViewer() { IsPlatform win && start eventvwr.msc; InPath ksystemlog && coproc sudox "ksystemlog"; }
 
 LogShow() { setterm --linewrap off; tail -f "$1"; setterm --linewrap on; }
 LogNetConsole() { netconsole -l -u $(GetIpAddress) 6666 | sudoc tee /var/log/netconsole.log; }

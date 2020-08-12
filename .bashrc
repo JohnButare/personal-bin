@@ -1,5 +1,4 @@
 # ~/.bashrc, user intialization
-#zmodload zsh/zprof; zprof -c # profile
 
 [[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
 
@@ -76,6 +75,8 @@ alias clock='xclock -title $HOSTNAME -digital -update 1 &'
 alias f='firefox'
 alias m='merge'
 
+terminator() { coproc /usr/bin/terminator "$@"; }
+
 alias grep='\grep --color=auto'
 
 # Add an "alert" alias for long running commands.  sleep 10; alert
@@ -103,21 +104,20 @@ trest() { local dir; [[ $2 ]] && dir=( --directory "$2" ); sudo tar --extract --
 #
 
 # edit/set 
-alias sa=". ~/.bashrc update" ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; # set aliases
+alias sa=". ~/.bashrc" ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; # set aliases
 alias s10k="sz" e10k="e ~/.p10k.zsh"
 eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 					# edit all aliases
 efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  			# edit all functions
 
-alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.zshrc $UBIN/.bashrc"
+alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.profile $UBIN/.bash_profile $UBIN/.p10k.zsh $UBIN/.zshrc $UBIN/.bashrc"
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
 alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
 sfull() # set full
 {
-	# force load	
+	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,PROXY_CHECKED,FZF_CHECKED}="" # .bashrc
 	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""		# bash.bashrc
 	declare {CHROOT_CHECKED,VM_TYPE_CHECKED}=""				# function.sh
-	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,PROXY_CHECKED,FZF_CHECKED}="" # .bashrc
 
 	. "$bin/bash.bashrc"
 	. "$bin/function.sh"
@@ -317,6 +317,8 @@ alias l='explore'
 alias rc='CopyDir'
 
 lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
+
+FileTypes() { file * | sort -k 2; }
 
 #
 # functions
@@ -703,9 +705,8 @@ PiImageLite() { pi image "$(i dir)/platform/Raspberry Pi/Raspberry Pi OS/2020-05
 # ruby
 #
 
-export RUBYOPT=-W0 # fix lolcat deprecation warnings
-alias nruby='/usr/local/opt/ruby/bin/ruby' # new ruby
-alias unruby='export PATH="/usr/local/opt/ruby/bin:$PATH"' # use new ruby
+#export RUBYOPT=-W0 # fix lolcat deprecation warnings, rvm says to disable RUBYOPT
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 #
 # scripts
@@ -720,6 +721,7 @@ alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs grep -iE "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
+alias fu='FindUsages'
 FindUsages() { FindText "$1" "*" "$BIN"; FindText "$1" ".*" "$UBIN"; FindText "$1" "*" "$UBIN"; }
 
 #
@@ -834,9 +836,3 @@ alias XmlShow='xml sel -t -c'
 
 SourceIfExists "$BIN/z.sh" || return
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
-
-IsBash && { [[ ! $SET_PWD && "$1" != "update" && "$PWD" == "$WINDIR/system32" ]] && cd; }
-[[ $SET_PWD ]] && { cd "$SET_PWD"; unset SET_PWD; }
-
-#zprof # profile
-return 0

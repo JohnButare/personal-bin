@@ -109,7 +109,7 @@ alias s10k="sz" e10k="e ~/.p10k.zsh"
 eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 					# edit all aliases
 efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  			# edit all functions
 
-alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.profile $UBIN/.bash_profile $UBIN/.p10k.zsh $UBIN/.zshrc $UBIN/.bashrc"
+alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.profile $UBIN/.bash_profile $UBIN/.zlogin $UBIN/.p10k.zsh $UBIN/.zshrc $UBIN/.bashrc"
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
 alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
@@ -702,13 +702,6 @@ alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distut
 PiImageLite() { pi image "$(i dir)/platform/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
 
 #
-# ruby
-#
-
-#export RUBYOPT=-W0 # fix lolcat deprecation warnings, rvm says to disable RUBYOPT
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
-#
 # scripts
 #
 
@@ -834,5 +827,6 @@ alias XmlShow='xml sel -t -c'
 # final
 #
 
+SourceIfExists "$HOME/.rvm/scripts/rvm" || return
 SourceIfExists "$BIN/z.sh" || return
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return

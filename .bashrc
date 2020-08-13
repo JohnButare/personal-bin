@@ -524,8 +524,11 @@ ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP lo
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 
 # DHCP
-DhcpMonitor() {	IsPlatform win && { DhcpTest.exe "$@"; return; }; }
+KeaLog() { service log kea-dhcp4-server; }
+KeaRestart() { service restart kea-dhcp4-server; }
+KeaTest() { SshHelper "$1.local" 'sudo dhclient -r; sudo dhclient'; ping "$1.local"; }
 
+DhcpMonitor() {	IsPlatform win && { DhcpTest.exe "$@"; return; }; }
 DhcpOptions()
 { 
 	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }
@@ -802,9 +805,11 @@ OptOn() { [[ -d "/opt/lib.hold" ]] && sudo mv "/opt/lib.hold" "/opt/lib"; }
 OptOff() { [[ -d "/opt/lib" ]] && sudo mv "/opt/lib" "/opt/lib.hold"; }
 
 # configuration
+alias ncd="cd $c/network/dhcp"
 alias nce='wiggin config edit'
 alias ncb='wiggin config backup'
 alias ncu='wiggin config update'
+alias ncu1='wiggin config update pi1.local'
 
 # UniFi
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }

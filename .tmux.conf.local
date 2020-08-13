@@ -292,5 +292,8 @@ set -g mouse on
 # set -g prefix C-a
 # bind C-a send-prefix
 
+bind o split-window -v # Split panes vertically
+bind e split-window -h # Split panes horizontal
+
 # move status line to top
 #set -g status-position top

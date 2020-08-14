@@ -523,7 +523,13 @@ alias ehosts='sudo nano /etc/hosts' # edit hosts file
 ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 
+# DNS
+DnsLog() { service log bind9; }
+DnsRestart() { service restart bind9; }
+
 # DHCP
+alias DhcpLog="KeaLog"
+
 KeaLog() { service log kea-dhcp4-server; }
 KeaRestart() { service restart kea-dhcp4-server; }
 KeaTest() { SshHelper "$1.local" 'sudo dhclient -r; sudo dhclient'; ping "$1.local"; }
@@ -805,11 +811,14 @@ OptOn() { [[ -d "/opt/lib.hold" ]] && sudo mv "/opt/lib.hold" "/opt/lib"; }
 OptOff() { [[ -d "/opt/lib" ]] && sudo mv "/opt/lib" "/opt/lib.hold"; }
 
 # configuration
-alias ncd="cd $c/network/dhcp"
+alias ncd="cd $c/network/configuration"
 alias nce='wiggin config edit'
 alias ncb='wiggin config backup'
 alias ncu='wiggin config update'
+
 alias ncu1='wiggin config update pi1.local'
+alias ncu2='wiggin config update pi2.local'
+alias ncuw='ncu1 && ncu2'
 
 # UniFi
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }

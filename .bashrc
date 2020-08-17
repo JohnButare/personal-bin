@@ -571,6 +571,9 @@ alias ProxyStatus="network proxy vars --status"
 
 ! [[ $PROXY_CHECKED ]] && { ProxyEnable >& /dev/null; PROXY_CHECKED="true"; }
 
+# salt
+RunAll() { sudoc salt '*' cmd.run "/usr/local/data/bin/RunScript $@"; }
+
 # Squid
 SquidLog() { LogShow "/usr/local/squid/var/logs/access.log"; } # specific to QNAP location for now
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }

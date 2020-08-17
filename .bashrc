@@ -474,33 +474,33 @@ alias hbakall='hbak pi5'
 hbak() # hbak HOST - backup homebridge configuration from HOST
 { 
 	local f="$1.homebridge.zip" d="$cloud/network/homebridge/backup"
-	local host="$1" stamp="$(GetDateStamp)"
+	local h="$1" stamp="$(GetDateStamp)"
 
-	[[ $host ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
+	[[ ! $h ]] && { MissingOperand "host" "hbak" || return 1; }	
 	[[ ! -d "$d" ]] && { mkdir "$d" || return; }
 
 	local i=1
 	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
 	local df="$d/$stamp.$i.$f"
 
-	ssh $host "rm -f $f; zip -r $f .homebridge" || return
-	scp $host:~/$f "$df" || return
-	ssh $host "rm -f $f" || return
-	echo "$host homebridge configuration saved to $df"
+	ssh $h "rm -f $f; zip -r $f .homebridge" || return
+	scp $h:~/$f "$df" || return
+	ssh $h "rm -f $f" || return
+	echo "$h homebridge configuration saved to $df"
 }
 
-hrest() # hrest HOST - restore homebridge configuration to HOST
+hrest() # hrest HOST FILE - restore homebridge configuration in FILE to HOST
 { 
-	local h="$1";
-	local f="$h.homebridge.zip" d="$cloud/systems/homebridge/$h" bakFile="$h.$(GetTimeStamp).homebridge" hb="/etc/init.d/homebridge"
+	local h="$1" f="$2";
+	local bakFile="$h.$(GetTimeStamp).homebridge" hb="/etc/init.d/homebridge"
 
-	[[ $h ]] || { EchoErr "USAGE: hbak HOST"; return 1; }
-	[[ -f "$d/$f" ]] || { EchoErr "$f does not exist"; return 1; }
-	ask -dr n "Are you sure you want to restore $f to $h" || return
+	[[ ! $h ]] && { MissingOperand "host" "hrest" || return 1; }
+	[[ ! -f "$f" ]] && { EchoErr "hrest: file "$f" does not exist"; return 1; }
+	ask -dr n "Are you sure you want to restore "$f" to $h" || return
 
 	ssh $h "[[ -d .bak ]] || mkdir .bak; zip -r .bak/$bakFile ~/.homebridge" || return
-	scp "$d/$f" $h:~ || return
-	ssh $h "rm -fr ~/.homebridge && unzip -o $f" || return
+	scp "$f" $h:~ || return
+	ssh -t $h "sudo hb-service stop && sudo find ~/.homebridge -mindepth 1 -maxdepth 1 -exec rm -fr {} + && sudo unzip -o $f -d ~" || return
 	echo "Successfully restored $f homebridge configuration to $h"
 }
 

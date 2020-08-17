@@ -30,7 +30,7 @@ ZSH_THEME_TERM_TAB_TITLE_IDLE="terminal %15<..<%~%<<" #15 char left truncated PW
 ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"
 
 # zsh specific aliases
-IsPlatform qnap && alias bash="/opt/bin/bash -l"
+IsPlatform qnap,synology && alias bash="/opt/bin/bash -l"
 IsPlatform mac && alias bash="/usr/local/bin/bash -l"
 
 # scripts

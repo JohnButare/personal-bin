@@ -809,7 +809,7 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 gapp() { elevate "$P32/GIGABYTE/AppCenter/RunUpd.exe"; } # Gigabyte Application Center
 gfan() { elevate "$P32/GIGABYTE/siv/ThermalConsole.exe"; }
 
-# synology opt interferes with Domotz Agent
+# synology entware opt interferes with Domotz Agent
 OptOn() { [[ -d "/opt/lib.hold" ]] && sudo mv "/opt/lib.hold" "/opt/lib"; }
 OptOff() { [[ -d "/opt/lib" ]] && sudo mv "/opt/lib" "/opt/lib.hold"; }
 

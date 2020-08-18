@@ -454,6 +454,7 @@ alias eg='e ~/.gitconfig'
 alias gg='GitHelper gui'
 alias gh='GitHelper'
 alias ghub='GitHelper hub'
+alias lg='lazygit'
 alias tgg='GitHelper tgui'
 
 #

@@ -117,7 +117,8 @@
 
 	# reset
 	undo2 = reset --soft HEAD@{1} # in git-extras
-	ro = "!f() { local cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)";  git reset --hard "origin/$cb"; }; f" # ro, reset origin
+	rb = "!f() { local cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)" && git reset --hard "$cb" && git clean -f -d; }; f" # ro, reset branch
+	rbo = "!f() { local cb="$(git symbolic-ref -q HEAD | cut -d"/" -f 3)" && git reset --hard "origin/$cb" && git clean -f -d; }; f" # ro, reset branch to origin
 
 	# remote
 	ft = fetch --tags

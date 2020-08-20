@@ -523,6 +523,7 @@ alias ehosts='sudo nano /etc/hosts' # edit hosts file
 
 ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
+FixPing() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 
 # DNS
 DnsLog() { service log bind9; }

@@ -519,7 +519,7 @@ hcg() { HostCleanup gui; }
 # network
 #
 
-alias ehosts='sudo nano /etc/hosts' # edit hosts file
+alias ehosts='sudoedit /etc/hosts' # edit hosts file
 
 ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
@@ -642,6 +642,8 @@ fi
 #
 # hardware
 #
+
+GetArchitecture() { for host in $@; do printf " $host "; ssh $host uname -m; done; }
 
 # on|off|sleep|reb HOST [HOST...] [OPTIONS]
 hib() { PowerCommand hibernate "$@"; }
@@ -767,8 +769,6 @@ playsound()
 { 
 	InPath play && { play "$@"; return; }
 	IsPlatform mac && { afplay "$@"; return; }
-	IsPlatform cygwin && { cat "$1" > /dev/dsp; return; }
-	
 	EchoErr "No audio program was found"; return 1
 }
 

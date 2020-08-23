@@ -246,7 +246,7 @@ alias ls='DoLs'
 alias lsc='DoLs'											# list with colorls
 alias lsn='DoLs --native'							# list native (do not use colorls)
 alias la='DoLs -Al'										# list all
-alias lg="DoLs -A --git-status" 			# list git status
+alias lgs="DoLs -A --git-status" 			# list git status
 alias ll='DoLs -l'										# list long
 alias llh='DoLs -d -l .*'							# list long hidden
 alias lh='DoLs -d .*' 								# list hiden
@@ -355,7 +355,7 @@ HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 sysmon()
 { 
 	case "$PLATFORM" in
-sysmon() { case "$PLATFORM" in  linux) gnome-system-monitor &;; win) start taskmgr;; esac; }
+		linux) InPath gnome-system-monitor && { coproc gnome-system-monitor; return; };;
 		mac) start "Activity Monitor.app";;
 		winA) start taskmgr; return;; 
 	esac

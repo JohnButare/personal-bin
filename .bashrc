@@ -355,7 +355,7 @@ HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 sysmon()
 { 
 	case "$PLATFORM" in
-		linux) InPath gnome-system-monitor && { gnome-system-monitor &; return; };;
+sysmon() { case "$PLATFORM" in  linux) gnome-system-monitor &;; win) start taskmgr;; esac; }
 		mac) start "Activity Monitor.app";;
 		winA) start taskmgr; return;; 
 	esac

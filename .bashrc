@@ -18,9 +18,17 @@ IsPlatform wsl2 && { LANG="C.UTF-8"; } # fix locale errors
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 IsZsh && setopt no_beep
 
+# Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
+SourceIfExists "$HOME/.rvm/scripts/rvm" || return
+
 # credential manager
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
-	IsSsh && InPath dbus-launch dbus-update-activation-environment && { dbus-update-activation-environment --systemd DISPLAY || return; } # ensure get Ubuntu gnome keyring password prompt over ssh 
+
+	# ensure get Ubuntu gnome keyring password prompt over ssh 
+	if IsSsh && [[ $DISPLAY ]] && InPath dbus-launch dbus-update-activation-environment; then
+		dbus-update-activation-environment --systemd DISPLAY || return
+	fi 
+
 	credential check >& /dev/null && export CREDENTIAL_MANAGER="true"
 	export CREDENTIAL_MANAGER_CHECKED="true"
 fi
@@ -304,8 +312,8 @@ alias ...='builtin cd ../..'
 alias ....='builtin cd ../../..'
 alias .....='cbuiltin d ../../../..'
 
-alias c='cls'		# clear screen
-alias cb='builtin cd ~; cls' # clear screen and cd
+alias c='cls'									# clear screen
+alias cb='builtin cd ~; cls' 	# clear screen and cd
 alias cf='cb; InPath fortune && InPath cowsay && InPath lolcat && fortune | cowsay | lolcat ;' # clear both, fortune
 
 alias del='rm'
@@ -317,6 +325,7 @@ alias l='explore'
 alias rc='CopyDir'
 
 lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
+tdu() { ncdu -x /; } # total disk usage
 
 FileTypes() { file * | sort -k 2; }
 
@@ -343,7 +352,21 @@ HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 # performance
 #
 
-sysmon() { case "$PLATFORM" in  linux) gnome-system-monitor &;; win) start taskmgr;; esac; }
+sysmon()
+{ 
+	case "$PLATFORM" in
+		linux) InPath gnome-system-monitor && { gnome-system-monitor &; return; };;
+		mac) start "Activity Monitor.app";;
+		winA) start taskmgr; return;; 
+	esac
+
+	InPath glances && { glances; return; }
+	InPath htop && { htop; return; }
+	InPath top && { top; return; }
+
+	EchoErr "sysmon: no system monitor installed"
+	return 1
+}
 
 # time
 alias t='time pause'
@@ -722,6 +745,7 @@ PiImageLite() { pi image "$(i dir)/platform/Raspberry Pi/Raspberry Pi OS/2020-05
 # scripts
 #
 
+mint() { e "$ccode/bash/template/min"; } # bash min template
 alias scd='ScriptCd'
 alias se='ScriptEval'
 alias slist='file * .* | FilterShellScript | cut -d: -f1'
@@ -826,6 +850,8 @@ alias ncu1='wiggin config update pi1.local'
 alias ncu2='wiggin config update pi2.local'
 alias ncuw='ncu1 && ncu2'
 
+nae() { TextEdit "$c/network/configuration/dns/forward.txt"; } # network alias edit
+
 # UniFi
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
@@ -847,6 +873,5 @@ alias XmlShow='xml sel -t -c'
 # final
 #
 
-SourceIfExists "$HOME/.rvm/scripts/rvm" || return
 SourceIfExists "$BIN/z.sh" || return
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return

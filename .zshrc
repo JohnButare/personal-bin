@@ -23,7 +23,7 @@ HIST_STAMPS="mm/dd/yyyy"
 [[ -f "$ZSH/oh-my-zsh.sh" ]] && . "$ZSH/oh-my-zsh.sh"
 
 # completion
-zstyle ':completion:*' known-hosts-files "$UBIN/hosts"
+zstyle ':completion:*' known-hosts-files "$DATA/setup/hosts"
 
 # set terminal title after oh-my-zsh.sh
 ZSH_THEME_TERM_TAB_TITLE_IDLE="terminal %15<..<%~%<<" #15 char left truncated PWD

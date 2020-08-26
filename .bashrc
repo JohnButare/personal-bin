@@ -19,7 +19,7 @@ IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand glob
 IsZsh && setopt no_beep
 
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
-SourceIfExists "$HOME/.rvm/scripts/rvm" || return
+SourceIfExists "$HOME/.rvm/scripts/rvm" ||    return
 
 # credential manager
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then

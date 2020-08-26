@@ -9,7 +9,7 @@ TerminalInit()
 	;	TerminalArgs := "-"
 
 	terminal := "WindowsTerminal"
-	terminal := "Terminator"
+	;terminal := "Terminator"
 
 	%terminal%Init() 
 }

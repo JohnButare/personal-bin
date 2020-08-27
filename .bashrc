@@ -16,7 +16,7 @@ IsPlatform wsl2 && { LANG="C.UTF-8"; } # fix locale errors
 
 # options
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
-IsZsh && setopt no_beep
+IsZsh && { setopt no_beep; alias help="run-help"; }
 
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
 SourceIfExists "$HOME/.rvm/scripts/rvm" ||    return
@@ -41,6 +41,16 @@ fi
 
 # keyboard
 IsZsh && bindkey "^H" backward-kill-word
+
+#
+# helper functions
+#
+
+header()
+{ 
+	local blue="$(printf '\033[34m')" indigo="$(printf '\033[38;5;093m')" reset="$(printf '\033[m')"
+	printf "${blue}*************** ${indigo}$1${blue} ***************${reset}\n"
+}
 
 #
 # locations
@@ -79,18 +89,11 @@ alias st='startup --no-pause'
 
 alias e='TextEdit'
 alias bc='BeyondCompare'
-alias clock='xclock -title $HOSTNAME -digital -update 1 &'
 alias f='firefox'
+alias grep='\grep --color=auto'
 alias m='merge'
 
 terminator() { coproc /usr/bin/terminator "$@"; }
-
-alias grep='\grep --color=auto'
-
-# Add an "alert" alias for long running commands.  sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-IsZsh && alias help="run-help"
 
 #
 # archive
@@ -194,6 +197,36 @@ if [[ ! $FZF_CHECKED && -d ~/.fzf ]]; then
 	_fzf_complete_ssh() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
 	_fzf_complete_ping() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
 fi
+
+#
+# Date/Time
+#
+
+clock()
+{
+	if [[ $DISPLAY ]] && InPath xclock; then coproc xclock -title $HOSTNAME -digital -update 1
+	elif InPath tty-clock; then clockt
+	else date
+	fi
+}
+
+clockt() # clock terminal
+{
+	if InPath tty-clock; then tty-clock -s -c; 
+	else date;
+	fi
+} 
+
+clockc() # clock check
+{
+
+	InPath chronyc && { header "Chrony Client"; chronyc tracking || return; }
+	
+	if [[ -f "/etc/chrony/chrony.conf" ]] && grep "^allow" "/etc/chrony/chrony.conf" >& /dev/null; then
+		header "Chrony Server"
+		sudoc chronyc serverstats || return
+	fi
+}
 
 #
 # development

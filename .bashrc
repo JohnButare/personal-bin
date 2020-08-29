@@ -318,9 +318,11 @@ DoLs()
 # disk
 #
 
-alias duh='${G}du --human-readable'
-alias dsu='DiskSpaceUsage'
-dus() { ${G}du --summarize --human-readable "$@" |& grep -Ev "Permission denied|Transport endpoint is not connected"; }
+alias duh='${G}du --human-readable' # disk usage human readable
+alias dsu='DiskSpaceUsage'					# disk apace usage
+tdu() { ncdu -x /; } 								# total disk usage
+dus() { ${G}du --summarize --human-readable "$@" |& grep -Ev "Permission denied|Transport endpoint is not connected"; } # disk usage summary
+
 alias TestDisk='sudo bench32.exe'
 
 ListPartitions() { sudo parted -l; }
@@ -358,7 +360,6 @@ alias l='explore'
 alias rc='CopyDir'
 
 lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
-tdu() { ncdu -x /; } # total disk usage
 
 FileTypes() { file * | sort -k 2; }
 

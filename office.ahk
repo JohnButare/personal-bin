@@ -1,13 +1,15 @@
 OfficeInit()
 {
   global
-     
+   
+  Office := ""
+    
   if FileExist(PROGRAMS64 "\Microsoft Office\root\office16\WinWord.EXE")
     Office := PROGRAMS64 "\Microsoft Office\root\office16"
 
   else if FileExist(PROGRAMS32 "\Microsoft Office\root\office16\WinWord.EXE")
     Office := PROGRAMS32 "\Microsoft Office\root\office16"
-	  
+	 
   if (Office == "") 
     return
 

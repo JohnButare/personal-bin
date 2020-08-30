@@ -43,16 +43,6 @@ fi
 IsZsh && bindkey "^H" backward-kill-word
 
 #
-# helper functions
-#
-
-header()
-{ 
-	local blue="$(printf '\033[34m')" indigo="$(printf '\033[38;5;093m')" reset="$(printf '\033[m')"
-	printf "${blue}*************** ${indigo}$1${blue} ***************${reset}\n"
-}
-
-#
 # locations
 #
 

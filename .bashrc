@@ -504,6 +504,10 @@ alias ghub='GitHelper hub'
 alias lg='lazygit'
 alias tgg='GitHelper tgui'
 
+# GitLab
+glr() { sudoc gitlab-ctl reconfigure; } # GitLab reconfigure
+glc() { sudoedit /etc/gitlab/gitlab.rb; } # GitLab configuration
+
 #
 # homebridge
 #

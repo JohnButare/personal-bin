@@ -381,7 +381,7 @@ sysmon()
 	case "$PLATFORM" in
 		linux) InPath gnome-system-monitor && { coproc gnome-system-monitor; return; };;
 		mac) start "Activity Monitor.app";;
-		winA) start taskmgr; return;; 
+		win) start taskmgr; return;; 
 	esac
 
 	InPath glances && { glances; return; }

@@ -572,10 +572,19 @@ hcg() { HostCleanup gui; }
 
 alias ehosts='sudoedit /etc/hosts' # edit hosts file
 
-ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { . "$BIN/bootstrap-config.sh" || return; echo "search $domain\n" | sudo tee -a "/etc/resolv.conf" || return; }
+
+# Apache
+ApacheConfig() { sudo nano "/etc/config/apache/extra/wiggin.conf"; } # specific to QNAP location for now
+ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
+
+ApacheRestart() 
+{ 
+	IsPlatform qnap && { sudo /etc/init.d/Qthttpd.sh restart; return; }
+	[[ -f "/usr/local/apache/bin/apachectl" ]] && { sudo "/usr/local/apache/bin/apachectl" restart; return; }
+}
 
 # DNS
 DnsLog() { service log bind9; }

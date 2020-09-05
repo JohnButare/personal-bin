@@ -378,12 +378,14 @@ HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
 
 sysmon()
 { 
-	case "$PLATFORM" in
-		linux) InPath gnome-system-monitor && { coproc gnome-system-monitor; return; };;
-		mac) start "Activity Monitor.app";;
-		win) start taskmgr; return;; 
-	esac
-
+	if HasWindowManager; then
+		case "$PLATFORM" in
+			linux) InPath gnome-system-monitor && { coproc gnome-system-monitor; return; };;
+			mac) start "Activity Monitor.app";;
+			win) start taskmgr; return;; 
+		esac
+	fi
+	
 	InPath glances && { glances; return; }
 	InPath htop && { htop; return; }
 	InPath top && { top; return; }

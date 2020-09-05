@@ -505,8 +505,17 @@ alias lg='lazygit'
 alias tgg='GitHelper tgui'
 
 # GitLab
-glr() { sudoc gitlab-ctl reconfigure; } # GitLab reconfigure
 glc() { sudoedit /etc/gitlab/gitlab.rb; } # GitLab configuration
+glr() { sudoc gitlab-ctl reconfigure; } # GitLab reconfigure
+
+glb() 
+{ 
+	sudoc gitlab-rake gitlab:backup:create STRATEGY=copy
+	local dir="$(unc mount //oversoul/drop)" || return
+	mkdir --parents "$dir/gitlab" || return
+	sudo rsync --info=progress2 --archive --recursive --delete "/var/opt/gitlab/backups" "$dir/gitlab"
+	unc unmount //oversoul/drop || return
+}
 
 #
 # homebridge

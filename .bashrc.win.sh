@@ -36,7 +36,7 @@ alias ffw='elevate powershell FlipFlopWheel.ps1'
 z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 
 # wsl
-wsld="$DATAD/data/wsl" # dir
+wsld="$DATA/appdata/wsl" # dir
 
 wn() { echo "$(wsl name) (WSL $WSL)"; } 							# name of current distribution
 wv() { echo "WSL $(wsl version)" | figlet | lolcat; } # version of current distribution

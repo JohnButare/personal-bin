@@ -12,7 +12,7 @@ export LESSOPEN='|~/.lessfilter %s'
 # Interactive Configuration
 #
 
-IsPlatform wsl2 && { LANG="C.UTF-8"; } # fix locale errors
+IsPlatform wsl2 && { LANG="C.UTF-8"; } # fix locale error
 
 # options
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
@@ -46,7 +46,7 @@ IsZsh && bindkey "^H" backward-kill-word
 # locations
 #
 
-p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA" datad="$DATAD"
+p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA" appdata="$DATA/appdata" appconfig="$DATA/appconfig"
 psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
 pp="$psm/Programs" 	# PublicPrograms
 pd="$pub/Desktop" 	# PublicDesktop

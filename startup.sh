@@ -1,3 +1,9 @@
 xserver $command || return
-app -b $command chrony dropbox AutoHotKey AquaSnap LogitechOptions greenshot PuttyAgent sshd word dropbox || return # dropbox shows false start initially, try again at end
+
+# service
+app -b $command chrony docker sshd  || return
+
+# applications - dropbox shows false start initially, try again at end
+app -b $command dropbox AutoHotKey AquaSnap LogitechOptions greenshot PuttyAgent word dropbox || return
+
 return 0

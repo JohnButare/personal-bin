@@ -380,7 +380,10 @@ sysmon()
 { 
 	if HasWindowManager; then
 		case "$PLATFORM" in
-			linux) InPath gnome-system-monitor && { coproc gnome-system-monitor; return; };;
+			linux) 
+				InPath stacer && { coproc stacer; return; }
+				InPath gnome-system-monitor && { coproc gnome-system-monitor; return; }
+				;;
 			mac) start "Activity Monitor.app";;
 			win) start taskmgr; return;; 
 		esac

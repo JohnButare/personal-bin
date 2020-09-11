@@ -607,7 +607,8 @@ DnsRestart() { service restart bind9; }
 # DHCP
 alias DhcpLog="KeaLog"
 
-KeaLog() { service log kea-dhcp4-server; }
+KeaLog() { LogShow "/var/log/kea-dhcp4.log"; }
+KeaServiceLog() { service log kea-dhcp4-server; }
 KeaRestart() { service restart kea-dhcp4-server; }
 KeaTest() { SshHelper "$1.local" 'sudo dhclient -r; sudo dhclient'; ping "$1.local"; }
 

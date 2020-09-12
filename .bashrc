@@ -886,7 +886,9 @@ alias crdown="schroot --all-sessions --end-session"
 
 # hyper-v
 alias h="hyperv"
-alias hconn="hyperv console"
+alias hconn="h console"
+honc() { h on "$1" && h console  "$1"; } 									# on-console
+hconc() { h create "$1" && h on "$1" && h console "$1"; } # create-on-console
 
 # vmware
 vm() { vmware IsInstalled && VMware start || hyperv start; }

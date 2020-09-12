@@ -313,8 +313,6 @@ alias dsu='DiskSpaceUsage'					# disk apace usage
 tdu() { ncdu -x /; } 								# total disk usage
 dus() { ${G}du --summarize --human-readable "$@" |& grep -Ev "Permission denied|Transport endpoint is not connected"; } # disk usage summary
 
-alias TestDisk='sudo bench32.exe'
-
 ListPartitions() { sudo parted -l; }
 ListDisks() { sudo parted -l |& grep -i '^Disk' |& grep -Ev 'Error|Disk Flags' | cut -d' ' -f2 | cut -d: -f1; }
 ListFirstDisk() { ListDisks | head -1; }
@@ -403,6 +401,7 @@ alias ton='TimerOn'
 alias toff='TimerOff'
 
 # disk - nas3=nvme0n1 pi=mmcblk0
+alias TestDisk='sudo bench32.exe'
 DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); }
 DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
 DiskTestRead() { sudo hdparm -t /dev/$1; } 
@@ -605,19 +604,26 @@ DnsLog() { service log bind9; }
 DnsRestart() { service restart bind9; }
 
 # DHCP
-alias DhcpLog="KeaLog"
-
-KeaLog() { LogShow "/var/log/kea-dhcp4.log"; }
-KeaServiceLog() { service log kea-dhcp4-server; }
-KeaRestart() { service restart kea-dhcp4-server; }
-KeaTest() { SshHelper "$1.local" 'sudo dhclient -r; sudo dhclient'; ping "$1.local"; }
-
 DhcpMonitor() {	IsPlatform win && { DhcpTest.exe "$@"; return; }; }
 DhcpOptions()
 { 
 	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }
 	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
 }
+
+# Kea DHCP
+KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }
+
+KeaLog() { LogShow "/var/log/kea-dhcp4.log"; }
+KeaServiceLog() { service log kea-dhcp4-server; }
+KeaFixLog() { local f="/var/run/kea/isc_kea_logger_lockfile"; [[ -f "$f" ]] && return; sudo mkdir "/var/run/kea"; sudo touch "$f"; }
+
+KeaStart() { service start kea-dhcp4-server; }
+KeaStatus() { service status kea-dhcp4-server; }
+KeaStop() { service stop kea-dhcp4-server; }
+KeaRestart() { service restart kea-dhcp4-server; }
+
+KeaTest() { SshHelper "$1.local" 'sudo dhclient -r; sudo dhclient'; ping "$1.local"; }
 
 # mDNS
 MdnsList() {  avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
@@ -642,7 +648,7 @@ if IsPlatform win; then
 	}
 fi
 
-# network proxy
+# proxy server
 alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
 alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars --status"
 alias ProxyStatus="network proxy vars --status"
@@ -663,6 +669,9 @@ alias slf='SyncLocalFiles'
 alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
+
+# TFTP
+TftpLog() { IsPlatform qnap && LogShow "/share/Logs/opentftpd.log"; }
 
 #
 # prompt

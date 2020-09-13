@@ -649,7 +649,9 @@ if IsPlatform win; then
 fi
 
 # netboot
-nbm="$DATA/appconfig/netbootxyz/menus"
+nbm() { cd "//nas3/home/LocalData/appconfig/netbootxyz/menus"; } # netboot menus
+nba() { cd "//nas3/home/LocalData/appdata/netbootxyz"; } # netboot assets
+
 
 # proxy server
 alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"

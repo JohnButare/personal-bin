@@ -886,7 +886,7 @@ alias h="hyperv"
 hc() { h console  "$1"; } 																				# console
 hoc() { h on "$1" && h console  "$1"; } 													# on-console
 hct() { h create --type "$@" && h on "$2" && h console "$2"; } 		# create-type
-hcl() { hct linux "$@" ; } ; hcp() { hct pxe "$1" ; }; hcw() { hct win "$1" ; } 
+hcl() { hct linux "$@" ; } ; hcp() { hct pxe "$@" ; }; hcw() { hct win "$@" ; } 
 
 # vmware
 vm() { vmware IsInstalled && VMware start || hyperv start; }

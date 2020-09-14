@@ -574,10 +574,6 @@ hrest() # hrest HOST FILE - restore homebridge configuration in FILE to HOST
 #
 
 u() { SshAgentCheck; HostUpdate "$@" || return; }
-un() { u nas; } # update nas
-
-hc() { HostCleanup "$@" || return; }
-hcg() { HostCleanup gui; }
 
 #
 # network
@@ -887,9 +883,10 @@ alias crdown="schroot --all-sessions --end-session"
 
 # hyper-v
 alias h="hyperv"
-alias hconn="h console"
-honc() { h on "$1" && h console  "$1"; } 									# on-console
-hconc() { h create "$1" && h on "$1" && h console "$1"; } # create-on-console
+hc() { h console  "$1"; } 																				# console
+hoc() { h on "$1" && h console  "$1"; } 													# on-console
+hct() { h create --type "$@" && h on "$2" && h console "$2"; } 		# create-type
+hcl() { hct linux "$@" ; } ; hcp() { hct pxe "$1" ; }; hcw() { hct win "$1" ; } 
 
 # vmware
 vm() { vmware IsInstalled && VMware start || hyperv start; }

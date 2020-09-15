@@ -645,7 +645,7 @@ if IsPlatform win; then
 fi
 
 # netboot
-nbm() { cd "//nas3/root/usr/local/data/appconfig/netbootxyz/menus"; } # netboot menus
+nbc() { cd "//nas3/root/usr/local/data/appconfig/netbootxyz/menus"; } # netboot menus
 nba() { cd "//nas3/root/usr/local/data/appdata/netbootxyz"; } # netboot assets
 
 # proxy server

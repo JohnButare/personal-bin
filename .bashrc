@@ -46,11 +46,15 @@ IsZsh && bindkey "^H" backward-kill-word
 # locations
 #
 
-p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA" appdata="$DATA/appdata" appconfig="$DATA/appconfig"
+p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" bin="$BIN" data="$DATA"
 psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
 pp="$psm/Programs" 	# PublicPrograms
 pd="$pub/Desktop" 	# PublicDesktop
 v="/Volumes"
+
+appdata="$DATA/appdata" appconfig="$DATA/appconfig"
+happconfig() { IsLocalHost "$1" && echo "$appconfig" || echo "//$1/root$appconfig"; }
+happdata() { IsLocalHost "$1" && echo "$appdata" || echo "//$1/root$appdata"; }
 
 home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
 bash="$udata/bash"
@@ -645,8 +649,9 @@ if IsPlatform win; then
 fi
 
 # netboot
-nbc() { cd "//nas3/root/usr/local/data/appconfig/netbootxyz/menus"; } # netboot menus
-nba() { cd "//nas3/root/usr/local/data/appdata/netbootxyz"; } # netboot assets
+
+nbc() { cd "$(happconfig "${1-nas3}")/netbootxyz/menus"; } # netboot configuration
+nba() { cd "$(happdata "${1-nas3}")/netbootxyz"; } # netboot assets
 
 # proxy server
 alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"

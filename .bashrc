@@ -325,10 +325,12 @@ ListFirstDisk() { ListDisks | head -1; }
 # drives
 #
 
-alias d='drive'
-alias de='drive eject'
-alias dl='drive list'
-alias dr='drive list | grep -i removable'
+ListDriveInfo()
+{
+	IsPlatform win && { header "Windows Drives"; wmic.exe diskdrive list brief; }
+	InPath lsblk && { header "Block Devices"; lsblk; echo; header "File System"; lsblk -fs; }
+	return 0
+}
 
 #
 # file management

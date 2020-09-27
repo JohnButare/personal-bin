@@ -320,6 +320,7 @@ dus() { ${G}du --summarize --human-readable "$@" |& grep -Ev "Permission denied|
 ListPartitions() { sudo parted -l; }
 ListDisks() { sudo parted -l |& grep -i '^Disk' |& grep -Ev 'Error|Disk Flags' | cut -d' ' -f2 | cut -d: -f1; }
 ListFirstDisk() { ListDisks | head -1; }
+pm() { PartitionManager "$@"; }
 
 #
 # drives

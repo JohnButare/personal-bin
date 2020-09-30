@@ -120,7 +120,7 @@ alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
 sfull() # set full
 {
-	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,PROXY_CHECKED,FZF_CHECKED}="" # .bashrc
+	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,FZF_CHECKED}="" # .bashrc
 	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""		# bash.bashrc
 	declare {CHROOT_CHECKED,VM_TYPE_CHECKED}=""				# function.sh
 
@@ -586,6 +586,9 @@ u() { SshAgentCheck; HostUpdate "$@" || return; }
 # network
 #
 
+alias NetworkUpdate='UpdateInit || return; network current update; ScriptEval network proxy --$(UpdateGet "proxy")'
+alias nu="NetworkUpdate"
+
 alias ehosts='sudoedit /etc/hosts' # edit hosts file
 
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
@@ -652,16 +655,13 @@ if IsPlatform win; then
 fi
 
 # netboot
-
 nbc() { cd "$(happconfig "${1-nas3}")/netbootxyz/menus"; } # netboot configuration
 nba() { cd "$(happdata "${1-nas3}")/netbootxyz"; } # netboot assets
 
 # proxy server
 alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
 alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars --status"
-alias ProxyStatus="network proxy vars --status"
-
-! [[ $PROXY_CHECKED ]] && { ProxyEnable >& /dev/null; PROXY_CHECKED="true"; }
+alias ProxyStatus="network proxy status"
 
 # salt
 RunAll() { a="$@"; sudoc salt '*' cmd.run "/usr/local/data/bin/RunScript $a"; }

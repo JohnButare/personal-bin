@@ -323,17 +323,6 @@ ListFirstDisk() { ListDisks | head -1; }
 pm() { PartitionManager "$@"; }
 
 #
-# drives
-#
-
-ListDriveInfo()
-{
-	IsPlatform win && { header "Windows Drives"; wmic.exe diskdrive list brief; }
-	InPath lsblk && { header "Block Devices"; lsblk; echo; header "File System"; lsblk -fs; }
-	return 0
-}
-
-#
 # file management
 #
 

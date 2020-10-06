@@ -33,6 +33,14 @@ ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"
 IsPlatform qnap,synology && alias bash="/opt/bin/bash -l"
 IsPlatform mac && alias bash="/usr/local/bin/bash -l"
 
+# zplug plugins
+if [[ -f /usr/share/zplug/init.zsh ]]; then
+	. /usr/share/zplug/init.zsh || reutrn
+	zplug load || return
+fi
+
 # scripts
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 [[ -f ~/.p10k.zsh ]] && . ~/.p10k.zsh
+
+return 0

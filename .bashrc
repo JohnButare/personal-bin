@@ -288,7 +288,12 @@ alias dirsct='DoLs --native -l --time=ctime --sort=time --reverse' 	# sort by cr
 DoCd()
 {
 	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }
-	builtin cd "$@"
+	
+	if IsFunction __enhancd::cd; then
+		__enhancd::cd "$@"
+	else
+		builtin cd "$@"
+	fi
 }
 
 DoLs()

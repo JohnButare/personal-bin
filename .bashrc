@@ -161,7 +161,7 @@ if IsBash; then
 		win|raspbian) 
 			if [[ -f "/usr/share/bash-completion/completions/git" ]] && ! IsFunction __git_ps1; then
 				. "/usr/share/bash-completion/completions/git"
-				. "$BIN/git-prompt.sh"
+				. "$DATA/platform/agnostic/git-prompt.sh"
 			fi
 			;;
 

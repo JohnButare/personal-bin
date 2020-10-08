@@ -43,7 +43,7 @@ wv() { echo "WSL $(wsl version)" | figlet | lolcat; } # version of current distr
 w1() { wsl run1; }																		# run the first WSL 1 distribution
 w2() { wsl run2; }																		# run the first WSL 2 distribution
 
-wsldown() { wsl.exe --shutdown; } # shutdown all distributions
+wsldown() { sync; wsl.exe --shutdown; } # shutdown all distributions, sync prevents file corruption, ~/.zsh_history is likely to corrupt
 wslimage() { i info >& /dev/null; "$INSTALL_DIR/LINUX/wsl/image/ubuntu"; } # image directory
 wslr() { wsl delete "$1" "$@"; wsl restore "$1" "$2" "${3:-2}"; wsl init "$1"; } # reset DIST SRC
 

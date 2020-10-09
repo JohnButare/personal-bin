@@ -900,6 +900,11 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # wiggin
 #
 
+# nas3
+n3w() { IsLocalHost "nas3" && cd "/share/Web" || cd "//nas3/web"; } # nas3 web directory
+n3wc() { local f="$(unc mount "//nas3/root/etc/config/apache/extra/wiggin.conf")"; e "$f"; } # nas3 web configure
+
+# Gigabyte applications
 gapp() { elevate "$P32/GIGABYTE/AppCenter/RunUpd.exe"; } # Gigabyte Application Center
 gfan() { elevate "$P32/GIGABYTE/siv/ThermalConsole.exe"; }
 

@@ -46,6 +46,8 @@ IsZsh && bindkey "^H" backward-kill-word
 # locations
 #
 
+fileServer="nas3.hagerman.butare.net"
+
 p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" b="$BIN" bin="$BIN" data="$DATA"
 psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
 pp="$psm/Programs" 	# PublicPrograms
@@ -96,7 +98,7 @@ terminator() { coproc /usr/bin/terminator "$@"; }
 
 alias fm='start "$p/7-Zip/7zFM.exe"'
 alias untar='tar -v -x --atime-preserve <'
-zbak() { [[ $# == 1  ]] && zip -r "$1.zip" "$1" || zip -4 "$1" "${@:2}"; } # zbak DIR [FILE]
+zbak() { [[ $# == 1  ]] && zip -r --symlinks "$1.zip" "$1" || zip --symlinks "$1" "${@:2}"; } # zbak DIR [FILE]
 zrest() { unzip "${@}"; }
 zls() { unzip -l "${@}"; }
 zll() { unzip -ll "${@}"; }
@@ -402,7 +404,7 @@ alias t='time pause'
 alias ton='TimerOn'
 alias toff='TimerOff'
 
-# disk - nas3=nvme0n1 pi=mmcblk0
+# disk
 alias TestDisk='sudo bench32.exe'
 DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); }
 DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
@@ -650,8 +652,8 @@ if IsPlatform win; then
 fi
 
 # netboot
-nbc() { cd "$(happconfig "${1-nas3}")/netbootxyz/menus"; } # netboot configuration
-nba() { cd "$(happdata "${1-nas3}")/netbootxyz"; } # netboot assets
+nbc() { cd "$(happconfig "${1-$fileServer}")/netbootxyz/menus"; } # netboot configuration
+nbd() { cd "$(happdata "${1-$fileServer}")/netbootxyz"; } # netboot data
 
 # proxy server
 alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
@@ -819,7 +821,7 @@ alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs grep -iE "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
-fu() { FindText "$1" "*" "$BIN"; FindText "$1" ".*" "$UBIN"; FindText "$1" "*" "$UBIN"; } # FindUsages
+fu() { FindText "$1" "*" "$BIN"; FindText "$1" "*" "$UBIN"; } # FindUsages
 fue() { fu "$1" | cut -d: -f1 | sort | uniq | xargs sublime; } # FindUsagesEdit
 
 #
@@ -900,9 +902,9 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # wiggin
 #
 
-# nas3
-n3w() { IsLocalHost "nas3" && cd "/share/Web" || cd "//nas3/web"; } # nas3 web directory
-n3wc() { local f="$(unc mount "//nas3/root/etc/config/apache/extra/wiggin.conf")"; e "$f"; } # nas3 web configure
+# web
+n3w() { IsLocalHost "$fileServer" && cd "/share/Web" || cd "//$fileServer/web"; } # web directory
+n3wc() { local f="$(unc mount "//$fileServer/root/etc/config/apache/extra/wiggin.conf")"; e "$f"; } # web configure
 
 # Gigabyte applications
 gapp() { elevate "$P32/GIGABYTE/AppCenter/RunUpd.exe"; } # Gigabyte Application Center

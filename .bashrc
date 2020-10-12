@@ -536,42 +536,11 @@ alias hssh="sudo cp ~/.ssh/config ~/.ssh/known_hosts ~homebridge/.ssh && sudo ch
 alias hrestart="systemctl restart homebridge"
 alias hstart='sudo hb-service start'
 alias hstop='sudo hb-service stop'
-alias hrestart='hstop;hlogclean;hstart'
 alias hlog='sudo hb-service logs'
 alias hbakall='hbak pi5'
 
-hbak() # hbak HOST - backup homebridge configuration from HOST
-{ 
-	local f="$1.homebridge.zip" d="$cloud/network/homebridge/backup"
-	local h="$1" stamp="$(GetDateStamp)"
-
-	[[ ! $h ]] && { MissingOperand "host" "hbak" || return 1; }	
-	[[ ! -d "$d" ]] && { mkdir "$d" || return; }
-
-	local i=1
-	while [[ -f "$d/$stamp.$i.$f" ]]; do (( ++i )); done
-	local df="$d/$stamp.$i.$f"
-
-	ssh $h "rm -f $f; zip -r $f .homebridge" || return
-	scp $h:~/$f "$df" || return
-	ssh $h "rm -f $f" || return
-	echo "$h homebridge configuration saved to $df"
-}
-
-hrest() # hrest HOST FILE - restore homebridge configuration in FILE to HOST
-{ 
-	local h="$1" f="$2";
-	local bakFile="$h.$(GetTimeStamp).homebridge" hb="/etc/init.d/homebridge"
-
-	[[ ! $h ]] && { MissingOperand "host" "hrest" || return 1; }
-	[[ ! -f "$f" ]] && { EchoErr "hrest: file "$f" does not exist"; return 1; }
-	ask -dr n "Are you sure you want to restore "$f" to $h" || return
-
-	ssh $h "[[ -d .bak ]] || mkdir .bak; zip -r .bak/$bakFile ~/.homebridge" || return
-	scp "$f" $h:~ || return
-	ssh -t $h "sudo hb-service stop && sudo find ~/.homebridge -mindepth 1 -maxdepth 1 -exec rm -fr {} + && sudo unzip -o $f -d ~" || return
-	echo "Successfully restored $f homebridge configuration to $h"
-}
+hbak() { HomebridgeHelper backup "$@"; } # hbak HOST
+hrest() { HomebridgeHelper restore "$@"; } # hrest HOST
 
 #
 # host
@@ -650,10 +619,6 @@ if IsPlatform win; then
 		command ping "$host" "$@"
 	}
 fi
-
-# netboot
-nbc() { cd "$(happconfig "${1-$fileServer}")/netbootxyz/menus"; } # netboot configuration
-nbd() { cd "$(happdata "${1-$fileServer}")/netbootxyz"; } # netboot data
 
 # proxy server
 alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
@@ -901,6 +866,10 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 #
 # wiggin
 #
+
+# netboot
+n3c() { cd "$(happconfig "$fileServer")$1"; } # nas3 application configuration
+n3d() { cd "$(happdata "$fileServer")/$1"; } # nas3 application data
 
 # web
 n3w() { IsLocalHost "$fileServer" && cd "/share/Web" || cd "//$fileServer/web"; } # web directory

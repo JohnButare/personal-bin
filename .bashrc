@@ -226,6 +226,12 @@ clockc() # clock check
 }
 
 #
+# cron
+#
+
+IncronLog() { LogShowPattern "/var/log/syslog" "incron"; }
+
+#
 # development
 #
 
@@ -737,6 +743,7 @@ alias ev='EventViewer'
 EventViewer() { IsPlatform win && start eventvwr.msc; InPath ksystemlog && coproc sudox "ksystemlog"; }
 
 LogShow() { setterm --linewrap off; tail -f "$1"; setterm --linewrap on; }
+LogShowPattern() { setterm --linewrap off; sudo tail -f "$1" | grep " incrond"; setterm --linewrap on; }
 LogNetConsole() { netconsole -l -u $(GetIpAddress) 6666 | sudoc tee /var/log/netconsole.log; }
 
 NetConsoleEnable() # HOST

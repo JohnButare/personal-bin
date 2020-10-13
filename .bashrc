@@ -257,6 +257,9 @@ alias vs='VisualStudio'
 build() { n build /verbosity:minimal /m "$code/$1"; }
 BuildClean() { n build /t:Clean /m "$code/$1"; }
 
+# GO
+[[ -d "/usr/local/go/bin" ]] && { PathAdd "/usr/local/go/bin"; GOPATH=$HOME/go; }
+
 # JAVA
 alias j='JavaUtil'
 alias jd='j decompile'

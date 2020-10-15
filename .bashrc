@@ -84,7 +84,6 @@ alias st='startup --no-pause'
 #
 
 alias e='TextEdit'
-alias bc='BeyondCompare'
 alias f='firefox'
 alias grep='\grep --color=auto'
 alias m='merge'
@@ -160,13 +159,6 @@ if IsBash; then
 			fi
 			;;
 
-		win|raspbian) 
-			if [[ -f "/usr/share/bash-completion/completions/git" ]] && ! IsFunction __git_ps1; then
-				. "/usr/share/bash-completion/completions/git"
-				. "$DATA/platform/agnostic/git-prompt.sh"
-			fi
-			;;
-
 		mac)
 			d="/usr/local/etc/bash_completion.d"
 			if ! IsFunction __git_ps1; then
@@ -177,6 +169,14 @@ if IsBash; then
 			fi
 			unset d
 			;;
+
+		win) 
+			if [[ -f "/usr/share/bash-completion/completions/git" ]] && ! IsFunction __git_ps1; then
+				. "/usr/share/bash-completion/completions/git"
+				. "$DATA/platform/agnostic/git-prompt.sh"
+			fi
+			;;
+
 	esac
 
 	# cd should not complete variables without a leading $
@@ -780,6 +780,7 @@ alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distut
 #
 # Raspberry Pi
 #
+
 PiImageLite() { pi image "$(i dir)/platform/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
 
 #

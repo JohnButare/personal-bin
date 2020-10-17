@@ -59,10 +59,8 @@ happconfig() { IsLocalHost "$1" && echo "$appconfig" || echo "//$1/root$appconfi
 happdata() { IsLocalHost "$1" && echo "$appdata" || echo "//$1/root$appdata"; }
 
 home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
-bash="$udata/bash"
-code="$CODE"; source="$CODE"; s="$CODE"; # code=local code (repositores), ccode=cloud code
+code="$CODE" wcode="$WIN_HOME/$(GetFileName "$CODE")"
 ubin="$udata/bin"
-usm="$APPDATA/Microsoft/Windows/Start Menu" # UserStartMenu
 up="$usm/Programs" 													# UserPrograms
 ud="$home/Desktop" 													# UserDesktop
 db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"

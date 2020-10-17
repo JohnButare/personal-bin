@@ -377,9 +377,9 @@ alias unfunction='unset -f'
 HISTSIZE=5000
 HISTFILESIZE=10000
 IsBash && HISTCONTROL=ignoreboth
-IsZsh && setopt HIST_IGNORE_DUPS
+IsZsh && setopt SHARE_HISTORY HIST_IGNORE_DUPS
 
-HistoryClear() { cat /dev/null > ~/.$HISTFILE && history -c; }
+HistoryClear() { IsBash && cat /dev/null > $HISTFILE; history -c; }
 
 #
 # performance
@@ -569,7 +569,7 @@ PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { . "$BIN/bootstrap-config.sh" || return; echo "search $domain\n" | sudo tee -a "/etc/resolv.conf" || return; }
 
 # Apache
-ApacheConfig() { sudo $(GetTextEditor) "/etc/config/apache/extra/wiggin.conf"; } # specific to QNAP location for now
+ApacheConfig() { sudoedit "/etc/config/apache/extra/wiggin.conf"; } # specific to QNAP location for now
 ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
 
 ApacheRestart() 

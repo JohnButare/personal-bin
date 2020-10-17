@@ -512,7 +512,7 @@ alias gpf='g push --force'			# push force
 alias grft='grf && g i Test' 		# fixup commit and push to test
 alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
 alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
-alias eg='e ~/.gitconfig'
+alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; }'
 alias gg='GitHelper gui'
 alias gh='GitHelper'
 alias ghub='GitHelper hub'

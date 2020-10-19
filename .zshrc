@@ -35,8 +35,9 @@ IsPlatform mac && alias bash="/usr/local/bin/bash -l"
 
 # zplug plugins
 if [[ -f /usr/share/zplug/init.zsh ]]; then
-	. /usr/share/zplug/init.zsh || reutrn
+	. /usr/share/zplug/init.zsh || return
 	zplug load || return
+	zplug 'zplug/zplug', hook-build:'zplug --self-manage' || return
 fi
 
 # scripts

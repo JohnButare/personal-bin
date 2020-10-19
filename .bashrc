@@ -779,7 +779,7 @@ alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distut
 # Raspberry Pi
 #
 
-PiImageLite() { pi image "$(i dir)/platform/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
+PiImageLite() { pi image "$(i dir)/platform/linux/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
 
 #
 # scripts

@@ -34,8 +34,10 @@ IsPlatform qnap,synology && alias bash="/opt/bin/bash -l"
 IsPlatform mac && alias bash="/usr/local/bin/bash -l"
 
 # zplug plugins
-if [[ -f /usr/share/zplug/init.zsh ]]; then
-	. /usr/share/zplug/init.zsh || return
+export ZPLUG_ROOT="/usr/share/zplug"
+IsPlatform mac && ZPLUG_ROOT="/usr/local/opt/zplug"
+if [[ -f "$ZPLUG_ROOT/init.zsh" ]]; then
+	. "$ZPLUG_ROOT/init.zsh" || return
 	zplug load || return
 	zplug 'zplug/zplug', hook-build:'zplug --self-manage' || return
 fi

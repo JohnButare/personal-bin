@@ -1,3 +1,6 @@
+# ensure bash.bashrc has been sourced
+[[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
+
 # set the home directory - must be before Powerlevel10k otherwise old directory is displayed
 [[ "${(L)PWD}" == (${(L)WINDIR}/system32|${(L)WIN_HOME}|${(L)WIN_ROOT}) ]] && cd
 

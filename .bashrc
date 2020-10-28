@@ -1,5 +1,4 @@
-# ~/.bashrc, user intialization
-
+# ensure bash.bashrc has been sourced
 [[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
 
 # non-interactive initialization - available from child processes and scripts, i.e. ssh <script>
@@ -569,13 +568,14 @@ PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { . "$BIN/bootstrap-config.sh" || return; echo "search $domain\n" | sudo tee -a "/etc/resolv.conf" || return; }
 
 # Apache
-ApacheConfig() { sudoedit "/etc/config/apache/extra/wiggin.conf"; } # specific to QNAP location for now
+ApacheConfig() { e "$(unc mount //nas3/root)/etc/config/apache/extra/wiggin.conf"; } # specific to QNAP location for now
 ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
 
 ApacheRestart() 
 { 
-	IsPlatform qnap && { sudo /etc/init.d/Qthttpd.sh restart; return; }
+	IsPlatform qnap && { sudo /etc/init.d/Qthttpd.sh restart ; return; }
 	[[ -f "/usr/local/apache/bin/apachectl" ]] && { sudo "/usr/local/apache/bin/apachectl" restart; return; }
+	ssh -t "$fileServer" "sudo /etc/init.d/Qthttpd.sh restart" || return
 }
 
 # DNS
@@ -588,6 +588,20 @@ DhcpOptions()
 { 
 	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }
 	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
+}
+
+# HashiCorp
+
+consul() { command consul "$@" --http-addr "$(ConsulAddress)"; }
+ConsulAddress() { echo "http://$(ConsulServer):8500"; }
+ConsulIsLocal() { service running consul --quiet; }
+ConsulResolve() { nslookup -port=8600 -type=a -norecurse "$1" "$(ConsulServer)" | tail +4 | grep "^Address:" | cut -d: -f2 | head -1; }
+
+ConsulServer() 
+{ 
+	ConsulIsLocal && { echo "127.0.0.1"; return; }
+	. "$BIN/bootstrap-config.sh" || return
+	echo "$(GetWord "$hashiServers" 1)"
 }
 
 # Kea DHCP

@@ -38,6 +38,7 @@ IsPlatform mac && alias bash="/usr/local/bin/bash -l"
 
 # zplug plugins
 export ZPLUG_ROOT="/usr/share/zplug"
+export ENHANCD_DOT_ARG="..."
 IsPlatform mac && ZPLUG_ROOT="/usr/local/opt/zplug"
 if [[ -f "$ZPLUG_ROOT/init.zsh" ]]; then
 	. "$ZPLUG_ROOT/init.zsh" || return

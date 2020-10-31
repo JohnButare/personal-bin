@@ -592,7 +592,7 @@ DhcpOptions()
 
 # HashiCorp
 
-consul() { command consul "$@" --http-addr "$(ConsulAddress)"; }
+ConsulSetAddress() {  export CONSUL_HTTP_ADDR="$(ConsulAddress)"; }
 ConsulAddress() { echo "http://$(ConsulServer):8500"; }
 ConsulIsLocal() { service running consul --quiet; }
 ConsulResolve() { nslookup -port=8600 -type=a -norecurse "$1" "$(ConsulServer)" | tail +4 | grep "^Address:" | cut -d: -f2 | head -1; }
@@ -603,6 +603,8 @@ ConsulServer()
 	. "$BIN/bootstrap-config.sh" || return
 	echo "$(GetWord "$hashiServers" 1)"
 }
+
+ConsulSetAddress
 
 # Kea DHCP
 KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }

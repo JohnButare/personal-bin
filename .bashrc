@@ -67,6 +67,8 @@ db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/do
 alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
 alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
 
+OfficeTemplates() { . office.sh; cd "$OfficeTemplates"; }
+
 #
 # other
 #

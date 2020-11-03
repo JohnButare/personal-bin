@@ -1,9 +1,9 @@
-xserver $command || return
+# xserver $command || return
 
 # service
-app -b $command dbus chrony cron incron sshd  || return # docker
+# app -b $command sshd  || return # dbus docker chrony cron incron sshd
 
-# applications - dropbox shows false start initially, try again at end
-app -b $command dropbox AutoHotKey AquaSnap LogitechOptions greenshot dropbox || return
+# applications
+app -b $command AquaSnap || return # AquaSnap AutoHotKey LogitechOptions
 
 return 0

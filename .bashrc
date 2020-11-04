@@ -825,13 +825,25 @@ alias hs="hyperv ssh" # connect to a Hyper-V host with ssh
 alias sshconfig='e ~/.ssh/config'
 alias sshkh='e ~/.ssh/known_hosts'
 
-sm() { SshHelper --mosh "$@"; } # connect with mosh
-sx() { SshHelper -x "$@"; } 		# connect with X forwarding
-
-sshfull() { ssh -t $1 "source /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
-sshsudo() { ssh -t $1 sudo ${@:2}; }
-ssht() { ssh -t "$@"; } # connect and allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
+# informations
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
+
+# connecting
+
+sm() { SshHelper --mosh "$@"; } # mosh
+sx() { SshHelper -x "$@"; } 		# X forwarding
+ssht() { ssh -t "$@"; } 				# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
+
+# connect with additional startup scripts
+sshfull() { ssh -t $1 ". /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
+sshfunc() { ssh $1 ". function.sh; ${@:2}"; } # ssh with functions available, i.e. sshfunc pi3 GetInterface
+sshalias() { ssh -t $1 "bash -li -c ${@:2}"; } # ssh with aliases available, i.e. sshalias pi3 dirss
+
+# connecting with additional permissions
+sshsudo() { ssh -t $1 sudo ${@:2}; } # ssh using sudo (prompt for sudo password)
+sshsudoc() { ssh -X $1 ". function.sh; sudoc ${@:2}"; } # ssh using sudoc (use credential store for sudo password)
+
+# run applications
 sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
 
 # SSH Agent - check and start the SSH Agent 

@@ -596,7 +596,7 @@ DhcpOptions()
 
 ConsulSetAddress() {  export CONSUL_HTTP_ADDR="$(ConsulAddress)"; }
 ConsulAddress() { echo "http://$(ConsulServer):8500"; }
-ConsulIsLocal() { service running consul --quiet; }
+ConsulIsLocal() { pidof -snq consul; } # pidof is faster than "service running consul"
 ConsulResolve() { nslookup -port=8600 -type=a -norecurse "$1" "$(ConsulServer)" | tail +4 | grep "^Address:" | cut -d: -f2 | head -1; }
 
 ConsulServer() 

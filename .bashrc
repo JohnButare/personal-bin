@@ -87,7 +87,7 @@ alias f='firefox'
 alias grep='\grep --color=auto'
 alias m='merge'
 
-cat() { InPath batcat && batcat "$@" || command cat "$@"; }
+bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
 terminator() { coproc /usr/bin/terminator "$@"; }
 
 #

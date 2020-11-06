@@ -593,20 +593,8 @@ DhcpOptions()
 }
 
 # HashiCorp
-
-ConsulSetAddress() {  export CONSUL_HTTP_ADDR="$(ConsulAddress)"; }
-ConsulAddress() { echo "http://$(ConsulServer):8500"; }
-ConsulIsLocal() { local o="-snq"; IsPlatform mac && unset o; pidof $o consul; } # pidof is faster than "service running consul"
-ConsulResolve() { nslookup -port=8600 -type=a -norecurse "$1" "$(ConsulServer)" | tail +4 | grep "^Address:" | cut -d: -f2 | head -1; }
-
-ConsulServer() 
-{ 
-	ConsulIsLocal && { echo "127.0.0.1"; return; }
-	. "$BIN/bootstrap-config.sh" || return
-	echo "$(GetWord "$hashiServers" 1)"
-}
-
-ConsulSetAddress
+ConsulHost() { eval "$(hashi config --host "$1")"; }
+consul() { [[ ! $CONSUL_HTTP_ADDR ]] && eval "$(hashi config)"; command consul "$@"; }
 
 # Kea DHCP
 KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }

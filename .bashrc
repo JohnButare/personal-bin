@@ -823,9 +823,10 @@ sx() { SshHelper -x "$@"; } 		# X forwarding
 ssht() { ssh -t "$@"; } 				# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
 
 # connect with additional startup scripts
-sshfull() { ssh -t $1 ". /etc/profile; ${@:2}";  } # ssh full: connect with a full environment, i.e. sshfull nas2 power shutdown
-sshfunc() { ssh $1 ". function.sh; ${@:2}"; } # ssh with functions available, i.e. sshfunc pi3 GetInterface
-sshalias() { ssh -t $1 "bash -li -c ${@:2}"; } # ssh with aliases available, i.e. sshalias pi3 dirss
+sshfull() { ssh -t $1 ". /etc/profile; ${@:2}";  } # full environment
+sshfunc() { ssh $1 ". function.sh; ${@:2}"; } # functions, sshfunc GetIpAddress
+sshfuncx() { ssh -X $1 ". function.sh; ${@:2}"; } # functions and X forwarding (enables credential manager), i.e. sshfuncx sudoc ls
+sshalias() { ssh -t $1 "bash -li -c \"${@:2}\""; } # ssh with aliases available, i.e. sshalias pi3 dirss
 
 # connecting with additional permissions
 sshsudo() { ssh -t $1 sudo ${@:2}; } # ssh using sudo (prompt for sudo password)

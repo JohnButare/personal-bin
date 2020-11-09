@@ -805,6 +805,11 @@ fu() { FindText "$1" "*" "$BIN"; FindText "$1" "*" "$UBIN"; } # FindUsages
 fue() { fu "$1" | cut -d: -f1 | sort | uniq | xargs sublime; } # FindUsagesEdit
 
 #
+# security
+#
+CertView() { openssl x509 -in "$1" -text; }
+
+#
 # SSH
 #
 

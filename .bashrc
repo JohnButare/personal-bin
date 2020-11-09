@@ -593,7 +593,7 @@ DhcpOptions()
 }
 
 # HashiCorp
-ConsulHost() { eval "$(hashi config --host "$1")"; }
+HashiConfig() { eval "$(hashi config --host "$1")"; }
 consul() { [[ ! $CONSUL_HTTP_ADDR ]] && eval "$(hashi config)"; command consul "$@"; }
 
 # Kea DHCP

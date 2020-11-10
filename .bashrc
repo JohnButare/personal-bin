@@ -144,8 +144,8 @@ if [[ ! $COLORLS_CHECKED ]]; then
 fi
 
 if IsBash; then
-	#  hosts
 
+	#  hosts
 	HOSTFILE=$DATA/setup/hosts
 	complete -A hostname -o default curl dig host mosh netcat nslookup on off ping telnet
 
@@ -175,7 +175,6 @@ if IsBash; then
 				. "$DATA/platform/agnostic/git-prompt.sh"
 			fi
 			;;
-
 	esac
 
 	# cd should not complete variables without a leading $
@@ -184,6 +183,9 @@ if IsBash; then
 	# git
 	complete -o default -o nospace -F _git g 
 
+	# HashiCorp
+	InPath consul && complete -C /usr/local/bin/consul consul
+	InPath nomad && complete -C /usr/local/bin/nomad nomad
 fi
 
 if [[ ! $FZF_CHECKED && -d ~/.fzf ]]; then
@@ -593,7 +595,7 @@ DhcpOptions()
 }
 
 # HashiCorp
-HashiConfig() { eval "$(hashi config --host "$1")"; }
+HashiConfig() { eval "$(hashi config --host "$1")"; echo "$CONSUL_HTTP_ADDR"; }
 consul() { [[ ! $CONSUL_HTTP_ADDR ]] && eval "$(hashi config)"; command consul "$@"; }
 
 # Kea DHCP

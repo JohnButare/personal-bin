@@ -27,6 +27,8 @@ HIST_STAMPS="mm/dd/yyyy"
 
 # completion
 zstyle ':completion:*' known-hosts-files "$DATA/setup/hosts"
+InPath consul && complete -o nospace -C /usr/local/bin/consul consul
+InPath nomad && complete -o nospace -C /usr/local/bin/nomad nomad
 
 # set terminal title after oh-my-zsh.sh
 ZSH_THEME_TERM_TAB_TITLE_IDLE="terminal %15<..<%~%<<" #15 char left truncated PWD
@@ -52,3 +54,5 @@ fi
 [[ -f ~/.p10k.zsh ]] && . ~/.p10k.zsh
 
 return 0
+
+autoload -U +X bashcompinit && bashcompinit

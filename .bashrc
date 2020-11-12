@@ -186,6 +186,7 @@ if IsBash; then
 	# HashiCorp
 	InPath consul && complete -C /usr/local/bin/consul consul
 	InPath nomad && complete -C /usr/local/bin/nomad nomad
+	InPath vault && complete -C /usr/local/bin/vault vault
 fi
 
 if [[ ! $FZF_CHECKED && -d ~/.fzf ]]; then
@@ -595,8 +596,12 @@ DhcpOptions()
 }
 
 # HashiCorp
-HashiConfig() { eval "$(hashi config --host "$1")"; echo "$CONSUL_HTTP_ADDR"; }
+HashiConfig() { eval "$(hashi config --host "$1")"; hashi check; }
+hr() { hashi resolve "$@"; }
+clipv() { clipw "$VAULT_TOKEN"; }
 consul() { [[ ! $CONSUL_HTTP_ADDR ]] && eval "$(hashi config)"; command consul "$@"; }
+nomad() { [[ ! $NOMAD_ADDR ]] && eval "$(hashi config)"; command nomad "$@"; }
+vault() { [[ ! $VAULT_ADDR ]] && eval "$(hashi config)"; command vault "$@"; }
 
 # Kea DHCP
 KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }

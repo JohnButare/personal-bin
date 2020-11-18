@@ -231,7 +231,8 @@ clockc() # clock check
 # cron
 #
 
-IncronLog() { LogShowPattern "/var/log/syslog" "incron"; }
+CronLogShow() { LogShow "/var/log/cron.log" "$1"; }
+IncronLogShow() { LogShow "/var/log/syslog" "incron"; }
 
 #
 # development
@@ -756,8 +757,18 @@ alias mg="media get"
 alias ev='EventViewer'
 EventViewer() { IsPlatform win && start eventvwr.msc; InPath ksystemlog && coproc sudox "ksystemlog"; }
 
-LogShow() { setterm --linewrap off; tail -f "$1"; setterm --linewrap on; }
-LogShowPattern() { setterm --linewrap off; sudo tail -f "$1" | grep " incrond"; setterm --linewrap on; }
+# LogShow FILE [PATTERN]
+LogShow()
+{ 
+	local sudo file="$1" pattern="$2"; [[ $pattern ]] && pattern=" $pattern"
+
+	setterm --linewrap off
+	SudoCheck "$1"; $sudo tail -f "$1" | grep "$pattern"
+	setterm --linewrap on
+}
+
+# NetConsole
+
 LogNetConsole() { netconsole -l -u $(GetIpAddress) 6666 | sudoc tee /var/log/netconsole.log; }
 
 NetConsoleEnable() # HOST
@@ -814,6 +825,8 @@ fue() { fu "$1" | cut -d: -f1 | sort | uniq | xargs sublime; } # FindUsagesEdit
 #
 # security
 #
+
+SudoCheck() { [[ ! -r "$1" ]] && sudo="sudoc"; } # SudoCheck FILE - set sudo variable to sudoc if user does not have read permissiont o the file
 CertView() { openssl x509 -in "$1" -text; }
 
 #

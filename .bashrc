@@ -28,7 +28,7 @@ if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
 		dbus-update-activation-environment --systemd DISPLAY || return
 	fi 
 
-	credential check >& /dev/null && export CREDENTIAL_MANAGER="true"
+	export CREDENTIAL_MANAGER="$(credential --quiet type)"
 	export CREDENTIAL_MANAGER_CHECKED="true"
 fi
 
@@ -860,11 +860,13 @@ sshsudoc() { ssh -X $1 ". function.sh; sudoc ${@:2}"; } # ssh using sudoc (use c
 # run applications
 sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
 
-# SSH Agent - check and start the SSH Agent 
+# SSH Agent - check and start the SSH Agent if needed
 # - avoid password prompt - only start if there is a credential manager installed
 # - avoid output - for clean PowerLevel 10K startup (Pass credential prompt requires output and input)
 [[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-[[ $CREDENTIAL_MANAGER ]] && [[ "$(credential type)" != "Pass" ]] && ! ssh-add -L >& /dev/null && SshAgentHelper start --quiet
+if [[ $CREDENTIAL_MANAGER ]] && [[ "$CREDENTIAL_MANAGER" != "pass" ]] && ! ssh-add -L >& /dev/null; then
+	SshAgentHelper start --quiet
+fi
 
 #
 # sound

@@ -84,8 +84,8 @@ NewFirefox()
 
 OpenFirefox()
 { 
-  local title := ".* - Mozilla Firefox"
-  local titleCmdow := "* - Mozilla Firefox"
+  local title := ".* Mozilla Firefox"
+  local titleCmdow := "* Mozilla Firefox"
 
   If !WinExist("ahk_exe" " firefox.exe")
   {

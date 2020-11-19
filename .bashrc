@@ -597,12 +597,50 @@ DhcpOptions()
 }
 
 # HashiCorp
-HashiConfig() { eval "$(hashi config --host "$1")"; hashi check; }
-hr() { hashi resolve "$@"; }
-clipv() { clipw "$VAULT_TOKEN"; }
+HashiConfig() { eval "$(hashi config --host "$1")"; hashi check; }	# configure HashiCorp tools by setting environment variables
+hr() { hashi resolve "$@"; }			# hr SERVER - resolve a consul service address
+clipv() { clipw "$VAULT_TOKEN"; } # clip vault token
+
 consul() { [[ ! $CONSUL_HTTP_ADDR ]] && eval "$(hashi config)"; command consul "$@"; }
 nomad() { [[ ! $NOMAD_ADDR ]] && eval "$(hashi config)"; command nomad "$@"; }
 vault() { [[ ! $VAULT_ADDR ]] && eval "$(hashi config)"; command vault "$@"; }
+
+# NomadForce JOB - force a job to run
+NomadForce() { nomad job periodic force "$1"; }
+
+# NomadLog [-f|--follow] NAME - show the log for a periodic job optionally following the log output
+NomadLog()
+{
+	local follow p="^(-f|--follow)$" suffix; [[ "$1" =~ $p ]] && { shift; follow="true"; }
+	local id result; id="$(NomadGetLastAllocId "$1")" || return
+	echo "$id" | grep "Prefix matched multiple jobs" >& /dev/null && return 
+
+	if [[ $follow ]]; then
+		nomad alloc logs -f "$id" &
+		nomad alloc logs -stderr -f "$id" #&
+	else		
+		header "Standard Output"; nomad alloc logs "$id"
+		header "Standard Error"; nomad alloc logs -stderr "$id"
+	fi		
+}
+
+# NomadStatus JOB - check the status of a job
+NomadStatus() { nomad alloc status "$(NomadGetLastAllocId "$1")"; }
+
+# NomadGetLastAllocId NAME - return the latest allocation ID for the specified periodic job
+NomadGetLastAllocId()
+{ 
+	local jobName="$1" jobId allocId
+	[[ ! $jobName ]] && return 1
+
+	local jobId="$(nomad job status "$jobName" |& tail -1 |& cut -d" " -f1)"
+	local p="$jobName/periodic-.*"; [[ ! "$jobId" =~ $p ]] && return 1
+
+	local allocId="$(nomad job status "$jobId" |& tail -1 |& cut -d" " -f1)"
+	[[ "${#allocId}" != "8" ]] && return 1
+
+	echo "$allocId"
+}
 
 # Kea DHCP
 KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }

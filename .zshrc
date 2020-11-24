@@ -37,7 +37,7 @@ ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"
 
 # zsh specific aliases
 IsPlatform qnap,synology && alias bash="/opt/bin/bash -l"
-IsPlatform mac && alias bash="/usr/local/bin/bash -l"
+IsPlatform mac && alias bash="$BREW_DIR -l"
 
 # zplug plugins
 export ZPLUG_ROOT="/usr/share/zplug"

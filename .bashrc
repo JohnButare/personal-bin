@@ -677,6 +677,10 @@ alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
 # TFTP
 TftpLog() { IsPlatform qnap && LogShow "/share/Logs/opentftpd.log"; }
 
+# web
+urlencode() { echo "$1" | sed 's/ /%20/g'; }
+curle() { curl "$(urlencode "$1")" "${@:2}"; } # curl encode - encode spaces in the URL
+
 #
 # prompt
 #

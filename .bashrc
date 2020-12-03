@@ -540,9 +540,9 @@ glb()
 
 alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
 alias hcconfig="e $c/network/homebridge/config/config.json" # edit cloud configuration
-alias hlogclean="rm /var/lib/homebridge/homebridge.log"
+alias hlogclean="sudoc rm /var/lib/homebridge/homebridge.log"
 alias hssh="sudo cp ~/.ssh/config ~/.ssh/known_hosts ~homebridge/.ssh && sudo chown homebridge ~homebridge/.ssh/config ~homebridge/.ssh/known_hosts" # update SSH configuration 
-alias hrestart="systemctl restart homebridge"
+alias hrestart="service restart homebridge"
 alias hstart='sudo hb-service start'
 alias hstop='sudo hb-service stop'
 alias hlog='sudo hb-service logs'

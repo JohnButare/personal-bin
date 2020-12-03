@@ -517,6 +517,10 @@ alias ghub='GitHelper hub'
 alias lg='lazygit'
 alias tgg='GitHelper tgui'
 
+# Git Headquarters (ghq)
+ghqg() { cd "$(ghq root)/$(ghq list | fzf)"; } # get REPO
+ghqcd() { cd "$(ghq root)/$(ghq list | fzf)"; } # select an existing ghq repository to change to
+
 # GitLab
 glc() { sudoedit /etc/gitlab/gitlab.rb; } # GitLab configuration
 glr() { sudoc gitlab-ctl reconfigure; } # GitLab reconfigure

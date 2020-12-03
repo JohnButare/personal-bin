@@ -297,11 +297,11 @@ DoCd()
 {
 	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }
 	
-	if IsFunction __enhancd::cd; then
-		__enhancd::cd "$@"
-	else
+	# if IsFunction __enhancd::cd; then
+	# 	__enhancd::cd "$@"
+	# else
 		builtin cd "$@"
-	fi
+	# fi
 }
 
 DoLs()

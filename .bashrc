@@ -518,7 +518,7 @@ alias lg='lazygit'
 alias tgg='GitHelper tgui'
 
 # Git Headquarters (ghq)
-ghqg() { cd "$(ghq root)/$(ghq list | fzf)"; } # get REPO
+ghqg() { local url="$1"; ghq get "$1"; url="$(echo "$url" | cut -d/ -f3-)"; cd "$(ghq root)/$(ghq list | grep "$url")"; } # get REPO
 ghqcd() { cd "$(ghq root)/$(ghq list | fzf)"; } # select an existing ghq repository to change to
 
 # GitLab

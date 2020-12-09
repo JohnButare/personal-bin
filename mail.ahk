@@ -26,8 +26,8 @@ OpenLive()
 {
   if WinExist(".* - Mail")
     WinActivate(".* - Mail")
-  else
-    run explorer "shell:appsFolder\microsoft.windowscommunicationsapps_8wekyb3d8bbwe!microsoft.windowslive.mail"
+  ;else
+  ;  run explorer "shell:appsFolder\microsoft.windowscommunicationsapps_8wekyb3d8bbwe!microsoft.windowslive.mail"
 }
 
 OpenOutlook()

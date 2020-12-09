@@ -47,9 +47,9 @@ NewChrome()
 {
   global chrome
 
-  run chrome, , Normal, pid
+  ;run chrome, , Normal, pid
   ;WinWait "ahk_pid " pid
-  WinActivate "ahk_pid " pid
+  ;WinActivate "ahk_pid " pid
 }
 
 OpenChrome()

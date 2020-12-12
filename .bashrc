@@ -597,6 +597,7 @@ DhcpOptions()
 # HashiCorp
 
 hr() { hashi resolve "$@"; }			# hr SERVER - resolve a consul service address
+hi() { hashi install -e "$cloud/network/hashi/cert" "$@"; } # hi - hashi install
 j() { hashi nomad job "$@"; }
 
 # start program and set configuration if necessary
@@ -612,10 +613,10 @@ clipv() { clipw "$VAULT_TOKEN"; }
 # HashiConfig [HOST] - configure HashiCorp tools by setting environment variables
 HashiConfig()
 {
-	local h=(); [[ $1 ]] && h=(--host "$1") 
-	local config; config="$(hashi config show "${h[@]}")" || return
+	local args=(); [[ $1 ]] && ! IsOption "$1" && { args+=(--host "$1"); shift; }
+	local config; config="$(hashi config "${args[@]}" "$@")" || return
 	eval "$config" || return
-	hashi config status
+	hashi status
 }	
 
 # Kea DHCP
@@ -649,7 +650,7 @@ if IsPlatform win; then
 		local host="$1"; shift
 
 		# resolve .local host - WSL getent does not currently resolve mDns (.local) addresses
-		IsPlatform win && IsLocalAddress "$host" && { host="$(MdnsResolve "$host")" || return; }
+		IsPlatform win && IsMdnsName "$host" && { host="$(MdnsResolve "$host")" || return; }
 
 		command ping "$host" "$@"
 	}

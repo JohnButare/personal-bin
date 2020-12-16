@@ -596,11 +596,35 @@ DhcpOptions()
 
 # HashiCorp
 
+export HASHI_CERTS="$cloud/network/hashi/cert"
+export HASHI_CERTS="$UDATA/certificate/hashi" # testing
+
+alias hcd="cd $c/network/hashi/cert"
+
+hi() { hashi install -e "$HASHI_CERTS" "$@"; } # hi - hashi install
+hinst() { hi consul --host=pi3,pi4; }
+
+# hclean: clean hashi product installation
+hclean()
+{
+	hashi cleanup || return
+	sudoc DelDir --contents "$HASHI_CERTS" || return
+	
+	local hosts="pi3,pi4,localhost"
+	local product products=( consul ) # vault nomad consul
+	for product in "${products[@]}"; do
+		credential delete "$product" token
+		hashi remove consul --host="$hosts"
+	done
+}
+
+# consul
 hr() { hashi resolve "$@"; }			# hr SERVER - resolve a consul service address
-hi() { hashi install -e "$cloud/network/hashi/cert" "$@"; } # hi - hashi install
+
+# nomad
 j() { hashi nomad job "$@"; }
 
-# start program and set configuration if necessary
+# run program and set configuration if necessary
 consul() { [[ ! $CONSUL_HTTP_ADDR ]] && eval "$(hashi config)"; command consul "$@"; }
 nomad() { [[ ! $NOMAD_ADDR ]] && eval "$(hashi config)"; command nomad "$@"; }
 vault() { [[ ! $VAULT_ADDR ]] && eval "$(hashi config)"; command vault "$@"; }

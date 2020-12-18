@@ -602,19 +602,22 @@ export HASHI_CERTS="$UDATA/certificate/hashi" # testing
 alias hcd="cd $c/network/hashi/cert"
 
 hi() { hashi install -e "$HASHI_CERTS" "$@"; } # hi - hashi install
-hinst() { hi consul --host=pi3,pi4; }
+
+export HASHI_TEST="pi3,pi4"
+hinst() { hi nomad --host=$HASHI_TEST "$@"; }
 
 # hclean: clean hashi product installation
 hclean()
 {
-	hashi cleanup || return
-	sudoc DelDir --contents "$HASHI_CERTS" || return
+	# hashi cleanup || return
+	# sudoc DelDir --contents "$HASHI_CERTS" || return
 	
-	local hosts="pi3,pi4,localhost"
-	local product products=( consul ) # vault nomad consul
+	local hosts="$HASHI_TEST,localhost"
+	local product products=( vault ) # vault nomad consul
 	for product in "${products[@]}"; do
 		credential delete "$product" token
-		hashi remove consul --host="$hosts"
+		[[ "$product" == "vault" ]] && consul kv delete "vault/"
+		hashi remove "$product" --host="$hosts"
 	done
 }
 
@@ -637,8 +640,7 @@ clipv() { clipw "$VAULT_TOKEN"; }
 # HashiConfig [HOST] - configure HashiCorp tools by setting environment variables
 HashiConfig()
 {
-	local args=(); [[ $1 ]] && ! IsOption "$1" && { args+=(--host "$1"); shift; }
-	local config; config="$(hashi config "${args[@]}" "$@")" || return
+	local config; config="$(hashi config "$@")" || { EchoErr "$config"; return 1; }
 	eval "$config" || return
 	hashi status
 }	

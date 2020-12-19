@@ -587,7 +587,7 @@ DnsLog() { service log bind9; }
 DnsRestart() { service restart bind9; }
 
 # DHCP
-DhcpMonitor() {	IsPlatform win && { DhcpTest.exe "$@"; return; }; }
+DhcpMonitor() {	IsPlatform win && { dhcptest.exe "$@"; return; }; }
 DhcpOptions()
 { 
 	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }

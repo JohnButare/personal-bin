@@ -603,34 +603,14 @@ alias hcd="cd $c/network/hashi/cert"
 
 hi() { hashi install -e "$HASHI_CERTS" "$@"; } # hi - hashi install
 
-export HASHI_HOSTS="pi3,pi4,pi5,pi6,pi7"
-export HASHI_PRODUCTS="vault nomad consul"
-
-export HASHI_HOSTS="pi3,pi4,pi5,pi6,pi7"
-export HASHI_PRODUCTS="consul"
-
-hinst() { hi consul --host=$HASHI_HOSTS "$@"; }
-
 # hclean: clean hashi product installation
 hclean()
 {
-	hashi cleanup
+	. bootstrap-config.sh
+	hashi remove all -H="$(DelimitArray "," hashiServers),$(DelimitArray "," hashiClients),localhost"
+	hashi config nuke all --force "$@"
+	sudoc DelDir --contents "$HASHI_CERTS"
 	unset CONSUL_HTTP_TOKEN VAULT_TOKEN NOMAD_TOKEN
-	
-	local hosts="$HASHI_HOSTS,localhost"
-	local product products=( $HASHI_PRODUCTS )
-
-	for product in "${products[@]}"; do
-		credential delete "$product" token
-		[[ "$product" == "vault" ]] && consul kv delete "vault/" >& /dev/null
-		hashi remove "$product" --host="$hosts"
-	done
-}
-
-hcleanall()
-{
-	sudoc DelDir --contents "$HASHI_CERTS" || return
-	hclean || return
 }
 
 # consul

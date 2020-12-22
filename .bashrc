@@ -597,19 +597,22 @@ DhcpOptions()
 # HashiCorp
 
 export HASHI_CERTS="$cloud/network/hashi/cert"
+export HASHI_CERTS="/mnt/p/network/hashi/cert"
 export HASHI_CERTS="$UDATA/certificate/hashi" # testing
 
 alias hcd="cd $c/network/hashi/cert"
 
 hi() { hashi install -e "$HASHI_CERTS" "$@"; } # hi - hashi install
+hcg() { credential delete vault token; export VAULT_TOKEN="$1"; hashi config local; } # hcl - hashi config get
 
 # hclean: clean hashi product installation
 hclean()
 {
+	local what="all"; [[ "$1" =~ (all|consul|nomad|vault) ]] && { what="$1"; shift; }
 	. bootstrap-config.sh
-	hashi remove all -H="$(DelimitArray "," hashiServers),$(DelimitArray "," hashiClients),localhost"
-	hashi config nuke all --force "$@"
-	sudoc DelDir --contents "$HASHI_CERTS"
+	hashi remove -H="$(DelimitArray "," hashiServers),$(DelimitArray "," hashiClients),localhost" "$what" "$@" 
+	hashi config nuke --force "$what" "$@"
+	[[ "$what" == "all" ]] && sudoc DelDir --contents "$HASHI_CERTS"
 	unset CONSUL_HTTP_TOKEN VAULT_TOKEN NOMAD_TOKEN
 }
 
@@ -948,7 +951,7 @@ alias h="hyperv"
 hc() { h console  "$1"; } 																				# console
 hoc() { h on "$1" && h console  "$1"; } 													# on-console
 hct() { h create --type "$@" && h on "$2" && h console "$2"; } 		# create-type
-hcl() { hct linux "$@" ; } ; hcp() { hct pxe "$@" ; }; hcw() { hct win "$@" ; } 
+hcl() { hct linux "$@" ; } ; hcp() { hct pxe "$@" ; }; hcw() { hct win "$@" ; }  # create-linux
 
 # vmware
 vm() { vmware IsInstalled && VMware start || hyperv start; }

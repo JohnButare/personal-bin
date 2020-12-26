@@ -63,7 +63,7 @@ ubin="$udata/bin"
 usm="$ADATA/../Roaming/Microsoft/Windows/Start Menu" # UserStartMenu
 up="$usm/Programs" # UserPrograms
 ud="$home/Desktop" # UserDesktop
-db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"
+db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"; export CDATA="$cdata"
 
 alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
 alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
@@ -595,14 +595,12 @@ DhcpOptions()
 }
 
 # HashiCorp
-
-export HASHI_CERTS="$cloud/network/hashi/cert"
-export HASHI_CERTS="/mnt/p/network/hashi/cert"
-export HASHI_CERTS="$UDATA/certificate/hashi" # testing
-
+export HASHI_CERTS="/mnt/p/data/certificate/hashi" # use `encm` to mount the encrypted certificate folder
+#export HASHI_CERTS="$UDATA/certificate/hashi" # testing
 alias hcd="cd $c/network/hashi/cert"
 
 hi() { hashi install -e "$HASHI_CERTS" "$@"; } # hi - hashi install
+hcert() { hashi cert -e "$HASHI_CERTS" "$@"; } # hcert - hashi certificates
 hcg() { credential delete vault token; export VAULT_TOKEN="$1"; hashi config local; } # hcl - hashi config get
 
 # hclean: clean hashi product installation
@@ -610,7 +608,7 @@ hclean()
 {
 	local what="all"; [[ "$1" =~ (all|consul|nomad|vault) ]] && { what="$1"; shift; }
 	. bootstrap-config.sh
-	hashi remove -H="$(DelimitArray "," hashiServers),$(DelimitArray "," hashiClients),localhost" "$what" "$@" 
+	hashi remove -H="$(ArrayDelimit hashiServers),$(ArrayDelimit hashiClients),localhost" "$what" "$@" 
 	hashi config nuke --force "$what" "$@"
 	[[ "$what" == "all" ]] && sudoc DelDir --contents "$HASHI_CERTS"
 	unset CONSUL_HTTP_TOKEN VAULT_TOKEN NOMAD_TOKEN
@@ -696,6 +694,11 @@ alias slf='SyncLocalFiles'
 alias FindSyncTxt='fa .*_sync.txt'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
+
+# Test Servers
+TEST_SERVERS=( pi3 pi3 pi4 pi5 pi5 pi7 )
+TestOn() { power on "${TEST_SERVERS[@]}"; }
+TestOff() { power off --force "${TEST_SERVERS[@]}"; }
 
 # TFTP
 TftpLog() { IsPlatform qnap && LogShow "/share/Logs/opentftpd.log"; }
@@ -859,8 +862,9 @@ alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs grep -iE "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
-fu() { FindText "$1" "*" "$BIN"; FindText "$1" "*" "$UBIN"; } # FindUsages
-fue() { fu "$1" | cut -d: -f1 | sort | uniq | xargs sublime; } # FindUsagesEdit
+fu() { FindText "$1" "*" "$BIN"; FindText "$1" "*" "$UBIN"; } # FindUsages TEXT - find all script usages of specified TEXT
+fuf() { fu "$@" | cut -d: -f1 | sort | uniq; } # FindUsagesFiles - find all script names that use the specified TEXT
+fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names that use the specified TEXT
 
 #
 # security
@@ -964,36 +968,36 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 
 mcd() { cd "//nas3/data/media"; } # media cd
 
-# netboot
-n3c() { cd "$(happconfig "$fileServer")$1"; } # nas3 application configuration
-n3d() { cd "$(happdata "$fileServer")/$1"; } # nas3 application data
-
-# web
-n3w() { IsLocalHost "$fileServer" && cd "/share/Web" || cd "//$fileServer/web"; } # web directory
-n3wc() { local f="$(unc mount "//$fileServer/root/etc/config/apache/extra/wiggin.conf")"; e "$f"; } # web configure
+# encrypted files
+encm() { VeraCrypt mount "$CDATA/VeraCrypt/personal.hc" p; } 	# mount encrypted file share on drive p
+encum() { VeraCrypt unmount p; }															# unmount encrypted file share from drive p
 
 # Gigabyte applications
 gapp() { elevate "$P32/GIGABYTE/AppCenter/RunUpd.exe"; } # Gigabyte Application Center
 gfan() { elevate "$P32/GIGABYTE/siv/ThermalConsole.exe"; }
 
-# synology entware opt interferes with Domotz Agent
-OptOn() { [[ -d "/opt/lib.hold" ]] && sudo mv "/opt/lib.hold" "/opt/lib"; }
-OptOff() { [[ -d "/opt/lib" ]] && sudo mv "/opt/lib" "/opt/lib.hold"; }
+# netboot
+n3c() { cd "$(happconfig "$fileServer")$1"; } # nas3 application configuration
+n3d() { cd "$(happdata "$fileServer")/$1"; } # nas3 application data
 
-# configuration
+# network configuration
 alias ncd="cd $c/network/configuration"
-alias nce='wiggin config edit'
-alias ncb='wiggin config backup'
-alias ncu='wiggin config update'
+alias nce='wiggin network edit'
+alias ncb='wiggin networkbackup'
+alias ncu='wiggin network update'
 
-alias ncu1='wiggin config update pi1.local'
-alias ncu2='wiggin config update pi2.local'
+alias ncu1='wiggin network update pi1.local'
+alias ncu2='wiggin netwrok update pi2.local'
 alias ncuw='ncu1 && ncu2'
 
 nae() { TextEdit "$c/network/configuration/dns/forward.txt"; } # network alias edit
 
 # UniFi
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
+
+# web
+n3w() { IsLocalHost "$fileServer" && cd "/share/Web" || cd "//$fileServer/web"; } # web directory
+n3wc() { local f="$(unc mount "//$fileServer/root/etc/config/apache/extra/wiggin.conf")"; e "$f"; } # web configure
 
 #
 # windows

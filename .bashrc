@@ -11,7 +11,11 @@ export LESSOPEN='|~/.lessfilter %s'
 # Interactive Configuration
 #
 
-IsPlatform wsl2 && { LANG="C.UTF-8"; } # fix locale error
+# ensure DISPLAY is set first
+InitializeXServer || return
+
+# fix locale error
+IsPlatform wsl2 && { LANG="C.UTF-8"; } 
 
 # options
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
@@ -1003,7 +1007,6 @@ n3wc() { local f="$(unc mount "//$fileServer/root/etc/config/apache/extra/wiggin
 # windows
 #
 
-InitializeXServer || return
 SetTitle() { printf "\e]2;$*\a"; }
 
 #

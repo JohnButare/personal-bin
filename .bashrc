@@ -767,7 +767,7 @@ GetArchitecture() { for host in $@; do printf " $host "; ssh $host uname -m; don
 hib() { PowerCommand hibernate "$@"; }
 on() { PowerCommand on "$@"; }; alias boot='on'
 off() { PowerCommand off "$@"; }; alias down='off'
-slp() { PowerCommand sleep "$@"; }
+slp() { PowerCommand sleep "$@"; (( $# == 0 )) && cls; }
 reb() { PowerCommand reboot "$@"; }
 
 PowerCommand()

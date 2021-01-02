@@ -36,7 +36,7 @@
     vcs                     # git status
     #prompt_char            # prompt symbol
   )
-  IsPlatform qnap && RemoveFromArray vcs POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  IsPlatform qnap && ArrayRemove POWERLEVEL9K_LEFT_PROMPT_ELEMENTS vcs
 
   # The list of segments shown on the right. Fill it with less important segments.
   # Right prompt on the last prompt line (where you are typing your commands) gets

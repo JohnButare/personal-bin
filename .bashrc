@@ -49,8 +49,6 @@ IsZsh && bindkey "^H" backward-kill-word
 # locations
 #
 
-fileServer="nas3.hagerman.butare.net"
-
 p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" b="$BIN" bin="$BIN" data="$DATA"
 psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
 pp="$psm/Programs" 	# PublicPrograms
@@ -573,7 +571,7 @@ alias ehosts='sudoedit /etc/hosts' # edit hosts file
 
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
-DnsSuffixFix() { . "$BIN/bootstrap-config.sh" || return; echo "search $domain\n" | sudo tee -a "/etc/resolv.conf" || return; }
+DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }
 
 # Apache
 ApacheConfig() { e "$(unc mount //nas3/root)/etc/config/apache/extra/wiggin.conf"; } # specific to QNAP location for now
@@ -583,7 +581,7 @@ ApacheRestart()
 { 
 	IsPlatform qnap && { sudo /etc/init.d/Qthttpd.sh restart ; return; }
 	[[ -f "/usr/local/apache/bin/apachectl" ]] && { sudo "/usr/local/apache/bin/apachectl" restart; return; }
-	ssh -t "$fileServer" "sudo /etc/init.d/Qthttpd.sh restart" || return
+	ssh -t "$(ConfigGet "web")" "sudo /etc/init.d/Qthttpd.sh restart" || return
 }
 
 # DNS
@@ -611,8 +609,7 @@ hcg() { credential delete vault token; export VAULT_TOKEN="$1"; hashi config loc
 hclean()
 {
 	local what="all"; [[ "$1" =~ (all|consul|nomad|vault) ]] && { what="$1"; shift; }
-	. bootstrap-config.sh
-	hashi remove -H="$(ArrayDelimit hashiServers),$(ArrayDelimit hashiClients),localhost" "$what" "$@" 
+	hashi remove -H="$(HashiConfigGet "servers"),$(HashiConfigGet "clients"),localhost" "$what" "$@" 
 	hashi config nuke --force "$what" "$@"
 	[[ "$what" == "all" ]] && sudoc DelDir --contents "$HASHI_CERTS"
 	unset CONSUL_HTTP_TOKEN VAULT_TOKEN NOMAD_TOKEN
@@ -981,8 +978,8 @@ gapp() { elevate "$P32/GIGABYTE/AppCenter/RunUpd.exe"; } # Gigabyte Application 
 gfan() { elevate "$P32/GIGABYTE/siv/ThermalConsole.exe"; }
 
 # netboot
-n3c() { cd "$(happconfig "$fileServer")$1"; } # nas3 application configuration
-n3d() { cd "$(happdata "$fileServer")/$1"; } # nas3 application data
+n3c() { cd "$(happconfig "$(ConfigGet "fs")")$1"; } # nas3 application configuration
+n3d() { cd "$(happdata "$(ConfigGet "fs")")/$1"; } # nas3 application data
 
 # network configuration
 alias ncd="cd $c/network/configuration"
@@ -1000,8 +997,8 @@ nae() { TextEdit "$c/network/configuration/dns/forward.txt"; } # network alias e
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # web
-n3w() { IsLocalHost "$fileServer" && cd "/share/Web" || cd "//$fileServer/web"; } # web directory
-n3wc() { local f="$(unc mount "//$fileServer/root/etc/config/apache/extra/wiggin.conf")"; e "$f"; } # web configure
+n3w() { IsLocalHost "$(ConfigGet "web")" && cd "/share/Web" || cd "$(ConfigGet "webUnc")"; } # web directory
+n3wc() { local f="$(unc mount "//$(ConfigGet "web")/root/etc/config/apache/extra/wiggin.conf")"; e "$f"; } # web configure
 
 #
 # windows

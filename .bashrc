@@ -564,6 +564,7 @@ u() { SshAgentCheck; HostUpdate "$@" || return; }
 # network
 #
 
+alias cdv="cd ~/Volumes"
 alias NetworkUpdate='UpdateInit || return; network current update; ScriptEval network proxy --$(UpdateGet "proxy")'
 alias nu="NetworkUpdate"
 
@@ -692,7 +693,7 @@ SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
 
 # sync files
 alias slf='SyncLocalFiles'
-alias FindSyncTxt='fa .*_sync.txt'
+alias FindSyncTxt='fa ".*_sync.txt"'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
 

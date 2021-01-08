@@ -87,7 +87,7 @@ alias st='startup --no-pause'
 
 alias e='TextEdit'
 alias f='firefox'
-alias grep='\grep --color=auto'
+alias grep='command grep --color=auto'
 alias m='merge'
 
 bcat() { InPath batcat && batcat "$@" || command cat "$@"; }

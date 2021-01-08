@@ -549,6 +549,7 @@ alias hrestart="service restart homebridge"
 alias hstart='sudo hb-service start'
 alias hstop='sudo hb-service stop'
 alias hlog='sudo hb-service logs'
+alias hloge='e /var/lib/homebridge/homebridge.log' # log edit
 alias hbakall='hbak pi5'
 
 hbak() { HomebridgeHelper backup "$@"; } # hbak HOST

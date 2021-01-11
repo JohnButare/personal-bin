@@ -698,11 +698,6 @@ alias FindSyncTxt='fa ".*_sync.txt"'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
 
-# Test Servers
-TEST_SERVERS=( pi3 pi3 pi4 pi5 pi5 pi7 )
-TestOn() { power on "${TEST_SERVERS[@]}"; }
-TestOff() { power off --force "${TEST_SERVERS[@]}"; }
-
 # TFTP
 TftpLog() { IsPlatform qnap && LogShow "/share/Logs/opentftpd.log"; }
 
@@ -767,19 +762,11 @@ fi
 GetArchitecture() { for host in $@; do printf " $host "; ssh $host uname -m; done; }
 
 # on|off|sleep|reb HOST [HOST...] [OPTIONS]
-hib() { PowerCommand hibernate "$@"; }
-on() { PowerCommand on "$@"; }; alias boot='on'
-off() { PowerCommand off "$@"; }; alias down='off'
-slp() { PowerCommand sleep "$@"; (( $# == 0 )) && cls; }
-reb() { PowerCommand reboot "$@"; }
-
-PowerCommand()
-{ 
-	local cmd="$1" args=() hosts=() a h; shift; 
-	for a in "$@"; do IsOption "$a" && args+=( $a ) || hosts+=( $a ); done
-	[[ ! "${hosts[@]}" ]] && { power $cmd "${args[@]}"; return; }
-	for h in "${hosts[@]}"; do power $cmd "${args[@]}" "$h" || return; done
-}
+hib() { power hibernate "$@"; }
+on() { power on "$@"; }; alias boot='on'
+off() { power off "$@"; }; alias down='off'
+slp() { power sleep "$@"; (( $# == 0 )) && cls; }
+reb() { power reboot "$@"; }
 
 logoff()
 {
@@ -969,7 +956,9 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # wiggin
 #
 
+cam() { wiggin cam "$@"; }
 mcd() { cd "//nas3/data/media"; } # media cd
+wtest() { wiggin "$@" test; }
 
 # encrypted files
 encm() { VeraCrypt mount "$CDATA/VeraCrypt/personal.hc" p; } 	# mount encrypted file share on drive p

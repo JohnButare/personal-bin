@@ -956,9 +956,12 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # wiggin
 #
 
-cam() { wiggin cam "$@"; }
 mcd() { cd "//nas3/data/media"; } # media cd
-wtest() { wiggin "$@" test; }
+
+#devices
+cam() { wiggin device "$@" cam; }
+wcore() { wiggin device "$@" core; }
+wtest() { wiggin device "$@" test; }
 
 # encrypted files
 encm() { VeraCrypt mount "$CDATA/VeraCrypt/personal.hc" p; } 	# mount encrypted file share on drive p

@@ -861,6 +861,8 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 #
 
 SudoCheck() { [[ ! -r "$1" ]] && sudo="sudoc"; } # SudoCheck FILE - set sudo variable to sudoc if user does not have read permissiont o the file
+
+# certificates
 CertView() { openssl x509 -in "$1" -text; }
 
 #

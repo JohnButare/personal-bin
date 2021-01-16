@@ -1002,6 +1002,15 @@ n3wc() { local f="$(unc mount "//$(ConfigGet "web")/root/etc/config/apache/extra
 
 SetTitle() { printf "\e]2;$*\a"; }
 
+# Xpra
+xprac() { IsPlatform win && "$P/Xpra/xpra_cmd.exe" "$@" || xpra "$@"; } # client
+
+xpraa() { coproc xprac attach "ssh://$1/$2"; } 	# attach
+xprad() { xprac detatch "ssh://$1/$2"; } 				# stop
+xpral() { s "$1" -- xpra list; } 								# list
+xpras() { xprac exit "ssh://$1/$2"; } 					# exit
+xprat() { coproc xprac start "ssh://$1" --start terminator; } # terminator
+
 #
 # xml
 #

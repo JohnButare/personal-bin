@@ -26,13 +26,7 @@ SourceIfExists "$HOME/.rvm/scripts/rvm" || return
 
 # credential manager
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
-
-	# ensure get Ubuntu gnome keyring password prompt over ssh 
-	if IsSsh && [[ $DISPLAY ]] && InPath dbus-launch dbus-update-activation-environment; then
-		dbus-update-activation-environment --systemd DISPLAY || return
-	fi 
-
-	export CREDENTIAL_MANAGER="$(credential --quiet type)"
+	export CREDENTIAL_MANAGER="$(credential --quiet type)"; 	
 	export CREDENTIAL_MANAGER_CHECKED="true"
 fi
 

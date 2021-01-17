@@ -9,6 +9,9 @@ alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 ahk() { start "$P/AutoHotkey/AutoHotkeyU64.exe" "$@"; } # AutoHotKey
 rdesk() { ( mstsc.exe '/f' '/v:'"${@}" & ) }
 
+# credentials
+WinCredList() {  wincred.exe list '*' | sort | grep -v '^secret-' | RemoveCarriageReturn; }
+
 # monitor
 alias monden='monprofile den'
 alias monstudy='monprofile study'

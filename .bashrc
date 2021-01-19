@@ -647,7 +647,7 @@ KeaStatus() { service status kea-dhcp4-server; }
 KeaStop() { service stop kea-dhcp4-server; }
 KeaRestart() { service restart kea-dhcp4-server; }
 
-KeaTest() { SshHelper "$1.local" 'sudo dhclient -r; sudo dhclient'; ping "$1.local"; }
+KeaTest() { SshHelper connect "$1.local" -- 'sudo dhclient -r; sudo dhclient'; ping "$1.local"; }
 
 # mDNS
 MdnsList() {  avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
@@ -874,8 +874,8 @@ sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using s
 
 # connecting
 
-sm() { SshHelper --mosh "$@"; } # mosh
-sx() { SshHelper -x "$@"; } 		# X forwarding
+sm() { SshHelper connect --mosh "$@"; } # mosh
+sx() { SshHelper connect -x "$@"; } 		# X forwarding
 ssht() { ssh -t "$@"; } 				# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
 
 # connect with additional startup scripts

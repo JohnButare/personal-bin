@@ -985,6 +985,7 @@ alias ncuw='ncu1 && ncu2'
 nae() { TextEdit "$c/network/configuration/dns/forward.txt"; } # network alias edit
 
 # UniFi
+alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # web

@@ -593,29 +593,16 @@ DhcpOptions()
 }
 
 # HashiCorp
-export HASHI_CERTS="/mnt/p/data/certificate/hashi" # use `encm` to mount the encrypted certificate folder
-#export HASHI_CERTS="$UDATA/certificate/hashi" # testing
-alias hcd="cd $c/network/hashi/cert"
+alias hcd="cd $c/network/hashi"
 
-hi() { hashi install -e "$HASHI_CERTS" "$@"; } # hi - hashi install
-hcert() { hashi cert -e "$HASHI_CERTS" "$@"; } # hcert - hashi certificates
-hcg() { credential delete vault token; export VAULT_TOKEN="$1"; hashi config local; } # hcl - hashi config get
+hti() { hashi test install -v "$@" && htconfig; }
+htc() { hashi test clean -v "$@"; }
+htconfig() { HashiConfigTest -f; }
 
-# hclean: clean hashi product installation
-hclean()
-{
-	local what="all"; [[ "$1" =~ (all|consul|nomad|vault) ]] && { what="$1"; shift; }
-	hashi remove -H="$(HashiConfigGet "servers"),$(HashiConfigGet "clients"),localhost" "$what" "$@" 
-	hashi config nuke --force "$what" "$@"
-	[[ "$what" == "all" ]] && sudoc DelDir --contents "$HASHI_CERTS"
-	unset CONSUL_HTTP_TOKEN VAULT_TOKEN NOMAD_TOKEN
-}
+hcl() { credential delete vault token; export VAULT_TOKEN="$1"; hashi config local; } # hcl - hashi config local
 
-# consul
-hr() { hashi resolve "$@"; }			# hr SERVER - resolve a consul service address
-
-# nomad
-j() { hashi nomad job "$@"; }
+hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
+j() { hashi nomad job "$@"; }	# job
 
 # run program and set configuration if necessary
 consul() { [[ ! $CONSUL_HTTP_ADDR ]] && eval "$(hashi config)"; command consul "$@"; }
@@ -634,6 +621,8 @@ HashiConfig()
 	eval "$config" || return
 	hashi status
 }	
+
+HashiConfigTest() { HashiConfig --config-prefix=test "$@"; }
 
 # Kea DHCP
 KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }

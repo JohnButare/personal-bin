@@ -595,14 +595,18 @@ DhcpOptions()
 # HashiCorp
 alias hcd="cd $c/network/hashi"
 
-hti() { hashi test install -v "$@" && htconfig; }
-htc() { hashi test clean -v "$@"; }
-htconfig() { HashiConfigTest -f; }
+HashiConfig() { ScriptEval hashi config "$@" && hashi status; }
+HashiConfigTest() { HashiConfig --config-prefix=test "$@"; }
 
 hcl() { credential delete vault token; export VAULT_TOKEN="$1"; hashi config local; } # hcl - hashi config local
-
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 j() { hashi nomad job "$@"; }	# job
+
+# test
+hti() { wiggin setup hashi --test -- "$@" && htconfig; } 	# Hashi Test Install
+htf() { wiggin setup hashi final --test -- "$@"; } 				# Hashi Test Final
+htc() { hashi test clean "$@"; }													# Hashi Test Clean
+htconfig() { HashiConfigTest -f; }												# Hashi Test Config
 
 # run program and set configuration if necessary
 consul() { [[ ! $CONSUL_HTTP_ADDR ]] && eval "$(hashi config)"; command consul "$@"; }
@@ -613,16 +617,6 @@ vault() { [[ ! $VAULT_ADDR ]] && eval "$(hashi config)"; command vault "$@"; }
 clipc() { clipw "$CONSUL_HTTP_TOKEN"; }
 clipn() { clipw "$NOMAD_TOKEN"; }
 clipv() { clipw "$VAULT_TOKEN"; }
-
-# HashiConfig [HOST] - configure HashiCorp tools by setting environment variables
-HashiConfig()
-{
-	local config; config="$(hashi config "$@")" || return
-	eval "$config" || return
-	hashi status
-}	
-
-HashiConfigTest() { HashiConfig --config-prefix=test "$@"; }
 
 # Kea DHCP
 KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }

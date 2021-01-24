@@ -144,7 +144,7 @@
 	tagmv = "!f() { git tagrm $1; git tagcr $1; }; f" # move
 
 	# reflog
-	rl = "!f() { git  reflog | head -40; }; f" # reflog
+	rl = "!f() { git reflog | head -40; }; f" # reflog
 
 	# submodule
 	sm = submodule

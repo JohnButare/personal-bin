@@ -41,6 +41,8 @@ z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "
 # wsl
 wsld="$DATA/appdataw/wsl" # dir
 
+wsld() { wsl.exe --shutdown; }
+
 wn() { echo "$(wsl name) (WSL $WSL)"; } 							# name of current distribution
 wv() { echo "WSL $(wsl version)" | figlet | lolcat; } # version of current distribution
 w1() { wsl run1; }																		# run the first WSL 1 distribution

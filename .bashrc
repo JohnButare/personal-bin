@@ -595,8 +595,8 @@ DhcpOptions()
 # HashiCorp
 alias hcd="cd $c/network/hashi"
 
-HashiConfig() { ScriptEval hashi config "$@" && hashi status; }
-HashiConfigTest() { HashiConfig --config-prefix=test "$@"; }
+HashiConfigSilent() { ScriptEval hashi config environment "$@"; } 		# HashiConfigSilent [reset|test]
+HashiConfig() { HashiConfigSilent "$@" && hashi status; } 						# HashiConfig [reset|test]
 
 hcl() { credential delete vault token; export VAULT_TOKEN="$1"; hashi config local; } # hcl - hashi config local
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
@@ -604,14 +604,13 @@ j() { hashi nomad job "$@"; }	# job
 
 # test
 hti() { wiggin setup hashi --test -- "$@" && htconfig; } 	# Hashi Test Install
-htf() { wiggin setup hashi final --test -- "$@"; } 				# Hashi Test Final
-htc() { hashi test clean "$@"; }													# Hashi Test Clean
-htconfig() { HashiConfigTest -f; }												# Hashi Test Config
+htf() { wiggin setup hashi finasl --test -- "$@"; } 				# Hashi Test Final
+htc() { hashi test clean "$@"; HashiConfig reset; }				# Hashi Test Clean
 
 # run program and set configuration if necessary
-consul() { [[ ! $CONSUL_HTTP_ADDR ]] && eval "$(hashi config)"; command consul "$@"; }
-nomad() { [[ ! $NOMAD_ADDR ]] && eval "$(hashi config)"; command nomad "$@"; }
-vault() { [[ ! $VAULT_ADDR ]] && eval "$(hashi config)"; command vault "$@"; }
+consul() { [[ ! $CONSUL_HTTP_ADDR ]] && HashiConfigSilent; command consul "$@"; }
+nomad() { [[ ! $NOMAD_ADDR ]] && HashiConfigSilent; command nomad "$@"; }
+vault() { [[ ! $VAULT_ADDR ]] && HashiConfigSilent; command vault "$@"; }
 
 # put token for a HashiCorp program into the clipboard
 clipc() { clipw "$CONSUL_HTTP_TOKEN"; }

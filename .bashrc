@@ -593,24 +593,23 @@ DhcpOptions()
 }
 
 # HashiCorp
+alias h="hashi"
 alias hcd="cd $c/network/hashi"
 
-HashiConfigSilent() { ScriptEval hashi config environment "$@"; } 		# HashiConfigSilent [reset|test]
-HashiConfig() { HashiConfigSilent "$@" && hashi status; } 						# HashiConfig [reset|test]
+HashiConfig() { ScriptEval hashi config environment "$@"; } # HashiConfig [prod|reset|test]
 
-hcl() { credential delete vault token; export VAULT_TOKEN="$1"; hashi config local; } # hcl - hashi config local
+hc() { HashiConfig "$@" && hashi status; } # hc - HashiConfig
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 j() { hashi nomad job "$@"; }	# job
 
 # test
 hti() { wiggin setup hashi --test -- "$@" && htconfig; } 	# Hashi Test Install
-htf() { wiggin setup hashi finasl --test -- "$@"; } 				# Hashi Test Final
 htc() { hashi test clean "$@"; HashiConfig reset; }				# Hashi Test Clean
 
 # run program and set configuration if necessary
-consul() { [[ ! $CONSUL_HTTP_ADDR ]] && HashiConfigSilent; command consul "$@"; }
-nomad() { [[ ! $NOMAD_ADDR ]] && HashiConfigSilent; command nomad "$@"; }
-vault() { [[ ! $VAULT_ADDR ]] && HashiConfigSilent; command vault "$@"; }
+consul() { [[ ! $CONSUL_HTTP_ADDR ]] && HashiConfig; command consul "$@"; }
+nomad() { [[ ! $NOMAD_ADDR ]] && HashiConfig; command nomad "$@"; }
+vault() { [[ ! $VAULT_ADDR ]] && HashiConfig; command vault "$@"; }
 
 # put token for a HashiCorp program into the clipboard
 clipc() { clipw "$CONSUL_HTTP_TOKEN"; }
@@ -920,11 +919,11 @@ alias cr="ChrootHelper"
 alias crdown="schroot --all-sessions --end-session"
 
 # hyper-v
-alias h="hyperv"
-hc() { h console  "$1"; } 																				# console
-hoc() { h on "$1" && h console  "$1"; } 													# on-console
-hct() { h create --type "$@" && h on "$2" && h console "$2"; } 		# create-type
-hcl() { hct linux "$@" ; } ; hcp() { hct pxe "$@" ; }; hcw() { hct win "$@" ; }  # create-linux
+alias hv="hyperv"
+hvc() { h console  "$1"; } 																												# console
+hvoc() { h on "$1" && h console  "$1"; } 																					# on-console
+hvct() { h create --type "$@" && h on "$2" && h console "$2"; } 									# create-type
+hvcl() { hct linux "$@" ; } ; hcp() { hct pxe "$@" ; }; hcw() { hct win "$@" ; }  # create-linux
 
 # vmware
 vm() { vmware IsInstalled && VMware start || hyperv start; }

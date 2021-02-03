@@ -596,15 +596,17 @@ DhcpOptions()
 alias h="hashi"
 alias hcd="cd $c/network/hashi"
 
-HashiConfig() { ScriptEval hashi config environment "$@"; } # HashiConfig [prod|reset|test]
+HashiConfig() { ScriptEval hashi config environment --suppress-errors "$@"; } # HashiConfig [prod|reset|test]
 
 hc() { HashiConfig "$@" && hashi status; } # hc - HashiConfig
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
+hs() { hashi status; }
+
 j() { hashi nomad job "$@"; }	# job
 
 # test
-hti() { wiggin setup hashi --test -- "$@" && htconfig; } 	# Hashi Test Install
-htc() { hashi test clean "$@"; HashiConfig reset; }				# Hashi Test Clean
+hti() { wiggin setup hashi test -- "$@" && HashiConfig test; }		# Hashi Test Install
+htr() { wiggin remove hashi test --force --yes -- "$@"; HashiConfig reset; }				# Hashi Test Clean
 
 # run program and set configuration if necessary
 consul() { [[ ! $CONSUL_HTTP_ADDR ]] && HashiConfig; command consul "$@"; }
@@ -846,7 +848,7 @@ CertView() { openssl x509 -in "$1" -text; }
 #
 
 alias s=sx	# connect with ssh
-alias hs="hyperv ssh" # connect to a Hyper-V host with ssh
+alias hssh="hyperv ssh" # connect to a Hyper-V host with ssh
 alias sshconfig='e ~/.ssh/config'
 alias sshkh='e ~/.ssh/known_hosts'
 

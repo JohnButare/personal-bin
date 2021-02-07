@@ -71,7 +71,7 @@ RShift & g::
 
 ; Mail
 RShift & m::
-#m::OpenThunderbird()
+#v::OpenThunderbird()
 
 ; Notes
 RShift & n::
@@ -82,8 +82,8 @@ RShift & t::
 #t::OpenTextEditor()
 
 ; Virtual Machine
-RShift & v::
-#v::OpenVm()
+;RShift & v::
+;#v::OpenVm()
 
 ; word
 RShift & w::

@@ -985,7 +985,7 @@ SetTitle() { printf "\e]2;$*\a"; }
 xprac() { IsPlatform win && "$P/Xpra/xpra_cmd.exe" "$@" || xpra "$@"; } # client
 
 xpraa() { coproc xprac attach "ssh://$1/$2"; } 	# attach
-xprad() { xprac detatch "ssh://$1/$2"; } 				# stop
+xprad() { xprac detach "ssh://$1/$2"; } 				# detatch
 xpral() { s "$1" -- xpra list; } 								# list
 xpras() { xprac exit "ssh://$1/$2"; } 					# exit
 xprat() { coproc xprac start "ssh://$1" --start terminator; } # terminator

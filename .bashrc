@@ -975,6 +975,9 @@ SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 n3w() { IsLocalHost "$(ConfigGet "web")" && cd "/share/Web" || cd "$(ConfigGet "webUnc")"; } # web directory
 n3wc() { local f="$(unc mount "//$(ConfigGet "web")/root/etc/config/apache/extra/wiggin.conf")"; e "$f"; } # web configure
 
+# Blue Assignor
+bac() { cd "$WIN_HOME/Juntos Holdings Dropbox/Company/consulting/BlueAssignor"; }
+
 #
 # windows
 #

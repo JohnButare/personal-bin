@@ -53,7 +53,7 @@ appdata="$DATA/appdata" appconfig="$DATA/appconfig"
 happconfig() { IsLocalHost "$1" && echo "$appconfig" || echo "//$1/root$appconfig"; }
 happdata() { IsLocalHost "$1" && echo "$appdata" || echo "//$1/root$appdata"; }
 
-home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$udoc/data" dl="$HOME/Downloads"
+home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$home/data" dl="$HOME/Downloads"
 code="$CODE" wcode="$WIN_HOME/$(GetFileName "$CODE")"
 ubin="$udata/bin"
 usm="$ADATA/../Roaming/Microsoft/Windows/Start Menu" # UserStartMenu

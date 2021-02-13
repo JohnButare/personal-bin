@@ -5,7 +5,8 @@
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 
-[[ "$-" != *i* ]] && return # return if not interactive
+# return if not interactive
+[[ "$-" != *i* ]] && return 
 
 #
 # Interactive Configuration
@@ -45,9 +46,9 @@ IsZsh && bindkey "^H" backward-kill-word
 
 p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" b="$BIN" bin="$BIN" data="$DATA"
 psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
-pp="$psm/Programs" 	# PublicPrograms
-pd="$pub/Desktop" 	# PublicDesktop
-v="/Volumes"
+pp="$psm/Programs" 															# PublicPrograms
+pd="$pub/Desktop" 															# PublicDesktop
+v="/Volumes"																		# volumes
 
 appdata="$DATA/appdata" appconfig="$DATA/appconfig"
 happconfig() { IsLocalHost "$1" && echo "$appconfig" || echo "//$1/root$appconfig"; }
@@ -59,12 +60,12 @@ ubin="$udata/bin"
 usm="$ADATA/../Roaming/Microsoft/Windows/Start Menu" # UserStartMenu
 up="$usm/Programs" # UserPrograms
 ud="$home/Desktop" # UserDesktop
-db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"; export CDATA="$cdata"
+db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"; export CDATA="$cdata" # cloud
+ncd="$c/network" # network configuration directory
 
 alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
 alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
-
-OfficeTemplates() { . office.sh; cd "$OfficeTemplates"; }
+alias ncd="$ncd"
 
 #
 # other
@@ -358,12 +359,114 @@ lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}"
 FileTypes() { file * | sort -k 2; }
 
 #
+# find
+#
+
+alias fa='FindAll'
+alias fcd='FindCd'
+alias fs='FindStart'
+alias ft='FindText'
+
+fclip() { IFS=$'\n' files=( $(FindAll "$1") ) && clipw "${files[@]}"; } # FindClip
+fe() { IFS=$'\n' files=( $(FindAll "$1") ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindAllEdit
+fte() { IFS=$'\n' files=( $(FindText "$@" | cut -d: -f1) ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindTextEdit
+ftl() { grep -iE "$@" *; } # Find Text Local - find specified text in the current directory
+
+fsql() { ft "$1" "*.sql"; } # FindSql TET
+esql() { fte "$1" "*.sql"; } # EditSql TEXT
+fsqlv() { fsql "-- version $1"; } # FindSqlVersion [VERSION]
+esqlv() { esql "-- version $1"; } # EditSqlVersion [VERSION]
+msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | grep -Eiv "deploy|skip|ignore|NonVersioned" | sort | tail -1; } # MaxSqlVersion
+
+eai() { fte "0.0.0.0" "VersionInfo.cs"; } # EditAssemblyInfo that are set to deploy (v0.0.0.0)
+
+FindText() # TEXT FILE_PATTERN [START_DIR](.)
+{ 
+	local startDir="${@:3}"
+	grep --color -ire "$1" --include="$2" --exclude-dir=".git" "${startDir:-.}"
+}
+
+FindAll()
+{
+	[[ $# == 0 ]] && { echo "No file specified"; return; }
+	find . -iname "$@" |& grep -v "Permission denied"
+}
+
+FindStart()
+{
+	start "$(FindAll "$@" | head -1)";
+}
+
+FindCd()
+{
+	local file="$(FindAll "$@" | head -1)"
+	local dir="$(GetFilePath "$file")"
+
+	if [ -d "$dir" ]; then
+		cd "$dir"
+	else
+		echo Could not find directory "$@"
+	fi;
+}
+
+#
 # functions
 #
 
 def() { IsBash && type "$1" || whence -f "$1"; }
 alias unexport='unset'
 alias unfunction='unset -f'
+
+#
+# git
+#
+
+alias g='git'
+alias ga='g add'
+alias gd='gc diff'
+alias gf='gc freeze'
+alias gl='g logb; echo'					# log
+alias gla='g loga'							# log all
+alias gca='g ca'								# commit all
+alias gcam='g amendAll'					# commit ammend all
+alias gcn='GitHelper clone nas1' # clone a repository from nas1
+alias gs='g s' 									# status
+alias gbs='g bs'								# branch status [PATTERN]
+alias gr='g rb' 								# rebase
+alias gr1='g rb HEAD~1 --onto' 	# rebase first commit onto specified branch
+alias gri='g rbi' 							# rebase interactive
+alias gria='g rbia' 						# rebase interactive auto, rebase all fixup! commits
+alias grc='g rbc' 							# rebase continue
+alias grf='g rf' 								# create a rebase fixup commit
+alias grs='g rsq' 							# create a rebase squash commit
+alias gmt='g mergetool'
+alias gpf='g push --force'			# push force
+alias grft='grf && g i Test' 		# fixup commit and push to test
+alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
+alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
+alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; }'
+alias gg='GitHelper gui'
+alias gh='GitHelper'
+alias ghub='GitHelper hub'
+alias lg='lazygit'
+alias tgg='GitHelper tgui'
+
+# Git Headquarters (ghq)
+ghqg() { local url="$1"; ghq get "$1"; url="$(echo "$url" | cut -d/ -f3-)"; cd "$(ghq root)/$(ghq list | grep "$url")"; } # get REPO
+ghqcd() { cd "$(ghq root)/$(ghq list | fzf)"; } # select an existing ghq repository to change to
+
+# GitLab
+glc() { sudoedit /etc/gitlab/gitlab.rb; } # GitLab configuration
+glr() { sudoc gitlab-ctl reconfigure; } # GitLab reconfigure
+
+glb() 
+{ 
+	sudoc gitlab-rake gitlab:backup:create STRATEGY=copy
+	local dir="$(unc mount //oversoul/drop)" || return
+	mkdir --parents "$dir/gitlab" || return
+	sudo rsync --info=progress2 --archive --recursive --delete "/var/opt/gitlab/backups" "$dir/gitlab"
+	unc unmount //oversoul/drop || return
+}
 
 #
 # history
@@ -375,6 +478,24 @@ IsBash && HISTCONTROL=ignoreboth
 IsZsh && setopt SHARE_HISTORY HIST_IGNORE_DUPS
 
 HistoryClear() { IsBash && cat /dev/null > $HISTFILE; history -c; }
+
+#
+# homebridge
+#
+
+alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
+alias hcconfig="e $ncd/system/homebridge/config/config.json" # edit cloud configuration
+alias hlogclean="sudoc rm /var/lib/homebridge/homebridge.log"
+alias hssh="sudo cp ~/.ssh/config ~/.ssh/known_hosts ~homebridge/.ssh && sudo chown homebridge ~homebridge/.ssh/config ~homebridge/.ssh/known_hosts" # update SSH configuration 
+alias hrestart="service restart homebridge"
+alias hstart='sudo hb-service start'
+alias hstop='sudo hb-service stop'
+alias hlog='sudo hb-service logs'
+alias hloge='e /var/lib/homebridge/homebridge.log' # log edit
+alias hbakall='hbak pi5'
+
+hbak() { HomebridgeHelper backup "$@"; } # hbak HOST
+hrest() { HomebridgeHelper restore "$@"; } # hrest HOST
 
 #
 # performance
@@ -430,130 +551,11 @@ iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002; } # 
 iperfc() { iperf3 -c $1 -p 5002; } # client
 
 #
-# find
+# projects
 #
 
-alias fa='FindAll'
-alias fcd='FindCd'
-alias fs='FindStart'
-alias ft='FindText'
-
-fclip() { IFS=$'\n' files=( $(FindAll "$1") ) && clipw "${files[@]}"; } # FindClip
-fe() { IFS=$'\n' files=( $(FindAll "$1") ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindAllEdit
-fte() { IFS=$'\n' files=( $(FindText "$@" | cut -d: -f1) ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindTextEdit
-ftl() { grep -iE "$@" *; } # Find Text Local - find specified text in the current directory
-
-fsql() { ft "$1" "*.sql"; } # FindSql TET
-esql() { fte "$1" "*.sql"; } # EditSql TEXT
-fsqlv() { fsql "-- version $1"; } # FindSqlVersion [VERSION]
-esqlv() { esql "-- version $1"; } # EditSqlVersion [VERSION]
-msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | grep -Eiv "deploy|skip|ignore|NonVersioned" | sort | tail -1; } # MaxSqlVersion
-
-eai() { fte "0.0.0.0" "VersionInfo.cs"; } # EditAssemblyInfo that are set to deploy (v0.0.0.0)
-
-FindText() # TEXT FILE_PATTERN [START_DIR](.)
-{ 
-	local startDir="${@:3}"
-	grep --color -ire "$1" --include="$2" --exclude-dir=".git" "${startDir:-.}"
-}
-
-FindAll()
-{
-	[[ $# == 0 ]] && { echo "No file specified"; return; }
-	find . -iname "$@" |& grep -v "Permission denied"
-}
-
-FindStart()
-{
-	start "$(FindAll "$@" | head -1)";
-}
-
-FindCd()
-{
-	local file="$(FindAll "$@" | head -1)"
-	local dir="$(GetFilePath "$file")"
-
-	if [ -d "$dir" ]; then
-		cd "$dir"
-	else
-		echo Could not find directory "$@"
-	fi;
-}
-
-#
-# git
-#
-
-alias g='git'
-alias ga='g add'
-alias gd='gc diff'
-alias gf='gc freeze'
-alias gl='g logb; echo'					# log
-alias gla='g loga'							# log all
-alias gca='g ca'								# commit all
-alias gcam='g amendAll'					# commit ammend all
-alias gcn='GitHelper clone nas1' # clone a repository from nas1
-alias gs='g s' 									# status
-alias gbs='g bs'								# branch status [PATTERN]
-alias gr='g rb' 								# rebase
-alias gr1='g rb HEAD~1 --onto' 	# rebase first commit onto specified branch
-alias gri='g rbi' 							# rebase interactive
-alias gria='g rbia' 						# rebase interactive auto, rebase all fixup! commits
-alias grc='g rbc' 							# rebase continue
-alias grf='g rf' 								# create a rebase fixup commit
-alias grs='g rsq' 							# create a rebase squash commit
-alias gmt='g mergetool'
-alias gpf='g push --force'			# push force
-alias grft='grf && g i Test' 		# fixup commit and push to test
-alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
-alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
-alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; }'
-alias gg='GitHelper gui'
-alias gh='GitHelper'
-alias ghub='GitHelper hub'
-alias lg='lazygit'
-alias tgg='GitHelper tgui'
-
-# Git Headquarters (ghq)
-ghqg() { local url="$1"; ghq get "$1"; url="$(echo "$url" | cut -d/ -f3-)"; cd "$(ghq root)/$(ghq list | grep "$url")"; } # get REPO
-ghqcd() { cd "$(ghq root)/$(ghq list | fzf)"; } # select an existing ghq repository to change to
-
-# GitLab
-glc() { sudoedit /etc/gitlab/gitlab.rb; } # GitLab configuration
-glr() { sudoc gitlab-ctl reconfigure; } # GitLab reconfigure
-
-glb() 
-{ 
-	sudoc gitlab-rake gitlab:backup:create STRATEGY=copy
-	local dir="$(unc mount //oversoul/drop)" || return
-	mkdir --parents "$dir/gitlab" || return
-	sudo rsync --info=progress2 --archive --recursive --delete "/var/opt/gitlab/backups" "$dir/gitlab"
-	unc unmount //oversoul/drop || return
-}
-
-#
-# homebridge
-#
-
-alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
-alias hcconfig="e $c/network/homebridge/config/config.json" # edit cloud configuration
-alias hlogclean="sudoc rm /var/lib/homebridge/homebridge.log"
-alias hssh="sudo cp ~/.ssh/config ~/.ssh/known_hosts ~homebridge/.ssh && sudo chown homebridge ~homebridge/.ssh/config ~homebridge/.ssh/known_hosts" # update SSH configuration 
-alias hrestart="service restart homebridge"
-alias hstart='sudo hb-service start'
-alias hstop='sudo hb-service stop'
-alias hlog='sudo hb-service logs'
-alias hloge='e /var/lib/homebridge/homebridge.log' # log edit
-alias hbakall='hbak pi5'
-
-hbak() { HomebridgeHelper backup "$@"; } # hbak HOST
-hrest() { HomebridgeHelper restore "$@"; } # hrest HOST
-
-#
-# host
-#
-
-u() { SshAgentCheck; HostUpdate "$@" || return; }
+# Blue Assignor
+bac() { cd "$WIN_HOME/Juntos Holdings Dropbox/Company/consulting/BlueAssignor"; }
 
 #
 # network
@@ -594,7 +596,7 @@ DhcpOptions()
 
 # HashiCorp
 alias h="hashi"
-alias hcd="cd $c/network/hashi"
+alias hcd="cd $ncd/hashi"
 
 HashiConfig() { ScriptEval hashi config environment --suppress-errors "$@"; } # HashiConfig [prod|reset|test]
 
@@ -936,9 +938,7 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # wiggin
 #
 
-mcd() { cd "//nas3/data/media"; } # media cd
-
-#devices
+# devices
 cam() { wiggin device "$@" cam; }
 wcore() { wiggin device "$@" core; }
 wtest() { wiggin device "$@" test; }
@@ -947,36 +947,32 @@ wtest() { wiggin device "$@" test; }
 encm() { VeraCrypt mount "$CDATA/VeraCrypt/personal.hc" p; } 	# mount encrypted file share on drive p
 encum() { VeraCrypt unmount p; }															# unmount encrypted file share from drive p
 
-# Gigabyte applications
-gapp() { elevate "$P32/GIGABYTE/AppCenter/RunUpd.exe"; } # Gigabyte Application Center
-gfan() { elevate "$P32/GIGABYTE/siv/ThermalConsole.exe"; }
+# media
+mcd() { cd "//nas3/data/media"; }
 
 # netboot
 n3c() { cd "$(happconfig "$(ConfigGet "fs")")$1"; } # nas3 application configuration
-n3d() { cd "$(happdata "$(ConfigGet "fs")")/$1"; } # nas3 application data
+n3d() { cd "$(happdata "$(ConfigGet "fs")")/$1"; } 	# nas3 application data
 
-# network configuration
-alias ncd="cd $c/network/configuration"
-alias nce='wiggin network edit'
-alias ncb='wiggin networkbackup'
-alias ncu='wiggin network update'
-
-alias ncu1='wiggin network update pi1.local'
-alias ncu2='wiggin netwrok update pi2.local'
-alias ncuw='ncu1 && ncu2'
-
-nae() { TextEdit "$c/network/configuration/dns/forward.txt"; } # network alias edit
+# network DNS and DHCP configuration
+alias nae='TextEdit "$ncd/system/dns/forward.txt"'	# network alias edit
+alias nce='wiggin network edit'											# network configuration edit
+alias ncb='wiggin network backup'										# network configuration backup
+alias ncu='wiggin network update'										# network configuration update
+alias ncu1='wiggin network update pi1.local'				# network configuration update pi1
+alias ncu2='wiggin netwrok update pi2.local'				# network configuration update pi2
+alias ncuw='ncu1 && ncu2'														# network configuration update wiggin
 
 # UniFi
 alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
+# update
+u() { SshAgentCheck; HostUpdate "$@" || return; }
+
 # web
 n3w() { IsLocalHost "$(ConfigGet "web")" && cd "/share/Web" || cd "$(ConfigGet "webUnc")"; } # web directory
 n3wc() { local f="$(unc mount "//$(ConfigGet "web")/root/etc/config/apache/extra/wiggin.conf")"; e "$f"; } # web configure
-
-# Blue Assignor
-bac() { cd "$WIN_HOME/Juntos Holdings Dropbox/Company/consulting/BlueAssignor"; }
 
 #
 # windows

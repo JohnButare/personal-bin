@@ -957,11 +957,8 @@ n3d() { cd "$(happdata "$(ConfigGet "fs")")/$1"; } 	# nas3 application data
 # network DNS and DHCP configuration
 alias nae='TextEdit "$ncd/system/dns/forward.txt"'	# network alias edit
 alias nce='wiggin network edit'											# network configuration edit
-alias ncb='wiggin network backup'										# network configuration backup
-alias ncu='wiggin network update'										# network configuration update
-alias ncu1='wiggin network update pi1.local'				# network configuration update pi1
-alias ncu2='wiggin netwrok update pi2.local'				# network configuration update pi2
-alias ncuw='ncu1 && ncu2'														# network configuration update wiggin
+alias ncb='wiggin network backup all'								# network configuration backup
+alias ncu='wiggin network update all all'						# network configuration update
 
 # UniFi
 alias uc='UniFiController'

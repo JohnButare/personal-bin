@@ -598,8 +598,6 @@ DhcpOptions()
 alias h="hashi"
 alias hcd="cd $ncd/hashi"
 
-HashiConfig() { ScriptEval hashi config environment --suppress-errors "$@"; } # HashiConfig [prod|reset|test]
-
 hc() { HashiConfig "$@" && hashi status; } # hc - HashiConfig
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hs() { hashi status; }

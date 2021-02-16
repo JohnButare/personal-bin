@@ -848,7 +848,7 @@ CertView() { openssl x509 -in "$1" -text; }
 #
 
 alias s=sx	# connect with ssh
-alias hssh="hyperv ssh" # connect to a Hyper-V host with ssh
+alias hvs="hyperv ssh" # connect to a Hyper-V host with ssh
 alias sshconfig='e ~/.ssh/config'
 alias sshkh='e ~/.ssh/known_hosts'
 
@@ -922,9 +922,9 @@ alias crdown="schroot --all-sessions --end-session"
 
 # hyper-v
 alias hv="hyperv"
-hvc() { h console  "$1"; } 																												# console
-hvoc() { h on "$1" && h console  "$1"; } 																					# on-console
-hvct() { h create --type "$@" && h on "$2" && h console "$2"; } 									# create-type
+hvc() { hv console  "$1"; } 																												# console
+hvoc() { hv on "$1" && hv console  "$1"; } 																					# on-console
+hvct() { hv create --type "$@" && hv on "$2" && hv console "$2"; } 									# create-type
 hvcl() { hct linux "$@" ; } ; hcp() { hct pxe "$@" ; }; hcw() { hct win "$@" ; }  # create-linux
 
 # vmware

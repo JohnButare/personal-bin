@@ -980,8 +980,9 @@ xprac() { IsPlatform win && "$P/Xpra/xpra_cmd.exe" "$@" || xpra "$@"; } # client
 
 xpraa() { coproc xprac attach "ssh://$1/$2"; } 	# attach
 xprad() { xprac detach "ssh://$1/$2"; } 				# detatch
+xprae() { xprac exit "ssh://$1/$2"; } 					# exit
 xpral() { s "$1" -- xpra list; } 								# list
-xpras() { xprac exit "ssh://$1/$2"; } 					# exit
+xpras() { coproc xprac start "ssh://$1" --start "$2"; } 			# start
 xprat() { coproc xprac start "ssh://$1" --start terminator; } # terminator
 
 #

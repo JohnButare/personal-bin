@@ -596,7 +596,7 @@ DhcpOptions()
 
 # HashiCorp
 alias h="hashi"
-alias hcd="cd $ncd/hashi"
+alias hcd="cd $ncd/system/hashi"
 
 hc() { HashiConfig "$@" && hashi status; } # hc - HashiConfig
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
@@ -606,7 +606,7 @@ j() { hashi nomad job "$@"; }	# job
 
 # test
 hti() { wiggin setup hashi test -- "$@" && HashiConfig test; }		# Hashi Test Install
-htr() { wiggin remove hashi test --force --yes -- "$@"; HashiConfig reset; }				# Hashi Test Clean
+htr() { wiggin remove hashi test --force -- --yes "$@"; HashiConfig reset; }				# Hashi Test Clean
 
 # run program and set configuration if necessary
 consul() { [[ ! $CONSUL_HTTP_ADDR ]] && HashiConfig; command consul "$@"; }

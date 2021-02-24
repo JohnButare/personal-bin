@@ -555,7 +555,8 @@ iperfc() { iperf3 -c $1 -p 5002; } # client
 #
 
 # Blue Assignor
-bac() { cd "$WIN_HOME/Juntos Holdings Dropbox/Company/consulting/BlueAssignor"; }
+bacd() { cd "$WIN_HOME/Juntos Holdings Dropbox/Company/consulting/BlueAssignor"; }
+bac() { cd "$WIN_HOME/eclipse-workspace/ccsua/src/org/ccsua"; }
 
 #
 # network

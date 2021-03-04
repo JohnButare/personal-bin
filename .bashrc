@@ -949,7 +949,7 @@ encum() { VeraCrypt unmount p; }															# unmount encrypted file share fr
 # media
 mcd() { cd "//nas3/data/media"; }
 
-# netboot
+# files
 n3c() { cd "$(happconfig "$(ConfigGet "fs")")$1"; } # nas3 application configuration
 n3d() { cd "$(happdata "$(ConfigGet "fs")")/$1"; } 	# nas3 application data
 

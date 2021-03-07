@@ -859,8 +859,16 @@ sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using s
 # connecting
 
 sm() { SshHelper connect --mosh "$@"; } # mosh
-sx() { SshHelper connect -x "$@"; } 		# X forwarding
 ssht() { ssh -t "$@"; } 				# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
+
+# sx - X forwarding and supply passwords where possible
+sx()
+{
+	case "$1" in
+		router) SshHelper connect --password "$(credential get unifi admin)" "$@";;
+		*) SshHelper connect -x "$@";;
+	esac 
+} 		
 
 # connect with additional startup scripts
 sshfull() { ssh -t $1 ". /etc/profile; ${@:2}";  } # full environment

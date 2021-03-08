@@ -945,6 +945,8 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # wiggin
 #
 
+vpn() { network vpn "$@"; }
+
 # devices
 cam() { wiggin device "$@" cam; }
 wcore() { wiggin device "$@" core; }

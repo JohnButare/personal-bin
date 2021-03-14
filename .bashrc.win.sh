@@ -39,23 +39,11 @@ alias ffw='elevate powershell FlipFlopWheel.ps1'
 z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 
 # wsl
-wsld="$DATA/appdataw/wsl" # dir
-
-wsld() { wsl.exe --shutdown; }
-
-wn() { echo "$(wsl name) (WSL $WSL)"; } 							# name of current distribution
-wv() { echo "WSL $(wsl version)" | figlet | lolcat; } # version of current distribution
-w1() { wsl run1; }																		# run the first WSL 1 distribution
-w2() { wsl run2; }																		# run the first WSL 2 distribution
-
-wsldown() { sync; wsl.exe --shutdown; } # shutdown all distributions, sync prevents file corruption, ~/.zsh_history is likely to corrupt
-wslimage() { i info >& /dev/null; "$INSTALL_DIR/LINUX/wsl/image/ubuntu"; } # image directory
-wslr() { wsl delete "$1" "$@"; wsl restore "$1" "$2" "${3:-2}"; wsl init "$1"; } # reset DIST SRC
+wsld() { wsl shutdown; }
+wslr() { wsl dist restore "$@" && wsl install "$1"; } # reset DIST SRC
 
 # test1 distribution
 wslTestDist="test1"
-wtinit() { wt2 --no-prompt; }
-wt1() { wslr $wslTestDist ubuntu-bionic 1 "$@"; } # reset test distribution to Ubuntu-Bionic (18.04) WSL 1 image
-wt2() { wslr $wslTestDist ubuntu-focal 2 "$@"; } 	# reset test distribution to Ubuntu-Focal (20.04) WSL 2 image
-wtb() { wsl init $wslTestDist "$@"; } 						# initialize test distribution by running bootstrap-init
-wt() { wsl run test1 "$@"; } 											# run test distruvtion
+wt() { wsl dist run test1 "$@"; } 								# run test distruvtion
+wtr() { wslr "$wslTestDist" ubuntu-focal "$@"; } 	# reset test distribution
+wtb() { wsl install "$wslTestDist" "$@"; } 				# initialize test distribution by running bootstrap-init

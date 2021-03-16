@@ -39,11 +39,13 @@ alias ffw='elevate powershell FlipFlopWheel.ps1'
 z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 
 # wsl
-wsld() { wsl shutdown; }
+wn() { wsl get name; }																# name
+wr() { wsl dist run "$@"; }														# run DIST
+wsld() { wsl shutdown; }															# shutdown WSL
 wslr() { wsl dist restore "$@" && wsl install "$1"; } # reset DIST SRC
 
 # test1 distribution
 wslTestDist="test1"
-wt() { wsl dist run test1 "$@"; } 								# run test distruvtion
-wtr() { wslr "$wslTestDist" ubuntu-focal "$@"; } 	# reset test distribution
-wtb() { wsl install "$wslTestDist" "$@"; } 				# initialize test distribution by running bootstrap-init
+wt() { wsl dist run test1 "$@"; } 														# run test distribution
+wtr() { wslr "$wslTestDist" ubuntu-focal --no-prompt "$@"; } 	# reset test distribution
+wti() { wsl install "$wslTestDist" "$@"; } 										# install test distribution

@@ -659,7 +659,7 @@ fi
 # proxy server
 alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
 alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars --status"
-alias ProxyStatus="network proxy status"
+alias ProxyStatus="network proxy --status"
 
 # salt
 RunAll() { a="$@"; sudoc salt '*' cmd.run "/usr/local/data/bin/RunScript $a"; }

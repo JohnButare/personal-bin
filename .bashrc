@@ -325,7 +325,9 @@ DoLs()
 
 alias duh='${G}du --human-readable' # disk usage human readable
 alias dsu='DiskSpaceUsage'					# disk apace usage
-tdu() { ncdu -x /; } 								# total disk usage
+tdug() { ncdu -x /; } 							# total disk usage graphical
+tdu() { di -d m | head -2 | tail -1 | tr -s " " | cut -d" " -f4; } # total disk usage in MB
+tdud() { local b="$(tdu)"; pause; echo "$(echo "$(tdu) - $b" | bc)MB"; } # total disk usage difference in MB
 dus() { ${G}du --summarize --human-readable "$@" |& grep -Ev "Permission denied|Transport endpoint is not connected"; } # disk usage summary
 
 ListPartitions() { sudo parted -l; }

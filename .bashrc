@@ -431,7 +431,6 @@ alias gl='g logb; echo'					# log
 alias gla='g loga'							# log all
 alias gca='g ca'								# commit all
 alias gcam='g amendAll'					# commit ammend all
-alias gcn='GitHelper clone nas1' # clone a repository from nas1
 alias gs='g s' 									# status
 alias gbs='g bs'								# branch status [PATTERN]
 alias gr='g rb' 								# rebase
@@ -449,9 +448,7 @@ alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modifi
 alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; }'
 alias gg='GitHelper gui'
 alias gh='GitHelper'
-alias ghub='GitHelper hub'
 alias lg='lazygit'
-alias tgg='GitHelper tgui'
 
 # Git Headquarters (ghq)
 ghqg() { local url="$1"; ghq get "$1"; url="$(echo "$url" | cut -d/ -f3-)"; cd "$(ghq root)/$(ghq list | grep "$url")"; } # get REPO

@@ -39,6 +39,8 @@ alias ffw='elevate powershell FlipFlopWheel.ps1'
 z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "${@:2}"; }
 
 # wsl
+wcd() { cd "$(wsl get dir)/image"; }									# cd
+wcdi() { cd "$(wsl get ImageDir)"; }									# cd image
 wn() { wsl get name; }																# name
 wr() { wsl dist run "$@"; }														# run DIST
 wsld() { wsl shutdown; }															# shutdown WSL

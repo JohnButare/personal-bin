@@ -46,8 +46,8 @@ wr() { wsl dist run "$@"; }														# run DIST
 wsld() { wsl shutdown; }															# shutdown WSL
 wslr() { wsl dist restore "$@" && wsl install "$1"; } # reset DIST SRC
 
-# test1 distribution
-wslTestDist="test1"
-wt() { wsl dist run test1 "$@"; } 														# run test distribution
+# test2 distribution
+wslTestDist="test2"
+wt() { wsl dist run "$wslTestDist" "$@"; } 										# run test distribution
 wtr() { wslr "$wslTestDist" ubuntu-focal --no-prompt "$@"; } 	# reset test distribution
 wti() { wsl install "$wslTestDist" "$@"; } 										# install test distribution

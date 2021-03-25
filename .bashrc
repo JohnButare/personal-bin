@@ -216,9 +216,17 @@ clockt() # clock terminal
 
 clockc() # clock check
 {
+	if InPath chronyc && service running "chrony"; then
+		header "Chrony Sources"; chronyc sources || return
+		header "Chrony Client"; chronyc tracking || return
+	fi
 
-	InPath chronyc && { header "Chrony Client"; chronyc tracking || return; }
-	
+	local timeServer="$(ConfigGet "timeServer")"
+	if [[ $timeServer ]] && InPath "ntpdate" && IsAvailable "$timeServer"; then
+		header "Time Server Comparison ($timeServer)"
+		ntpdate -q $timeServer || return;
+	fi
+
 	if [[ -f "/etc/chrony/chrony.conf" ]] && grep "^allow" "/etc/chrony/chrony.conf" >& /dev/null; then
 		header "Chrony Server"
 		sudoc chronyc serverstats || return

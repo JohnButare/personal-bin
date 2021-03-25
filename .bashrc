@@ -433,13 +433,13 @@ alias unfunction='unset -f'
 
 alias g='git'
 alias ga='g add'
-alias gd='gc diff'
+alias gd='g diff'
 alias gf='gc freeze'
 alias gl='g logb; echo'					# log
 alias gla='g loga'							# log all
 alias gca='g ca'								# commit all
 alias gcam='g amendAll'					# commit ammend all
-alias gs='g s' 									# status
+alias gs='gh changes'   				# status
 alias gbs='g bs'								# branch status [PATTERN]
 alias gr='g rb' 								# rebase
 alias gr1='g rb HEAD~1 --onto' 	# rebase first commit onto specified branch
@@ -457,6 +457,12 @@ alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; 
 alias gg='GitHelper gui'
 alias gh='GitHelper'
 alias lg='lazygit'
+
+gfd() # git fuzzy diff
+{
+  preview="git diff $@ --color=always -- {-1}"
+  git diff $@ --name-only | fzf -m --ansi --preview $preview
+}
 
 # Git Headquarters (ghq)
 ghqg() { local url="$1"; ghq get "$1"; url="$(echo "$url" | cut -d/ -f3-)"; cd "$(ghq root)/$(ghq list | grep "$url")"; } # get REPO

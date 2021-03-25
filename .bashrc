@@ -44,28 +44,31 @@ IsZsh && bindkey "^H" backward-kill-word
 # locations
 #
 
-p="$P" p32="$P32" win="$DATA/platform/win" sys="/mnt/c" pub="$PUB" b="$BIN" bin="$BIN" data="$DATA"
-psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" # PublicStartMenu
-pp="$psm/Programs" 															# PublicPrograms
-pd="$pub/Desktop" 															# PublicDesktop
-v="/Volumes"																		# volumes
+b="$BIN" bin="$BIN" pd="$PUB/Desktop" pub="$PUB" data="$DATA" win="$DATA/platform/win"
+home="$HOME" doc="$DOC" dl="$HOME/Downloads" code="$CODE"
+ubin="$HOME/data/bin" ud="$HOME/Desktop" udata="$HOME/data"  	# user
+p="$P"; alias p='"$p"' 																				# programs
 
+if IsPlatform win; then
+	p32="$P32"																																	# programs
+	psm="$PROGRAMDATA/Microsoft/Windows/Start Menu"; pp="$psm/Programs" 				# public
+	usm="$ADATA/../Roaming/Microsoft/Windows/Start Menu"; up="$usm/Programs"		# user
+	wcode="$WIN_CODE" wh="$WIN_HOME" 	
+	alias p='"$p"' pp='"$pp"' up='"$up"' usm='"$usm"'
+fi
+
+# Dropbox
+if [[ -d "$home/Dropbox" ]]; then
+	cloud="$home/Dropbox"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"
+	export CDATA="$cdata"
+	IsPlatform win && alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
+	ncd="$cloud/network"; alias ncd="$ncd" # network configuration directory
+fi
+
+# applications
 appdata="$DATA/appdata" appconfig="$DATA/appconfig"
 happconfig() { IsLocalHost "$1" && echo "$appconfig" || echo "//$1/root$appconfig"; }
 happdata() { IsLocalHost "$1" && echo "$appdata" || echo "//$1/root$appdata"; }
-
-home="$HOME" wh="$WIN_HOME" doc="$DOC" udoc="$DOC" udata="$home/data" dl="$HOME/Downloads"
-code="$CODE" wcode="$WIN_HOME/$(GetFileName "$CODE")"
-ubin="$udata/bin"
-usm="$ADATA/../Roaming/Microsoft/Windows/Start Menu" # UserStartMenu
-up="$usm/Programs" # UserPrograms
-ud="$home/Desktop" # UserDesktop
-db="$home/Dropbox"; cloud="$db"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"; export CDATA="$cdata" # cloud
-ncd="$c/network" # network configuration directory
-
-alias p='"$p"' p32='"$p32"' pp='"$pp"' up='"$up"' usm='"$usm"'
-alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
-alias ncd="$ncd"
 
 #
 # other

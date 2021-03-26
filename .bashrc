@@ -225,9 +225,9 @@ clockc() # clock check
 	fi
 
 	local timeServer="$(ConfigGet "timeServer")"
-	if [[ $timeServer ]] && InPath "ntpdate" && IsAvailable "$timeServer"; then
+	if [[ $timeServer ]] && ClockCompareInstalled && IsAvailable "$timeServer"; then
 		header "Time Server Comparison ($timeServer)"
-		ntpdate -q $timeServer || return;
+		ClockCompare "$timeServer" || return;
 	fi
 
 	if [[ -f "/etc/chrony/chrony.conf" ]] && grep "^allow" "/etc/chrony/chrony.conf" >& /dev/null; then
@@ -235,6 +235,15 @@ clockc() # clock check
 		sudoc chronyc serverstats || return
 	fi
 }
+
+# ClockCompare HOST - compare systm clock with an NTP host (i.e. pi2, time.apple.com)
+ClockCompare()
+{
+	if IsPlatform mac; then sudoc sntp -sS "$1"
+	elif InPath ntpdate; then ntpdate -q "$1"
+	fi
+}
+ClockCompareInstalled() { IsPlatform mac || InPath ntpdate; }
 
 #
 # cron

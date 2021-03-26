@@ -219,7 +219,8 @@ clockt() # clock terminal
 
 clockc() # clock check
 {
-	if InPath chronyc && service running "chrony"; then
+	local service="chrony"; IsPlatform mac && service="org.tuxfamily.chronyc"
+	if InPath chronyc && service running "$service"; then
 		header "Chrony Sources"; chronyc sources || return
 		header "Chrony Client"; chronyc tracking || return
 	fi

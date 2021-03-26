@@ -70,7 +70,7 @@ RShift & g::
 #g::WinActivate "Fork"
 
 ; Mail
-RShift & m::
+RShift & v::
 #v::OpenThunderbird()
 
 ; Notes

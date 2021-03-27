@@ -16,7 +16,7 @@ export LESSOPEN='|~/.lessfilter %s'
 InitializeXServer || return
 
 # fix locale error
-IsPlatform wsl2 && { LANG="C.UTF-8"; } 
+IsPlatform wsl2 && { LANG="C.UTF-8"; }
 
 # options
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
@@ -774,9 +774,14 @@ reb() { power reboot "$@"; }
 
 logoff()
 {
-	IsSsh && exit
-	IsPlatform win && { logoff.exe; return; }
-	IsPlatform ubuntu && { gnome-session-quit --no-prompt; return; }
+	local user="${${1}:-$USER}"
+
+	if IsSsh; then exit
+	elif IsPlatform win; then logoff.exe
+	elif IsPlatform ubuntu; then gnome-session-quit --no-prompt
+	elif IsPlatform mac; then sudo launchctl bootout "user/$(id -u "$user")"
+	else EchoErr "logoff: logoff not supported"; return 1;
+	fi		
 }
 
 NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }

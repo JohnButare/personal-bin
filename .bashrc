@@ -919,7 +919,7 @@ sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start term
 # - avoid output - for clean PowerLevel 10K startup (Pass credential prompt requires output and input)
 [[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
 if [[ $CREDENTIAL_MANAGER ]] && [[ "$CREDENTIAL_MANAGER" != "pass" ]] && ! ssh-add -L >& /dev/null; then
-	SshAgentHelper start --quiet
+	SshAgentStart
 fi
 
 #

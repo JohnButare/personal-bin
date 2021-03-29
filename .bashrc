@@ -779,7 +779,7 @@ logoff()
 	if IsSsh; then exit
 	elif IsPlatform win; then logoff.exe
 	elif IsPlatform ubuntu; then gnome-session-quit --no-prompt
-	elif IsPlatform mac; then sudo launchctl bootout "user/$(id -u "$user")"
+	elif IsPlatform mac; then sudos launchctl bootout "user/$(id -u "$user")"
 	else EchoErr "logoff: logoff not supported"; return 1;
 	fi		
 }
@@ -851,7 +851,7 @@ PiImageLite() { pi image "$(i dir)/platform/linux/Raspberry Pi/Raspberry Pi OS/2
 # scripts
 #
 
-mint() { e "$ccode/bash/template/min"; } # bash min template
+mint() { e "$ccode/bash/template/min" "$ccode/bash/template/app"; } # bash min template
 alias scd='ScriptCd'
 alias se='ScriptEval'
 alias slist='file * .* | FilterShellScript | cut -d: -f1'
@@ -1005,7 +1005,7 @@ alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # update
-u() { SshAgentCheck; HostUpdate "$@" || return; }
+u() { SshAgentStart; HostUpdate "$@" || return; }
 
 # web
 n3w() { IsLocalHost "$(ConfigGet "web")" && cd "/share/Web" || cd "$(ConfigGet "webUnc")"; } # web directory

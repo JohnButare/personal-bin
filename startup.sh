@@ -1,12 +1,9 @@
-xserver $command || return
-
-# network
-app -b $command network || return
+app -b $command xserver network || return
 
 # service
 app -b $command dbus sshd || return # dbus docker chrony cron incron sshd
 
-# fix time drift in WSL under Hyper-V
+# chrony - fixes time drift in WSL under Hyper-V
 IsPlatform wsl && IsHypervVm && { app -b $command chrony time || return; } 	
 
 # applications

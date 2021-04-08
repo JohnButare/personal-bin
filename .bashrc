@@ -804,9 +804,9 @@ LogShow()
 { 
 	local sudo file="$1" pattern="$2"; [[ $pattern ]] && pattern=" $pattern"
 
-	setterm --linewrap off
+	LineWrap "off"
 	SudoCheck "$1"; $sudo tail -f "$1" | grep "$pattern"
-	setterm --linewrap on
+	LineWrap "on"
 }
 
 # NetConsole
@@ -919,7 +919,7 @@ sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start term
 # - avoid output - for clean PowerLevel 10K startup (Pass credential prompt requires output and input)
 [[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
 if [[ $CREDENTIAL_MANAGER ]] && [[ "$CREDENTIAL_MANAGER" != "pass" ]] && ! ssh-add -L >& /dev/null; then
-	SshAgentStart
+	SshAgentStart --quiet --verbose --log
 fi
 
 #

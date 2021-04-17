@@ -1020,12 +1020,12 @@ SetTitle() { printf "\e]2;$*\a"; }
 # Xpra
 xprac() { if IsPlatform win; then "$P/Xpra/xpra_cmd.exe" "$@"; else xpra "$@"; fi; } # client
 
-xpraa() { coproc xprac attach "ssh://$USER@$1/$2"; } 									# attach
-xprad() { xprac detach "ssh://$USER$$1/$2"; } 												# detatch
-xprae() { xprac exit "ssh://$USER@$1/$2"; } 													# exit
-xpral() { s "$1" -- xpra list; } 																			# list
-xpras() { coproc xprac start "ssh://$USER@$1" --start "$2"; } 				# start
-xprat() { coproc xprac start "ssh://$USER@$1" --start terminator; } 	# terminator
+xpraa() { xprac attach "ssh://$USER@$1/$2"; } 								# attach
+xprad() { xprac detach "ssh://$USER$$1/$2"; } 								# detatch
+xprae() { xprac exit "ssh://$USER@$1/$2"; } 									# exit
+xpral() { s "$1" -- xpra list; } 															# list
+xpras() { xprac start "ssh://$USER@$1" --start "$2"; } 				# start
+xprat() { xprac start "ssh://$USER@$1" --start terminator; } 	# terminator
 
 #
 # xml

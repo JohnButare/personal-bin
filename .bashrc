@@ -1020,12 +1020,22 @@ SetTitle() { printf "\e]2;$*\a"; }
 # Xpra
 xprac() { if IsPlatform win; then "$P/Xpra/xpra_cmd.exe" "$@"; else xpra "$@"; fi; } # client
 
-xpraa() { xprac attach "ssh://$USER@$1/$2"; } 								# attach
-xprad() { xprac detach "ssh://$USER$$1/$2"; } 								# detatch
-xprae() { xprac exit "ssh://$USER@$1/$2"; } 									# exit
+XpraConnect() { echo "ssh://$USER@$(os name "$1")/$2"; }
+
+XpraConfig() { RunPlatform XpraConfig "$@"; }
+XpraConfigMac() { "$P/Xpra.app/Contents/Helpers/Config_info" "$@"; }
+XpraConfigWin() { "$P/Xpra/Config_info.exe" "$@"; }
+
+XpraPaths() { RunPlatform XpraPaths "$@"; }
+XpraPathsMac() { "$P/Xpra.app/Contents/Helpers/Path_info" "$@"; }
+XpraPathsWin() { "$P/Xpra/Path_info.exe" "$@"; }
+
+xpraa() { xprac attach "$(XpraConnect "$@")/$2"; } 						# attach
+xprad() { xprac detach "$(XpraConnect "$@")/$2"; } 						# detatch
+xprae() { xprac exit "$(XpraConnect "$@")/$2"; } 							# exit
 xpral() { s "$1" -- xpra list; } 															# list
-xpras() { xprac start "ssh://$USER@$1" --start "$2"; } 				# start
-xprat() { xprac start "ssh://$USER@$1" --start terminator; } 	# terminator
+xpras() { xprac start "$(XpraConnect "$@")" --start "$2"; } 				# start
+xprat() { xprac start "$(XpraConnect "$@")" --start terminator; } 	# terminator
 
 #
 # xml

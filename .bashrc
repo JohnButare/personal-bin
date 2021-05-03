@@ -779,7 +779,7 @@ logoff()
 	if IsSsh; then exit
 	elif IsPlatform win; then logoff.exe
 	elif IsPlatform ubuntu; then gnome-session-quit --no-prompt
-	elif IsPlatform mac; then sudos launchctl bootout "user/$(id -u "$user")"
+	elif IsPlatform mac; then sudoc launchctl bootout "user/$(id -u "$user")"
 	else EchoErr "logoff: logoff not supported"; return 1;
 	fi		
 }

@@ -5,7 +5,7 @@ TextEditorInit()
 	NotepadPp := PROGRAMS64 "\Notepad++\notepad++.exe"
 	NotepadPpTitle := ".* - Notepad++"
 
-	Sublime := PROGRAMS64 "\Sublime Text 3\sublime_text.exe"
+	Sublime := PROGRAMS64 "\Sublime Text\sublime_text.exe"
 	SublimeTitle := ".* - Sublime Text"
 	
 	if FileExist(Sublime)

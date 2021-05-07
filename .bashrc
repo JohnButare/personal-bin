@@ -1021,6 +1021,7 @@ SetTitle() { printf "\e]2;$*\a"; }
 xprac() { if IsPlatform win; then "$P/Xpra/xpra_cmd.exe" "$@"; else xpra "$@"; fi; } # client
 
 XpraConnect() { echo "ssh://$USER@$(os name "$1")/$2"; }
+XpraCheck() { plink.exe "$USER@$(os name "$1")"; } # store SSH key in cache
 
 XpraConfig() { RunPlatform XpraConfig "$@"; }
 XpraConfigMac() { "$P/Xpra.app/Contents/Helpers/Config_info" "$@"; }

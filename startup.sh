@@ -7,6 +7,6 @@ app -b $command dbus sshd || return # dbus docker chrony cron incron sshd
 IsPlatform wsl && IsHypervVm && { app -b $command chrony time || return; } 	
 
 # applications
-app -b $command AquaSnap AutoHotKey LogitechOptions pu || return # TidyTabs
+app -b $command AquaSnap AutoHotKey LogitechOptions pu TidyTabs || return
 
 return 0

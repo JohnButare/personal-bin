@@ -625,7 +625,8 @@ DhcpOptions()
 alias h="hashi"
 alias hcd="cd $ncd/system/hashi"
 
-hc() { HashiConfig "$@" && hashi status; } # hc - HashiConfig
+hc() { HashiConfig "$@" && hashi status; } # hc - hashi config
+hct() { HashiConfig --config-prefix=test "$@" && hashi status; } # hct - hashi config test
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hs() { hashi status; }
 

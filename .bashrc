@@ -632,6 +632,9 @@ hs() { hashi status; }
 
 j() { hashi nomad job "$@"; }	# job
 
+vagrant() { "$WIN_ROOT/HashiCorp/Vagrant/bin/vagrant.exe" "$@"; }
+vcd() { cd "$WIN_HOME/data/app/vagrant"; }
+
 # test
 hti() { wiggin setup hashi test -- "$@" && HashiConfig test; }		# Hashi Test Install
 htr() { wiggin remove hashi test --force -- --yes "$@"; HashiConfig reset; }				# Hashi Test Clean

@@ -773,7 +773,7 @@ GetArchitecture() { for host in $@; do printf " $host "; ssh $host uname -m; don
 hib() { power hibernate "$@"; }
 on() { power on "$@"; }; alias boot='on'
 off() { power off "$@"; }; alias down='off'
-slp() { power sleep "$@"; (( $# == 0 )) && cls; }
+slp() { power sleep "$@" || return; (( $# == 0 )) && cls; return 0; }
 reb() { power reboot "$@"; }
 
 logoff()

@@ -7,6 +7,7 @@ alias winget='cmd.exe /c winget.exe'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 
 ahk() { start "$P/AutoHotkey/AutoHotkeyU64.exe" "$@"; } # AutoHotKey
+alias FlipFlopWheel='elevate powershell FlipFlopWheel.ps1'
 rdesk() { ( mstsc.exe '/f' '/v:'"${@}" & ) }
 
 # credentials

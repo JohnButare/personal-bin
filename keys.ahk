@@ -57,34 +57,11 @@ RWin & c::Send "#{Numpad3}"
 ; Applications
 ;
 
-; Terminal
-RShift & 3::
-#3::OpenTerminal()										
-
-; Browser
-RShift & b::
-#b::OpenBrowser()
-
-; Git
-RShift & g::
-#g::WinActivate "Fork"
-
-; Mail
-RShift & v::
-#v::OpenThunderbird()
-
-; Notes
-RShift & n::
-#n::OpenNotion()
-
-; Text Editor
-RShift & t::
-#t::OpenTextEditor()
-
-; Virtual Machine
-;RShift & v::
-;#v::OpenVm()
-
-; word
-RShift & w::
-#w::RunWord()
+RShift & 3::OpenTerminal() 			; Terminal
+RShift & b::OpenBrowser() 			; Browser
+RShift & g::WinActivate "Fork"  ; Git
+RShift & m::OpenThunderbird()		; Mail
+RShift & n::OpenNotion()				; Notes
+RShift & t::OpenTextEditor()		; Text Editor
+RShift & v::OpenVm()						; Virtual Machine
+RShift & w::RunWord()						; word

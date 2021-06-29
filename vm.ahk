@@ -3,7 +3,7 @@ VmInit()
   global
 
   vmware := PROGRAMS32 "\VMware\VMware Workstation\vmware.exe"
-  hyperv := "C:\Windows\SystemApps\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\MicrosoftEdge.exe"
+  hyperv := "C:\WINDOWS\System32\virtmgmt.msc"
 	
   if FileExist(vmware)
   	vm := "Vmware"
@@ -17,8 +17,6 @@ VmInit()
 
   if (DEFAULT_BROWSER = "hyperv" && FileExist(hyperv))
     vm := "Hyperv"
-
-  ;MsgBox vm
 }
 
 OpenVm()
@@ -27,10 +25,19 @@ OpenVm()
   Open%vm%()
 }
 
+NewHyperv()
+{
+  run "C:\WINDOWS\System32\virtmgmt.msc"
+}
+
 OpenHyperv()
 {
 	WinActivate "Hyper-V Manager"
-	;%windir%\System32\mmc.exe "%windir%\System32\virtmgmt.msc"
+
+  If WinExist("Hyper-V Manager")
+    return
+
+  run "C:\WINDOWS\System32\virtmgmt.msc"
 }
 
 NewVmware()

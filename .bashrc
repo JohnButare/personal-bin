@@ -935,7 +935,7 @@ alias TestSound='playsound "$data/setup/test.wav"'
 
 playsound()
 { 
-	InPath play && { play "$@"; return; }
+	InPath play && { play "$@"; return; } # requires sox
 	IsPlatform mac && { afplay "$@"; return; }
 	EchoErr "No audio program was found"; return 1
 }

@@ -83,6 +83,7 @@ alias st='startup --no-pause'
 # applications
 #
 
+alias ddm='DellDisplayManager'
 alias e='TextEdit'
 alias f='firefox'
 alias grep='command grep --color=auto'

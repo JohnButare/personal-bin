@@ -4,7 +4,7 @@ BrowserInit()
 
   chrome := PROGRAMS32 "\Google\Chrome\Application\chrome.exe"
   edge := "C:\Windows\SystemApps\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\MicrosoftEdge.exe"
-  firefox := PROGRAMS64 "\Mozilla Firefox\Firefox.exe"
+  firefox := PROGRAMS64 "\Mozilla Firefox\firefox.exe"
   ie := PROGRAMS32 "\Internet Explorer\iexplore.exe"
 	
   if FileExist(chrome)

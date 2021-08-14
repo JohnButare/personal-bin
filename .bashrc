@@ -276,12 +276,14 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 # DOT.NET Development
 alias vs='VisualStudio'
+[[ -d "$HOME/.dotnet" ]] && { PathAdd "$HOME/.dotnet"; export DOTNET_ROOT="$HOME/.dotnet"; }
 
 build() { n build /verbosity:minimal /m "$code/$1"; }
 BuildClean() { n build /t:Clean /m "$code/$1"; }
 
 # GO
 [[ -d "/usr/local/go/bin" ]] && { PathAdd "/usr/local/go/bin"; GOPATH=$HOME/go; }
+
 
 # Node.js
 alias node='\node --use-strict'
@@ -1057,3 +1059,7 @@ alias XmlShow='xml sel -t -c'
 SourceIfExists "/usr/local/opt/asdf/asdf.sh" || return
 SourceIfExists "$BIN/z.sh" || return
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
+
+
+
+

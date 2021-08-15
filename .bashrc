@@ -276,7 +276,13 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 # DOT.NET Development
 alias vs='VisualStudio'
-[[ -d "$HOME/.dotnet" ]] && { PathAdd "$HOME/.dotnet"; export DOTNET_ROOT="$HOME/.dotnet"; }
+
+if [[ -d "$HOME/.dotnet" ]]; then
+	PathAdd "$HOME/.dotnet"; export DOTNET_ROOT="$HOME/.dotnet"
+elif [[ -d "$P/dotnet" ]]; then
+	PathAdd "$P/dotnet"; export DOTNET_ROOT="$P/dotnet"
+fi
+! InPath dotnet && IsPlatform win && { alias dotnet="dotnet.exe"; }
 
 build() { n build /verbosity:minimal /m "$code/$1"; }
 BuildClean() { n build /t:Clean /m "$code/$1"; }

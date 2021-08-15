@@ -78,8 +78,10 @@ OpenEdge()
 NewFirefox()
 {
   global firefox
+  KeyWait "Shift" ; wait for shift to be released to avoid safe mode
   ;run firefox " -ProfileManager", "C:\Program Files\Mozilla Firefox\"
   run firefox, "C:\Program Files\Mozilla Firefox\"
+
 }
 
 OpenFirefox()

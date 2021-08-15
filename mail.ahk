@@ -38,6 +38,7 @@ OpenOutlook()
 NewThunderbird()
 {
   global
+  KeyWait "Shift" ; wait for shift to be released to avoid safe mode
   run thunderbird
 }
 

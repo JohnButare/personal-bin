@@ -10,7 +10,6 @@ TextEditorInit()
 VmInit()
 
 #Include common.ahk
-#Include ToggleTaskBar.ahk
 
 #Include browser.ahk
 #Include mail.ahk
@@ -35,7 +34,6 @@ Init()
 
 ^#t::Test()														; test
 LWin & Space::Send "^{Esc}"						; Start Menu (search)
-#!d::ToggleTaskBar										; show/hide Launcher (taskbar/dock)
 #1::WinClose "A" 											; close the active window
 #2::WinMoveBottom "A" 								; move the active window to the back
 

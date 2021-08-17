@@ -156,7 +156,7 @@
 [core]
 	autocrlf = false
 	excludesfile = ~/.gitignore
-	editor = sublime --wait
+	editor = TextEdit --wait
 [push]
 	default = current # http://prgmr.io/coding/git-push-default/
 [diff]

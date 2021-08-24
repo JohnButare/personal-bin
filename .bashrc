@@ -660,8 +660,7 @@ clipv() { clipw "$VAULT_TOKEN"; }
 
 # Kea DHCP
 KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }
-
-KeaLog() { LogShow "/var/log/kea-dhcp4.log"; }
+KeaLog() { local f="/usr/local/var/log/kea-dhcp4.log"; [[ ! -f "$f" ]] && f="/var/log/kea-dhcp4.log"; LogShow "$f"; }
 KeaServiceLog() { service log kea-dhcp4-server; }
 KeaFixLog() { local f="/var/run/kea/isc_kea_logger_lockfile"; [[ -f "$f" ]] && return; sudo mkdir "/var/run/kea"; sudo touch "$f"; }
 

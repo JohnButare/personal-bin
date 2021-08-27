@@ -1049,6 +1049,7 @@ xprae() { xprac exit "$(XpraConnect "$@")/$2"; } 							# exit
 xpral() { s "$1" -- xpra list; } 															# list
 xpras() { xprac start "$(XpraConnect "$@")" --start "$2"; } 				# start
 xprat() { xprac start "$(XpraConnect "$@")" --start terminator; } 	# terminator
+ln1t() { xprat ln1; } 																							# ln1 terminator
 
 #
 # xml

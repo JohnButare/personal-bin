@@ -44,10 +44,11 @@ NewThunderbird()
 
 OpenThunderbird()
 { 
-  WinActivate "ahk_exe " "thunderbird.exe"
-
   If WinExist("ahk_exe " "thunderbird.exe")
+  {
+    WinActivate "ahk_exe " "thunderbird.exe"
     return    
+  }
 
   NewThunderbird()
 }

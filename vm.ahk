@@ -32,10 +32,11 @@ NewHyperv()
 
 OpenHyperv()
 {
-	WinActivate "Hyper-V Manager"
-
   If WinExist("Hyper-V Manager")
+  {
+    WinActivate "Hyper-V Manager"
     return
+  }
 
   run "C:\WINDOWS\System32\virtmgmt.msc"
 }
@@ -50,10 +51,11 @@ OpenVmware()
 {
 	global
 
-  WinActivate "ahk_exe " "vmware.exe"
-
   If WinExist("ahk_exe " "vmware.exe")
+  {
+    WinActivate "ahk_exe " "vmware.exe"
     return    
+  }
 
   NewVmware()
 }

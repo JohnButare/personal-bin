@@ -37,10 +37,11 @@ WindowsTerminalOpen()
 {
 	global
 
-	WinActivate "ahk_class " WindowsTerminalClass
-
   If WinExist("ahk_class " WindowsTerminalClass)
+  {
+  	WinActivate "ahk_class " WindowsTerminalClass
     return    
+  }
 
   TerminalNew()
 }

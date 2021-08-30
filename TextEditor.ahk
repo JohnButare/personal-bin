@@ -56,10 +56,11 @@ OpenNotion()
 { 
   global
 
-  WinActivate "ahk_exe " "Notion.exe"
-
   If WinExist("ahk_exe " "Notion.exe")
+  {
+  	WinActivate "ahk_exe " "Notion.exe"
     return    
+  }
 
   run LOCALAPPDATA "\Programs\Notion\Notion.exe"
 }
@@ -68,10 +69,11 @@ OpenStandardNotes()
 { 
   global
 
-  WinActivate "ahk_exe " "Standard Notes.exe"
-
   If WinExist("ahk_exe " "Standard Notes.exe")
+  {
+  	WinActivate "ahk_exe " "Standard Notes.exe"
     return    
+  }
 
   run LOCALAPPDATA "\Programs\standard-notes\Standard Notes.exe"
 }

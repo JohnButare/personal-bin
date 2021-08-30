@@ -377,6 +377,7 @@ alias .....='cbuiltin d ../../../..'
 alias c='cls'									# clear screen
 alias cb='builtin cd ~; cls' 	# clear screen and cd
 alias cf='cb; InPath fortune && InPath cowsay && InPath lolcat && fortune | cowsay | lolcat ;' # clear both, fortune
+alias ch='cb; hostname | figlet -c -w $COLUMNS | lolcat;' # clear both, host
 
 alias del='rm'
 alias md='mkdir'
@@ -479,6 +480,9 @@ alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; 
 alias gg='GitHelper gui'
 alias gh='GitHelper'
 alias lg='lazygit'
+
+# gdir SERVER - change to the git directory on SERVER for repo creation
+gdir() { cd "$(GitHelper remote dir "$@")"; }
 
 gfd() # git fuzzy diff
 {
@@ -857,6 +861,7 @@ alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distut
 # Raspberry Pi
 #
 
+NodeRedCode() { cd "$HOME/.node-red/projects/$1"; }; alias nrc="NodeRedCode"
 PiImageLite() { pi image "$(i dir)/platform/linux/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
 
 #

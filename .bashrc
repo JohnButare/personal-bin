@@ -22,6 +22,9 @@ IsPlatform wsl2 && { LANG="C.UTF-8"; }
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 IsZsh && { setopt no_beep; alias help="run-help"; }
 
+# Python - add Python bin directory if present
+[[ -d "$HOME/.local/bin" ]] && { PathAdd "$HOME/.local/bin"; }
+
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return
 
@@ -519,9 +522,29 @@ IsZsh && setopt SHARE_HISTORY HIST_IGNORE_DUPS
 HistoryClear() { IsBash && cat /dev/null > $HISTFILE; history -c; }
 
 #
-# homebridge
+# Home Automation
 #
 
+# Home Assistant
+
+haUser="homeassistant" haService="home-assistant@$haUser"
+
+alias ha="HomeAssistant"
+alias hashell="(cd ~homeassistant; sudo --user=$haUser --set-home --shell bash -il)"
+
+alias halog="service log $haService"
+alias harestart="service restart $haService"
+alias hastart="service start $haService"
+alias hastop="service stop $haService"
+
+hass-cli()
+{
+	[[ ! $HASS_TOKEN || ! $HASS_SERVER ]] && { ScriptEval HomeAssistant cli vars; }
+	[[ ! $HASS_TOKEN || ! $HASS_SERVER ]] && pause
+	command hass-cli "$@"
+}
+
+# homebridge
 alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
 alias hcconfig="e $ncd/system/homebridge/config/config.json" # edit cloud configuration
 alias hlogclean="sudoc rm /var/lib/homebridge/homebridge.log"
@@ -1070,7 +1093,3 @@ alias XmlShow='xml sel -t -c'
 SourceIfExists "/usr/local/opt/asdf/asdf.sh" || return
 SourceIfExists "$BIN/z.sh" || return
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
-
-
-
-

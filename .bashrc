@@ -610,8 +610,8 @@ DiskTestWrite() # [DEST](disktest) [COUNT] - # use smaller count for Pi and othe
 } 
 
 # network
-iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002; } # server
-iperfc() { iperf3 -c $1 -p 5002; } # client
+iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002 "$@"; } # server
+iperfc() { iperf3 -c $1 -p 5002 "$@"; } # client
 
 #
 # projects

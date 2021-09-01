@@ -530,6 +530,7 @@ HistoryClear() { IsBash && cat /dev/null > $HISTFILE; history -c; }
 haUser="homeassistant" haService="home-assistant@$haUser"
 
 alias ha="HomeAssistant"
+alias haconfig="sudoe ~homeassistant/.homeassistant/configuration.yaml; yamllint ~homeassistant/.homeassistant/configuration.yaml;"
 alias hashell="(cd ~homeassistant; sudo --user=$haUser --set-home --shell bash -il)"
 
 alias halog="service log $haService"

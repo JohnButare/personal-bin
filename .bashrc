@@ -536,6 +536,7 @@ alias hashell="(cd ~homeassistant; sudo --user=$haUser --set-home --shell bash -
 alias halog="service log $haService"
 alias harestart="service restart $haService"
 alias hastart="service start $haService"
+alias hastatus="service status $haService"
 alias hastop="service stop $haService"
 
 hass-cli()

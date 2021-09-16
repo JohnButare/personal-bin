@@ -52,14 +52,13 @@ IsZsh && bindkey "^H" backward-kill-word
 b="$BIN" bin="$BIN" pd="$PUB/Desktop" pub="$PUB" data="$DATA" win="$DATA/platform/win"
 home="$HOME" doc="$DOC" dl="$HOME/Downloads" code="$CODE"
 ubin="$HOME/data/bin" ud="$HOME/Desktop" udata="$HOME/data"  	# user
-p="$P"; alias p='"$p"' 																				# programs
+p="$P"								 																				# programs
 
 if IsPlatform win; then
 	p32="$P32"																																	# programs
 	psm="$PROGRAMDATA/Microsoft/Windows/Start Menu"; pp="$psm/Programs" 				# public
 	usm="$ADATA/../Roaming/Microsoft/Windows/Start Menu"; up="$usm/Programs"		# user
 	wcode="$WIN_CODE" wh="$WIN_HOME" 	
-	alias p='"$p"' pp='"$pp"' up='"$up"' usm='"$usm"'
 fi
 
 # Dropbox
@@ -632,11 +631,18 @@ alias cdv="cd ~/Volumes"
 alias NetworkUpdate='UpdateInit || return; network current update; ScriptEval network proxy --$(UpdateGet "proxy")'
 alias nu="NetworkUpdate"
 
-alias ehosts='sudoedit /etc/hosts' # edit hosts file
-
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }
+
+# ping HOST - resolves virtual hostnames
+p()
+{
+	local host="$1"
+	local ip; ip="$(GetIpAddress "$host")" || ip="$(GetIpAddress "$HOSTNAME-$host")" || { HostUnknown "$host"; return; }
+	IsAvailable "$ip" && { echo "available"; return 0; } || { echo "not available"; return 1; }
+}
+
 
 # Apache
 ApacheConfig() { e "$(unc mount //nas3/root)/etc/config/apache/extra/wiggin.conf"; } # specific to QNAP location for now
@@ -812,7 +818,7 @@ GetArchitecture() { for host in $@; do printf " $host "; ssh $host uname -m; don
 hib() { power hibernate "$@"; }
 on() { power on "$@"; }; alias boot='on'
 off() { power off "$@"; }; alias down='off'
-slp() { power sleep "$@"; (( $# == 0 )) && cls; }
+slp() { power sleep "$@"; local result="$?"; (( $# == 0 )) && cls; return "$result"; }
 reb() { power reboot "$@"; }
 
 logoff()
@@ -924,7 +930,7 @@ CertView() { openssl x509 -in "$1" -text; }
 #
 
 alias s=sx	# connect with ssh
-alias hvs="hyperv ssh" # connect to a Hyper-V host with ssh
+alias hvs="hyperv connect ssh" # connect to a Hyper-V host with ssh
 alias sshconfig='e ~/.ssh/config'
 alias sshkh='e ~/.ssh/known_hosts'
 

@@ -934,7 +934,7 @@ alias hvs="hyperv connect ssh" # connect to a Hyper-V host with ssh
 alias sshconfig='e ~/.ssh/config'
 alias sshkh='e ~/.ssh/known_hosts'
 
-# informations
+# information
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
 
 # connecting
@@ -1061,6 +1061,8 @@ alias nae='TextEdit "$ncd/system/dns/forward.txt"'	# network alias edit
 alias nce='wiggin network edit'											# network configuration edit
 alias ncb='wiggin network backup all'								# network configuration backup
 alias ncu='wiggin network update all all'						# network configuration update
+alias ncud='wiggin network update dns all'					# network configuration update DNS
+alias ncudh='wiggin network update dhcp all'				# network configuration update DHCP
 
 # UniFi
 alias uc='UniFiController'

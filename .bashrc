@@ -1010,6 +1010,18 @@ alias ListFunctionsAll='declare -f'
 alias cr="ChrootHelper"
 alias crdown="schroot --all-sessions --end-session"
 
+# docker
+alias dk='docker'
+alias dki='docker images'
+alias dks='docker service'
+alias dkrm='docker rm'
+alias dkl='docker logs'
+alias dklf='docker logs -f'
+alias dkflush='docker rm `docker ps --no-trunc -aq`'
+alias dkflush2='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
+alias dkt='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}"'
+alias dkps="docker ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'"
+
 # hyper-v
 alias hv="hyperv"
 hvc() { hv console  "$1"; } 																												# console

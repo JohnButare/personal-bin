@@ -26,11 +26,13 @@ IsZsh && { setopt no_beep; alias help="run-help"; }
 [[ -d "$HOME/.local/bin" ]] && { PathAdd "$HOME/.local/bin"; }
 [[ -d "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin" ]] && { PathAdd front "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin"; }
 
-
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return
 
-# initialize a credential manager - some credential managers will prompt to unlock
+# browser - for sensible-browser command
+export BROWSER="firefox"
+
+# credential manager - initialize a credential manager, some credential managers will prompt to unlock
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
 	export CREDENTIAL_MANAGER="$(credential --quiet type)"; 	
 	export CREDENTIAL_MANAGER_CHECKED="true"

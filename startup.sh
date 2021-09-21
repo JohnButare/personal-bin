@@ -1,7 +1,11 @@
+# start X Server and update network first
 app -b $command xserver network || return
 
-# service
-app -b $command ports dbus docker sshd || return # ports dbus docker chrony cron incron sshd
+# start SSH before port forwarding, as we check for open ports using SSH
+app -b sshd ports || return
+
+# services - dbus docker chrony cron incron
+app -b $command dbus docker || return 
 
 # chrony - fixes time drift in WSL under Hyper-V
 IsPlatform wsl && IsHypervVm && { app -b $command chrony time || return; } 	

@@ -1055,8 +1055,8 @@ encum() { VeraCrypt unmount p; }															# unmount encrypted file share fr
 mcd() { cd "//nas3/data/media"; }
 
 # files
-n3c() { cd "$(happconfig "$(ConfigGet "fs")")$1"; } # nas3 application configuration
-n3d() { cd "$(happdata "$(ConfigGet "fs")")/$1"; } 	# nas3 application data
+n3c() { cd "$(happconfig "$(UpdateGet "FileServer")")$1"; } # nas3 application configuration
+n3d() { cd "$(happdata "$(UpdateGet "FileServer")")/$1"; } 	# nas3 application data
 
 # network DNS and DHCP configuration
 alias nae='TextEdit "$ncd/system/dns/forward.txt"'	# network alias edit

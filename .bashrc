@@ -89,7 +89,6 @@ alias st='startup --no-pause'
 # applications
 #
 
-alias ddm='DellDisplayManager'
 alias e='TextEdit'
 alias f='firefox'
 alias grep='command grep --color=auto'
@@ -370,6 +369,15 @@ ListPartitions() { sudo parted -l; }
 ListDisks() { sudo parted -l |& grep -i '^Disk' |& grep -Ev 'Error|Disk Flags' | cut -d' ' -f2 | cut -d: -f1; }
 ListFirstDisk() { ListDisks | head -1; }
 pm() { PartitionManager "$@"; }
+
+#
+# display
+#
+
+alias ddm='DellDisplayManager'
+FullWakeup() { ssh "$1" caffeinate  -u -w 10; }
+sw() { ddm switch; } # switch monitor
+swe() { [[ "$HOSTNAME" != "ender" ]] && FullWakeup ender &; ddm switch; } # switch monitor to ender
 
 #
 # file management

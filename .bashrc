@@ -749,10 +749,12 @@ alias ProxyStatus="network proxy --status"
 # salt
 RunAll() { a="$@"; sudoc salt '*' cmd.run "/usr/local/data/bin/RunScript $a"; }
 
-# Squid
-SquidLog() { LogShow "/usr/local/squid/var/logs/access.log"; } # specific to QNAP location for now
+# 
+SquidLog="$HOME/Library/Logs/squid/squid-access.log"
+SquidLog() { LogShow "$SquidLog"; }
+SquidHits() { grep "HIER_NONE" "$SquidLog"; }
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
-SquidUtilization() { squidclient -h "$1" cache_object://localhost/ mgr:utilization; }
+SquidUtilization() { squidclient -h "${1:-127.0.0.1}" cache_object://localhost/ mgr:utilization; }
 SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
 
 # sync files

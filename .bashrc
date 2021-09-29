@@ -263,7 +263,6 @@ IncronLogShow() { LogShow "/var/log/syslog" "incron"; }
 # development
 #
 
-alias ss='SqlServer'
 alias ssms='SqlServerManagementStudio'
 alias sscd='ScriptCd SqlServer cd'
 alias ssp='SqlServer profiler express'

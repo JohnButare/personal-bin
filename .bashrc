@@ -376,7 +376,14 @@ pm() { PartitionManager "$@"; }
 alias ddm='DellDisplayManager'
 FullWakeup() { ssh "$1" caffeinate  -u -w 10; }
 sw() { ddm switch; } # switch monitor
-swe() { [[ "$HOSTNAME" != "ender" ]] && FullWakeup ender &; ddm switch; } # switch monitor to ender
+
+# swe - switch monitor to ender
+swe()
+{
+	[[ "$HOSTNAME" == "ender" ]] && return
+	FullWakeup ender &
+	ddm switch
+}
 
 #
 # file management

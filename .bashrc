@@ -816,7 +816,7 @@ SetPrompt()
 	[[ $user ]] && user="@${user}"
 
  	PS1="${title}${green}${host}${user}${clear}${cyan}${git}${clear}\$ "
-	
+
 	# share history with other shells when the prompt changes
 	PROMPT_COMMAND='history -a; history -r;' 
 }
@@ -938,7 +938,8 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 #
 
 alias cred='credential'
-SudoCheck() { [[ ! -r "$1" ]] && sudo="sudoc"; } # SudoCheck FILE - set sudo variable to sudoc if user does not have read permissiont o the file
+SudoCheck() { [[ ! -r "$1" ]] && sudo="sudoc"; } # SudoCheck FILE - set sudo variable to sudoc if user does not have read permissiont to the file
+sudor() { sudox bash; } # sudo root
 
 # certificates
 CertView() { openssl x509 -in "$1" -text; }

@@ -660,16 +660,35 @@ p()
 }
 
 
-# Apache
-ApacheConfig() { e "$(unc mount //nas3/root)/etc/config/apache/extra/wiggin.conf"; } # specific to QNAP location for now
-ApacheLog() { LogShow "/usr/local/apache/logs/main_log"; } # specific to QNAP location for now
+# Web
+
+ApacheLog() { LogShow "/var/log/apache2/access.log"; } 
+CurrentWebServer() { network current server web --quiet; }
+
+# ApacheServer [HOST] - return:
+# 1) HOST if specified
+# 2) nothing if Apache is running locally
+# 3) the current active web server
+ApacheServer()
+{
+	if [[ $1 ]]; then echo "$1"
+	elif [[ ! -f "/etc/apache2/apache2.conf" ]]; then CurrentWebServer
+	fi
+}
+
+ApacheConfig()
+{
+	local f="/etc/apache2/apache2.conf" host; host="$(ApacheServer "$1")" || return
+	[[ $host ]] && { f="$(unc mount //$host/root)/$f" || return; } # mount host share
+	e "$f" # edit the configuration file
+}
 
 ApacheRestart() 
 { 
-	IsPlatform qnap && { sudo /etc/init.d/Qthttpd.sh restart ; return; }
-	[[ -f "/usr/local/apache/bin/apachectl" ]] && { sudo "/usr/local/apache/bin/apachectl" restart; return; }
-	ssh -t "$(ConfigGet "web")" "sudo /etc/init.d/Qthttpd.sh restart" || return
+	local command="service restart apache2" host; host="$(ApacheServer "$1")" || return
+	if [[ $host ]]; then ssh -t "$host" "$command"; else eval "$command"; fi
 }
+
 
 # DNS
 DnsLog() { service log bind9; }

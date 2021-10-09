@@ -120,7 +120,7 @@ trest() { local dir; [[ $2 ]] && dir=( --directory "$2" ); sudo tar --extract --
 alias sa=". ~/.bashrc" ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; # set aliases
 alias s10k="sz" e10k="e ~/.p10k.zsh"
 eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 					# edit all aliases
-efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  			# edit all functions
+efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  	# edit all functions
 
 alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.profile $UBIN/.bash_profile $UBIN/.zlogin $UBIN/.p10k.zsh $UBIN/.zshrc $UBIN/.bashrc"
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
@@ -662,6 +662,9 @@ p()
 
 # Web
 
+acd() { ScriptCd ApacheConfigDir "$@"; ls; }	# Apache Config Dir
+awd() { ScriptCd ApacheWebDir "$@"; ls; }			# Apache Web Dir
+
 ApacheLog() { LogShow "/var/log/apache2/access.log"; } 
 CurrentWebServer() { network current server web --quiet; }
 
@@ -676,11 +679,20 @@ ApacheServer()
 	fi
 }
 
-ApacheConfig()
+# ApachageConfigDir [HOST] - return the Apache configuration directory
+ApacheConfigDir()
 {
-	local f="/etc/apache2/apache2.conf" host; host="$(ApacheServer "$1")" || return
-	[[ $host ]] && { f="$(unc mount //$host/root)/$f" || return; } # mount host share
-	e "$f" # edit the configuration file
+	local dir="/etc/apache2" host; host="$(ApacheServer "$1")" || return
+	[[ $host ]] && { dir="$(unc mount //$host/admin)/$dir" || return; } # mount directory
+	echo "$dir"
+}
+
+# ApachageWebDir [HOST] - return the Apache web directory
+ApacheWebDir()
+{
+	local dir="/var/www/html" host; host="$(ApacheServer "$1")" || return
+	[[ $host ]] && { dir="$(unc mount //$host/admin)/$dir" || return; } # mount directory
+	echo "$dir"
 }
 
 ApacheRestart() 
@@ -1095,11 +1107,44 @@ mcd() { cd "//nas3/data/media"; }
 n3c() { cd "$(happconfig "$(UpdateGet "FileServer")")$1"; } # nas3 application configuration
 n3d() { cd "$(happdata "$(UpdateGet "FileServer")")/$1"; } 	# nas3 application data
 
+# backup
+bdir() { cd "$(happdata "$(network current server backup --service=smb)")/backup"; } # backup dir
+
+# borg
+function br() { BorgRoot "$@"; }
+function bd() { BorgDir "$@"; }
+
+BorgDir() { cd "$DATA/appdata/borg"; }
+BorgPassphrase() { [[ $BORG_PASSPHRASE && ! "$1" == @(-f|--force) ]] && echo "$BORG_PASSPHRASE" || credential get borg passphrase --fallback; }
+BorgRepo() {  [[ $BORG_REPO && ! "$1" == @(-f|--force) ]] && echo "$BORG_REPO" || echo "root@$(network current server backup --quiet):$DATA/appdata/borg/$HOSTNAME"; }
+
+BorgConfigure() { export BORG_PASSPHRASE="$(BorgPassphrase "$@")"; export BORG_REPO="$(BorgRepo)"; }
+BorgRoot() { sudoc BORG_PASSPHRASE="$(BorgPassphrase "$@")" BORG_REPO="$(BorgRepo "$@")" borg "$@";  } # run borg as root
+
+BorgBackup()
+{
+	BorgRepoValidate || return
+	BorgRoot create --verbose --stats --progress ::'{hostname}-{now:%Y-%m-%d_%H:%M:%S}' "$@"
+}
+
+BorgRepoValidate()
+{
+	local host; host="$(network current server backup --quiet)" || return
+	
+	BorgConfigure || return
+
+	local dir="$DATA/appdata/borg/$HOSTNAME"
+	ssh -T "root@$host" <<-EOF
+		export BORG_PASSPHRASE="$BORG_PASSPHRASE"
+		[[ -d "$dir" ]] || borg init --encryption=repokey "$dir"
+		EOF
+}
+
 # network DNS and DHCP configuration
 alias nae='TextEdit "$ncd/system/dns/forward.txt"'	# network alias edit
 alias nce='wiggin network edit'											# network configuration edit
 alias ncb='wiggin network backup all'								# network configuration backup
-alias nua='wiggin network update dns all'					# network configuration update all
+alias nua='wiggin network update all all'					# network configuration update all
 alias nud='wiggin network update dns all'					# network configuration update DNS
 alias nudh='wiggin network update dhcp all'				# network configuration update DHCP
 

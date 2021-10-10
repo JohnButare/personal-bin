@@ -970,7 +970,7 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 
 alias cred='credential'
 SudoCheck() { [[ ! -r "$1" ]] && sudo="sudoc"; } # SudoCheck FILE - set sudo variable to sudoc if user does not have read permissiont to the file
-sudor() { sudox bash; } # sudo root
+sudor() { sudox "CREDENTIAL_MANAGER_CHECKED=true" bash; } # sudo root - do not prompt for credential manager
 
 # certificates
 CertView() { openssl x509 -in "$1" -text; }

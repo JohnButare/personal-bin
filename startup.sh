@@ -13,4 +13,9 @@ IsPlatform wsl && IsHypervVm && { app -b $command chrony time || return; }
 # applications
 app -b $command AquaSnap AutoHotKey ghub LogitechOptions pu TidyTabs || return
 
+# specific applciations
+case "$HOSTNAME" in
+	oversoul) app -b $command DellDisplayManager;;
+esac
+
 return 0

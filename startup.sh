@@ -11,6 +11,6 @@ app -b $command dbus docker || return
 IsPlatform wsl && IsHypervVm && { app -b $command chrony time || return; } 	
 
 # applications
-app -b $command AquaSnap AutoHotKey LogitechOptions pu TidyTabs || return
+app -b $command AquaSnap AutoHotKey ghub LogitechOptions pu TidyTabs || return
 
 return 0

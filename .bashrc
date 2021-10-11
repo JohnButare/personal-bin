@@ -931,7 +931,6 @@ NetConsoleDisable()
 #
 
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
-procmon() { start -rid -e procmon; }
 
 #
 # python

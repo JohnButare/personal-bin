@@ -32,6 +32,9 @@ alias prog='product gui'
 alias vss='vss.exe'
 alias wh="$WIN_HOME"
 
+# process
+procmon() { start --elevate procmon.exe; }
+
 # VBA
 alias ws='start wscript.exe /nologo'
 alias cs='start cscript.exe /nologo'

@@ -558,6 +558,7 @@ alias hastop="service stop $haService"
 
 hass-cli()
 {
+	! InPath hass-cli && { ScriptErr "hass-cli is not installed"; return 1; }
 	[[ ! $HASS_TOKEN || ! $HASS_SERVER ]] && { ScriptEval HomeAssistant cli vars; }
 	[[ ! $HASS_TOKEN || ! $HASS_SERVER ]] && pause
 	command hass-cli "$@"
@@ -942,6 +943,12 @@ alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distut
 
 PyInfo() { pip show "$@"; }
 
+# pipx
+if InPath pipx; then
+	export PIPX_HOME="$DATA"
+	export PIPX_BIN_DIR="$BIN"
+fi
+
 #
 # Raspberry Pi
 #
@@ -978,7 +985,7 @@ SudoCheck() { [[ ! -r "$1" ]] && sudo="sudoc"; } # SudoCheck FILE - set sudo var
 sudor()
 {
 	local args="$@"; [[ $1 ]] && set -- -i -c "$args"
-	sudox "CREDENTIAL_MANAGER_CHECKED=true" bash -i -c "$@"
+	sudox "CREDENTIAL_MANAGER_CHECKED=true" bash "$@"
 } 
 
 # certificates

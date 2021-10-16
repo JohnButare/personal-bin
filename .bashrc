@@ -733,14 +733,14 @@ hti() { wiggin setup hashi test -- "$@" && HashiConfig test; }		# Hashi Test Ins
 htr() { wiggin remove hashi test --force -- --yes "$@"; HashiConfig reset; }				# Hashi Test Clean
 
 # run program and set configuration if necessary
-consul() { [[ ! $CONSUL_HTTP_ADDR ]] && HashiConfig; command consul "$@"; }
-nomad() { [[ ! $NOMAD_ADDR ]] && HashiConfig; command nomad "$@"; }
-vault() { [[ ! $VAULT_ADDR ]] && HashiConfig; command vault "$@"; }
+consul() { HashiConfigConsul && command consul "$@"; }
+nomad() { HashiConfigNomad && command nomad "$@"; }
+vault() { HashiConfigVault && command vault "$@"; }
 
 # put token for a HashiCorp program into the clipboard
-clipc() { clipw "$CONSUL_HTTP_TOKEN"; }
-clipn() { clipw "$NOMAD_TOKEN"; }
-clipv() { clipw "$VAULT_TOKEN"; }
+clipc() { HashiConfigConsul && clipw "$CONSUL_HTTP_TOKEN"; }
+clipn() { HashiConfigNomad && clipw "$NOMAD_TOKEN"; }
+clipv() { HashiConfigVault && clipw "$VAULT_TOKEN"; }
 
 # Kea DHCP
 KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }

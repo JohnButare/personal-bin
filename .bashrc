@@ -936,7 +936,11 @@ ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
 # python
 #
 
+alias py='python3'
+alias pip='py -m pip'
 alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distutils error
+
+PyInfo() { pip show "$@"; }
 
 #
 # Raspberry Pi

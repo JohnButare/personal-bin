@@ -23,7 +23,9 @@ IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand glob
 IsZsh && { setopt no_beep; alias help="run-help"; }
 
 # Python - add Python bin directory if present
-[[ -d "$HOME/.local/bin" ]] && { PathAdd "$HOME/.local/bin"; }
+if [[ -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
+elif [[ -d "$HOME/Library/Python/3.9/bin" ]]; then PathAdd "$HOME/Library/Python/3.9/bin"
+fi
 [[ -d "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin" ]] && { PathAdd front "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin"; }
 
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
@@ -942,6 +944,7 @@ alias pip='py -m pip'
 alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distutils error
 
 PyInfo() { pip show "$@"; }
+PySite() { py -m site; }
 
 # pipx
 if InPath pipx; then

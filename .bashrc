@@ -23,10 +23,15 @@ IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand glob
 IsZsh && { setopt no_beep; alias help="run-help"; }
 
 # Python - add Python bin directory if present
-if [[ -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
-elif [[ -d "$HOME/Library/Python/3.9/bin" ]]; then PathAdd "$HOME/Library/Python/3.9/bin"
-fi
-[[ -d "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin" ]] && { PathAdd front "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin"; }
+[[ -d "$HOME/.local/bin" ]] && PathAdd "$HOME/.local/bin"
+
+# Python macOS - the Python 3.8 that comes with macOS is sufficient
+# brew includes Python 3.9 and Python 3.10, if presesent need to add them first in the path here and in scripts like HostUpdate
+[[ -d "$HOME/Library/Python/3.8/bin" ]] && PathAdd "$HOME/Library/Python/3.8/bin"
+# [[ -d "$HOME/Library/Python/3.9/bin" ]] && PathAdd "$HOME/Library/Python/3.9/bin"
+# [[ -d "$HOME/Library/Python/3.10/bin" ]] && PathAdd "$HOME/Library/Python/3.10/bin"
+# [[ -d "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin" ]] && { PathAdd front "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin"; }
+# [[ -d "$HOMEBREW_PREFIX/opt/python@3.10/Frameworks/Python.framework/Versions/3.10/bin" ]] && { PathAdd front "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin"; }
 
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return

@@ -1110,34 +1110,11 @@ n3d() { cd "$(happdata "$(UpdateGet "FileServer")")/$1"; } 	# nas3 application d
 bdir() { cd "$(happdata "$(network current server backup --service=smb)")/backup"; } # backup dir
 
 # borg
-function br() { BorgRoot "$@"; }
-function bd() { BorgDir "$@"; }
-
-BorgDir() { cd "$DATA/appdata/borg"; }
-BorgPassphrase() { [[ $BORG_PASSPHRASE && ! "$1" == @(-f|--force) ]] && echo "$BORG_PASSPHRASE" || credential get borg passphrase --fallback; }
-BorgRepo() {  [[ $BORG_REPO && ! "$1" == @(-f|--force) ]] && echo "$BORG_REPO" || echo "root@$(network current server backup --quiet):$DATA/appdata/borg/$HOSTNAME"; }
-
-BorgConfigure() { export BORG_PASSPHRASE="$(BorgPassphrase "$@")"; export BORG_REPO="$(BorgRepo)"; }
-BorgRoot() { sudoc BORG_PASSPHRASE="$(BorgPassphrase "$@")" BORG_REPO="$(BorgRepo "$@")" borg "$@";  } # run borg as root
-
-BorgBackup()
-{
-	BorgRepoValidate || return
-	BorgRoot create --verbose --stats --progress ::'{hostname}-{now:%Y-%m-%d_%H:%M:%S}' "$@"
-}
-
-BorgRepoValidate()
-{
-	local host; host="$(network current server backup --quiet)" || return
-	
-	BorgConfigure || return
-
-	local dir="$DATA/appdata/borg/$HOSTNAME"
-	ssh -T "root@$host" <<-EOF
-		export BORG_PASSPHRASE="$BORG_PASSPHRASE"
-		[[ -d "$dir" ]] || borg init --encryption=repokey "$dir"
-		EOF
-}
+alias bh='BorgHelper'
+bd() { local host; [[ $1 ]] && host="--host=$1"; ScriptCd BorgHelper dir $host; } 	# borg dir
+br() { BorgHelper run "$@"; } 																											# borg root
+borg() { [[ ! $BORG_REPO ]] && BorgConfig; command borg "$@"; }
+BorgConfig() { ScriptEval BorgHelper environment "$@"; }
 
 # network DNS and DHCP configuration
 alias nae='TextEdit "$ncd/system/dns/forward.txt"'	# network alias edit

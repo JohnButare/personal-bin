@@ -27,7 +27,8 @@ IsZsh && { setopt no_beep; alias help="run-help"; }
 
 # Python macOS - the Python 3.8 that comes with macOS is sufficient
 # brew includes Python 3.9 and Python 3.10, if presesent need to add them first in the path here and in scripts like HostUpdate
-[[ -d "$HOME/Library/Python/3.8/bin" ]] && PathAdd "$HOME/Library/Python/3.8/bin"
+# add Pyton to front of the path to run user packages first (like pip)
+[[ -d "$HOME/Library/Python/3.8/bin" ]] && PathAdd front "$HOME/Library/Python/3.8/bin"
 # [[ -d "$HOME/Library/Python/3.9/bin" ]] && PathAdd "$HOME/Library/Python/3.9/bin"
 # [[ -d "$HOME/Library/Python/3.10/bin" ]] && PathAdd "$HOME/Library/Python/3.10/bin"
 # [[ -d "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin" ]] && { PathAdd front "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin"; }
@@ -949,6 +950,7 @@ alias pip='py -m pip'
 alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distutils error
 
 PyInfo() { pip show "$@"; }
+PyLocation() { python3 -c "import $1 as _; print(_.__file__)"; } ; # PyLocation MODULE - location of specified module, i.e. PyLocation 'pip._internal.cli.main'
 PySite() { py -m site; }
 
 # pipx

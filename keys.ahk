@@ -10,6 +10,7 @@ TextEditorInit()
 VmInit()
 
 #Include common.ahk
+#Include other.ahk
 
 #Include browser.ahk
 #Include mail.ahk
@@ -58,7 +59,7 @@ RWin & c::Send "#{Numpad3}"
 
 RShift & 3::OpenTerminal() 			; Terminal
 RShift & b::OpenBrowser() 			; Browser
-RShift & g::WinActivate "Fork"  ; Git
+RShift & g::OpenFork()					; Git
 RShift & m::OpenThunderbird()		; Mail
 RShift & n::OpenNotion()				; Notes
 RShift & t::OpenTextEditor()		; Text Editor

@@ -1201,6 +1201,6 @@ alias XmlShow='xml sel -t -c'
 # final
 #
 
-SourceIfExists "/usr/local/opt/asdf/asdf.sh" || return
+SourceIfExists "$HOME/.asdf/asdf.sh" || return
 SourceIfExists "$BIN/z.sh" || return
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return

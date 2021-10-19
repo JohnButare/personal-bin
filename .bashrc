@@ -383,7 +383,7 @@ pm() { PartitionManager "$@"; }
 
 alias ddm='DellDisplayManager'
 FullWakeup() { ssh "$1" caffeinate  -u -w 10; }
-sw() { ddm switch; } # switch monitor
+sw() { ddm switch "$@"; } # switch monitor
 
 # swe - switch monitor to ender
 swe()

@@ -1142,6 +1142,7 @@ bd() { local host; [[ $1 ]] && host="--host=$1"; ScriptCd BorgHelper dir $host; 
 br() { BorgHelper run "$@"; } 																											# borg root
 borg() { [[ ! $BORG_REPO ]] && BorgConfig; command borg "$@"; }
 BorgConfig() { ScriptEval BorgHelper environment "$@"; }
+clipb() { BorgConfig && clipw "$BORG_PASSPHRASE"; }
 
 # network DNS and DHCP configuration
 alias nae='TextEdit "$ncd/system/dns/forward.txt"'	# network alias edit

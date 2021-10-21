@@ -1132,7 +1132,7 @@ bdir() { cd "$(happdata "$(network current server backup --service=smb)")/backup
 alias bh='BorgHelper'
 borg() { [[ ! $BORG_REPO ]] && BorgConfig; command borg "$@"; }
 BorgConfig() { ScriptEval BorgHelper environment "$@"; }
-bb() { BorgHelper backup "$1" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
+bb() { BorgHelper backup "$@" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
 br() { BorgHelper run "$@"; } 														# borg run
 bs() { BorgConfig "$@" && echo "$BORG_REPO"; }						# borg status
 bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount

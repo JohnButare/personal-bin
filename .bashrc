@@ -24,15 +24,7 @@ IsZsh && { setopt no_beep; alias help="run-help"; }
 
 # Python - add Python bin directory if present
 [[ -d "$HOME/.local/bin" ]] && PathAdd "$HOME/.local/bin"
-
-# Python macOS - the Python 3.8 that comes with macOS is sufficient
-# brew includes Python 3.9 and Python 3.10, if presesent need to add them first in the path here and in scripts like HostUpdate
-# add Pyton to front of the path to run user packages first (like pip)
 [[ -d "$HOME/Library/Python/3.8/bin" ]] && PathAdd front "$HOME/Library/Python/3.8/bin"
-# [[ -d "$HOME/Library/Python/3.9/bin" ]] && PathAdd "$HOME/Library/Python/3.9/bin"
-# [[ -d "$HOME/Library/Python/3.10/bin" ]] && PathAdd "$HOME/Library/Python/3.10/bin"
-# [[ -d "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin" ]] && { PathAdd front "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin"; }
-# [[ -d "$HOMEBREW_PREFIX/opt/python@3.10/Frameworks/Python.framework/Versions/3.10/bin" ]] && { PathAdd front "$HOMEBREW_PREFIX/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin"; }
 
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return
@@ -1138,11 +1130,14 @@ bdir() { cd "$(happdata "$(network current server backup --service=smb)")/backup
 
 # borg
 alias bh='BorgHelper'
-bd() { local host; [[ $1 ]] && host="--host=$1"; ScriptCd BorgHelper dir $host; } 	# borg dir
-br() { BorgHelper run "$@"; } 																											# borg root
 borg() { [[ ! $BORG_REPO ]] && BorgConfig; command borg "$@"; }
 BorgConfig() { ScriptEval BorgHelper environment "$@"; }
-clipb() { BorgConfig && clipw "$BORG_PASSPHRASE"; }
+bb() { BorgHelper backup "$1" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
+br() { BorgHelper run "$@"; } 														# borg run
+bs() { BorgConfig "$@" && echo "$BORG_REPO"; }						# borg status
+bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount
+bum() { BorgHelper unmount "$@"; }												# borg unmount
+clipb() { BorgConfig "$@" && clipw "$BORG_PASSPHRASE"; }
 
 # network DNS and DHCP configuration
 alias nae='TextEdit "$ncd/system/dns/forward.txt"'	# network alias edit

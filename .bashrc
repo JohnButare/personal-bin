@@ -987,7 +987,7 @@ SudoCheck() { [[ ! -r "$1" ]] && sudo="sudoc"; } # SudoCheck FILE - set sudo var
 sudor()
 {
 	local args="$@"; [[ $1 ]] && set -- -i -c "$args"
-	sudox "CREDENTIAL_MANAGER_CHECKED=true" bash "$@"
+	sudox SSH_AUTH_SOCK="$SSH_AUTH_SOCK" SSH_AGENT_PID="$SSH_AGENT_PID" CREDENTIAL_MANAGER_CHECKED="true" bash "$@"
 } 
 
 # certificates

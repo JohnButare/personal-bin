@@ -1138,6 +1138,13 @@ bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount
 bum() { BorgHelper unmount "$@"; }												# borg unmount
 clipb() { BorgConfig "$@" && clipw "$BORG_PASSPHRASE"; }
 
+# bbh DIR HOSTS - borg backup hosts
+bbh()
+{
+	local dir="$1" host hosts; StringToArray "$2" "," hosts; shift 2
+	for  host in "${hosts[@]}"; do bb "$dir" --host="$host" "$@" || return; done
+} 
+
 # network DNS and DHCP configuration
 alias ne='wiggin network edit'											# network edit
 alias nb='wiggin network backup all'								# network backup

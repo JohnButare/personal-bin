@@ -71,10 +71,13 @@ if [[ -d "$home/Dropbox" ]]; then
 	ncd="$cloud/network"; alias ncd="$ncd" # network configuration directory
 fi
 
+alias cdv="cd ~/Volumes"
+
 # applications
 appdata="$DATA/appdata" appconfig="$DATA/appconfig"
 happconfig() { IsLocalHost "$1" && echo "$appconfig" || echo "//$1/root$appconfig"; }
 happdata() { IsLocalHost "$1" && echo "$appdata" || echo "//$1/root$appdata"; }
+hapcd() { ScriptCd happdata "$1"; }
 
 #
 # other
@@ -644,10 +647,7 @@ bac() { cd "$WIN_HOME/eclipse-workspace/ccsua/src/org/ccsua"; }
 # network
 #
 
-alias cdv="cd ~/Volumes"
-alias NetworkUpdate='UpdateInit || return; network current update; ScriptEval network proxy --$(UpdateGet "proxy")'
-alias nu="NetworkUpdate"
-
+nu() { UpdateInit || return; network current update "$@"; ScriptEval network proxy --$(UpdateGet "proxy"); }
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }
@@ -1106,7 +1106,6 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # wiggin
 #
 
-alias ncu='network current update'						# network current update
 vpn() { network vpn "$@"; }
 
 # devices
@@ -1134,18 +1133,17 @@ borg() { [[ ! $BORG_REPO ]] && BorgConfig; command borg "$@"; }
 BorgConfig() { ScriptEval BorgHelper environment "$@"; }
 bb() { BorgHelper backup "$@" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
 br() { BorgHelper run "$@"; } 														# borg run
-bs() { BorgConfig "$@" && echo "$BORG_REPO"; }						# borg status
+bs() { BorgConfig "$@" && BorgHelper status "$@"; }				# borg status
 bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount
 bum() { BorgHelper unmount "$@"; }												# borg unmount
 clipb() { BorgConfig "$@" && clipw "$BORG_PASSPHRASE"; }
 
 # network DNS and DHCP configuration
-alias nae='TextEdit "$ncd/system/dns/forward.txt"'	# network alias edit
-alias nce='wiggin network edit'											# network configuration edit
-alias ncb='wiggin network backup all'								# network configuration backup
-alias nua='wiggin network update all all'					# network configuration update all
-alias nud='wiggin network update dns all'					# network configuration update DNS
-alias nudh='wiggin network update dhcp all'				# network configuration update DHCP
+alias ne='wiggin network edit'											# network edit
+alias nb='wiggin network backup all'								# network backup
+alias nua='wiggin network update all all'					# network update all
+alias nud='wiggin network update dns all'					# network update DNS
+alias nudh='wiggin network update dhcp all'				# network update DHCP
 
 # UniFi
 alias uc='UniFiController'

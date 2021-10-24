@@ -36,8 +36,10 @@ Init()
 ^#t::Test()														; test
 LWin & Space::Send "^{Esc}"						; Start Menu (search)
 #1::WinClose "A" 											; close the active window
-#2::WinMoveBottom "A" 								; move the active window to the back
-^#r::reload 													; Reload AutoHotKeys
+;#2::WinMoveBottom "A" 								; move the active window to the back
+#2::WinMinimize "A"
+#3::WinMaximize "A"
+^#a::reload 													; Reload AutoHotKeys
 
 ;
 ; Windows

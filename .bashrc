@@ -647,7 +647,7 @@ bac() { cd "$WIN_HOME/eclipse-workspace/ccsua/src/org/ccsua"; }
 # network
 #
 
-nu() { UpdateInit || return; network current update "$@"; ScriptEval network proxy --$(UpdateGet "proxy"); }
+ncu() { UpdateInit || return; network current update "$@"; ScriptEval network proxy --$(UpdateGet "proxy"); }
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }
@@ -663,45 +663,8 @@ p()
 
 # Web
 
-acd() { ScriptCd ApacheConfigDir "$@"; ls; }	# Apache Config Dir
-awd() { ScriptCd ApacheWebDir "$@"; ls; }			# Apache Web Dir
-
-ApacheLog() { LogShow "/var/log/apache2/access.log"; } 
-CurrentWebServer() { network current server web --quiet; }
-
-# ApacheServer [HOST] - return:
-# 1) HOST if specified
-# 2) nothing if Apache is running locally
-# 3) the current active web server
-ApacheServer()
-{
-	if [[ $1 ]]; then echo "$1"
-	elif [[ ! -f "/etc/apache2/apache2.conf" ]]; then CurrentWebServer
-	fi
-}
-
-# ApachageConfigDir [HOST] - return the Apache configuration directory
-ApacheConfigDir()
-{
-	local dir="/etc/apache2" host; host="$(ApacheServer "$1")" || return
-	[[ $host ]] && { dir="$(unc mount //$host/admin)/$dir" || return; } # mount directory
-	echo "$dir"
-}
-
-# ApachageWebDir [HOST] - return the Apache web directory
-ApacheWebDir()
-{
-	local dir="/var/www/html" host; host="$(ApacheServer "$1")" || return
-	[[ $host ]] && { dir="$(unc mount //$host/admin)/$dir" || return; } # mount directory
-	echo "$dir"
-}
-
-ApacheRestart() 
-{ 
-	local command="service restart apache2" host; host="$(ApacheServer "$1")" || return
-	if [[ $host ]]; then ssh -t "$host" "$command"; else eval "$command"; fi
-}
-
+acd() { ScriptCd apache dir config "$@"; ls; }	# Apache Config Dir
+awd() { ScriptCd apache dir web "$@"; ls; }			# Apache Web Dir
 
 # DNS
 DnsLog() { service log bind9; }
@@ -723,6 +686,7 @@ hc() { HashiConfig --config-prefix=prod "$@" && hashi status; } # hc - hashi con
 hct() { HashiConfig --config-prefix=test "$@" && hashi status; } # hct - hashi config test
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hs() { hashi status; }
+hsr() { HashiServiceRegister "$@"; }
 
 j() { hashi nomad job "$@"; }	# job
 
@@ -898,16 +862,6 @@ alias mg="media get"
 alias ev='EventViewer'
 EventViewer() { IsPlatform win && start eventvwr.msc; InPath ksystemlog && coproc sudox "ksystemlog"; }
 
-# LogShow FILE [PATTERN]
-LogShow()
-{ 
-	local sudo file="$1" pattern="$2"; [[ $pattern ]] && pattern=" $pattern"
-
-	LineWrap "off"
-	SudoCheck "$1"; $sudo tail -f "$1" | grep "$pattern"
-	LineWrap "on"
-}
-
 # NetConsole
 
 LogNetConsole() { netconsole -l -u $(GetIpAddress) 6666 | sudoc tee /var/log/netconsole.log; }
@@ -981,7 +935,6 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 #
 
 alias cred='credential'
-SudoCheck() { [[ ! -r "$1" ]] && sudo="sudoc"; } # SudoCheck FILE - set sudo variable to sudoc if user does not have read permissiont to the file
 
 # sudo root COMMAND - do not prompt for credential manager, i.e. sudor PyInfo pip
 sudor()
@@ -1142,7 +1095,7 @@ clipb() { BorgConfig "$@" && clipw "$BORG_PASSPHRASE"; }
 bbh()
 {
 	local dir="$1" host hosts; StringToArray "$2" "," hosts; shift 2
-	for  host in "${hosts[@]}"; do bb "$dir" --host="$host" "$@" || return; done
+	for host in "${hosts[@]}"; do bb "$dir" --host="$host" "$@" || return; done
 } 
 
 # network DNS and DHCP configuration
@@ -1158,10 +1111,6 @@ SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # update
 u() { SshAgentStart; HostUpdate "$@" || return; }
-
-# web
-n3w() { IsLocalHost "$(ConfigGet "web")" && cd "/share/Web" || cd "$(ConfigGet "webUnc")"; } # web directory
-n3wc() { local f="$(unc mount "//$(ConfigGet "web")/root/etc/config/apache/extra/wiggin.conf")"; e "$f"; } # web configure
 
 #
 # windows

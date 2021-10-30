@@ -656,7 +656,7 @@ DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resol
 p()
 {
 	local host="$1"
-	local ip; ip="$(GetIpAddress "$host")" || ip="$(GetIpAddress "$HOSTNAME-$host")" || { HostUnknown "$host"; return; }
+	local ip; ip="$(GetIpAddress "$host" --quiet)" || ip="$(GetIpAddress "$HOSTNAME-$host" --quiet)" || { HostUnresolved "$host"; return; }
 	IsAvailable "$ip" && { echo "available"; return 0; } || { echo "not available"; return 1; }
 }
 

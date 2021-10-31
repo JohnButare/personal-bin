@@ -399,7 +399,7 @@ alias .....='cbuiltin d ../../../..'
 
 alias c='cls'									# clear screen
 alias cb='builtin cd ~; cls' 	# clear screen and cd
-alias cf='cb; InPath fortune && InPath cowsay && InPath lolcat && fortune | cowsay | lolcat ;' # clear both, fortune
+alias cbf='cb; InPath fortune && InPath cowsay && InPath lolcat && fortune | cowsay | lolcat ;' # clear both, fortune
 alias ch='cb; hostname | figlet -c -w $COLUMNS | lolcat;' # clear both, host
 
 alias del='rm'
@@ -647,6 +647,7 @@ bac() { cd "$WIN_HOME/eclipse-workspace/ccsua/src/org/ccsua"; }
 # network
 #
 
+cf() { CloudFlare "$@"; }
 ncu() { UpdateInit || return; network current update "$@"; ScriptEval network proxy --$(UpdateGet "proxy"); }
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }

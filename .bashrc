@@ -653,6 +653,7 @@ PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tul
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }
 
+
 # ping HOST - resolves virtual hostnames
 p()
 {
@@ -1075,8 +1076,7 @@ encum() { VeraCrypt unmount p; }															# unmount encrypted file share fr
 mcd() { cd "//nas3/data/media"; }
 
 # files
-n3c() { cd "$(happconfig "$(UpdateGet "FileServer")")$1"; } # nas3 application configuration
-n3d() { cd "$(happdata "$(UpdateGet "FileServer")")/$1"; } 	# nas3 application data
+hadcd() { cd "$(happdata "$1")/$2"; } # host appdata cd
 
 # backup
 bdir() { cd "$(happdata "$(network current server backup --service=smb)")/backup"; } # backup dir

@@ -34,7 +34,7 @@ export BROWSER="firefox"
 
 # credential manager - initialize a credential manager, some credential managers will prompt to unlock
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
-	export CREDENTIAL_MANAGER="$(credential --quiet type)"; 	
+	export CREDENTIAL_MANAGER="$(credential --quiet type)"
 	export CREDENTIAL_MANAGER_CHECKED="true"
 fi
 
@@ -708,54 +708,6 @@ vault() { HashiConfigVault && command vault "$@"; }
 clipc() { HashiConfigConsul && clipw "$CONSUL_HTTP_TOKEN"; }
 clipn() { HashiConfigNomad && clipw "$NOMAD_TOKEN"; }
 clipv() { HashiConfigVault && clipw "$VAULT_TOKEN"; }
-
-# Kea DHCP
-KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }
-KeaLog() { local f="/usr/local/var/log/kea-dhcp4.log"; [[ ! -f "$f" ]] && f="/var/log/kea-dhcp4.log"; LogShow "$f"; }
-KeaServiceLog() { service log kea-dhcp4-server; }
-KeaFixLog() { local f="/var/run/kea/isc_kea_logger_lockfile"; [[ -f "$f" ]] && return; sudo mkdir "/var/run/kea"; sudo touch "$f"; } # may not be needed with new version of kea
-KeaProgram() { cat /lib/systemd/system/kea-dhcp4-server.service | grep ExecStart | cut -d" " -f 1 | cut -d"=" -f 2; }
-KeaVersion() { "$(KeaProgram)" -v; }
-
-KeaStart() { service start kea-dhcp4-server; }
-KeaStatus() { service status kea-dhcp4-server; }
-KeaStop() { service stop kea-dhcp4-server; }
-KeaRestart() { service restart kea-dhcp4-server; }
-
-KeaTest() { SshHelper connect "$1.local" -- 'sudo dhclient -r; sudo dhclient'; ping "$1.local"; }
-
-KeaDetail()
-{
-	local sourceProgram="/usr/local/sbin/kea-dhcp4"
-	local packageProgram="/usr/sbin/kea-dhcp4"
-	local activeProgram="$(KeaProgram)"
-	local activeInstallationType="Source"; [[ "$activeProgram" == "$packageProgram" ]] && activeDescription="Package"
-
-	header "$activeInstallationType Installation (active)"
-	echo "$(cat <<-EOF
-		version="$(KeaVersion)"
-		program="$activeProgram"
-		EOF
-	)"
-
-	if [[ -f "$packageProgram" && "$activeProgram" != "$packageProgram" ]]; then
-		echo; header "Package Installation"
-		echo "$(cat <<-EOF
-			version="$($packageProgram -v)"
-			program="$packageProgram"
-			EOF
-		)"
-	fi
-
-	if [[ -f "$sourceProgram" && "$activeProgram" != "$sourceProgram" ]]; then
-		echo; header "Source Installation"; echo 
-		echo "$(cat <<-EOF
-			version="$($sourceProgram -v)"
-			program="$sourceProgram"
-			EOF
-		)"
-	fi
-}
 
 # mDNS
 MdnsList() {  avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }

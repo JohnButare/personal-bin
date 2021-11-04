@@ -903,6 +903,18 @@ NodeRedCode() { cd "$HOME/.node-red/projects/$1"; }; alias nrc="NodeRedCode"
 PiImageLite() { pi image "$(i dir)/platform/linux/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
 
 #
+# Scheduled Tasks
+#
+
+alias lst='ListScheduledTasks'
+
+ListScheduledTasks()
+{
+	! IsPlatform win && return
+	schtasks.exe /Query /xml
+}
+
+#
 # scripts
 #
 

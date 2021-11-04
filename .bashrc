@@ -648,7 +648,7 @@ bac() { cd "$WIN_HOME/eclipse-workspace/ccsua/src/org/ccsua"; }
 #
 
 cf() { CloudFlare "$@"; }
-ncu() { UpdateInit || return; network current update "$@"; ScriptEval network proxy --$(UpdateGet "proxy"); }
+ncu() { UpdateInit || return; network current update "$@"; ScriptEval network proxy --$(UpdateGet "proxy"); } # network current update
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }
@@ -713,7 +713,9 @@ clipv() { HashiConfigVault && clipw "$VAULT_TOKEN"; }
 KeaConfig() { sudoe "/etc/kea/kea-dhcp4-"*".json"; KeaRestart; }
 KeaLog() { local f="/usr/local/var/log/kea-dhcp4.log"; [[ ! -f "$f" ]] && f="/var/log/kea-dhcp4.log"; LogShow "$f"; }
 KeaServiceLog() { service log kea-dhcp4-server; }
-KeaFixLog() { local f="/var/run/kea/isc_kea_logger_lockfile"; [[ -f "$f" ]] && return; sudo mkdir "/var/run/kea"; sudo touch "$f"; }
+KeaFixLog() { local f="/var/run/kea/isc_kea_logger_lockfile"; [[ -f "$f" ]] && return; sudo mkdir "/var/run/kea"; sudo touch "$f"; } # may not be needed with new version of kea
+KeaProgram() { cat /lib/systemd/system/kea-dhcp4-server.service | grep ExecStart | cut -d" " -f 1 | cut -d"=" -f 2; }
+KeaVersion() { "$(KeaProgram)" -v; }
 
 KeaStart() { service start kea-dhcp4-server; }
 KeaStatus() { service status kea-dhcp4-server; }
@@ -721,6 +723,39 @@ KeaStop() { service stop kea-dhcp4-server; }
 KeaRestart() { service restart kea-dhcp4-server; }
 
 KeaTest() { SshHelper connect "$1.local" -- 'sudo dhclient -r; sudo dhclient'; ping "$1.local"; }
+
+KeaDetail()
+{
+	local sourceProgram="/usr/local/sbin/kea-dhcp4"
+	local packageProgram="/usr/sbin/kea-dhcp4"
+	local activeProgram="$(KeaProgram)"
+	local activeInstallationType="Source"; [[ "$activeProgram" == "$packageProgram" ]] && activeDescription="Package"
+
+	header "$activeInstallationType Installation (active)"
+	echo "$(cat <<-EOF
+		version="$(KeaVersion)"
+		program="$activeProgram"
+		EOF
+	)"
+
+	if [[ -f "$packageProgram" && "$activeProgram" != "$packageProgram" ]]; then
+		echo; header "Package Installation"
+		echo "$(cat <<-EOF
+			version="$($packageProgram -v)"
+			program="$packageProgram"
+			EOF
+		)"
+	fi
+
+	if [[ -f "$sourceProgram" && "$activeProgram" != "$sourceProgram" ]]; then
+		echo; header "Source Installation"; echo 
+		echo "$(cat <<-EOF
+			version="$($sourceProgram -v)"
+			program="$sourceProgram"
+			EOF
+		)"
+	fi
+}
 
 # mDNS
 MdnsList() {  avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }

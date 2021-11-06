@@ -30,7 +30,7 @@ IsZsh && { setopt no_beep; alias help="run-help"; }
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return
 
 # browser - for sensible-browser command
-export BROWSER="firefox"
+firefox IsInstalled && export BROWSER="firefox"
 
 # credential manager - initialize a credential manager, some credential managers will prompt to unlock
 if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then

@@ -640,13 +640,11 @@ iperfc() { iperf3 -c $1 -p 5002 "$@"; } # client
 # projects
 #
 
-# Blue Assignor
-bacd() { cd "$WIN_HOME/Juntos Holdings Dropbox/Company/consulting/BlueAssignor"; }
-bac() { cd "$WIN_HOME/eclipse-workspace/ccsua/src/org/ccsua"; }
-
 #
 # network
 #
+
+ScriptEval network proxy vars || return
 
 cf() { CloudFlare "$@"; }
 ncu() { UpdateInit || return; network current update "$@"; ScriptEval network proxy --$(UpdateGet "proxy"); } # network current update

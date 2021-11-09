@@ -83,10 +83,10 @@ hapcd() { ScriptCd happdata "$1"; }
 # other
 #
 
-alias cls=clear
-alias ei='e $bin/inst'
-alias ehp='start "$udata/replicate/default.htm"'
-alias st='startup --no-pause'
+cls() { clear; }
+ei() { e $bin/inst; }
+ehp() { start "$udata/replicate/default.htm"; }
+st() { startup --no-pause "$@"; }
 
 #
 # applications

@@ -84,7 +84,7 @@ hapcd() { ScriptCd happdata "$1"; }
 #
 
 cls() { clear; }
-ei() { e $bin/inst; }
+ei() { TextEdit $bin/inst; }
 ehp() { start "$udata/replicate/default.htm"; }
 st() { startup --no-pause "$@"; }
 
@@ -960,7 +960,6 @@ alias sshkh='e ~/.ssh/known_hosts'
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
 
 # connecting
-
 sm() { SshHelper connect --mosh "$@"; } # mosh
 ssht() { ssh -t "$@"; } 				# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
 

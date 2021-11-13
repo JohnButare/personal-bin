@@ -73,10 +73,10 @@ fi
 
 alias cdv="cd ~/Volumes"
 
-# applications
-haconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/root$ACONFIG"; }
-hadata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/root$ADATA"; }
-hadcd() { ScriptCd hadata "$1"; }
+# host application data and configuration directories
+hassconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/root$ACONFIG"; }
+hassdata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/root$ADATA"; }
+hasscd() { ScriptCd hadata "$1"; }
 
 #
 # other

@@ -59,7 +59,7 @@ p="$P"								 																				# programs
 if IsPlatform win; then
 	p32="$P32"																																	# programs
 	psm="$PROGRAMDATA/Microsoft/Windows/Start Menu"; pp="$psm/Programs" 				# public
-	usm="$ADATA/../Roaming/Microsoft/Windows/Start Menu"; up="$usm/Programs"		# user
+	usm="$UADATA/../Roaming/Microsoft/Windows/Start Menu"; up="$usm/Programs"		# user
 	wcode="$WIN_CODE" wh="$WIN_HOME" 	
 fi
 
@@ -74,10 +74,9 @@ fi
 alias cdv="cd ~/Volumes"
 
 # applications
-appdata="$DATA/appdata" appconfig="$DATA/appconfig"
-happconfig() { IsLocalHost "$1" && echo "$appconfig" || echo "//$1/root$appconfig"; }
-happdata() { IsLocalHost "$1" && echo "$appdata" || echo "//$1/root$appdata"; }
-hapcd() { ScriptCd happdata "$1"; }
+haconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/root$ACONFIG"; }
+hadata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/root$ADATA"; }
+hadcd() { ScriptCd hadata "$1"; }
 
 #
 # other
@@ -890,7 +889,7 @@ PySite() { py -m site; }
 
 # pipx
 if InPath pipx; then
-	export PIPX_HOME="$DATA"
+	export PIPX_HOME="$ADATA"
 	export PIPX_BIN_DIR="$BIN"
 fi
 
@@ -1074,10 +1073,10 @@ encum() { VeraCrypt unmount p; }															# unmount encrypted file share fr
 mcd() { cd "//nas3/data/media"; }
 
 # files
-hadcd() { cd "$(happdata "$1")/$2"; } # host appdata cd
+hadcd() { cd "$(hadata "$1")/$2"; } # host appdata cd
 
 # backup
-bdir() { cd "$(happdata "$(network current server backup --service=smb)")/backup"; } # backup dir
+bdir() { cd "$(hadata "$(network current server backup --service=smb)")/backup"; } # backup dir
 
 # borg
 alias bh='BorgHelper'

@@ -887,12 +887,6 @@ PyInfo() { pip show "$@"; }
 PyLocation() { python3 -c "import $1 as _; print(_.__file__)"; } ; # PyLocation MODULE - location of specified module, i.e. PyLocation 'pip._internal.cli.main'
 PySite() { py -m site; }
 
-# pipx
-if InPath pipx; then
-	export PIPX_HOME="$ADATA"
-	export PIPX_BIN_DIR="$BIN"
-fi
-
 #
 # Raspberry Pi
 #

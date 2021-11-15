@@ -76,7 +76,7 @@ alias cdv="cd ~/Volumes"
 # host application data and configuration directories
 hassconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/root$ACONFIG"; }
 hassdata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/root$ADATA"; }
-hasscd() { ScriptCd hadata "$1"; }
+hasscd() { ScriptCd hassdata "$1"; }
 
 #
 # other
@@ -91,7 +91,7 @@ st() { startup --no-pause "$@"; }
 # applications
 #
 
-alias e='TextEdit'
+e() { TextEdit "$@"; }
 alias f='firefox'
 alias grep='command grep --color=auto'
 alias m='merge'
@@ -757,7 +757,6 @@ alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
 TftpLog() { IsPlatform qnap && LogShow "/share/Logs/opentftpd.log"; }
 
 # web
-urlencode() { echo "$1" | sed 's/ /%20/g'; }
 curle() { curl "$(urlencode "$1")" "${@:2}"; } # curl encode - encode spaces in the URL
 
 #

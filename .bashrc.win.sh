@@ -1,8 +1,16 @@
+# locations
+alias wh="$WIN_HOME"
+alias wr="$WIN_ROOT"
 
 # applications
 alias ahkr="ahk /restart \"$DOC/data/bin/keys.ahk\""  # AutoHotKey Restart
-alias cmd="cmd.exe"
 alias autoruns='start --elevate autoruns.exe'
+alias cmd="cmd.exe"
+alias cm='start CompMgmt.msc'
+alias credm='start control /name Microsoft.CredentialManager'
+alias dm='start DevMgmt.msc'
+alias prog='product gui'
+alias vss='vss.exe'
 alias winget='cmd.exe /c winget.exe'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 
@@ -24,14 +32,6 @@ monprofile() { start "$cloud/data/UltraMon/$1.umprofile"; }
 alias NetConfig='control.exe netconnections'
 alias ewhosts='elevate RunScript TextEdit /mnt/c/Windows/System32/drivers/etc/hosts' # edit windows hosts file
 
-# operating system
-alias cm='start CompMgmt.msc'
-alias credm='start control /name Microsoft.CredentialManager'
-alias dm='start DevMgmt.msc'
-alias prog='product gui'
-alias vss='vss.exe'
-alias wh="$WIN_HOME"
-
 # process
 procmon() { start --elevate procmon.exe; }
 
@@ -47,7 +47,7 @@ z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "
 wcd() { cd "$(wsl get dir)/image"; }									# cd
 wcdi() { cd "$(wsl get ImageDir)"; }									# cd image
 wn() { wsl get name; }																# name
-wr() { wsl dist run "$@"; }														# run DIST
+wslr() { wsl dist run "$@"; }														# run DIST
 wsld() { wsl shutdown; }															# shutdown WSL
 wslr() { wsl dist restore "$@" && wsl install "$1"; } # reset DIST SRC
 

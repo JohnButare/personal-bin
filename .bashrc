@@ -1107,6 +1107,9 @@ alias nua='wiggin network update all all'					# network update all
 alias nud='wiggin network update dns all'					# network update DNS
 alias nudh='wiggin network update dhcp all'				# network update DHCP
 
+# QNAP
+qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command
+
 # UniFi
 alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }

@@ -51,6 +51,7 @@ IsZsh && bindkey "^H" backward-kill-word
 # locations
 #
 
+tmp() { cd "$TMP"; }
 b="$BIN" bin="$BIN" pd="$PUB/Desktop" pub="$PUB" data="$DATA" win="$DATA/platform/win"
 home="$HOME" doc="$DOC" dl="$HOME/Downloads" code="$CODE"
 ubin="$HOME/data/bin" ud="$HOME/Desktop" udata="$HOME/data"  	# user
@@ -92,6 +93,7 @@ st() { startup --no-pause "$@"; }
 #
 
 e() { TextEdit "$@"; }
+figlet() { pyfiglet "$@"; }
 alias f='firefox'
 alias grep='command grep --color=auto'
 alias m='merge'
@@ -398,8 +400,8 @@ alias .....='cbuiltin d ../../../..'
 
 alias c='cls'									# clear screen
 alias cb='builtin cd ~; cls' 	# clear screen and cd
-alias cbf='cb; InPath cowsay fortune lolcat && fortune | cowsay | lolcat; return 0' # clear both, fortune
-alias cbh='cb; InPath figlet lolcat && hostname | figlet -c -w $COLUMNS | lolcat; return 0' # clear both, host
+alias cf='cb; InPath cowsay fortune lolcat && cowsay "$(fortune)" | lolcat; return 0' # clear both, fortune
+alias cbh='cb; InPath pyfiglet lolcat && pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; return 0' # clear both, host
 alias ch='cbh'
 
 alias del='rm'
@@ -645,7 +647,7 @@ iperfc() { iperf3 -c $1 -p 5002 "$@"; } # client
 
 ScriptEval network proxy vars || return
 
-cf() { CloudFlare "$@"; }
+clf() { CloudFlare "$@"; }
 ncu() { UpdateInit || return; network current update "$@"; ScriptEval network proxy --$(UpdateGet "proxy"); } # network current update
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }

@@ -958,16 +958,27 @@ ssht() { ssh -t "$@"; } 				# allocate a pseudo-tty for screen based programs li
 # sx - X forwarding and supply passwords where possible
 sx()
 {
-	case "$1" in
+	# arguments
+	local arg force host
+	for arg in "$@"; do
+		case "$arg" in 
+			-f|--force) force="--force";;
+			--) break;;
+			*) [[ ! $host ]] && host="$arg";;
+		esac
+	done
+
+	# connect
+	case "$host" in
+		nas3)  HashiConfig --config-prefix=prod && ScriptEval qnap cli login vars $force && SshHelper connect -x "$@";;
 		router) SshHelper connect --password "$(credential get unifi admin)" "$@";;
 		*) SshHelper connect -x "$@";;
 	esac 
-} 		
+}
+
 
 # connect with additional startup scripts
 sshfull() { ssh -t $1 ". /etc/profile; ${@:2}";  } # full environment
-sshfunc() { ssh $1 ". function.sh; ${@:2}"; } # functions, sshfunc GetIpAddress
-sshfuncx() { ssh -X $1 ". function.sh; ${@:2}"; } # functions and X forwarding (enables credential manager), i.e. sshfuncx sudoc ls
 sshalias() { ssh -t $1 "bash -li -c \"${@:2}\""; } # ssh with aliases available, i.e. sshalias pi3 dirss
 
 # connecting with additional permissions

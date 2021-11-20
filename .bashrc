@@ -398,8 +398,8 @@ alias .....='cbuiltin d ../../../..'
 
 alias c='cls'									# clear screen
 alias cb='builtin cd ~; cls' 	# clear screen and cd
-alias cbf='cb; InPath cowsay,fortune,lolcat && fortune | cowsay | lolcat || cb' # clear both, fortune
-alias cbh='cb; InPath figlet,lolcat && hostname | figlet -c -w $COLUMNS | lolcat || cb' # clear both, host
+alias cbf='cb; InPath cowsay fortune lolcat && fortune | cowsay | lolcat; return 0' # clear both, fortune
+alias cbh='cb; InPath figlet lolcat && hostname | figlet -c -w $COLUMNS | lolcat; return 0' # clear both, host
 alias ch='cbh'
 
 alias del='rm'

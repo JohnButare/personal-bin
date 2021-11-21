@@ -267,18 +267,6 @@ IncronLogShow() { LogShow "/var/log/syslog" "incron"; }
 # development
 #
 
-alias ssms='SqlServerManagementStudio'
-alias sscd='ScriptCd SqlServer cd'
-alias ssp='SqlServer profiler express'
-
-test="$code/test"
-alias tup='cdup test'
-alias tc='cdc test'
-alias ts='cds test'
-
-# Android
-alias ab='as adb'
-
 # C
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 

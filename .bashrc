@@ -387,10 +387,9 @@ alias ....='builtin cd ../../..'
 alias .....='cbuiltin d ../../../..'
 
 alias c='cls'									# clear screen
-alias cb='builtin cd ~; cls' 	# clear screen and cd
-alias cf='cb; InPath cowsay fortune lolcat && cowsay "$(fortune)" | lolcat; return 0' # clear both, fortune
-alias cbh='cb; InPath pyfiglet lolcat && pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; return 0' # clear both, host
-alias ch='cbh'
+cb() { builtin cd ~; cls; } 	# clear screen and cd
+cf() { cb; InPath cowsay fortune lolcat && cowsay "$(fortune)" | lolcat; return 0; } # clear both, fortune
+ch() { cb; InPath pyfiglet lolcat && pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; return 0; } # clear both, host
 
 alias del='rm'
 alias md='mkdir'

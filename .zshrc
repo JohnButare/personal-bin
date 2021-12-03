@@ -16,7 +16,7 @@ ZSH_THEME="johnbutare" # robbyrussell johnbutare powerlevel10k/powerlevel10k
 [[ -e ~/.p10k.zsh && -d "$ZSH/custom/themes/powerlevel10k" ]] && ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # plugins - hass-cli
-plugins=(git history-substring-search)
+plugins=(git history-substring-search zsh-syntax-highlighting)
 
 # other configuration
 DISABLE_UNTRACKED_FILES_DIRTY="true"
@@ -38,17 +38,6 @@ ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"
 # zsh specific aliases
 IsPlatform qnap,synology && alias bash="/opt/bin/bash -l"
 IsPlatform mac && [[ $HOMEBREW_PREFIX ]] && alias bash="$HOMEBREW_PREFIX/bin/bash -l"
-
-# zplug plugins
-export ZPLUG_ROOT="/usr/share/zplug"
-export ENHANCD_DOT_ARG="..."
-export ENHANCD_DISABLE_HOME=1
-IsPlatform mac && ZPLUG_ROOT="/usr/local/opt/zplug"
-if [[ -f "$ZPLUG_ROOT/init.zsh" ]]; then
-	. "$ZPLUG_ROOT/init.zsh" || return
-	zplug load || return
-	zplug 'zplug/zplug', hook-build:'zplug --self-manage' || return
-fi
 
 # scripts
 [[ -f ~/.bashrc ]] && . ~/.bashrc

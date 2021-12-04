@@ -696,8 +696,8 @@ clipn() { HashiConfigNomad && clipw "$NOMAD_TOKEN"; }
 clipv() { HashiConfigVault && clipw "$VAULT_TOKEN"; }
 
 # mDNS
-MdnsList() {  avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
-MdnsListFull() {  avahi-browse -p --all -c -r; }
+MdnsList() { avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
+MdnsListFull() { avahi-browse -p --all -c -r; }
 MdnsPublishHostname() { avahi-publish-address -c $HOSTNAME.local "$(GetPrimaryIpAddress eth0)"; }
 
 mdnsStart()
@@ -1089,8 +1089,9 @@ bbh()
 } 
 
 # network DNS and DHCP configuration
-alias ne='wiggin network edit'											# network edit
-alias nb='wiggin network backup all'								# network backup
+alias ne='wiggin network edit'										# network edit
+alias nep='e $DATA/setup/ports'										# network edit poirt
+alias nb='wiggin network backup all'							# network backup
 alias nua='wiggin network update all all'					# network update all
 alias nud='wiggin network update dns all'					# network update DNS
 alias nudh='wiggin network update dhcp all'				# network update DHCP

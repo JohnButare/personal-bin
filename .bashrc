@@ -605,10 +605,16 @@ alias toff='TimerOff'
 alias TestDisk='sudo bench32.exe'
 DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); }
 DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
-DiskTestRead() { sudo hdparm -t /dev/$1; } 
 DiskTestAll() { bonnie++ | tee >> "$(os name)_performance_$(GetDateStamp).txt"; }
 
-DiskTestWrite() # [DEST](disktest) [COUNT] - # use smaller count for Pi and other lower performance disks
+DiskTestRead()
+{ 
+	local device="${1:-$(di | head -2 | tail -1 | cut -d" " -f1)}"
+	sudo hdparm -t "$device"; 
+} 
+
+# [DEST](disktest) [COUNT] - # use smaller count for Pi and other lower performance disks
+DiskTestWrite() 
 {
 	local file="$1"; [[ ! $file ]] && file="disktest"
 	local count="$2"; [[ ! $count ]] && count="1024" 
@@ -699,6 +705,7 @@ clipv() { HashiConfigVault && clipw "$VAULT_TOKEN"; }
 MdnsList() { avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
 MdnsListFull() { avahi-browse -p --all -c -r; }
 MdnsPublishHostname() { avahi-publish-address -c $HOSTNAME.local "$(GetPrimaryIpAddress eth0)"; }
+MdnsTest() { for a in aaaa pi1 pi2 pi3 pi4 pi8 pi9; do printf "$a: "; MdnsResolve $a.local; done; }
 
 mdnsStart()
 { 

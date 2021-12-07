@@ -297,7 +297,7 @@ alias npmu='sudo npm uninstall -g' # npm uninstall
 # directory management
 #
 
-[[ ! $LS_COLORS ]] && InPath dircolors && eval "$(dircolors $ubin/default.dircolors)"
+[[ ! $LS_COLORS && -f "$ubin/default.dircolors" ]] && InPath dircolors && eval "$(dircolors "$ubin/default.dircolors")"
 
 alias cd='DoCd'
 
@@ -676,7 +676,7 @@ DhcpOptions()
 alias h="hashi"
 alias hcd="cd $ncd/system/hashi"
 
-hc() { HashiConfig --config-prefix=prod "$@" && hashi status; } # hc - hashi config
+hconf() { HashiConfig --config-prefix=prod "$@" && hashi status; } # hc - hashi config
 hct() { HashiConfig --config-prefix=test "$@" && hashi status; } # hct - hashi config test
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hs() { hashi status; }
@@ -965,7 +965,7 @@ sx()
 
 	# connect
 	case "$host" in
-		nas3)  HashiConfig --config-prefix=prod && ScriptEval qnap cli login vars $force && SshHelper connect -x "$@";;
+		nas3) HashiConfig --config-prefix=prod && ScriptEval qnap cli login vars $force && SshHelper connect -x "$@";;
 		router) SshHelper connect --password "$(credential get unifi admin)" "$@";;
 		*) SshHelper connect -x "$@";;
 	esac 
@@ -1079,14 +1079,22 @@ bdir() { cd "$(hadata "$(network current server backup --service=smb)")/backup";
 
 # borg
 alias bh='BorgHelper'
+alias bconf="BorgConfig"
 borg() { [[ ! $BORG_REPO ]] && BorgConfig; command borg "$@"; }
-BorgConfig() { ScriptEval BorgHelper environment "$@"; }
 bb() { BorgHelper backup "$@" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
 br() { BorgHelper run "$@"; } 														# borg run
 bs() { BorgConfig "$@" && BorgHelper status "$@"; }				# borg status
 bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount
 bum() { BorgHelper unmount "$@"; }												# borg unmount
 clipb() { BorgConfig "$@" && clipw "$BORG_PASSPHRASE"; }
+
+BorgConfig()
+{
+	local config="$BORG_REPO"
+	ScriptEval BorgHelper environment "$@"
+	[[ "$config" == "$BORG_REPO" ]] && return
+	EchoErr "Borg configuration set to $BORG_REPO"
+}
 
 # bbh DIR HOSTS - borg backup hosts
 bbh()

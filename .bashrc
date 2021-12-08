@@ -557,6 +557,7 @@ hass-cli()
 }
 
 # homebridge
+alias hh='HomebridgeHelper'
 alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
 alias hcconfig="e $ncd/system/homebridge/config/config.json" # edit cloud configuration
 alias hlogclean="sudoc rm /var/lib/homebridge/homebridge.log"

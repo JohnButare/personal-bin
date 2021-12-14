@@ -59,6 +59,7 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 ; Applications
 ;
 
+RShift & 1::Open1Password() 		; 1Password
 RShift & 3::OpenTerminal() 			; Terminal
 RShift & b::OpenBrowser() 			; Browser
 RShift & g::OpenFork()					; Git

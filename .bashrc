@@ -655,9 +655,10 @@ p()
 	IsAvailable "$ip" && { echo "available"; return 0; } || { echo "not available"; return 1; }
 }
 
+# backup
+abd() { . app.sh; ScriptCd AppGetBackupDir; } # app backup dir
 
 # Web
-
 acd() { ScriptCd apache dir config "$@"; ls; }	# Apache Config Dir
 awd() { ScriptCd apache dir web "$@"; ls; }			# Apache Web Dir
 

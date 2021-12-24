@@ -642,7 +642,7 @@ iperfc() { iperf3 -c $1 -p 5002 "$@"; } # client
 ScriptEval network proxy vars || return
 
 clf() { CloudFlare "$@"; }
-ncu() {	network current update "$@" && ScriptEval network proxy --enable; } # network current update
+ncu() {	network current update "$@" && ScriptEval network proxy vars --enable; } # network current update
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }

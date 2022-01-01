@@ -474,6 +474,7 @@ alias gl='g logb; echo'					# log
 alias gla='g loga'							# log all
 alias gca='g ca'								# commit all
 alias gcam='g amendAll'					# commit ammend all
+alias gco='g push --set-upstream origin master' # git configure origin
 alias gs='gh changes'   				# status
 alias gbs='g bs'								# branch status [PATTERN]
 alias gr='g rb' 								# rebase

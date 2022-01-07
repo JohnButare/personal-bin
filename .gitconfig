@@ -42,6 +42,7 @@
 
 	# branch list
 	ls = "!f()   { git show-ref | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | grep -E '^[ ]*'$1; }; f" # list, ls PATTERN
+	lsv = "branch -avv" # list verbose
 	tls = "!f()  { git show-ref | grep 'refs/tags' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sed 's/v//' | sed 's/\\./,/g' | sort -n | sed 's/,/\\./g' | grep -E '^[ ]*'$1; }; f" # list tag, tls [PATTERN]
 	bls = "!f()  { git show-ref | grep 'refs/heads' | cut -f 2 -d' ' | cut -f 3-5 -d'/' | sort | grep -E '^[ ]*'$1;  }; f" # list branch, bls PATTERN
 	rbls = "!f() { git show-ref | grep 'refs/remotes/origin' | cut -f 2 -d' ' | cut -f 4-5 -d'/' | sort | grep -E '^[ ]*'$1; }; f" # list remote branch, rbls PATTERN
@@ -151,47 +152,52 @@
 	sma = submodule add
 	smu = submodule update --init
 
+# standard configuration
+[checkout]
+	defaultRemote = origin
 [color]
 	ui = auto
 [core]
 	autocrlf = false
 	excludesfile = ~/.gitignore
 	editor = TextEdit --wait
-[push]
-	default = current # http://prgmr.io/coding/git-push-default/
 [diff]
 	tool = bc
 	guitool = bc
 [difftool]
 	prompt = false
+[difftool "bc"]
+	cmd = BeyondCompare --wait \"$LOCAL\" \"$REMOTE\"
+[https]
+	#proxy = http://proxy.rr.intel.com:911
+[http]
+	#proxy = http://proxy.rr.intel.com:911
 [merge]
 	tool = bc
 [mergetool]
 	prompt = false
 	keepBackup = false
+[mergetool "bc"]
+	cmd = BeyondCompare --wait \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+[pull]
+	ff = only
+[push]
+	default = current # http://prgmr.io/coding/git-push-default/
 [rebase]
 	autosquash = true
 [user]
 	name = John Butare
 	email = john@butare.net
-[https]
-	#proxy = http://proxy.rr.intel.com:911
-[http]
-	#proxy = http://proxy.rr.intel.com:911
-[hub]
-	host = github.intel.com
-	protocol = https
+
+# other commands
+[cola]
+	spellcheck = false
 [git-up "fetch"]
 	prune = true
 [git-up "rebase"]
 	auto = false
-[difftool "bc"]
-	cmd = BeyondCompare --wait \"$LOCAL\" \"$REMOTE\"
-[mergetool "bc"]
-	cmd = BeyondCompare --wait \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+[hub]
+	host = github.intel.com
+	protocol = https
 [winUpdater]
 	recentlySeenVersion = 2.20.1.windows.1
-[cola]
-	spellcheck = false
-[pull]
-	ff = only

@@ -925,6 +925,7 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 # security
 #
 
+opl() { ScriptEval 1PasswordHelper signin; } # 1Password Login
 alias cred='credential'
 
 # sudo root COMMAND - do not prompt for credential manager, i.e. sudor PyInfo pip

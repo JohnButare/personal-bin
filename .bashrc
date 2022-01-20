@@ -541,7 +541,7 @@ haUser="homeassistant" haService="home-assistant@$haUser"
 
 alias ha="HomeAssistant"
 alias haconfig="sudoe ~homeassistant/.homeassistant/configuration.yaml; yamllint ~homeassistant/.homeassistant/configuration.yaml;"
-alias hashell="(cd ~homeassistant; sudo --user=$haUser --set-home --shell bash -il)"
+alias hashell="SwitchUser $haUser"
 
 alias halog="service log $haService"
 alias harestart="service restart $haService"
@@ -572,6 +572,10 @@ alias hbakall='hbak pi5'
 
 hbak() { HomebridgeHelper backup "$@"; } # hbak HOST
 hrest() { HomebridgeHelper restore "$@"; } # hrest HOST
+
+# Node-RED
+alias nrshell="SwitchUser nodered"
+NodeRedCode() { cd "$HOME/.node-red/projects/$1"; }; alias nrc="NodeRedCode"
 
 #
 # performance
@@ -674,6 +678,10 @@ DhcpOptions()
 	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }
 	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
 }
+
+alias KeaRestart='service restart kea-dhcp4-server'
+alias KeaLog='service log kea-dhcp4-server'
+alias BindLog='service log bind9'
 
 # HashiCorp
 alias h="hashi"
@@ -888,7 +896,6 @@ PySite() { py -m site; }
 # Raspberry Pi
 #
 
-NodeRedCode() { cd "$HOME/.node-red/projects/$1"; }; alias nrc="NodeRedCode"
 PiImageLite() { pi image "$(i dir)/platform/linux/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
 
 #
@@ -925,8 +932,11 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 # security
 #
 
-opl() { ScriptEval 1PasswordHelper signin; } # 1Password Login
 alias cred='credential'
+
+opl() { ScriptEval 1PasswordHelper signin; } # 1Password Login
+CertView() { openssl x509 -in "$1" -text; }
+SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell bash -il; }
 
 # sudo root COMMAND - do not prompt for credential manager, i.e. sudor PyInfo pip
 sudor()
@@ -934,9 +944,6 @@ sudor()
 	local args="$@"; [[ $1 ]] && set -- -i -c "$args"
 	sudox SSH_AUTH_SOCK="$SSH_AUTH_SOCK" SSH_AGENT_PID="$SSH_AGENT_PID" CREDENTIAL_MANAGER_CHECKED="true" bash "$@"
 } 
-
-# certificates
-CertView() { openssl x509 -in "$1" -text; }
 
 #
 # SSH

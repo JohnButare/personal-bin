@@ -551,9 +551,21 @@ alias hastop="service stop $haService"
 
 hass-cli()
 {
+	# validate installed
 	! InPath hass-cli && { ScriptErr "hass-cli is not installed"; return 1; }
-	[[ ! $HASS_TOKEN || ! $HASS_SERVER ]] && { ScriptEval HomeAssistant cli vars; }
-	[[ ! $HASS_TOKEN || ! $HASS_SERVER ]] && pause
+
+	# arguments
+	local arg args=() force
+	for arg in "$@"; do
+		[[ "$arg" == @(-f|--force) ]] && { force="--force"; continue; }
+		args+=( "$arg" )
+	done
+	set -- "${args[@]}"
+
+	# configuration
+	[[ $force || ! $HASS_TOKEN || ! $HASS_SERVER ]] && { ScriptEval HomeAssistant $force cli vars || return; }
+
+	# run
 	command hass-cli "$@"
 }
 
@@ -699,8 +711,8 @@ vagrant() { "$WIN_ROOT/HashiCorp/Vagrant/bin/vagrant.exe" "$@"; }
 vcd() { cd "$WIN_HOME/data/app/vagrant"; }
 
 # test
-hti() { wiggin setup hashi test -- "$@" && HashiConfig test; }		# Hashi Test Install
-htr() { wiggin remove hashi test --force -- --yes "$@"; HashiConfig reset; }				# Hashi Test Clean
+hti() { wiggin setup hashi test -- "$@" && HashiConfig test; }									# Hashi Test Install
+htr() { wiggin remove hashi test --force -- --yes "$@"; HashiConfig reset; }		# Hashi Test Clean
 
 # run program and set configuration if necessary
 consul() { HashiConfigConsul && command consul "$@"; }
@@ -935,7 +947,8 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 alias cred='credential'
 
 opl() { ScriptEval 1PasswordHelper signin; } # 1Password Login
-CertView() { openssl x509 -in "$1" -text; }
+CertView() { local c; for c in "$@"; do openssl x509 -in "$c" -text; done; }
+CertViewDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
 SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell bash -il; }
 
 # sudo root COMMAND - do not prompt for credential manager, i.e. sudor PyInfo pip

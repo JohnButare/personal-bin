@@ -776,6 +776,8 @@ TftpLog() { IsPlatform qnap && LogShow "/share/Logs/opentftpd.log"; }
 
 # web
 curle() { curl "$(urlencode "$1")" "${@:2}"; } # curl encode - encode spaces in the URL
+HttpHeader() { curl --silent --show-error --location --dump-header - --output /dev/null "$1"; }
+HttpServer() { HttpHeader "$1" | grep "X-Server" | cut -d: -f2 | RemoveCarriageReturn | RemoveSpaceTrim; }
 
 #
 # prompt

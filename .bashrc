@@ -32,12 +32,6 @@ SourceIfExists "$HOME/.rvm/scripts/rvm" || return
 # browser - for sensible-browser command
 firefox IsInstalled && export BROWSER="firefox"
 
-# credential manager - initialize a credential manager, some credential managers will prompt to unlock
-if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
-	export CREDENTIAL_MANAGER="$(credential --quiet type)"
-	export CREDENTIAL_MANAGER_CHECKED="true"
-fi
-
 # editor
 if [[ ! $EDITOR_CHECKED ]]; then	
 	SetTextEditor
@@ -106,7 +100,7 @@ terminator() { coproc /usr/bin/terminator "$@"; }
 #
 
 alias fm='start "$p/7-Zip/7zFM.exe"'
-alias untar='tar -v -x --atime-preserve <'
+alias untar='tar -z -v -x --atime-preserve <'
 zbak() { [[ $# == 1  ]] && zip -r --symlinks "$1.zip" "$1" || zip --symlinks "$1" "${@:2}"; } # zbak DIR [FILE]
 zrest() { unzip "${@}"; }
 zls() { unzip -l "${@}"; }
@@ -697,7 +691,7 @@ alias BindLog='service log bind9'
 
 # HashiCorp
 alias h="hashi"
-alias hcd="cd $ncd/system/hashi"
+hcd() { cd "$ncd/system/hashi/$1"; }
 
 hconf() { HashiConfig --config-prefix=prod "$@" && hashi status; } # hc - hashi config
 hct() { HashiConfig --config-prefix=test "$@" && hashi status; } # hct - hashi config test
@@ -1009,14 +1003,6 @@ sshsudoc() { ssh -X $1 ". function.sh; sudoc ${@:2}"; } # ssh using sudoc (use c
 # run applications
 sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
 
-# SSH Agent - check and start the SSH Agent if needed
-# - avoid password prompt - only start if there is a credential manager installed
-# - avoid output - for clean PowerLevel 10K startup (Pass credential prompt requires output and input)
-[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-if [[ $CREDENTIAL_MANAGER ]] && [[ "$CREDENTIAL_MANAGER" != "pass" ]] && ! ssh-add -L >& /dev/null; then
-	SshAgentStart --quiet --verbose --log
-fi
-
 #
 # sound
 #
@@ -1189,3 +1175,23 @@ alias XmlShow='xml sel -t -c'
 SourceIfExists "$HOME/.asdf/asdf.sh" || return
 SourceIfExists "$BIN/z.sh" || return
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
+
+# credential manager - initialize a credential manager, some credential managers will prompt to unlock
+if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
+	export CREDENTIAL_MANAGER="$(credential --quiet type)"
+	export CREDENTIAL_MANAGER_CHECKED="true"
+fi
+
+# SSH Agent - check and start the SSH Agent if needed
+# - avoid password prompt - only start if there is a credential manager installed
+# - avoid output - for clean PowerLevel 10K startup (Pass credential prompt requires output and input)
+[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
+if [[ $CREDENTIAL_MANAGER ]] && [[ "$CREDENTIAL_MANAGER" != "pass" ]] && ! ssh-add -L >& /dev/null; then
+	SshAgentStart --quiet --verbose --log
+fi
+
+# if InPath gnome-keyring-daemon && [[ ! $SSH_AUTH_SOCK ]]; then
+# 	eval $(gnome-keyring-daemon --start)
+# fi
+
+return 0

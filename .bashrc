@@ -685,9 +685,8 @@ DhcpOptions()
 	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
 }
 
-alias KeaRestart='service restart kea-dhcp4-server'
-alias KeaLog='service log kea-dhcp4-server'
 alias BindLog='service log bind9'
+alias NamedLog='service log bind9'
 
 # HashiCorp
 alias h="hashi"

@@ -22,6 +22,9 @@ IsPlatform wsl2 && { LANG="C.UTF-8"; }
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 IsZsh && { setopt no_beep; alias help="run-help"; }
 
+# Go - add Go bin directory if present
+[[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"
+
 # Python - add Python bin directory if present
 [[ -d "$HOME/.local/bin" ]] && PathAdd "$HOME/.local/bin"
 [[ -d "$HOME/Library/Python/3.8/bin" ]] && PathAdd front "$HOME/Library/Python/3.8/bin"

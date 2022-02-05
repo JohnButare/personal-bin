@@ -26,8 +26,10 @@ IsZsh && { setopt no_beep; alias help="run-help"; }
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"
 
 # Python - add Python bin directory if present
-[[ -d "$HOME/.local/bin" ]] && PathAdd "$HOME/.local/bin"
-[[ -d "$HOME/Library/Python/3.8/bin" ]] && PathAdd front "$HOME/Library/Python/3.8/bin"
+if [[ -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
+elif [[ -d "$HOME/Library/Python/3.9/bin" ]]; then PathAdd front "$HOME/Library/Python/3.9/bin"
+elif [[ -d "$HOME/Library/Python/3.8/bin" ]]; then PathAdd front "$HOME/Library/Python/3.3/bin"
+fi
 
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return

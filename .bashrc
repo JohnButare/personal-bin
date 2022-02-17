@@ -697,7 +697,7 @@ alias NamedLog='service log bind9'
 alias h="hashi"
 hcd() { cd "$ncd/system/hashi/$1"; }
 
-hconf() { HashiConfig --config-prefix=prod "$@" && hashi status; } # hc - hashi config
+hconf() { HashiConfig --config-prefix=prod "$@" && hashi config status; } # hc - hashi config
 hct() { HashiConfig --config-prefix=test "$@" && hashi status; } # hct - hashi config test
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hs() { hashi status; }

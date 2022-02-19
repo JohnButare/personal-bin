@@ -947,7 +947,6 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 alias cred='credential'
 
 opl() { ScriptEval 1PasswordHelper signin; } # 1Password Login
-CertView() { local c; for c in "$@"; do openssl x509 -in "$c" -text; done; }
 CertViewDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
 SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell bash -il; }
 

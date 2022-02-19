@@ -726,7 +726,7 @@ clipv() { HashiConfigVault && clipw "$VAULT_TOKEN"; }
 MdnsList() { avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
 MdnsListFull() { avahi-browse -p --all -c -r; }
 MdnsPublishHostname() { avahi-publish-address -c $HOSTNAME.local "$(GetPrimaryIpAddress eth0)"; }
-MdnsTest() { for a in aaaa pi1 pi2 pi3 pi4 pi8 pi9; do printf "$a: "; MdnsResolve $a.local; done; }
+MdnsTest() { for a in aaaa pi1 pi2 pi3 pi4 pi9 pi10 pi11; do printf "$a: "; MdnsResolve $a.local; done; }
 
 mdnsStart()
 { 

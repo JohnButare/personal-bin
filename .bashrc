@@ -27,8 +27,8 @@ IsZsh && { setopt no_beep; alias help="run-help"; }
 
 # Python - add Python bin directory if present
 if [[ -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
-elif [[ -d "$HOME/Library/Python/3.9/bin" ]]; then PathAdd front "$HOME/Library/Python/3.9/bin"
-elif [[ -d "$HOME/Library/Python/3.8/bin" ]]; then PathAdd front "$HOME/Library/Python/3.3/bin"
+elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.9/bin" ]]; then PathAdd front "$HOME/Library/Python/3.9/bin"
+elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.8/bin" ]]; then PathAdd front "$HOME/Library/Python/3.3/bin"
 fi
 
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
@@ -1095,7 +1095,7 @@ bdir() { cd "$(hadata "$(network current server backup --service=smb)")/backup";
 # borg
 alias bh='BorgHelper'
 alias bconf="BorgConfig"
-borg() { [[ ! $BORG_REPO ]] && BorgConfig; command borg "$@"; }
+borg() { [[ ! $BORG_REPO ]] && { BorgConfig || return; }; command borg "$@"; }
 bb() { BorgHelper backup "$@" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
 br() { BorgHelper run "$@"; } 														# borg run
 bs() { BorgConfig "$@" && BorgHelper status "$@"; }				# borg status
@@ -1106,7 +1106,7 @@ clipb() { BorgConfig "$@" && clipw "$BORG_PASSPHRASE"; }
 BorgConfig()
 {
 	local config="$BORG_REPO"
-	ScriptEval BorgHelper environment "$@"
+	ScriptEval BorgHelper environment "$@" || return
 	[[ "$config" == "$BORG_REPO" ]] && return
 	EchoErr "Borg configuration set to $BORG_REPO"
 }

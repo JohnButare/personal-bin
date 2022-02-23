@@ -674,10 +674,6 @@ p()
 # backup
 abd() { . app.sh; ScriptCd AppGetBackupDir; } # app backup dir
 
-# Web
-acd() { ScriptCd apache dir config "$@"; ls; }	# Apache Config Dir
-awd() { ScriptCd apache dir web "$@"; ls; }			# Apache Web Dir
-
 # DNS
 DnsLog() { service log bind9; }
 DnsRestart() { service restart bind9; }
@@ -754,7 +750,7 @@ alias ProxyStatus="network proxy --status"
 # salt
 RunAll() { a="$@"; sudoc salt '*' cmd.run "/usr/local/data/bin/RunScript $a"; }
 
-# 
+# Squid Proxy Server
 SquidLog="$HOME/Library/Logs/squid/squid-access.log"
 SquidLog() { LogShow "$SquidLog"; }
 SquidCheck() { IsAvailablePort proxy.butare.net 3128; }
@@ -773,9 +769,22 @@ alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
 TftpLog() { IsPlatform qnap && LogShow "/share/Logs/opentftpd.log"; }
 
 # web
+acd() { ScriptCd apache dir conf "$@"; ls; }	# Apache Config Dir
+awd() { ScriptCd apache dir web "$@"; ls; }			# Apache Web Dir
 curle() { curl "$(urlencode "$1")" "${@:2}"; } # curl encode - encode spaces in the URL
 HttpHeader() { curl --silent --show-error --location --dump-header - --output /dev/null "$1"; }
 HttpServer() { HttpHeader "$1" | grep "X-Server" | cut -d: -f2 | RemoveCarriageReturn | RemoveSpaceTrim; }
+
+CheckAll()
+{
+	local service="${1:-web}" port="${2:-80}" urlPath="$3"
+
+	for host in $(hashi resolve name --all "$service"); do
+		local url="http://$host:$port/$urlPath"
+		hilight "Checking $url..."
+		curl --silent --location "$url" | head -10 || return
+	done
+}
 
 #
 # prompt
@@ -949,13 +958,6 @@ alias cred='credential'
 opl() { ScriptEval 1PasswordHelper signin; } # 1Password Login
 CertViewDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
 SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell bash -il; }
-
-# sudo root COMMAND - do not prompt for credential manager, i.e. sudor PyInfo pip
-sudor()
-{
-	local args="$@"; [[ $1 ]] && set -- -i -c "$args"
-	sudox SSH_AUTH_SOCK="$SSH_AUTH_SOCK" SSH_AGENT_PID="$SSH_AGENT_PID" CREDENTIAL_MANAGER_CHECKED="true" bash "$@"
-} 
 
 #
 # SSH

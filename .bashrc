@@ -766,7 +766,9 @@ alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
 
 # TFTP
-TftpLog() { IsPlatform qnap && LogShow "/share/Logs/opentftpd.log"; }
+TftpConf() { sudoe "/etc/default/tftpd-hpa"; }
+TftpRestart() { service restart tftpd-hpa; }
+TftpLog() {	if IsPlatform qnap; then LogShow "/share/Logs/opentftpd.log"; else sudor RunScript LogShow "/var/log/syslog"; fi; }
 
 # web
 acd() { ScriptCd apache dir conf "$@"; ls; }	# Apache Config Dir

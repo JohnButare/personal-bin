@@ -1098,22 +1098,14 @@ bdir() { cd "$(hadata "$(network current server backup --service=smb)")/backup";
 
 # borg
 alias bh='BorgHelper'
-alias bconf="BorgConfig"
+bconf() { BorgConfig "$@" && BorgHelper status; }
 borg() { [[ ! $BORG_REPO ]] && { BorgConfig || return; }; command borg "$@"; }
 bb() { BorgHelper backup "$@" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
-br() { BorgHelper run "$@"; } 														# borg run
-bs() { BorgConfig "$@" && BorgHelper status "$@"; }				# borg status
 bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount
+br() { BorgHelper run "$@"; } 														# borg run
+bs() { BorgHelper status "$@"; }													# borg status
 bum() { BorgHelper unmount "$@"; }												# borg unmount
 clipb() { BorgConfig "$@" && clipw "$BORG_PASSPHRASE"; }
-
-BorgConfig()
-{
-	local config="$BORG_REPO"
-	ScriptEval BorgHelper environment "$@" || return
-	[[ "$config" == "$BORG_REPO" ]] && return
-	EchoErr "Borg configuration set to $BORG_REPO"
-}
 
 # bbh DIR HOSTS - borg backup hosts
 bbh()

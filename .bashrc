@@ -12,6 +12,8 @@ export LESSOPEN='|~/.lessfilter %s'
 # Interactive Configuration
 #
 
+# verbose="--verbose" force="--force"
+
 # ensure DISPLAY is set first
 InitializeXServer || return
 
@@ -551,7 +553,7 @@ alias hastop="service stop $haService"
 hass-cli()
 {
 	# validate installed
-	! InPath hass-cli && { ScriptErr "hass-cli is not installed"; return 1; }
+	! InPath hass-cli && { ScriptErr "hass-cli is not installed" "hass-cli"; return 1; }
 
 	# arguments
 	local arg args=() force
@@ -885,7 +887,7 @@ LogNetConsole() { netconsole -l -u $(GetIpAddress) 6666 | sudoc tee /var/log/net
 NetConsoleEnable() # HOST
 {
 	local host="$1"
-	[[ ! $host ]] && { MissingOperand "host" "EnableNetConsole"; return 1; }
+	[[ ! $host ]] && { MissingOperand "host" "NetConsoleEnable"; return 1; }
 
 	! grep "netconsole" /etc/modules && { echo "netconsole" | sudo tee -a "/etc/modules" || return; }
 	echo "options netconsole netconsole=6666@$(GetIpAddress)/$(GetPrimaryAdapterName),6666@$(GetIpAddress "$host")/$(GetMacAddress "$host")" | sudo tee "/etc/modprobe.d/netconsole.conf"
@@ -956,6 +958,7 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 #
 
 alias cred='credential'
+cconf() { ScriptEval credential environment "$@" && credential description; }
 
 opl() { ScriptEval 1PasswordHelper signin; } # 1Password Login
 CertViewDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
@@ -1144,9 +1147,9 @@ xprac() { if IsPlatform win; then "$P/Xpra/xpra_cmd.exe" "$@"; else xpra "$@"; f
 XpraConnect() { echo "ssh://$USER@$(os name "$1")/$2"; }
 XpraCheck() { plink.exe "$USER@$(os name "$1")"; } # store SSH key in cache
 
-XpraConfig() { RunPlatform XpraConfig "$@"; }
-XpraConfigMac() { "$P/Xpra.app/Contents/Helpers/Config_info" "$@"; }
-XpraConfigWin() { "$P/Xpra/Config_info.exe" "$@"; }
+XpraConf() { RunPlatform XpraConf "$@"; }
+XpraConfMac() { "$P/Xpra.app/Contents/Helpers/Config_info" "$@"; }
+XpraConfWin() { "$P/Xpra/Config_info.exe" "$@"; }
 
 XpraPaths() { RunPlatform XpraPaths "$@"; }
 XpraPathsMac() { "$P/Xpra.app/Contents/Helpers/Path_info" "$@"; }
@@ -1168,29 +1171,16 @@ alias XmlValue='xml sel -t -v'
 alias XmlShow='xml sel -t -c'
 
 #
+# credential
+#
+
+# find and initialize a credential manager
+[[ ! $CREDENTIAL_MANAGER_CHECKED ]] && ScriptEval credential environment $verbose $force
+
+#
 # final
 #
 
 SourceIfExists "$HOME/.asdf/asdf.sh" || return
 SourceIfExists "$BIN/z.sh" || return
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
-
-# credential manager - initialize a credential manager, some credential managers will prompt to unlock
-if [[ ! $CREDENTIAL_MANAGER_CHECKED ]]; then
-	export CREDENTIAL_MANAGER="$(credential --quiet type)"
-	export CREDENTIAL_MANAGER_CHECKED="true"
-fi
-
-# SSH Agent - check and start the SSH Agent if needed
-# - avoid password prompt - only start if there is a credential manager installed
-# - avoid output - for clean PowerLevel 10K startup (Pass credential prompt requires output and input)
-[[ -f "$HOME/.ssh/environment" ]] && . "$HOME/.ssh/environment"
-if [[ $CREDENTIAL_MANAGER ]] && [[ "$CREDENTIAL_MANAGER" != "pass" ]] && ! ssh-add -L >& /dev/null; then
-	SshAgentStart --quiet --verbose --log
-fi
-
-# if InPath gnome-keyring-daemon && [[ ! $SSH_AUTH_SOCK ]]; then
-# 	eval $(gnome-keyring-daemon --start)
-# fi
-
-return 0

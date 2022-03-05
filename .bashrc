@@ -958,6 +958,7 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 #
 
 alias cred='credential'
+1conf() { ScriptEval 1PasswordHelper environment && 1PasswordHelper status; }
 cconf() { ScriptEval credential environment "$@" && credential description; }
 
 opl() { ScriptEval 1PasswordHelper signin; } # 1Password Login

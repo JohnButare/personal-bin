@@ -5,9 +5,6 @@ alias wr="$WIN_ROOT"
 # applications
 alias ahkr="ahk /restart \"$DOC/data/bin/keys.ahk\""  # AutoHotKey Restart
 alias autoruns='start --elevate autoruns.exe'
-alias cmd="cmd.exe"
-alias cm='start CompMgmt.msc'
-alias credm='start control /name Microsoft.CredentialManager'
 alias dm='start DevMgmt.msc'
 alias prog='product gui'
 alias vss='vss.exe'

@@ -24,6 +24,9 @@ IsPlatform wsl2 && { LANG="C.UTF-8"; }
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 IsZsh && { setopt no_beep; alias help="run-help"; }
 
+# ASDF
+[[ ! $ASDF_DIR && ! $force ]] && { SourceIfExists "$HOME/.asdf/asdf.sh" || return; }
+
 # Go - add Go bin directory if present
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"
 
@@ -467,7 +470,9 @@ alias unfunction='unset -f'
 # git
 #
 
-alias g='git'
+ g() { SshAgentConf && git "$@"; }
+ gh() { SshAgentConf && GitHelper "$@"; }
+
 alias ga='g add'
 alias gd='g diff'
 alias gf='gc freeze'
@@ -492,7 +497,6 @@ alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-productio
 alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
 alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; }'
 alias gg='GitHelper gui'
-alias gh='GitHelper'
 alias lg='lazygit'
 
 # gdir SERVER - change to the git directory on SERVER for repo creation
@@ -695,8 +699,8 @@ alias NamedLog='service log bind9'
 alias h="hashi"
 hcd() { cd "$ncd/system/hashi/$1"; }
 
-hconf() { HashiConfig --config-prefix=prod "$@" && hashi config status; } # hc - hashi config
-hct() { HashiConfig --config-prefix=test "$@" && hashi status; } # hct - hashi config test
+hconf() { HashiConf --config-prefix=prod "$@" && hashi config status; } # hc - hashi config
+hct() { HashiConf --config-prefix=test "$@" && hashi status; } # hct - hashi config test
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hs() { hashi status; }
 hsr() { HashiServiceRegister "$@"; }
@@ -707,18 +711,18 @@ vagrant() { "$WIN_ROOT/HashiCorp/Vagrant/bin/vagrant.exe" "$@"; }
 vcd() { cd "$WIN_HOME/data/app/vagrant"; }
 
 # test
-hti() { wiggin setup hashi test -- "$@" && HashiConfig test; }									# Hashi Test Install
-htr() { wiggin remove hashi test --force -- --yes "$@"; HashiConfig reset; }		# Hashi Test Clean
+hti() { wiggin setup hashi test -- "$@" && HashiConf test; }									# Hashi Test Install
+htr() { wiggin remove hashi test --force -- --yes "$@"; HashiConf reset; }		# Hashi Test Clean
 
 # run program and set configuration if necessary
-consul() { HashiConfigConsul && command consul "$@"; }
-nomad() { HashiConfigNomad && command nomad "$@"; }
-vault() { HashiConfigVault && command vault "$@"; }
+consul() { HashiConfConsul && command consul "$@"; }
+nomad() { HashiConfNomad && command nomad "$@"; }
+vault() { HashiConfVault && command vault "$@"; }
 
 # put token for a HashiCorp program into the clipboard
-clipc() { HashiConfigConsul && clipw "$CONSUL_HTTP_TOKEN"; }
-clipn() { HashiConfigNomad && clipw "$NOMAD_TOKEN"; }
-clipv() { HashiConfigVault && clipw "$VAULT_TOKEN"; }
+clipc() { HashiConfConsul && clipw "$CONSUL_HTTP_TOKEN"; }
+clipn() { HashiConfNomad && clipw "$NOMAD_TOKEN"; }
+clipv() { HashiConfVault && clipw "$VAULT_TOKEN"; }
 
 # mDNS
 MdnsList() { avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
@@ -959,7 +963,9 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 
 alias cred='credential'
 1conf() { ScriptEval 1PasswordHelper environment && 1PasswordHelper status; }
-cconf() { ScriptEval credential environment "$@" && credential description; }
+cconf() { CredentialConf "$@" && credential manager description; }
+cm() { cred manager "$@"; }
+cmd() { cred manager description "$@"; }
 
 opl() { ScriptEval 1PasswordHelper signin; } # 1Password Login
 CertViewDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
@@ -968,6 +974,8 @@ SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell 
 #
 # SSH
 #
+
+sconf() { SshAgentConf "$@" && SshAgent status; }
 
 alias s=sx	# connect with ssh
 alias hvs="hyperv connect ssh" # connect to a Hyper-V host with ssh
@@ -984,6 +992,8 @@ ssht() { ssh -t "$@"; } 				# allocate a pseudo-tty for screen based programs li
 # sx - X forwarding and supply passwords where possible
 sx()
 {
+	SshAgentConf || return
+	
 	# arguments
 	local arg force host
 	for arg in "$@"; do
@@ -996,7 +1006,7 @@ sx()
 
 	# connect
 	case "$host" in
-		nas3) HashiConfig --config-prefix=prod && ScriptEval qnap cli login vars $force && SshHelper connect -x "$@";;
+		nas3) HashiConf --config-prefix=prod && ScriptEval qnap cli login vars $force && SshHelper connect -x "$@";;
 		router) SshHelper connect --password "$(credential get unifi admin)" "$@";;
 		*) SshHelper connect -x "$@";;
 	esac 
@@ -1134,7 +1144,7 @@ alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # update
-u() { SshAgentStart; HostUpdate "$@" || return; }
+u() { SshAgentConf && HostUpdate "$@"; }
 
 #
 # windows
@@ -1172,16 +1182,14 @@ alias XmlValue='xml sel -t -v'
 alias XmlShow='xml sel -t -c'
 
 #
-# credential
-#
-
-# find and initialize a credential manager
-[[ ! $CREDENTIAL_MANAGER_CHECKED ]] && ScriptEval credential environment $verbose $force
-
-#
 # final
 #
 
-SourceIfExists "$HOME/.asdf/asdf.sh" || return
-SourceIfExists "$BIN/z.sh" || return
+# SSH Agent environment
+[[ ! $SSH_AUTH_SOCK || $force ]] && ScriptEval SshAgent environment
+
+# credential manager environment: TODO
+[[ ! $CREDENTIAL_MANAGER_CHECKED || $force ]] && ScriptEval credential environment $verbose $force
+
+# platform specific .bashrc
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return

@@ -962,12 +962,11 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 #
 
 alias cred='credential'
-1conf() { ScriptEval 1PasswordHelper environment && 1PasswordHelper status; }
+1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }
 cconf() { CredentialConf "$@" && credential manager description; }
 cm() { cred manager "$@"; }
 cmd() { cred manager description "$@"; }
 
-opl() { ScriptEval 1PasswordHelper signin; } # 1Password Login
 CertViewDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
 SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell bash -il; }
 

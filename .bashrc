@@ -908,6 +908,8 @@ NetConsoleDisable()
 #
 
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
+pscount() { ProcessList | wc -l; }
+pscountm() { while true; do printf "process count: "; pscount; sleep 1; done; }
 
 #
 # python
@@ -963,9 +965,9 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 
 alias cred='credential'
 1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }
-cconf() { CredentialConf "$@" && credential manager description; }
+cconf() { CredentialConf "$@" && credential manager status; }
 cm() { cred manager "$@"; }
-cmd() { cred manager description "$@"; }
+cms() { cred manager status "$@"; }
 
 CertViewDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
 SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell bash -il; }

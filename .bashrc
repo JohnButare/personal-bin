@@ -908,7 +908,6 @@ NetConsoleDisable()
 #
 
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
-pscount() { ProcessList | wc -l; }
 pscountm() { while true; do printf "process count: "; pscount; sleep 1; done; }
 
 #

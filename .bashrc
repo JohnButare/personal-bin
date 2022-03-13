@@ -1,3 +1,5 @@
+#verbose="-vvvv"
+
 # ensure bash.bashrc has been sourced
 [[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
 
@@ -962,9 +964,9 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 # security
 #
 
-alias cred='credential'
+alias cred='credential' c='credential'
 1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }
-cconf() { CredentialConf "$@" && credential manager status; }
+cconf() { CredentialConf --unlock "$@" && credential manager status; }
 cm() { cred manager "$@"; }
 cms() { cred manager status "$@"; }
 
@@ -991,8 +993,9 @@ ssht() { ssh -t "$@"; } 				# allocate a pseudo-tty for screen based programs li
 
 # sx - X forwarding and supply passwords where possible
 sx()
-{
-	SshAgentConf || return
+{	
+	SshAgentConf --quiet || return
+	HashiConf --quiet || return
 	
 	# arguments
 	local arg force host
@@ -1008,7 +1011,7 @@ sx()
 	case "$host" in
 		nas3) HashiConf --config-prefix=prod && ScriptEval qnap cli login vars $force && SshHelper connect -x "$@";;
 		router) SshHelper connect --password "$(credential get unifi admin)" "$@";;
-		*) SshHelper connect -x "$@";;
+		*) SshHelper connect --x-forwarding --hashi "$@";;
 	esac 
 }
 
@@ -1112,14 +1115,14 @@ bdir() { cd "$(hadata "$(network current server backup --service=smb)")/backup";
 
 # borg
 alias bh='BorgHelper'
-bconf() { BorgConfig "$@" && BorgHelper status; }
-borg() { [[ ! $BORG_REPO ]] && { BorgConfig || return; }; command borg "$@"; }
+bconf() { BorgConf "$@" && BorgHelper status; }
+borg() { [[ ! $BORG_REPO ]] && { BorgConf || return; }; command borg "$@"; }
 bb() { BorgHelper backup "$@" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
 bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount
 br() { BorgHelper run "$@"; } 														# borg run
 bs() { BorgHelper status "$@"; }													# borg status
 bum() { BorgHelper unmount "$@"; }												# borg unmount
-clipb() { BorgConfig "$@" && clipw "$BORG_PASSPHRASE"; }
+clipb() { BorgConf "$@" && clipw "$BORG_PASSPHRASE"; }
 
 # bbh DIR HOSTS - borg backup hosts
 bbh()

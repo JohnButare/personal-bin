@@ -392,7 +392,7 @@ alias ...='builtin cd ../..'
 alias ....='builtin cd ../../..'
 alias .....='cbuiltin d ../../../..'
 
-alias c='cls'									# clear screen
+function c() { [[ $# == 0 ]] && cls || credential "$@"; }
 cb() { builtin cd ~; cls; } 	# clear screen and cd
 cf() { cb; InPath cowsay fortune lolcat && cowsay "$(fortune)" | lolcat; return 0; } # clear both, fortune
 ch() { cb; InPath pyfiglet lolcat && pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; return 0; } # clear both, host
@@ -964,7 +964,7 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 # security
 #
 
-alias cred='credential' c='credential'
+cred() { credential "$@"; }
 1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }
 cconf() { CredentialConf --unlock "$@" && credential manager status; }
 cm() { cred manager "$@"; }

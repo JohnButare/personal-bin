@@ -965,6 +965,7 @@ fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names tha
 #
 
 cred() { credential "$@"; }
+cms() { credental manager status "$@"; }
 1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }
 cconf() { CredentialConf --unlock "$@" && credential manager status; }
 cm() { cred manager "$@"; }

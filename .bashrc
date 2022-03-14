@@ -134,7 +134,7 @@ efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEd
 
 alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.profile $UBIN/.bash_profile $UBIN/.zlogin $UBIN/.p10k.zsh $UBIN/.zshrc $UBIN/.bashrc"
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
-alias ebo='e ~/.minttyrc ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
+alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
 sfull() # set full
 {

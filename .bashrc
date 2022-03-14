@@ -1,3 +1,4 @@
+#force="--force"
 #verbose="-vvvv"
 
 # ensure bash.bashrc has been sourced
@@ -1193,7 +1194,7 @@ alias XmlShow='xml sel -t -c'
 [[ ! $SSH_AUTH_SOCK || $force ]] && ScriptEval SshAgent environment
 
 # credential manager environment: TODO
-[[ ! $CREDENTIAL_MANAGER_CHECKED || $force ]] && ScriptEval credential environment $verbose $force
+[[ ! $CREDENTIAL_MANAGER_CHECKED || $force ]] && CredentialConf $verbose $force
 
 # platform specific .bashrc
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return

@@ -994,8 +994,8 @@ ssht() { ssh -t "$@"; } 				# allocate a pseudo-tty for screen based programs li
 # sx - X forwarding and supply passwords where possible
 sx()
 {	
-	SshAgentConf --quiet || return
-	HashiConf --quiet || return
+	SshAgentConf --quiet
+	HashiConf --quiet
 	
 	# arguments
 	local arg force host

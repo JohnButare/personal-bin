@@ -1191,10 +1191,10 @@ alias XmlShow='xml sel -t -c'
 #
 
 # SSH Agent environment
-[[ ! $SSH_AUTH_SOCK || $force ]] && ScriptEval SshAgent environment
+[[ ! $SSH_AUTH_SOCK || $force ]] && ScriptEval SshAgent environment --quiet
 
-# credential manager environment: TODO
-[[ ! $CREDENTIAL_MANAGER_CHECKED || $force ]] && CredentialConf $verbose $force
+# credential manager environment
+[[ ! $CREDENTIAL_MANAGER_CHECKED || $force ]] && CredentialConf $verbose $force --quiet
 
 # platform specific .bashrc
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return

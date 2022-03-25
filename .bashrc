@@ -33,6 +33,16 @@ IsZsh && { setopt no_beep; alias help="run-help"; }
 # Go - add Go bin directory if present
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"
 
+# Homebrew
+if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
+	export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
+	export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar";
+	export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew";
+	export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin${PATH+:$PATH}";
+	export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
+	export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
+fi
+
 # Python - add Python bin directory if present
 if [[ -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
 elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.9/bin" ]]; then PathAdd front "$HOME/Library/Python/3.9/bin"

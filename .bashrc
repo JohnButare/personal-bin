@@ -1,6 +1,3 @@
-#force="--force"
-#verbose="-vvvv"
-
 # ensure bash.bashrc has been sourced
 [[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
 
@@ -15,6 +12,7 @@ export LESSOPEN='|~/.lessfilter %s'
 # Interactive Configuration
 #
 
+# debugging
 # verbose="--verbose" force="--force"
 
 # ensure DISPLAY is set first
@@ -23,12 +21,31 @@ InitializeXServer || return
 # fix locale error
 IsPlatform wsl2 && { LANG="C.UTF-8"; }
 
+# keyboard
+IsZsh && bindkey "^H" backward-kill-word
+
 # options
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
 IsZsh && { setopt no_beep; alias help="run-help"; }
 
+#
+# Application Configuration
+#
+
 # ASDF
 [[ ! $ASDF_DIR && ! $force ]] && { SourceIfExists "$HOME/.asdf/asdf.sh" || return; }
+
+# broot
+SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return
+
+# browser - for sensible-browser command
+firefox IsInstalled && export BROWSER="firefox"
+
+# editor
+if [[ ! $EDITOR_CHECKED ]]; then	
+	SetTextEditor
+	EDITOR_CHECKED="true"
+fi
 
 # Go - add Go bin directory if present
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"
@@ -52,17 +69,8 @@ fi
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return
 
-# browser - for sensible-browser command
-firefox IsInstalled && export BROWSER="firefox"
-
-# editor
-if [[ ! $EDITOR_CHECKED ]]; then	
-	SetTextEditor
-	EDITOR_CHECKED="true"
-fi
-
-# keyboard
-IsZsh && bindkey "^H" backward-kill-word
+# Rust
+[[ -d "$HOME/.cargo/bin" ]] && PathAdd "$HOME/.cargo/bin"
 
 #
 # locations
@@ -226,7 +234,7 @@ if [[ ! $FZF_CHECKED && -d ~/.fzf ]]; then
 fi
 
 #
-# Date/Time
+# date/time
 #
 
 clock()
@@ -283,6 +291,8 @@ IncronLogShow() { LogShow "/var/log/syslog" "incron"; }
 #
 # development
 #
+
+codev() { command rich "$@" -n -g --theme monokai; } # code view
 
 # C
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -354,7 +364,9 @@ DoLs()
 		set -- "${@:1:(( $# - 1 ))}" "$dir"
 	fi
 
-	if [[ ! $COLORLS || "$1" == "-d" || "$1" == "--native" || "$1" == "--full-time" ]]; then
+	if InPath exa; then
+		exa --ignore-glob "desktop.ini" --classify --group-directories-first "$@"
+	elif [[ ! $COLORLS || "$1" == "-d" || "$1" == "--native" || "$1" == "--full-time" ]]; then
 		[[ "$1" == "--native" ]] && shift
 		command ${G}ls --hide="desktop.ini" -F --group-directories-first --color "$@"
 	else
@@ -1131,7 +1143,6 @@ bconf() { BorgConf "$@" && BorgHelper status; }
 borg() { [[ ! $BORG_REPO ]] && { BorgConf || return; }; command borg "$@"; }
 bb() { BorgHelper backup "$@" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
 bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount
-br() { BorgHelper run "$@"; } 														# borg run
 bs() { BorgHelper status "$@"; }													# borg status
 bum() { BorgHelper unmount "$@"; }												# borg unmount
 clipb() { BorgConf "$@" && clipw "$BORG_PASSPHRASE"; }

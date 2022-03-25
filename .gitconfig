@@ -161,6 +161,7 @@
 	autocrlf = false
 	excludesfile = ~/.gitignore
 	editor = TextEdit --wait
+	pager = delta
 [diff]
 	tool = bc
 	guitool = bc
@@ -172,6 +173,8 @@
 	#proxy = http://proxy.rr.intel.com:911
 [http]
 	#proxy = http://proxy.rr.intel.com:911
+[interactive]
+	diffFilter = delta --color-only --features=interactive
 [merge]
 	tool = bc
 [mergetool]
@@ -188,6 +191,22 @@
 [user]
 	name = John Butare
 	email = john@butare.net
+
+# delta
+[delta]
+    features = decorations
+
+[delta "interactive"]
+    keep-plus-minus-markers = false
+
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
 
 # other commands
 [cola]

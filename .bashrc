@@ -463,7 +463,8 @@ FindText() # TEXT FILE_PATTERN [START_DIR](.)
 FindAll()
 {
 	[[ $# == 0 ]] && { echo "No file specified"; return; }
-	find . -iname "$@" |& grep -v "Permission denied"
+	#find . -iname "$@" |& grep -v "Permission denied"
+	fd "$@" --one-file-system
 }
 
 FindStart()

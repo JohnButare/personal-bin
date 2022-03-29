@@ -47,6 +47,9 @@ if [[ ! $EDITOR_CHECKED ]]; then
 	EDITOR_CHECKED="true"
 fi
 
+# fzf
+#[[ -d "$HOME/.fzf" ]] && { . FzfInstall.sh || return; }
+
 # Go - add Go bin directory if present
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"
 
@@ -59,6 +62,9 @@ if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
 	export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
 	export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
 fi
+
+# McFly
+InPath mcfly && eval "$(mcfly init "$PLATFORM_SHELL")"
 
 # Python - add Python bin directory if present
 if [[ -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
@@ -223,14 +229,6 @@ if IsBash; then
 	InPath consul && complete -C /usr/local/bin/consul consul
 	InPath nomad && complete -C /usr/local/bin/nomad nomad
 	InPath vault && complete -C /usr/local/bin/vault vault
-fi
-
-if [[ ! $FZF_CHECKED && -d ~/.fzf ]]; then
-	FZF_CHECKED="true"
-	. "$HOME/.fzf/shell/completion.$PLATFORM_SHELL" || return # slow .2s
-	. "$HOME/.fzf/shell/key-bindings.$PLATFORM_SHELL" || return
-	_fzf_complete_ssh() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
-	_fzf_complete_ping() { _fzf_complete +m -- "$@" < <(command cat "$UBIN/hosts" 2> /dev/null); }
 fi
 
 #

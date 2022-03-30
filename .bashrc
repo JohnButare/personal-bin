@@ -64,7 +64,7 @@ if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
 fi
 
 # McFly
-InPath mcfly && eval "$(mcfly init "$PLATFORM_SHELL")"
+InPath mcfly && ! IsFunction mcfly-history-widget && eval "$(mcfly init "$PLATFORM_SHELL")"
 
 # Python - add Python bin directory if present
 if [[ -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
@@ -494,8 +494,10 @@ alias unfunction='unset -f'
 # git
 #
 
- g() { SshAgentConf && git "$@"; }
- gh() { SshAgentConf && GitHelper "$@"; }
+g() { SshAgentConf && git "$@"; }
+gh() { SshAgentConf && GitHelper "$@"; }
+ghc() { GitHubClone "$@"; }
+gg() { SshAgentConf && GitHelper gui; }
 
 alias ga='g add'
 alias gd='g diff'
@@ -520,7 +522,6 @@ alias grft='grf && g i Test' 		# fixup commit and push to test
 alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
 alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
 alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; }'
-alias gg='GitHelper gui'
 alias lg='lazygit'
 
 # gdir SERVER - change to the git directory on SERVER for repo creation

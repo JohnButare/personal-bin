@@ -341,7 +341,7 @@ alias lt='DoLs --tree --dirs'					# list tree
 alias ltime='DoLs --full-time -Ah'		# list time
 
 alias dir='cmd.exe /c dir' # Windows dir
-alias dirss="DoLs -l --sort=size --reverse --human-readable" 				# sort by size
+alias dirss="DoLs -l --sort=size --reverse" 												# sort by size
 alias dirst='DoLs -l --sort=time --reverse' 												# sort by last modification time
 alias dirsct='DoLs --native -l --time=ctime --sort=time --reverse' 	# sort by creation time
 

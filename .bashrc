@@ -53,6 +53,9 @@ fi
 # Go - add Go bin directory if present
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"
 
+# Haskell
+SourceIfExists "$HOME/.ghcup/env" || return
+
 # Homebrew
 if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
 	export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";

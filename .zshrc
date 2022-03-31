@@ -6,11 +6,8 @@
 
 export ZSH="$HOME/.oh-my-zsh"
 
-# Powerlevel10k
-SourceIfExists "$ZSH/custom/plugins/powerlevel10k/powerlevel10k.zsh-theme" || return
-
 # theme
-#ZSH_THEME="johnbutare" # robbyrussell johnbutare powerlevel10k/powerlevel10k
+ZSH_THEME="powerlevel10k/powerlevel10k" # robbyrussell johnbutare powerlevel10k/powerlevel10k
 
 # plugins - git hass-cli history-substring-search
 plugins=(zsh-syntax-highlighting)

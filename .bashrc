@@ -13,7 +13,8 @@ export LESSOPEN='|~/.lessfilter %s'
 #
 
 # debugging
-# verbose="--verbose" force="--force"
+# verbose="--verbose"
+# force="--force"
 
 # ensure DISPLAY is set first
 InitializeXServer || return

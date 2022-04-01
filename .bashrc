@@ -66,9 +66,6 @@ if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
 	export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
 fi
 
-# McFly
-InPath mcfly && ! IsFunction mcfly-history-widget && eval "$(mcfly init "$PLATFORM_SHELL")"
-
 # Python - add Python bin directory if present
 if [[ -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
 elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.9/bin" ]]; then PathAdd front "$HOME/Library/Python/3.9/bin"
@@ -852,7 +849,6 @@ SetPrompt()
 	local git; IsFunction __git_ps1 && git='$(GitPrompt)'
 	local user; [[ "$USER" != "jjbutare" ]] && user="\u"
 	local root; IsRoot && user+="${red}*"
-	local elevated; [[ "$PLATFORM" == "win" ]] && IsElevated && user+="${red}e"
 
 	local host="${HOSTNAME#$USER-}"; host="${host#$SUDO_USER-}"; # remove the username from the hostname to shorten it
 	host="${host%%.*}" # remove DNS suffix
@@ -871,6 +867,9 @@ if [[ ! $SET_PROMPT_CHECK ]]; then
 	SET_PROMPT_CHECK="true"
 	IsBash && SetPrompt # slow .1s
 fi
+
+# McFly - initialie after set prompt as this modifies the bash prompt
+InPath mcfly && ! IsFunction mcfly-history-widget && eval "$(mcfly init "$PLATFORM_SHELL")"
 
 #
 # hardware

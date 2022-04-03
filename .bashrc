@@ -71,9 +71,9 @@ if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
 fi
 
 # Python - add Python bin directory if present
-if [[ -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
+if [[ "$PLATFORM" != "mac" && -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
 elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.9/bin" ]]; then PathAdd front "$HOME/Library/Python/3.9/bin"
-elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.8/bin" ]]; then PathAdd front "$HOME/Library/Python/3.3/bin"
+elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.8/bin" ]]; then PathAdd front "$HOME/Library/Python/3.8/bin"
 fi
 
 # Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path

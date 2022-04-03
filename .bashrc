@@ -42,6 +42,9 @@ SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return
 # browser - for sensible-browser command
 firefox IsInstalled && export BROWSER="firefox"
 
+# direnv
+InPath direnv && eval "$(direnv hook "$PLATFORM_SHELL")"
+
 # editor
 if [[ ! $EDITOR_CHECKED ]]; then	
 	SetTextEditor

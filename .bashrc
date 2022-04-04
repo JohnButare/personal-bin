@@ -419,7 +419,7 @@ alias .....='cbuiltin d ../../../..'
 
 function c() { [[ $# == 0 ]] && cls || credential "$@"; }
 cb() { builtin cd ~; cls; } 	# clear screen and cd
-cf() { cb; InPath cowsay fortune lolcat && cowsay "$(fortune)" | lolcat; return 0; } # clear both, fortune
+cf() { cb; InPath cowsay fortune lolcat && cowsay "$(fortune --all)" | lolcat; return 0; } # clear both, fortune
 ch() { cb; InPath pyfiglet lolcat && pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; return 0; } # clear both, host
 
 alias del='rm'

@@ -872,9 +872,6 @@ if [[ ! $SET_PROMPT_CHECK ]]; then
 	IsBash && SetPrompt # slow .1s
 fi
 
-# McFly - initialie after set prompt as this modifies the bash prompt
-InPath mcfly && ! IsFunction mcfly-history-widget && eval "$(mcfly init "$PLATFORM_SHELL")"
-
 #
 # hardware
 #
@@ -1225,3 +1222,12 @@ alias XmlShow='xml sel -t -c'
 
 # platform specific .bashrc
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
+
+# McFly - initialie last since
+# - must be after after set prompt as this modifies the bash prompt
+# - sometimes it prevents the rest of the script from running
+if InPath mcfly && [[ "$__MCFLY_LOADED" != "loaded" ]]; then
+	eval "$(mcfly init "$PLATFORM_SHELL")"
+fi
+
+return 0

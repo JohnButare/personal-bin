@@ -1106,10 +1106,12 @@ alias dkps="docker ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'
 
 # hyper-v
 alias hv="hyperv"
-hvc() { hv console  "$1"; } 																												# console
-hvoc() { hv on "$1" && hv console  "$1"; } 																					# on-console
-hvct() { hv create --type "$@" && hv on "$2" && hv console "$2"; } 									# create-type
-hvcl() { hct linux "$@" ; } ; hcp() { hct pxe "$@" ; }; hcw() { hct win "$@" ; }  # create-linux
+hvc() { hv console  "$1"; } 								# console
+hvoc() { hv on "$1" && hv console  "$1"; } 	# on-console
+hvct() { hv create --type "$@" --start; } 	# create-type
+hvcl() { hvct linux "$@"; }
+hvcp() { hvct pxe "$@"; }
+hvcw() { hvct win "$@" ; }
 
 # vmware
 vm() { vmware IsInstalled && VMware start || hyperv start; }

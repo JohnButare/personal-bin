@@ -78,6 +78,7 @@ b="$BIN" bin="$BIN" pd="$PUB/Desktop" pub="$PUB" data="$DATA" win="$DATA/platfor
 home="$HOME" doc="$DOC" dl="$HOME/Downloads" code="$CODE"
 ubin="$HOME/data/bin" ud="$HOME/Desktop" udata="$HOME/data"  	# user
 p="$P"								 																				# programs
+adata="$DATA/appdataw" adataw="$DATA/appdataw"
 
 if IsPlatform win; then
 	p32="$P32"																																	# programs

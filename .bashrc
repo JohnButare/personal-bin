@@ -33,41 +33,31 @@ IsZsh && { setopt no_beep; alias help="run-help"; }
 # Application Configuration
 #
 
-# ASDF
-[[ ! $ASDF_DIR && ! $force ]] && { SourceIfExists "$HOME/.asdf/asdf.sh" || return; }
-
-# broot
-SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return
-
-# browser - for sensible-browser command
-firefox IsInstalled && export BROWSER="firefox"
-
-# direnv
-InPath direnv && eval "$(direnv hook "$PLATFORM_SHELL")"
-
-# editor
-if [[ ! $EDITOR_CHECKED ]]; then	
-	SetTextEditor
-	EDITOR_CHECKED="true"
-fi
-
-# fzf
-#[[ -d "$HOME/.fzf" ]] && { . FzfInstall.sh || return; }
-
-# Go - add Go bin directory if present
-[[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"
-
-# Haskell
-SourceIfExists "$HOME/.ghcup/env" || return
+[[ ! $ASDF_DIR && ! $force ]] && { SourceIfExists "$HOME/.asdf/asdf.sh" || return; } 	# ASDF
+SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return 											# broot
+firefox IsInstalled && export BROWSER="firefox"																				# browser - for sensible-browser command
+InPath direnv && eval "$(direnv hook "$PLATFORM_SHELL")"															# direnv
+[[ ! $EDITOR_CHECKED ]] && { SetTextEditor; EDITOR_CHECKED="true"; } 									# editor
+# [[ -d "$HOME/.fzf" ]] && { . FzfInstall.sh || return; }																# fzf
+[[ -d "/usr/games" ]] && PathAdd "/usr/games" 																				# games on Ubuntu 19.04+
+[[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"																			# Go
+SourceIfExists "$HOME/.ghcup/env" || return																						# Haskell
+PathAdd front "/opt/local/bin" "/opt/local/sbin" 																			# Mac Ports
+SourceIfExists "$HOME/.rvm/scripts/rvm" || return  																		# Ruby Version Manager
+[[ -d "$HOME/.cargo/bin" ]] && PathAdd "$HOME/.cargo/bin" 														# Rust
+PathAdd "/opt/X11/bin" 																																# XQuartz
 
 # Homebrew
 if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
 	export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
-	export HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar";
-	export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew";
-	export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin${PATH+:$PATH}";
-	export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
-	export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
+	export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar";
+	export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew";
+fi
+
+if [[ $HOMEBREW_PREFIX ]]; then
+	PathAdd front "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin" # use Homebrew utilities before system utilities
+	InfoPathAdd "$HOMEBREW_PREFIX/share/info"
+	ManPathAdd "$HOMEBREW_PREFIX/share/man"
 fi
 
 # Python - add Python bin directory if present
@@ -76,11 +66,8 @@ elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.9/bin" ]]; then PathA
 elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.8/bin" ]]; then PathAdd front "$HOME/Library/Python/3.8/bin"
 fi
 
-# Ruby - initialize Ruby Version Manager, inlcuding adding Ruby directories to the path
-SourceIfExists "$HOME/.rvm/scripts/rvm" || return
-
-# Rust
-[[ -d "$HOME/.cargo/bin" ]] && PathAdd "$HOME/.cargo/bin"
+# Visual Studio Code
+[[ -d "$UADATA/Programs/Microsoft VS Code/bin" ]] && PathAdd "$UADATA/Programs/Microsoft VS Code/bin"
 
 #
 # locations

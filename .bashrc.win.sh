@@ -11,7 +11,7 @@ alias vss='vss.exe'
 alias winget='cmd.exe /c winget.exe'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 
-ahk() { start "$P/AutoHotkey/AutoHotkeyU64.exe" "$@"; } # AutoHotKey
+ahk() { AutoHotKey "$@"; } # AutoHotKey
 FlipFlopWheel() { elevate powershell FlipFlopWheel.ps1; }
 PortForward() { RunScript --elevate -- powershell.exe WslPortForward.ps1 > /dev/null; }
 rdesk() { ( mstsc.exe '/f' '/v:'"${@}" & ) }

@@ -78,7 +78,7 @@ b="$BIN" bin="$BIN" pd="$PUB/Desktop" pub="$PUB" data="$DATA" win="$DATA/platfor
 home="$HOME" doc="$DOC" dl="$HOME/Downloads" code="$CODE"
 ubin="$HOME/data/bin" ud="$HOME/Desktop" udata="$HOME/data"  	# user
 p="$P"								 																				# programs
-adata="$DATA/appdataw" adataw="$DATA/appdataw"
+adata="$DATA/appdata" adataw="$DATA/appdataw"
 
 if IsPlatform win; then
 	p32="$P32"																																	# programs
@@ -794,9 +794,9 @@ TftpRestart() { service restart tftpd-hpa; }
 TftpLog() {	if IsPlatform qnap; then LogShow "/share/Logs/opentftpd.log"; else sudor RunScript LogShow "/var/log/syslog"; fi; }
 
 # web
-acd() { ScriptCd apache dir conf "$@"; ls; }	# Apache Config Dir
-awd() { ScriptCd apache dir web "$@"; ls; }			# Apache Web Dir
-curle() { curl "$(urlencode "$1")" "${@:2}"; } # curl encode - encode spaces in the URL
+acd() { ScriptCd apache dir conf "$@" &&ls; }		# Apache Config Dir
+awd() { ScriptCd apache dir web "$@" && ls; }		# Apache Web Dir
+curle() { curl "$(urlencode "$1")" "${@:2}"; } 	# curl encode - encode spaces in the URL
 HttpHeader() { curl --silent --show-error --location --dump-header - --output /dev/null "$1"; }
 HttpServer() { HttpHeader "$1" | grep "X-Server" | cut -d: -f2 | RemoveCarriageReturn | RemoveSpaceTrim; }
 

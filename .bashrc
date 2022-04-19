@@ -991,7 +991,11 @@ cconf() { CredentialConf --unlock "$@" && credential manager status; }
 cm() { cred manager "$@"; }
 cms() { cred manager status "$@"; }
 
-CertViewDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
+CertGetDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
+CertGetPublicKey() { openssl x509 -noout -pubkey -in "$1"; }
+CertKeyGetPublicKey() { openssl pkey -pubout -in "$1"; }
+CertVerifyKey() { [[ "$(CertGetPublicKey "$1")" == "$(CertKeyGetPublicKey "$2")" ]]; } # CertVerify CERT KEY - validate the private key if for the certificate
+CertVerifyChain() { openssl verify -verbose -CAfile <(cat "${@:2}") "$1";  } # CertVerifyChain CERT CA...
 SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell bash -il; }
 
 #

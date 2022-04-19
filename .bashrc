@@ -330,25 +330,14 @@ alias lt='DoLs --tree --dirs'					# list tree
 alias ltime='DoLs --full-time -Ah'		# list time
 
 alias dir='cmd.exe /c dir' # Windows dir
-alias dirst='DoLs -l --sort=time --reverse' 												# sort by last modification time
-alias dirsct='DoLs --native -l --time=ctime --sort=time --reverse' 	# sort by creation time
-
-# dirss - sort by size
-dirss()
-{
-	local args=(); ! InPath exa && args+=(--reverse)
-	DoLs -l --sort=size "${args[@]}" "$@"
-}
+dirss() { local args=(); ! InPath exa && args+=(--reverse); DoLs -l --sort=size "${args[@]}" "$@"; } 													# sort by size
+dirst() { local args=(); ! InPath exa && args+=(--reverse); DoLs -l --sort=time "${args[@]}" "$@"; } 													# sort by last modification time
+dirsct() { local args=(); ! InPath exa && args+=(--reverse); DoLs --native -l --time=ctime --sort=time "${args[@]}" "$@"; } 	# sort by creation time
 
 DoCd()
 {
 	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }
-	
-	# if IsFunction __enhancd::cd; then
-	# 	__enhancd::cd "$@"
-	# else
-		builtin cd "$@"
-	# fi
+	builtin cd "$@"
 }
 
 DoLs()

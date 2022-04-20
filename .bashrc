@@ -224,8 +224,10 @@ if IsBash; then
 fi
 
 #
-# date/time
+# Data Types
 #
+
+# date/time
 
 clock()
 {
@@ -426,9 +428,9 @@ alias fcd='FindCd'
 alias fs='FindStart'
 alias ft='FindText'
 
-fclip() { IFS=$'\n' files=( $(FindAll "$1") ) && clipw "${files[@]}"; } # FindClip
-fe() { IFS=$'\n' files=( $(FindAll "$1") ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindEdit PATTERN - find files and edit
-fte() { IFS=$'\n' files=( $(FindText "$@" | cut -d: -f1) ) && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindTextEdit TEXT PATTERN - find text in files and edit
+fclip() { local files; IFS=$'\n' ArrayMakeC files FindAll "$1" && clipw "${files[@]}"; } # FindClip
+fe() { local files; IFS=$'\n' ArrayMakeC FindAll "$1" && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindEdit PATTERN - find files and edit
+fte() { local files; IFS=$'\n' ArrayMake "$(FindText "$@" | cut -d: -f1)"; [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindTextEdit TEXT PATTERN - find text in files and edit
 ftl() { grep -iE "$@" *; } # Find Text Local - find specified text in the current directory
 
 fsql() { ft "$1" "*.sql"; } # FindSql TET

@@ -63,7 +63,7 @@ RShift & 1::Open1Password() 		; 1Password
 RShift & 3::OpenTerminal() 			; Terminal
 RShift & b::OpenBrowser() 			; Browser
 RShift & g::OpenFork()					; Git
-RShift & m::OpenThunderbird()		; Mail
+RShift & m::OpenMail()					; Mail
 RShift & n::OpenNotion()				; Notes
 RShift & t::OpenTextEditor()		; Text Editor
 RShift & v::OpenVm()						; Virtual Machine

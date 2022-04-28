@@ -1100,6 +1100,7 @@ hvoc() { hv on "$1" && hv console  "$1"; } 	# on-console
 hvct() { hv create --type "$@" --start; } 	# create-type
 hvcl() { hvct linux "$@"; }
 hvcp() { hvct pxe "$@"; }
+hvcrh() { hvct rh "$@"; }
 hvcw() { hvct win "$@" ; }
 
 # vmware

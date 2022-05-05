@@ -155,9 +155,9 @@ alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
 sfull() # set full
 {
-	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,FZF_CHECKED}="" # .bashrc
-	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""		# bash.bashrc
-	declare {CHROOT_CHECKED,VM_TYPE_CHECKED}=""				# function.sh
+	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,FZF_CHECKED}="" 	# .bashrc
+	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""																			# bash.bashrc
+	declare {CHROOT_CHECKED,VM_TYPE_CHECKED,HASHI_CHECKED}=""														# function.sh
 
 	. "$bin/bash.bashrc"
 	. "$bin/function.sh"
@@ -169,12 +169,12 @@ sfull() # set full
 #
 
 if [[ ! $COLORLS_CHECKED ]]; then
-	COLORLS_CHECKED="true"
 	unset COLORLS
 	if InPath colorls; then
 		COLORLS="true"
 		. "$(GetFilePath "$(gem which colorls 2> /dev/null)")/tab_complete.sh" # slow .1s
 	fi
+	COLORLS_CHECKED="true"
 fi
 
 if IsBash; then

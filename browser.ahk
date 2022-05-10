@@ -81,7 +81,6 @@ NewFirefox()
   KeyWait "Shift" ; wait for shift to be released to avoid safe mode
   ;run firefox " -ProfileManager", "C:\Program Files\Mozilla Firefox\"
   run firefox, "C:\Program Files\Mozilla Firefox\"
-
 }
 
 OpenFirefox()
@@ -98,7 +97,11 @@ OpenFirefox()
   if TopActive(title)
     return
 
-  WinActivate "ahk_exe" " firefox.exe"
+  ;WinActivate "ahk_exe" " firefox.exe" 
+  ;WinRestore title 
+  ;run 'cmdow.exe "' titleCmdow '" /res /act', "C:\Users\Public\Documents\data\platform\win\", "Hide" 
+  ;run 'nircmd.exe win normal ititle "- Mozilla Firefox"', "C:\Users\Public\Documents\data\platform\win\", "Hide" 
+  PostMessage 0x112, 0xF120,,, title  ; 0x112 = WM_SYSCOMMAND, 0xF120 = SC_RESTORE 
 }
 
 NewIe()

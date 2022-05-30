@@ -97,10 +97,10 @@ fi
 
 alias cdv="cd ~/Volumes"
 
-# host application data and configuration directories
-hassconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/root$ACONFIG"; }
-hassdata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/root$ADATA"; }
-hasscd() { ScriptCd hassdata "$1"; }
+# application data and configuration directories
+appconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/root$ACONFIG"; }
+appdata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/root$ADATA"; }
+appcd() { ScriptCd hassdata "$1"; }
 
 #
 # other
@@ -556,17 +556,18 @@ HistoryClear() { IsBash && cat /dev/null > $HISTFILE; history -c; }
 
 # Home Assistant
 
-haUser="homeassistant" haService="home-assistant@$haUser"
+hassUser="homeassistant" hassService="home-assistant@$hassUser"
 
-alias ha="HomeAssistant"
-alias haconfig="sudoe ~homeassistant/.homeassistant/configuration.yaml; yamllint ~homeassistant/.homeassistant/configuration.yaml;"
-alias hashell="SwitchUser $haUser"
+hass() { HomeAssistant "$@"; }
+hass-conf() { ScriptEval HomeAssistant cli vars "$@"; }
+hass-config() { sudoe ~"homeassistant/.homeassistant/configuration.yaml" && yamllint ~"homeassistant/.homeassistant/configuration.yaml"; }
+hass-shell() { SwitchUser "$hassUser"; }
 
-alias halog="service log $haService"
-alias harestart="service restart $haService"
-alias hastart="service start $haService"
-alias hastatus="service status $haService"
-alias hastop="service stop $haService"
+hass-log() { service log "$hassService" "$@"; }
+hass-restart() { service restart "$hassService" "$@"; }
+hass-start() { service start "$hassService" "$@"; }
+hass-status() { service status "$hassService" "$@"; }
+hass-stop() { service stop "$hassService" "$@"; }
 
 hass-cli()
 {
@@ -582,7 +583,7 @@ hass-cli()
 	set -- "${args[@]}"
 
 	# configuration
-	[[ $force || ! $HASS_TOKEN || ! $HASS_SERVER ]] && { ScriptEval HomeAssistant $force cli vars || return; }
+	[[ $force || ! $HASS_TOKEN || ! $HASS_SERVER ]] && { hass-conf $force || return; }
 
 	# run
 	command hass-cli "$@"

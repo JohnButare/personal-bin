@@ -100,7 +100,7 @@ alias cdv="cd ~/Volumes"
 # application data and configuration directories
 appconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/root$ACONFIG"; }
 appdata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/root$ADATA"; }
-appcd() { ScriptCd hassdata "$1"; }
+appcd() { ScriptCd appdata "$1"; }
 
 #
 # other

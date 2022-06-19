@@ -1,3 +1,5 @@
+export CACHED_PROCESSES="$(ProcessList)"
+
 # start X Server, D-Bus, and network first
 # - D-Bus enables the GNOME Keyring credential manager which is used below for credentials
 st xserver dbus network || return

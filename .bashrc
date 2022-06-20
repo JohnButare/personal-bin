@@ -15,6 +15,7 @@ export LESSOPEN='|~/.lessfilter %s'
 # debugging
 # verbose="--verbose"
 # force="--force"
+export TIMEFORMAT='%R seconds elapsed'
 
 # ensure DISPLAY is set first
 InitializeXServer || return

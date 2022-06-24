@@ -942,6 +942,14 @@ PySite() { py -m site; }
 #
 
 PiImageLite() { pi image "$(i dir)/platform/linux/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
+PiServers() { GetAllServers | grep "^pi" | sort -n -t i -k2; }
+
+# SshPi COMMAND - run a command on all servers
+PiSsh()
+{
+	local host hosts; IFS=$'\n' ArrayMakeC hosts PiServers || return
+	for host in "${hosts[@]}"; do printf "$(RemoveDnsSuffix "$host"): "; SshHelper "$host" -- "$@" || return; done
+}
 
 #
 # Scheduled Tasks
@@ -1032,7 +1040,6 @@ sx()
 		*) SshHelper connect --x-forwarding --hashi "$@";;
 	esac 
 }
-
 
 # connect with additional startup scripts
 sshfull() { ssh -t $1 ". /etc/profile; ${@:2}";  } # full environment

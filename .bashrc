@@ -792,6 +792,15 @@ TftpConf() { sudoe "/etc/default/tftpd-hpa"; }
 TftpRestart() { service restart tftpd-hpa; }
 TftpLog() {	if IsPlatform qnap; then LogShow "/share/Logs/opentftpd.log"; else sudor RunScript LogShow "/var/log/syslog"; fi; }
 
+# Virtual IP (VIP)
+VipResolve() { local lb="${1:-lb}" mac; mac="$(MacResolve "$lb")" && MacLookup "$mac"; }
+
+VipStatus()
+{
+	local lb="${1:-lb}" names; echo "Press any key to stop resolving load balancer ($lb)..."
+	while true; do names="$(VipResolve "$lb" | NewlineToSpace)" && echo "$lb: $names"; ReadChars 1 1 && return; done
+}
+
 # web
 acd() { ScriptCd apache dir conf "$@" &&ls; }		# Apache Config Dir
 awd() { ScriptCd apache dir web "$@" && ls; }		# Apache Web Dir

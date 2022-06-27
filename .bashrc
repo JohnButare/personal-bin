@@ -94,6 +94,7 @@ if [[ -d "$home/Dropbox" ]]; then
 	export CDATA="$cdata"
 	IsPlatform win && alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
 	ncd="$cloud/network"; alias ncd="$ncd" # network configuration directory
+	confDir="$ncd/system"	
 fi
 
 alias cdv="cd ~/Volumes"

@@ -226,56 +226,6 @@ if IsBash; then
 fi
 
 #
-# Data Types
-#
-
-# date/time
-
-clock()
-{
-	if [[ $DISPLAY ]] && InPath xclock; then coproc xclock -title $HOSTNAME -digital -update 1
-	elif InPath tty-clock; then clockt
-	else date
-	fi
-}
-
-clockt() # clock terminal
-{
-	if InPath tty-clock; then tty-clock -s -c; 
-	else date;
-	fi
-} 
-
-clockc() # clock check
-{
-	local service="chrony"; IsPlatform mac && service="org.tuxfamily.chronyc"
-	if InPath chronyc && service running "$service"; then
-		header "Chrony Sources"; chronyc sources || return
-		header "Chrony Client"; chronyc tracking || return
-	fi
-
-	local timeServer="$(ConfigGet "timeServer")"
-	if [[ $timeServer ]] && ClockCompareInstalled && IsAvailable "$timeServer"; then
-		header "Time Server Comparison ($timeServer)"
-		ClockCompare "$timeServer" || return;
-	fi
-
-	if [[ -f "/etc/chrony/chrony.conf" ]] && grep "^allow" "/etc/chrony/chrony.conf" >& /dev/null; then
-		header "Chrony Server"
-		sudoc chronyc serverstats || return
-	fi
-}
-
-# ClockCompare HOST - compare systm clock with an NTP host (i.e. pi2, time.apple.com)
-ClockCompare()
-{
-	if IsPlatform mac; then sudoc sntp -sS "$1"
-	elif InPath ntpdate; then ntpdate -q "$1"
-	fi
-}
-ClockCompareInstalled() { IsPlatform mac || InPath ntpdate; }
-
-#
 # cron
 #
 

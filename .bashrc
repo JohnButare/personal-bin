@@ -861,7 +861,7 @@ EventViewer() { IsPlatform win && start eventvwr.msc; InPath ksystemlog && copro
 
 # NetConsole
 
-LogNetConsole() { netconsole -l -u $(GetIpAddress) 6666 | sudoc tee /var/log/netconsole.log; }
+LogNetConsole() { sudov && netconsole -l -u $(GetIpAddress) 6666 | sudo tee /var/log/netconsole.log; }
 
 NetConsoleEnable() # HOST
 {

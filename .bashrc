@@ -621,6 +621,12 @@ iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002 "$@";
 iperfc() { iperf3 -c $1 -p 5002 "$@"; } # client
 
 #
+# platform
+#
+
+alias hc='HostCleanup'
+
+#
 # projects
 #
 

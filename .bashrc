@@ -750,12 +750,12 @@ TftpRestart() { service restart tftpd-hpa; }
 TftpLog() {	if IsPlatform qnap; then LogShow "/share/Logs/opentftpd.log"; else sudor RunScript LogShow "/var/log/syslog"; fi; }
 
 # Virtual IP (VIP)
-VipResolve() { local lb="${1:-lb}" mac; mac="$(MacResolve "$lb")" && MacLookup "$mac"; }
+VipResolve() { local lb="${1:-lb}" mac; MacLookupInfo "$lb"; }
 
 VipStatus()
 {
 	local lb="${1:-lb}" names; echo "Press any key to stop resolving load balancer ($lb)..."
-	while true; do names="$(VipResolve "$lb" | NewlineToSpace)" && echo "$lb: $names"; ReadChars 1 1 && return; done
+	while true; do names="$(MacLookupName "$lb" | sed 's/\..*$//' | sort | NewlineToSpace)" && echo "$lb: $names"; ReadChars 1 1 && return; done
 }
 
 # web
@@ -1125,12 +1125,12 @@ bbh()
 } 
 
 # network DNS and DHCP configuration
-alias ne='wiggin network edit'										# network edit
-alias nep='e $DATA/setup/ports'										# network edit poirt
-alias nb='wiggin network backup all'							# network backup
-alias nua='wiggin network update all all'					# network update all
-alias nud='wiggin network update dns all'					# network update DNS
-alias nudh='wiggin network update dhcp all'				# network update DHCP
+alias ne='wiggin network edit'								# network edit
+alias nep='e $DATA/setup/ports'								# network edit poirt
+alias nb='wiggin network backup all'					# network backup
+alias nua='wiggin network update all'					# network update all
+alias nud='wiggin network update dns'					# network update DNS
+alias nudh='wiggin network update dhcp'				# network update DHCP
 
 # QNAP
 qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command

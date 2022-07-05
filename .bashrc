@@ -763,7 +763,7 @@ acd() { ScriptCd apache dir conf "$@" &&ls; }		# Apache Config Dir
 awd() { ScriptCd apache dir web "$@" && ls; }		# Apache Web Dir
 curle() { curl "$(urlencode "$1")" "${@:2}"; } 	# curl encode - encode spaces in the URL
 HttpHeader() { curl --silent --show-error --location --dump-header - --output /dev/null "$1"; }
-HttpServer() { HttpHeader "$1" | grep "X-Server" | cut -d: -f2 | RemoveCarriageReturn | RemoveSpaceTrim; }
+HttpServer() { HttpHeader "$1" | grep --ignore-case "X-Server" | cut -d: -f2 | RemoveCarriageReturn | RemoveSpaceTrim; }
 
 CheckAll()
 {

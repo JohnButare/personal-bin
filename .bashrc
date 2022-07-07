@@ -764,6 +764,7 @@ awd() { ScriptCd apache dir web "$@" && ls; }		# Apache Web Dir
 curle() { curl "$(urlencode "$1")" "${@:2}"; } 	# curl encode - encode spaces in the URL
 HttpHeader() { curl --silent --show-error --location --dump-header - --output /dev/null "$1"; }
 HttpServer() { HttpHeader "$1" | grep --ignore-case "X-Server" | cut -d: -f2 | RemoveCarriageReturn | RemoveSpaceTrim; }
+HttpLbTest() { PiSsh 'curl --silent https://web.butare.net/info.php | grep NOMAD_HOST= | cut -d= -f2 | cut -d\< -f1'; } # test the HTTP load balancer from all Rasberry Pi servers
 
 CheckAll()
 {
@@ -1125,9 +1126,9 @@ bbh()
 } 
 
 # network DNS and DHCP configuration
-alias ne='wiggin network edit'								# network edit
-alias nep='e $DATA/setup/ports'								# network edit poirt
-alias nb='wiggin network backup all'					# network backup
+alias ne='wiggin network edit'										# network edit
+alias nep='e $DATA/setup/ports'										# network edit poirt
+alias nb='wiggin network backup all'							# network backup
 alias nua='wiggin network update all'					# network update all
 alias nud='wiggin network update dns'					# network update DNS
 alias nudh='wiggin network update dhcp'				# network update DHCP

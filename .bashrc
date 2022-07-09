@@ -100,8 +100,8 @@ fi
 alias cdv="cd ~/Volumes"
 
 # application data and configuration directories
-appconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/root$ACONFIG"; }
-appdata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/root$ADATA"; }
+appconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/admin$ACONFIG"; }
+appdata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/admin$ADATA"; }
 appcd() { ScriptCd appdata "$1"; }
 
 #
@@ -1100,19 +1100,20 @@ encm() { VeraCrypt mount "$CDATA/VeraCrypt/personal.hc" p; } 	# mount encrypted 
 encum() { VeraCrypt unmount p; }															# unmount encrypted file share from drive p
 
 # media
-mcd() { cd "//nas3/data/media"; }
+mcd() { cd "//nas3/data/media"; } # mcd - media CD
 
 # files
-hadcd() { cd "$(hadata "$1")/$2"; } # host appdata cd
+hadcd() { cd "$(appdata "$1")/$2"; } # hadcd HOST DIR - host appdata cd to directory
 
 # backup
-bdir() { cd "$(hadata "$(network current server backup --service=smb)")/backup"; } # backup dir
+bdir() { cd "$(appdata "$(network current server backup --service=smb)")/backup"; } # backup dir
 
 # borg
 alias bh='BorgHelper'
 bconf() { BorgConf "$@" && BorgHelper status; }
 borg() { [[ ! $BORG_REPO ]] && { BorgConf || return; }; command borg "$@"; }
 bb() { BorgHelper backup "$@" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
+bcd() { hadcd "${1:-$HOSTNAME}" "borg"; } 								# borg cd [HOST]
 bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount
 bs() { BorgHelper status "$@"; }													# borg status
 bum() { BorgHelper unmount "$@"; }												# borg unmount

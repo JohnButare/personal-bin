@@ -721,6 +721,9 @@ if IsPlatform win; then
 	}
 fi
 
+# NginxConfWatch CONF [PATTERN] - watch a configuration file for changes
+NginxConfWatch() { cls; FileWatch "/etc/nginx/sites-available/$1.conf" "${2:-  server }"; }
+
 # proxy server
 alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
 alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars --status"
@@ -914,8 +917,9 @@ PiServers() { GetAllServers | grep "^pi" | sort -n -t i -k2; }
 # SshPi COMMAND - run a command on all servers
 PiSsh()
 {
-	local host hosts; IFS=$'\n' ArrayMakeC hosts PiServers || return
-	for host in "${hosts[@]}"; do printf "$(RemoveDnsSuffix "$host"): "; SshHelper "$host" -- "$@" || return; done
+	local host hosts errors=0; IFS=$'\n' ArrayMakeC hosts PiServers || return
+	for host in "${hosts[@]}"; do printf "$(RemoveDnsSuffix "$host"): "; SshHelper "$host" -- "$@" || ((++errors)); done
+	return "$errors"
 }
 
 #

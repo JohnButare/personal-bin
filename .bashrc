@@ -1092,6 +1092,9 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # wiggin
 #
 
+sd="$UDATA/sync" 														# sync dir
+sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
+
 vpn() { network vpn "$@"; }
 
 # devices

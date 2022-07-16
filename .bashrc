@@ -231,6 +231,8 @@ fi
 
 CronLogShow() { LogShow "/var/log/cron.log" "$1"; }
 IncronLogShow() { LogShow "/var/log/syslog" "incron"; }
+SysLogShow() { LogShow "/var/log/syslog" "$@"; }
+SysLogShowAll() { LogShowAll "/var/log/syslog" "$@"; }
 
 #
 # development

@@ -220,3 +220,6 @@
 	protocol = https
 [winUpdater]
 	recentlySeenVersion = 2.20.1.windows.1
+[safe]
+	directory = %(prefix)///wsl.localhost/Ubuntu/usr/local/data/bin
+	directory = %(prefix)///wsl.localhost/Ubuntu/home/jjbutare/data/bin

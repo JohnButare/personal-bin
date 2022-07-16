@@ -226,6 +226,17 @@ if IsBash; then
 fi
 
 #
+# Data Types
+#
+
+# date/time
+
+clock() { ClockHelper start; }
+clockt() { ClockHelper terminal; } 		# clock terminal
+clockc() { ClockHelper check; } 			# clock check
+clockdiff() { ClockHelper diff; } 		# clock difference
+
+#
 # cron
 #
 

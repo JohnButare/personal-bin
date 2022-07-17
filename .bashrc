@@ -691,11 +691,6 @@ hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hs() { hashi status; }
 hsr() { HashiServiceRegister "$@"; }
 
-j() { hashi nomad job "$@"; }	# job
-
-vagrant() { "$WIN_ROOT/HashiCorp/Vagrant/bin/vagrant.exe" "$@"; }
-vcd() { cd "$WIN_HOME/data/app/vagrant"; }
-
 # test
 hti() { wiggin setup hashi test -- "$@" && HashiConf test; }									# Hashi Test Install
 htr() { wiggin remove hashi test --force -- --yes "$@"; HashiConf reset; }		# Hashi Test Clean
@@ -709,6 +704,14 @@ vault() { HashiConfVault && command vault "$@"; }
 clipc() { HashiConfConsul && clipw "$CONSUL_HTTP_TOKEN"; }
 clipn() { HashiConfNomad && clipw "$NOMAD_TOKEN"; }
 clipv() { HashiConfVault && clipw "$VAULT_TOKEN"; }
+
+# HashiCorp - Nomad
+j() { hashi nomad job "$@"; }	# job
+NomadAllocations() { hashi nomad node allocations -H=active; }
+
+# HashiCorp - Vagrant
+vagrant() { "$WIN_ROOT/HashiCorp/Vagrant/bin/vagrant.exe" "$@"; }
+vcd() { cd "$WIN_HOME/data/app/vagrant"; }
 
 # mDNS
 MdnsList() { avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }

@@ -925,7 +925,9 @@ PySite() { py -m site; }
 #
 
 PiImageLite() { pi image "$(i dir)/platform/linux/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
-PiServers() { GetAllServers | grep "^pi" | sort -n -t i -k2; }
+PiHosts() { GetAllServers; }
+PiHostsOn() { consul members | grep " alive " | tr -s " " | cut -d" " -f1 | sort -V; }
+PiHostsOff() { consul members | grep " left " | tr -s " " | cut -d" " -f1 | sort -V; }
 
 # SshPi COMMAND - run a command on all servers
 PiSsh()

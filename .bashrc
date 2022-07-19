@@ -717,7 +717,7 @@ vcd() { cd "$WIN_HOME/data/app/vagrant"; }
 MdnsList() { avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
 MdnsListFull() { avahi-browse -p --all -c -r; }
 MdnsPublishHostname() { avahi-publish-address -c $HOSTNAME.local "$(GetPrimaryIpAddress eth0)"; }
-MdnsTest() { for a in aaaa pi1 pi2 pi3 pi4 pi9 pi10 pi11; do printf "$a: "; MdnsResolve $a.local; done; }
+MdnsTest() { local h; for h in $(GetAllServers); do h="$(RemoveDnsSuffix "$h")"; printf "$h: "; MdnsResolve $h.local; done; }
 
 mdnsStart()
 { 
@@ -932,12 +932,19 @@ PiHosts() { GetAllServers; }
 PiHostsOn() { consul members | grep " alive " | tr -s " " | cut -d" " -f1 | sort -V; }
 PiHostsOff() { consul members | grep " left " | tr -s " " | cut -d" " -f1 | sort -V; }
 
-# SshPi COMMAND - run a command on all servers
+# PiSsh COMMAND - run a command on all servers
 PiSsh()
 {
-	local host hosts errors=0; IFS=$'\n' ArrayMakeC hosts PiServers || return
+	local host hosts errors=0; IFS=$'\n' ArrayMakeC hosts PiHosts || return
 	for host in "${hosts[@]}"; do printf "$(RemoveDnsSuffix "$host"): "; SshHelper "$host" -- "$@" || ((++errors)); done
 	return "$errors"
+}
+
+# PiShell - run a command on all servers
+PiShell()
+{
+	local host hosts; IFS=$'\n' ArrayMakeC hosts PiHosts || return
+	for host in "${hosts[@]}"; do SshHelper connect "$host"; done
 }
 
 #
@@ -1070,6 +1077,7 @@ alias ListVars='declare -p | grep -v "\-x"'
 alias ListExportVars='export'
 alias ListFunctions='declare -F'
 alias ListFunctionsAll='declare -f'
+UnsetVars() { eval unset \${\!$1*}; }
 
 #
 # Virtual Machine
@@ -1113,6 +1121,8 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 sd="$UDATA/sync" 														# sync dir
 sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
 
+aconf() { hconf && sconf && cconf --unlock; } # all configure
+aconfe() { aconf && exit; } 									# all configure then exit the shell, useful with PiShell
 vpn() { network vpn "$@"; }
 
 # devices

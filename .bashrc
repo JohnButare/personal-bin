@@ -100,9 +100,9 @@ fi
 alias cdv="cd ~/Volumes"
 
 # application data and configuration directories
-appconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/admin$ACONFIG"; }
-appdata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/admin$ADATA"; }
-appcd() { ScriptCd appdata "$1"; }
+aconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/admin$ACONFIG"; }
+adata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/admin$ADATA"; }
+acd() { ScriptCd appdata "$1"; }
 
 #
 # other
@@ -778,7 +778,6 @@ VipStatus()
 }
 
 # web
-acd() { ScriptCd apache dir conf "$@" &&ls; }		# Apache Config Dir
 awd() { ScriptCd apache dir web "$@" && ls; }		# Apache Web Dir
 curle() { curl "$(urlencode "$1")" "${@:2}"; } 	# curl encode - encode spaces in the URL
 HttpHeader() { curl --silent --show-error --location --dump-header - --output /dev/null "$1"; }

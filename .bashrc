@@ -1041,10 +1041,6 @@ sx()
 sshfull() { ssh -t $1 ". /etc/profile; ${@:2}";  } # full environment
 sshalias() { ssh -t $1 "bash -li -c \"${@:2}\""; } # ssh with aliases available, i.e. sshalias pi3 dirss
 
-# connecting with additional permissions
-sshsudo() { ssh -t $1 sudo ${@:2}; } # ssh using sudo (prompt for sudo password)
-sshsudoc() { ssh -X $1 ". function.sh; sudoc ${@:2}"; } # ssh using sudoc (use credential store for sudo password)
-
 # run applications
 sterm() { sx -f $1 -t 'bash -l -c terminator'; } # sterminator HOST - start terminator on host, -f enables X11, bash -l forces a login shell
 

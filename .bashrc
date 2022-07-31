@@ -927,25 +927,12 @@ PySite() { py -m site; }
 # Raspberry Pi
 #
 
-PiImageLite() { pi image "$(i dir)/platform/linux/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
 PiHosts() { GetAllServers; }
-PiHostsOn() { consul members | grep " alive " | tr -s " " | cut -d" " -f1 | sort -V; }
-PiHostsOff() { consul members | grep " left " | tr -s " " | cut -d" " -f1 | sort -V; }
-
-# PiSsh COMMAND - run a command on all servers
-PiSsh()
-{
-	local host hosts errors=0; IFS=$'\n' ArrayMakeC hosts PiHosts || return
-	for host in "${hosts[@]}"; do printf "$(RemoveDnsSuffix "$host"): "; SshHelper "$host" -- "$@" || ((++errors)); done
-	return "$errors"
-}
-
-# PiShell - run a command on all servers
-PiShell()
-{
-	local host hosts; IFS=$'\n' ArrayMakeC hosts PiHosts || return
-	for host in "${hosts[@]}"; do SshHelper connect "$host"; done
-}
+PiHostsOn() { consul members | grep " alive " | tr -s " " | cut -d" " -f1 | sort -V; } # PiHostsOn - show all pi hosts that are on
+PiHostsOff() { consul members | grep " left " | tr -s " " | cut -d" " -f1 | sort -V; } # PiHostsOff - show all pi hosts that are off
+PiImageLite() { pi image "$(i dir)/platform/linux/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
+PiShell() { sx --host=all "$@"; } 																			# PiShell - run a shell on all servers
+PiSsh() { sx --host=all --errors --function --pseudo-terminal "$@"; } 	# PiSsh COMMAND - run a command on all servers
 
 #
 # Scheduled Tasks

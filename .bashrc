@@ -91,7 +91,7 @@ fi
 # Dropbox
 if [[ -d "$home/Dropbox" ]]; then
 	cloud="$home/Dropbox"; c="$cloud"; cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"
-	export CDATA="$cdata"
+	jh="$HOME/Juntos Holdings Dropbox" jhc="$HOME/Juntos Holdings Dropbox/Company"
 	IsPlatform win && alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
 	ncd="$cloud/network"; alias ncd="$ncd" # network configuration directory
 	confDir="$ncd/system"	
@@ -383,6 +383,12 @@ alias rc='CopyDir'
 lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
 
 FileTypes() { file * | sort -k 2; }
+
+#
+# DriveTime
+#
+
+dtc="$c/career/DriveTime" # DriveTime Cloud personal files
 
 #
 # find

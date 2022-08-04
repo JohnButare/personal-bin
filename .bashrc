@@ -1119,7 +1119,7 @@ wcore() { wiggin device "$@" core; }
 wtest() { wiggin device "$@" test; }
 
 # encrypted files
-encm() { VeraCrypt mount "$CDATA/VeraCrypt/personal.hc" p; } 	# mount encrypted file share on drive p
+encm() { VeraCrypt mount "$cdata/VeraCrypt/personal.hc" p; } 	# mount encrypted file share on drive p
 encum() { VeraCrypt unmount p; }															# unmount encrypted file share from drive p
 
 # media

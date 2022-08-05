@@ -1109,7 +1109,7 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 sd="$UDATA/sync" 														# sync dir
 sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
 
-aconf() { hconf && sconf && cconf --unlock; } # all configure
+aconf() { hconf && echo && sconf && echo && cconf --unlock; } # all configure
 aconfe() { aconf && exit; } 									# all configure then exit the shell, useful with PiShell
 vpn() { network vpn "$@"; }
 

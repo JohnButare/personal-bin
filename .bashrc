@@ -455,7 +455,7 @@ alias unfunction='unset -f'
 #
 
 g() { SshAgentConf && git "$@"; }
-gh() { SshAgentConf && GitHelper "$@"; }
+ghlp() { SshAgentConf && GitHelper "$@"; }
 ghc() { GitHubClone "$@"; }
 gg() { SshAgentConf && GitHelper gui; }
 

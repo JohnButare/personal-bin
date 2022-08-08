@@ -389,6 +389,10 @@ FileTypes() { file * | sort -k 2; }
 #
 
 dtc="$c/career/DriveTime" # DriveTime Cloud personal files
+alias dt-setsub-dev='az account set --subscription 8bc2fde5-e1ad-4bc0-9287-85957096f0b4'
+alias dt-setsub-prod='az account set --subscription a1eab4f0-e17c-4e70-ab04-833c063dc515'
+alias dt-get-cred='az aks get-credentials -g dtwt-aks-devops-rg -n dtwt-aks-devops01-k8'
+alias dt-new-token # az login --scope https://management.core.windows.net//.default # new token
 
 #
 # find
@@ -522,6 +526,41 @@ IsZsh && setopt SHARE_HISTORY HIST_IGNORE_DUPS
 HistoryClear() { IsBash && cat /dev/null > $HISTFILE; history -c; }
 
 #
+# HashiCorp
+#
+
+alias h="hashi"
+hcd() { cd "$ncd/system/hashi/$1"; }
+
+hconf() { HashiConf --config-prefix=prod "$@" && hashi config status; } # hc - hashi config
+hct() { HashiConf --config-prefix=test "$@" && hashi status; } # hct - hashi config test
+hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
+hs() { hashi status; }
+hsr() { HashiServiceRegister "$@"; }
+
+# test
+hti() { wiggin setup hashi test -- "$@" && HashiConf test; }									# Hashi Test Install
+htr() { wiggin remove hashi test --force -- --yes "$@"; HashiConf reset; }		# Hashi Test Clean
+
+# run program and set configuration if necessary
+consul() { HashiConfConsul && command consul "$@"; }
+nomad() { HashiConfNomad && command nomad "$@"; }
+vault() { HashiConfVault && command vault "$@"; }
+
+# put token for a HashiCorp program into the clipboard
+clipc() { HashiConfConsul && clipw "$CONSUL_HTTP_TOKEN"; }
+clipn() { HashiConfNomad && clipw "$NOMAD_TOKEN"; }
+clipv() { HashiConfVault && clipw "$VAULT_TOKEN"; }
+
+# HashiCorp - Nomad
+j() { hashi nomad job "$@"; }	# job
+NomadAllocations() { hashi nomad node allocations -H=active; }
+
+# HashiCorp - Vagrant
+vagrant() { "$WIN_ROOT/HashiCorp/Vagrant/bin/vagrant.exe" "$@"; }
+vcd() { cd "$WIN_HOME/data/app/vagrant"; }
+
+#
 # Home Automation
 #
 
@@ -579,6 +618,12 @@ hrest() { HomebridgeHelper restore "$@"; } # hrest HOST
 # Node-RED
 alias nrshell="SwitchUser nodered"
 NodeRedCode() { cd "$HOME/.node-red/projects/$1"; }; alias nrc="NodeRedCode"
+
+#
+# Kubernetes
+#
+
+alias k="kubectl"
 
 #
 # performance
@@ -686,38 +731,6 @@ DhcpOptions()
 
 alias BindLog='service log bind9'
 alias NamedLog='service log bind9'
-
-# HashiCorp
-alias h="hashi"
-hcd() { cd "$ncd/system/hashi/$1"; }
-
-hconf() { HashiConf --config-prefix=prod "$@" && hashi config status; } # hc - hashi config
-hct() { HashiConf --config-prefix=test "$@" && hashi status; } # hct - hashi config test
-hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
-hs() { hashi status; }
-hsr() { HashiServiceRegister "$@"; }
-
-# test
-hti() { wiggin setup hashi test -- "$@" && HashiConf test; }									# Hashi Test Install
-htr() { wiggin remove hashi test --force -- --yes "$@"; HashiConf reset; }		# Hashi Test Clean
-
-# run program and set configuration if necessary
-consul() { HashiConfConsul && command consul "$@"; }
-nomad() { HashiConfNomad && command nomad "$@"; }
-vault() { HashiConfVault && command vault "$@"; }
-
-# put token for a HashiCorp program into the clipboard
-clipc() { HashiConfConsul && clipw "$CONSUL_HTTP_TOKEN"; }
-clipn() { HashiConfNomad && clipw "$NOMAD_TOKEN"; }
-clipv() { HashiConfVault && clipw "$VAULT_TOKEN"; }
-
-# HashiCorp - Nomad
-j() { hashi nomad job "$@"; }	# job
-NomadAllocations() { hashi nomad node allocations -H=active; }
-
-# HashiCorp - Vagrant
-vagrant() { "$WIN_ROOT/HashiCorp/Vagrant/bin/vagrant.exe" "$@"; }
-vcd() { cd "$WIN_HOME/data/app/vagrant"; }
 
 # mDNS
 MdnsList() { avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }

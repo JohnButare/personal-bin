@@ -396,7 +396,7 @@ dtc="$c/career/DriveTime" # DriveTime Cloud personal files
 alias dt-setsub-dev='az account set --subscription 8bc2fde5-e1ad-4bc0-9287-85957096f0b4'
 alias dt-setsub-prod='az account set --subscription a1eab4f0-e17c-4e70-ab04-833c063dc515'
 alias dt-get-cred='az aks get-credentials -g dtwt-aks-devops-rg -n dtwt-aks-devops01-k8'
-alias dt-new-token # az login --scope https://management.core.windows.net//.default # new token
+alias dt-new-token='az login --scope https://management.core.windows.net//.default'
 
 #
 # find

@@ -126,6 +126,10 @@ alias m='merge'
 bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
 terminator() { coproc /usr/bin/terminator "$@"; }
 
+if IsPlatform mac; then
+	code() { "$P/Visual Studio Code.app/Contents/Resources/app/bin/code" "$@"; }
+fi
+
 #
 # archive
 #

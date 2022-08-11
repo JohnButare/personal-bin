@@ -562,6 +562,7 @@ clipv() { HashiConfVault && clipw "$VAULT_TOKEN"; }
 
 # HashiCorp - Nomad
 j() { hashi nomad job "$@"; }	# job
+NomadApps() { hashi app node status --active; }
 NomadAllocations() { hashi nomad node allocations -H=active; }
 
 # HashiCorp - Vagrant

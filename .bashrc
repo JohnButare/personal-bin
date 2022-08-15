@@ -1240,7 +1240,7 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 # McFly - initialie last since
 # - must be after after set prompt as this modifies the bash prompt
 # - sometimes it prevents the rest of the script from running
-if InPath mcfly && [[ "$__MCFLY_LOADED" != "loaded" ]]; then
+if InPath mcfly && [[ "$__MCFLY_LOADED" != "loaded" ]] && [[ "$TERM_PROGRAM" != @(vscode) ]]; then
 	eval "$(mcfly init "$PLATFORM_SHELL")"
 fi
 

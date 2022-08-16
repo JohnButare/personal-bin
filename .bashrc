@@ -129,6 +129,8 @@ terminator() { coproc /usr/bin/terminator "$@"; }
 
 if IsPlatform mac; then
 	code() { "$P/Visual Studio Code.app/Contents/Resources/app/bin/code" "$@"; }
+elif IsPlatform win; then
+	code() { "$P/Microsoft VS Code/Code.exe" "$@"; }
 fi
 
 #

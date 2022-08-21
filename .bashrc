@@ -39,7 +39,7 @@ SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return 											# bro
 firefox IsInstalled && export BROWSER="firefox"																				# browser - for sensible-browser command
 InPath direnv && eval "$(direnv hook "$PLATFORM_SHELL")"															# direnv
 [[ ! $EDITOR_CHECKED ]] && { SetTextEditor; EDITOR_CHECKED="true"; } 									# editor
-[[ -d "$HOME/.fzf" ]] && { . FzfInstall.sh || return; }															# fzf
+[[ -d "$HOME/.fzf" ]] && InPath "FzfInstall.sh" && { . FzfInstall.sh || return; }			# fzf
 [[ -d "/usr/games" ]] && PathAdd "/usr/games" 																				# games on Ubuntu 19.04+
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"																			# Go
 SourceIfExists "$HOME/.ghcup/env" || return																						# Haskell

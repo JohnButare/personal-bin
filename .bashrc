@@ -117,11 +117,17 @@ st() { startup --no-pause "$@"; }
 # applications
 #
 
-e() { TextEdit "$@"; }
-figlet() { pyfiglet "$@"; }
 alias f='firefox'
 alias grep='command grep --color=auto'
 alias m='merge'
+
+e() { TextEdit "$@"; }
+edge() { dtRun "$P32/Microsoft/Edge/Application/msedge.exe" --profile-directory=Default; }
+figlet() { pyfiglet "$@"; }
+ssms() { dtRun "$P32/Microsoft SQL Server Management Studio 18/Common7/IDE/Ssms.exe"; }
+vs() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }
+vsp() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }
+
 
 bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
 terminator() { coproc /usr/bin/terminator "$@"; }
@@ -263,7 +269,6 @@ codev() { command rich "$@" -n -g --theme monokai; } # code view
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # DOT.NET Development
-alias vs='VisualStudio'
 
 if [[ -d "$HOME/.dotnet" ]]; then
 	PathAdd "$HOME/.dotnet"; export DOTNET_ROOT="$HOME/.dotnet"
@@ -455,6 +460,17 @@ FindCd()
 	else
 		echo Could not find directory "$@"
 	fi;
+}
+
+#
+# DriveTime network
+#
+
+# dtRun PROGRAM [ARGS] – run a program as a DriveTime domain user
+dtRun() 
+{ 
+	[[ $USERDOMAIN ]] && { "$@"; return; } # we are in the domain, just run the program
+	runas.exe /netonly /user:$(ConfigGet "dtAdDomain")\\$(ConfigGet "dtUser") "\"$(utw "$(FindInPath "$1")")\" ${@:2}" 
 }
 
 #
@@ -714,6 +730,7 @@ alias hc='HostCleanup'
 ScriptEval network proxy vars || return
 
 clf() { CloudFlare "$@"; }
+ncg() {	network current all; } # network current get
 ncu() {	network current update "$@" && ScriptEval network proxy vars --enable; } # network current update
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
@@ -1129,7 +1146,7 @@ vmon() { vmware -n "$1" run start; } # on (start)
 vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 
 #
-# wiggin
+# Wiggin Network
 #
 
 sd="$UDATA/sync" 														# sync dir

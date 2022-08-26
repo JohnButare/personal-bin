@@ -21,4 +21,6 @@ case "$HOSTNAME" in
 	oversoul) st DellDisplayManager;;
 esac
 
+IsPlatform parallels && { drive mount all || return; }
+
 return 0

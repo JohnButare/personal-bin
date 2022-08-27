@@ -122,13 +122,7 @@ alias grep='command grep --color=auto'
 alias m='merge'
 
 e() { TextEdit "$@"; }
-edge() { dtRun "$P32/Microsoft/Edge/Application/msedge.exe" --profile-directory=Default; }
 figlet() { pyfiglet "$@"; }
-ssms() { dtRun "$P32/Microsoft SQL Server Management Studio 18/Common7/IDE/Ssms.exe"; }
-vs() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }
-vsp() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }
-
-
 bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
 terminator() { coproc /usr/bin/terminator "$@"; }
 
@@ -409,6 +403,13 @@ alias dt-get-cred-devtest='az aks get-credentials -g dtwt-aks-devtest-rg -n dtwt
 alias dt-get-cred-prodw='az aks get-credentials -g dtwt-aks-prod-rg -n dtwt-aks-prod01-k8'
 alias dt-get-cred-prode='az aks get-credentials -g dtwt-aks-prod-rg -n dtet-aks-prod01-k8'
 alias dt-new-token='az login --scope https://management.core.windows.net//.default'
+
+# run in domain
+dedge() { dtRun "$P32/Microsoft/Edge/Application/msedge.exe" --profile-directory=Default; }
+dff() { dtRun "$P/Mozilla Firefox/firefox.exe"; }
+dssms() { dtRun "$P32/Microsoft SQL Server Management Studio 18/Common7/IDE/Ssms.exe"; }
+dvs() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }
+dvsp() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }
 
 #
 # find

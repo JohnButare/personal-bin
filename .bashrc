@@ -488,7 +488,8 @@ alias unfunction='unset -f'
 
 g() { SshAgentConf && git "$@"; }
 ghlp() { SshAgentConf && GitHelper "$@"; }
-ghc() { GitHubClone "$@"; }
+ghc() { GitClone "$@"; }
+ghcw() { GitClone --windows "$@"; }
 gg() { SshAgentConf && GitHelper gui "$@"; }
 
 alias ga='g add'

@@ -487,6 +487,8 @@ alias unfunction='unset -f'
 #
 
 g() { SshAgentConf && git "$@"; }
+gcd() { ScriptCd GitHelper github dir "$@"; }
+gcdw() { ScriptCd GitHelper github dir --windows "$@"; }
 ghlp() { SshAgentConf && GitHelper "$@"; }
 ghc() { GitClone "$@"; }
 ghcw() { GitClone --windows "$@"; }

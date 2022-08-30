@@ -338,7 +338,7 @@ DoLs()
 #
 
 alias duh='${G}du --human-readable' # disk usage human readable
-alias dsu='DiskSpaceUsage'					# disk apace usage
+alias dsu='DiskSpaceUsage'					# disk space usage
 tdug() { sudoc ncdu --color=dark -x /; } 							# total disk usage graphical
 tdu() { di -d m | head -2 | tail -1 | tr -s " " | cut -d" " -f4; } # total disk usage in MB
 tdud() { local b="$(tdu)"; pause; echo "$(echo "$(tdu) - $b" | bc)MB"; } # total disk usage difference in MB
@@ -417,13 +417,20 @@ dvsp() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe";
 
 alias fa='FindAll'
 alias fcd='FindCd'
+alias fclip='FindClip'
 alias fs='FindStart'
 alias ft='FindText'
+alias ftf='FindTextFile'
 
-fclip() { local files; IFS=$'\n' ArrayMakeC files FindAll "$1" && clipw "${files[@]}"; } # FindClip
-fe() { local files; IFS=$'\n' ArrayMakeC FindAll "$1" && [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindEdit PATTERN - find files and edit
-fte() { local files; IFS=$'\n' ArrayMake "$(FindText "$@" | cut -d: -f1)"; [[ ${#files[@]} == 0 ]] && return; TextEdit "${files[@]}"; } # FindTextEdit TEXT PATTERN - find text in files and edit
-ftl() { grep -iE "$@" *; } # Find Text Local - find specified text in the current directory
+FindAll() {	fd "$@" --one-file-system; }																											# FindAll PATTERN - find all files that match the pattern from the current directory
+FindClip() { local files; IFS=$'\n' ArrayMakeC files FindAll "$1" && clipw "${files[@]}"; }
+FindStart() { start "$(FindAll "$@" | head -1)"; }
+FindText() { grep --color -ire "$1" --include="$2" --exclude-dir=".git" "${3:-.}"; } 					# FindText TEXT FILE_PATTERN [START_DIR](.) - find all text in files matching the pattern, starting at the start directory
+FindTextFile() { FindText "$@" | cut -d: -f1 | sort | uniq; }																	# FindTextFiles - similar to FindText, but find all file names
+
+fe() { FindAll "$@" | xargs sublime; } 					# FindEdit PATTERN - find files and edit
+fte() { FindTextFile "$@" | xargs sublime; } 		# FindTextEdit TEXT PATTERN - find text in files and edit
+ftl() { grep -iE "$@" *; } 											# Find Text Local - find specified text in the current directory
 
 fsql() { ft "$1" "*.sql"; } # FindSql TET
 esql() { fte "$1" "*.sql"; } # EditSql TEXT
@@ -433,34 +440,11 @@ msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | grep -Eiv "deploy|skip|ignor
 
 eai() { fte "0.0.0.0" "VersionInfo.cs"; } # EditAssemblyInfo that are set to deploy (v0.0.0.0)
 
-FindText() # TEXT FILE_PATTERN [START_DIR](.)
-{ 
-	local startDir="${@:3}"
-	grep --color -ire "$1" --include="$2" --exclude-dir=".git" "${startDir:-.}"
-}
-
-FindAll()
-{
-	[[ $# == 0 ]] && { echo "No file specified"; return; }
-	#find . -iname "$@" |& grep -v "Permission denied"
-	fd "$@" --one-file-system
-}
-
-FindStart()
-{
-	start "$(FindAll "$@" | head -1)";
-}
-
 FindCd()
 {
-	local file="$(FindAll "$@" | head -1)"
-	local dir="$(GetFilePath "$file")"
-
-	if [ -d "$dir" ]; then
-		cd "$dir"
-	else
-		echo Could not find directory "$@"
-	fi;
+	local dir="$(FindAll "$@" | head -1 | GetFilePath)"
+	[ ! -d "$dir" ] && { ScriptErr "Could not find a directory matching '$@'"; return 1; }
+	cd "$dir"
 }
 
 #

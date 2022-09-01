@@ -163,9 +163,9 @@ alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
 sfull() # set full
 {
-	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,FZF_CHECKED}="" 	# .bashrc
-	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""																			# bash.bashrc
-	declare {CHROOT_CHECKED,VM_TYPE_CHECKED,HASHI_CHECKED}=""														# function.sh
+	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,FZF_CHECKED,NETWORK_CHECKED}="" 	# .bashrc
+	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""																											# bash.bashrc
+	declare {CHROOT_CHECKED,VM_TYPE_CHECKED,HASHI_CHECKED}=""																						# function.sh
 
 	. "$bin/bash.bashrc"
 	. "$bin/function.sh"
@@ -547,7 +547,7 @@ HistoryClear() { IsBash && cat /dev/null > $HISTFILE; history -c; }
 alias h="hashi"
 hcd() { cd "$ncd/system/hashi/$1"; }
 
-hconf() { HashiConf --config-prefix=prod "$@" && hashi config status; } # hc - hashi config
+hconf() { [[ "$NETWORK" != "hagerman" ]] && return; HashiConf --config-prefix=prod "$@" && hashi config status; } # hc - hashi config
 hct() { HashiConf --config-prefix=test "$@" && hashi status; } # hct - hashi config test
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hs() { hashi status; }
@@ -795,7 +795,7 @@ SquidUtilization() { squidclient -h "${1:-127.0.0.1}" cache_object://localhost/ 
 SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
 
 # sync files
-alias slf='SyncLocalFiles'
+alias slf='SyncLocalFiles sync'
 alias FindSyncTxt='fa ".*_sync.txt"'
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
@@ -1141,7 +1141,7 @@ sd="$UDATA/sync" 														# sync dir
 sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
 
 aconf() { hconf && echo && sconf && echo && cconf --unlock; } # all configure
-aconfe() { aconf && exit; } 									# all configure then exit the shell, useful with PiShell
+aconfe() { aconf && exit; } 																	# all configure then exit the shell, useful with PiShell
 vpn() { network vpn "$@"; }
 
 # devices
@@ -1239,6 +1239,9 @@ alias XmlShow='xml sel -t -c'
 
 # SSH Agent environment
 [[ ! $SSH_AUTH_SOCK || $force ]] && ScriptEval SshAgent environment --quiet
+
+# network
+[[ ! $NETWORK_CHECKED || $force ]] && ConfigExists "network" && { NETWORK="$(ConfigGet "network")"; NETWORK_CHECKED="true"; }
 
 # credential manager environment
 [[ ! $CREDENTIAL_MANAGER_CHECKED || $force ]] && CredentialConf $verbose $force --quiet

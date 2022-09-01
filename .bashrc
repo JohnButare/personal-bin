@@ -719,7 +719,7 @@ ScriptEval network proxy vars || return
 
 clf() { CloudFlare "$@"; }
 ncg() {	network current all; } # network current get
-ncu() {	network current update "$@" && ScriptEval network proxy vars --enable; } # network current update
+ncu() {	network current update "$@" && ScriptEval network vars; } # network current update
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }
@@ -1241,7 +1241,7 @@ alias XmlShow='xml sel -t -c'
 [[ ! $SSH_AUTH_SOCK || $force ]] && ScriptEval SshAgent environment --quiet
 
 # network
-[[ ! $NETWORK_CHECKED || $force ]] && { NETWORK="$(NetworkCurrent)"; NETWORK_CHECKED="true"; }
+[[ ! $NETWORK_CHECKED || $force ]] && { ScriptEval network vars; NETWORK_CHECKED="true"; }
 
 # credential manager environment
 [[ ! $CREDENTIAL_MANAGER_CHECKED || $force ]] && CredentialConf $verbose $force --quiet

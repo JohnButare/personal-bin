@@ -225,8 +225,6 @@
 	directory = %(prefix)///wsl.localhost/Ubuntu/home/jjbutare/data/bin
 	directory = /mnt/c/Users/johnbutare/code/Lookup
 [credential "https://github.com"]
-	helper = 
-	helper = !/usr/bin/gh auth git-credential
+	helper = !/usr/local/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	# helper = 
 	helper = !/usr/local/bin/gh auth git-credential

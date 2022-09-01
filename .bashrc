@@ -1241,7 +1241,7 @@ alias XmlShow='xml sel -t -c'
 [[ ! $SSH_AUTH_SOCK || $force ]] && ScriptEval SshAgent environment --quiet
 
 # network
-[[ ! $NETWORK_CHECKED || $force ]] && ConfigExists "network" && { NETWORK="$(ConfigGet "network")"; NETWORK_CHECKED="true"; }
+[[ ! $NETWORK_CHECKED || $force ]] && { NETWORK="$(NetworkCurrent)"; NETWORK_CHECKED="true"; }
 
 # credential manager environment
 [[ ! $CREDENTIAL_MANAGER_CHECKED || $force ]] && CredentialConf $verbose $force --quiet

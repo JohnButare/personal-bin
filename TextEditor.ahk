@@ -6,11 +6,17 @@ TextEditorInit()
 	NotepadPpTitle := ".* - Notepad++"
 
 	Sublime := PROGRAMS64 "\Sublime Text\sublime_text.exe"
+	SublimeUser := LOCALAPPDATA "\Sublime Text\sublime_text.exe"
 	SublimeTitle := ".* - Sublime Text"
-	
+
 	if FileExist(Sublime)
 	{
 		TextEditor := Sublime
+		TextEditorTitle := SublimeTitle
+	}
+	else if FileExist(SublimeUser)
+	{
+		TextEditor := SublimeUser
 		TextEditorTitle := SublimeTitle
 	}
 	else if FileExist(NotepadPp)

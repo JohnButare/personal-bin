@@ -2,15 +2,15 @@ BrowserInit()
 {
   global
 
-  chrome := PROGRAMS32 "\Google\Chrome\Application\chrome.exe"
+  chrome := PROGRAMS64 "\Google\Chrome\Application\chrome.exe"
   edge := "C:\Windows\SystemApps\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\MicrosoftEdge.exe"
   firefox := PROGRAMS64 "\Mozilla Firefox\firefox.exe"
   ie := PROGRAMS32 "\Internet Explorer\iexplore.exe"
 	
-  if FileExist(chrome)
-  	browser := "Chrome"
-  else if FileExist(firefox)
+  if FileExist(firefox)
     browser := "Firefox"
+  else if FileExist(chrome)
+    browser := "Chrome"
 	else if FileExist(edge)
 		browser := "Edge"
 	else
@@ -45,23 +45,15 @@ OpenBrowser()
 
 NewChrome()
 {
-  global chrome
-
-  ;run chrome, , Normal, pid
-  ;WinWait "ahk_pid " pid
-  ;WinActivate "ahk_pid " pid
+  run chrome
 }
 
 OpenChrome()
 {
-  ChromeClass := "chrome.exe"
-  
-  WinActivate "ahk_exe " ChromeClass
-
-  If WinExist("ahk_exe " ChromeClass)
-    return    
-
-  NewChrome()
+  If WinExist("ahk_exe" "chrome.exe")
+    WinActivate "ahk_exe" "chrome.exe"
+  else
+    NewChrome()
 }
 
 NewEdge()

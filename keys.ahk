@@ -2,6 +2,7 @@
 
 Init()
 CommonInit()
+GitInit()
 OfficeInit()
 BrowserInit()
 MailInit()
@@ -13,6 +14,7 @@ VmInit()
 #Include other.ahk
 
 #Include browser.ahk
+#Include git.ahk
 #Include mail.ahk
 #Include office.ahk
 #Include terminal.ahk
@@ -31,7 +33,7 @@ Init()
 	DEFAULT_VM := "vmware"
 }  
 
-; +=Shift ^=Control #=Win !=Alt
+; +=Shift ^=Control #=Command !=Alt
 
 ^#t::Test()														; test
 LWin & Space::Send "^{Esc}"						; Start Menu (search)
@@ -62,7 +64,7 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 RShift & 1::Open1Password() 		; 1Password
 RShift & 3::OpenTerminal() 			; Terminal
 RShift & b::OpenBrowser() 			; Browser
-RShift & g::OpenFork()					; Git
+RShift & g::Opengit()					; Git
 RShift & m::OpenMail()					; Mail
 RShift & n::OpenNotion()				; Notes
 RShift & t::OpenTextEditor()		; Text Editor

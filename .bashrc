@@ -395,6 +395,7 @@ FileTypes() { file * | sort -k 2; }
 # DriveTime
 #
 
+alias ah='AzureHelper'
 dtc="$c/career/DriveTime" # DriveTime Cloud personal files
 alias dt-setsub-dev='az account set --subscription 8bc2fde5-e1ad-4bc0-9287-85957096f0b4'
 alias dt-setsub-prod='az account set --subscription a1eab4f0-e17c-4e70-ab04-833c063dc515'

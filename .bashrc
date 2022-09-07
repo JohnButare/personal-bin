@@ -47,6 +47,7 @@ PathAdd front "/opt/local/bin" "/opt/local/sbin" 																			# Mac Ports
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return  																		# Ruby Version Manager
 [[ -d "$HOME/.cargo/bin" ]] && PathAdd "$HOME/.cargo/bin" 														# Rust
 PathAdd "/opt/X11/bin" 																																# XQuartz
+PythonConf || return
 
 # Homebrew
 if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
@@ -59,12 +60,6 @@ if [[ $HOMEBREW_PREFIX ]]; then
 	PathAdd front "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin" # use Homebrew utilities before system utilities
 	InfoPathAdd "$HOMEBREW_PREFIX/share/info"
 	ManPathAdd "$HOMEBREW_PREFIX/share/man"
-fi
-
-# Python - add Python bin directory if present
-if [[ "$PLATFORM" != "mac" && -d "$HOME/.local/bin" ]]; then PathAdd "$HOME/.local/bin"
-elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.9/bin" ]]; then PathAdd front "$HOME/Library/Python/3.9/bin"
-elif [[ "$PLATFORM" == "mac" && -d "$HOME/Library/Python/3.8/bin" ]]; then PathAdd front "$HOME/Library/Python/3.8/bin"
 fi
 
 # Visual Studio Code

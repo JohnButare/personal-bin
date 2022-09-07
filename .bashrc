@@ -450,7 +450,7 @@ FindCd()
 # dtRun PROGRAM [ARGS] – run a program as a DriveTime domain user
 dtRun() 
 { 
-	[[ $USERDOMAIN ]] && { "$@"; return; } # we are in the domain, just run the program
+	IsInDomain && { "$@"; return; } # we are in the domain, just run the program
 	runas.exe /netonly /user:$(ConfigGet "dtAdDomain")\\$(ConfigGet "dtUser") "\"$(utw "$(FindInPath "$1")")\" ${@:2}" 
 }
 

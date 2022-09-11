@@ -547,7 +547,7 @@ hconf() { [[ "$NETWORK" != "hagerman" ]] && return; HashiConf --config-prefix=pr
 hct() { HashiConf --config-prefix=test "$@" && hashi status; } # hct - hashi config test
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hs() { hashi status; }
-hsr() { HashiServiceRegister "$@"; }
+hsr() { HashiServiceRegister "$@"; } # hsr SERVICE_FILE - register a Nomad service
 
 # test
 hti() { wiggin setup hashi test -- "$@" && HashiConf test; }									# Hashi Test Install

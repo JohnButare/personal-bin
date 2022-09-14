@@ -407,6 +407,8 @@ dssms() { dtRun "$P32/Microsoft SQL Server Management Studio 18/Common7/IDE/Ssms
 dvs() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }
 dvsp() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }
 
+vsne() { hstart64.exe /NOCONSOLE /NONELEVATED "$(utw "$P/Microsoft Visual Studio/2022/Professional/Common7/IDE/devenv.exe")"; }
+
 #
 # find
 #

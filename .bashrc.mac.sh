@@ -16,5 +16,12 @@ GetPreferenceChange() # determine the configure domain for a preferences change
 
 alias karabiner='"/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli"'
 
+SmbFix()
+{
+	sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.smbd.plist	|| return
+	sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.smbd.plist || return
+	sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server.plist EnabledServices -array disk || return
+}
+
 # iTerm2
 SourceIfExists "$HOME/.iterm2_shell_integration.zsh" || return

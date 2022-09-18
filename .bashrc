@@ -1053,7 +1053,8 @@ sx()
 	# connect
 	case "$host" in
 		nas3) HashiConf --config-prefix=prod && ScriptEval qnap cli login vars $force && SshHelper connect -x "$@";;
-		#router) SshHelper connect --password "$(credential get unifi admin)" "$@";;
+		#router) SshHelper connect --password "$(credential get unifi admin)" "$@";; # not required if SSH keys are working
+		oversoul) SshHelper connect --password "$(credential get secure system)" "$@";;
 		*) SshHelper connect --x-forwarding --hashi "$@";;
 	esac 
 }

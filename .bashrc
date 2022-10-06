@@ -36,7 +36,6 @@ IsZsh && { setopt no_beep; alias help="run-help"; }
 
 [[ ! $ASDF_DIR && ! $force ]] && { SourceIfExists "$HOME/.asdf/asdf.sh" || return; } 	# ASDF
 SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return 											# broot
-firefox IsInstalled && export BROWSER="firefox"																				# browser - for sensible-browser command
 InPath direnv && eval "$(direnv hook "$PLATFORM_SHELL")"															# direnv
 [[ ! $EDITOR_CHECKED ]] && { SetTextEditor; EDITOR_CHECKED="true"; } 									# editor
 [[ -d "$HOME/.fzf" ]] && InPath "FzfInstall.sh" && { . FzfInstall.sh || return; }			# fzf
@@ -48,6 +47,11 @@ SourceIfExists "$HOME/.rvm/scripts/rvm" || return  																		# Ruby Vers
 [[ -d "$HOME/.cargo/bin" ]] && PathAdd "$HOME/.cargo/bin" 														# Rust
 PathAdd "/opt/X11/bin" 																																# XQuartz
 PythonConf || return
+
+# browser - for sensible-browser command
+if firefox IsInstalled; then export BROWSER="firefox"
+elif chrome IsInstalled; then export BROWSER="chrome"
+fi
 
 # Homebrew
 if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then

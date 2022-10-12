@@ -1027,42 +1027,18 @@ SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell 
 
 sconf() { SshAgentConf "$@" && SshAgent status; }
 
-alias s=sx	# connect with ssh
-alias hvs="hyperv connect ssh" # connect to a Hyper-V host with ssh
+alias s=sx													# connect with ssh
+alias hvs="hyperv connect ssh" 			# connect to a Hyper-V host with ssh
 alias sshconfig='e ~/.ssh/config'
 alias sshkh='e ~/.ssh/known_hosts'
 
 # information
 sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
 
-# connecting
+# connect
 sm() { SshHelper connect --mosh "$@"; } # mosh
-ssht() { ssh -t "$@"; } 				# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
-
-# sx - X forwarding and supply passwords where possible
-sx()
-{	
-	SshAgentConf --quiet
-	HashiConf --quiet
-	
-	# arguments
-	local arg force host
-	for arg in "$@"; do
-		case "$arg" in 
-			-f|--force) force="--force";;
-			--) break;;
-			*) [[ ! $host ]] && host="$arg";;
-		esac
-	done
-
-	# connect
-	case "$(RemoveDnsSuffix "$host")" in
-		nas3) HashiConf --config-prefix=prod && ScriptEval qnap cli login vars $force && SshHelper connect -x "$@";;
-		#router) SshHelper connect --password "$(credential get unifi admin)" "$@";; # not required if SSH keys are working
-		oversoul|oversoulw1|oversoulw2|oversoulw3|oversoulw4) SshHelper connect --password "$(credential get secure system)" "$@";;
-		*) SshHelper connect --x-forwarding --hashi "$@";;
-	esac 
-}
+ssht() { ssh -t "$@"; } 								# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
+sx() { SshAgentConf --quiet && HashiConf --quiet && SshHelper connect --x-forwarding --hashi "$@"; } # sx - X forwarding and supply passwords where possible
 
 # connect with additional startup scripts
 sshfull() { ssh -t $1 ". /etc/profile; ${@:2}";  } # full environment

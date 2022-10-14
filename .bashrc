@@ -28,7 +28,15 @@ IsZsh && bindkey "^H" backward-kill-word
 
 # options
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
-IsZsh && { setopt no_beep; alias help="run-help"; }
+
+if IsZsh; then
+	setopt no_beep
+
+	# help
+	unalias run-help; autoload run-help
+	HELPDIR=/usr/share/zsh/"${ZSH_VERSION}"/help
+	alias help=run-help
+fi
 
 #
 # Application Configuration

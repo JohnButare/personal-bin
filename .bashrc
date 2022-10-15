@@ -33,7 +33,7 @@ if IsZsh; then
 	setopt no_beep
 
 	# help
-	unalias run-help; autoload run-help
+	unalias run-help >& /dev/null; autoload run-help
 	HELPDIR=/usr/share/zsh/"${ZSH_VERSION}"/help
 	alias help=run-help
 fi

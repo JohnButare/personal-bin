@@ -702,11 +702,32 @@ DiskTestWrite()
 	local count="$2"; [[ ! $count ]] && count="1024" 
 	
 	sync
-	dd if=/dev/zero of="$file" bs=1M count="$count"
-	if=/dev/zero of=tempfile bs=1M count=1024
+	${G}dd if=/dev/zero of="$file" bs=1M count="$count"
 	sync
 	rm "$file"
 } 
+
+DiskTestFio()
+{
+	local dir="${1:-/tmp}" sudo; InPath sudo && sudo="sudoc"
+	[[ ! -d "$dir" ]] && { ScriptErr "Directory '$dir' does not exist"; return 1; }
+	dir+="/FioTest"; $sudo mkdir -p "$dir" || return
+
+	# write throughput
+	$sudo fio --name=write_throughput --directory="$dir" --numjobs=8 \
+	--size=10G --time_based --runtime=60s --ramp_time=2s --ioengine=libaio \
+	--direct=1 --verify=0 --bs=1M --iodepth=64 --rw=write \
+	--group_reporting=1
+
+	# read throughput
+	$sudo fio --name=read_throughput --directory="$dir" --numjobs=8 \
+	--size=10G --time_based --runtime=60s --ramp_time=2s --ioengine=libaio \
+	--direct=1 --verify=0 --bs=1M --iodepth=64 --rw=read \
+	--group_reporting=1
+
+	# cleanup
+	$sudo rm -fr "$dir"
+}
 
 # network
 iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002 "$@"; } # server

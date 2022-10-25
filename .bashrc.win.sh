@@ -15,6 +15,7 @@ ahk() { AutoHotKey "$@"; } # AutoHotKey
 FlipFlopWheel() { elevate powershell FlipFlopWheel.ps1; }
 PortForward() { RunScript --elevate -- powershell.exe WslPortForward.ps1 > /dev/null; }
 rdesk() { ( mstsc.exe '/f' '/v:'"${@}" & ) }
+sqlcmd() { "$P/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/SQLCMD.EXE" "$@"; }
 
 # credentials
 WinCredList() {  wincred.exe list '*' | sort | grep -v '^secret-' | RemoveCarriageReturn; }

@@ -133,11 +133,22 @@ figlet() { pyfiglet "$@"; }
 bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
 terminator() { coproc /usr/bin/terminator "$@"; }
 
-if IsPlatform mac; then
-	code() { "$P/Visual Studio Code.app/Contents/Resources/app/bin/code" "$@"; }
-elif IsPlatform win; then
-	code() { "$P/Microsoft VS Code/Code.exe" "$@"; }
-fi
+code()
+{
+	local p
+
+	if IsPlatform mac; then
+		p="$P/Visual Studio Code.app/Contents/Resources/app/bin/code"
+	elif IsPlatform win && [[ -f "$UADATA/Programs/Microsoft VS Code/Code.exe" ]]; then
+		p="$UADATA/Programs/Microsoft VS Code/Code.exe"
+	elif IsPlatform win && [[ -f "$P/Microsoft VS Code/Code.exe" ]]; then
+		p="$P/Microsoft VS Code/Code.exe"		
+	else
+		ScriptErr "Visual Studio Code is not installed", "code"; return 1
+	fi
+
+	(nohup "$p" "$@" >& /dev/null &)		
+}
 
 #
 # archive

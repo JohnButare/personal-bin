@@ -685,7 +685,7 @@ sysmon()
 	InPath htop && { htop; return; }
 	InPath top && { top; return; }
 
-	EchoErr "sysmon: no system monitor installed"
+	ScriptErr "no system monitor installed" "sysmon"
 	return 1
 }
 
@@ -945,7 +945,7 @@ logoff()
 	elif IsPlatform win; then logoff.exe
 	elif IsPlatform ubuntu; then gnome-session-quit --no-prompt
 	elif IsPlatform mac; then sudoc launchctl bootout "user/$(id -u "$user")"
-	else EchoErr "logoff: logoff not supported"; return 1;
+	else ScriptErr "logoff not supported", "logoff"; return 1;
 	fi		
 }
 
@@ -1098,7 +1098,7 @@ playsound()
 { 
 	InPath play && { play "$@"; return; } # requires sox
 	IsPlatform mac && { afplay "$@"; return; }
-	EchoErr "No audio program was found"; return 1
+	ScriptErr "no audio program was found" "playsoud"; return 1
 }
 
 # 

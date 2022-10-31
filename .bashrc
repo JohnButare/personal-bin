@@ -1040,8 +1040,9 @@ alias slistapp='slist | xargs grep -iE "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
 fu() { FindText "$1" "*" "$BIN"; FindText "$1" "*" "$UBIN"; } # FindUsages TEXT - find all script usages of specified TEXT
-fuf() { fu "$@" | cut -d: -f1 | sort | uniq; } # FindUsagesFiles - find all script names that use the specified TEXT
-fue() { fuf "$@" | xargs sublime; } # FindUsagesEdit - edit all script names that use the specified TEXT
+fuh() { HeaderBig "$@" && fu "$@"; } 													# FindUsageHeader
+fuf() { fu "$@" | cut -d: -f1 | sort | uniq; } 								# FindUsagesFiles - find all script names that use the specified TEXT
+fue() { fuf "$@" | xargs sublime; } 													# FindUsagesEdit - edit all script names that use the specified TEXT
 
 #
 # security
@@ -1100,6 +1101,12 @@ playsound()
 	IsPlatform mac && { afplay "$@"; return; }
 	ScriptErr "no audio program was found" "playsoud"; return 1
 }
+
+#
+# text
+#
+
+rgh() { HeaderBig "$1" && rg "$@"; } # ripgrep header
 
 # 
 # tmux 

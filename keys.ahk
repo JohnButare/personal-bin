@@ -11,8 +11,8 @@ TextEditorInit()
 VmInit()
 
 #Include common.ahk
-#Include other.ahk
 
+#Include apps.ahk
 #Include browser.ahk
 #Include git.ahk
 #Include mail.ahk
@@ -68,5 +68,13 @@ RShift & g::Opengit()					; Git
 RShift & m::OpenMail()					; Mail
 RShift & n::OpenNotion()				; Notes
 RShift & t::OpenTextEditor()		; Text Editor
-RShift & v::OpenVm()						; Virtual Machine
 RShift & w::RunWord()						; word
+
+;RShift & v::OpenVm()
+
+; coding
+RShift & v::OpenVisualStudio()
+RShift & s::OpenSqlServerManagementStudio()
+
+; DriveTime
+RShift & l::OpenSlack()

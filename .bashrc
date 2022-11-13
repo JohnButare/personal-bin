@@ -127,10 +127,11 @@ st() { startup --no-pause "$@"; }
 alias f='firefox'
 alias grep='command grep --color=auto'
 alias m='merge'
+alias pref='os preferences'
 
+bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
 e() { TextEdit "$@"; }
 figlet() { pyfiglet "$@"; }
-bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
 terminator() { coproc /usr/bin/terminator "$@"; }
 
 code()

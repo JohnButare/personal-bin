@@ -428,6 +428,7 @@ alias dt-new-token='az login --scope https://management.core.windows.net//.defau
 
 # lookup
 alias ldata='cd $WIN_ROOT/temp/Lookup' # lookup data
+alias lcode='cd $WIN_CODE/Lookup' 		 # lookup code
 
 # run in domain
 dedge() { dtRun "$P32/Microsoft/Edge/Application/msedge.exe" --profile-directory=Default; }

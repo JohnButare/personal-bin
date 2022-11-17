@@ -2,7 +2,7 @@ GitInit()
 {
   global
 
-  GitKraken := LOCALAPPDATA "\gitkraken\app-8.8.0\resources\bin\gitkraken.cmd"
+  GitKraken := LOCALAPPDATA "\gitkraken\app-8.10.3\resources\bin\gitkraken.cmd"
   fork := LOCALAPPDATA "\..\Local\Fork\Fork.exe"
 	
   if FileExist(GitKraken)

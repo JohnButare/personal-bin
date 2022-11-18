@@ -20,12 +20,6 @@ sqlcmd() { "$P/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/SQLCMD.EXE" "
 # credentials
 WinCredList() {  wincred.exe list '*' | sort | grep -v '^secret-' | RemoveCarriageReturn; }
 
-# monitor
-alias monden='monprofile den'
-alias monstudy='monprofile study'
-alias moninfo='cs $win/UltraMon.js info'
-monprofile() { start "$cloud/data/UltraMon/$1.umprofile"; }
-
 # network
 alias NetConfig='control.exe netconnections'
 alias ewhosts='elevate RunScript TextEdit /mnt/c/Windows/System32/drivers/etc/hosts' # edit windows hosts file

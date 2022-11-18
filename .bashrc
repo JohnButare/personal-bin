@@ -376,6 +376,20 @@ alias ddm='DellDisplayManager'
 FullWakeup() { ssh "$1" caffeinate  -u -w 10; }
 sw() { ddm switch "$@"; } # switch monitor
 
+mp()
+{
+	local dir="$UADATA/../Roaming/Realtime Soft/UltraMon/3.4.1/Profiles"
+	local cdir="$cloud/data/UltraMon"
+
+	if [[ -f "$dir/$1.umprofile" ]]; then start "$dir/$1.umprofile"
+	elif [[ -f "$dir/study/$1.umprofile" ]]; then start "$dir/study/$1.umprofile"
+	elif [[ -f "$cdir/$1.umprofile" ]]; then start "$cdir/$1.umprofile"
+	else ScriptErr "mon" "'$1' is not a valid monitor profile"
+	fi
+}
+
+mpl() { tree "$UADATA/../Roaming/Realtime Soft/UltraMon/3.4.1/Profiles"	"$cloud/data/UltraMon"; }
+
 # swe - switch monitor to ender
 swe()
 {

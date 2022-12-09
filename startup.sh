@@ -14,7 +14,7 @@ st docker || return
 IsPlatform wsl && IsHypervVm && { st chrony time || return; } 	
 
 # applications
-st WindowManager AutoHotKey LogitechOptions pu TidyTabs || return
+st WindowManager AutoHotKey LogitechOptions pu teams || return
 
 # specific applciations
 case "$HOSTNAME" in

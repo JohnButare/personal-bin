@@ -14,8 +14,6 @@ GetPreferenceChange() # determine the configure domain for a preferences change
 	BeyondCompare /tmp/orig.txt /tmp/new.txt
 }
 
-alias karabiner='"/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_cli"'
-
 SmbFix()
 {
 	sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.smbd.plist	|| return

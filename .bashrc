@@ -1229,9 +1229,9 @@ bbh()
 } 
 
 # network DNS and DHCP configuration
-alias ne='wiggin network edit'										# network edit
-alias nep='e $DATA/setup/ports'										# network edit poirt
-alias nb='wiggin network backup all'							# network backup
+alias ne='wiggin network edit'								# network edit
+alias nep='e $DATA/setup/ports'								# network edit poirt
+alias nb='wiggin network backup all'					# network backup
 alias nua='wiggin network update all'					# network update all
 alias nud='wiggin network update dns'					# network update DNS
 alias nudh='wiggin network update dhcp'				# network update DHCP

@@ -10,8 +10,9 @@ st sshd ports || return
 # services - dbus docker chrony cron incron
 st docker || return 
 
-# chrony - fixes time drift in WSL under Hyper-V
-IsPlatform wsl && IsHypervVm && { st chrony time || return; } 	
+# clock
+st chrony || return
+IsPlatform wsl && IsHypervVm && { st time || return; } # fixes time drift in WSL under Hyper-V
 
 # applications
 st WindowManager AutoHotKey LogitechOptions pu slack teams || return

@@ -871,7 +871,7 @@ TftpLog() {	if IsPlatform qnap; then LogShow "/share/Logs/opentftpd.log"; else s
 # Virtual IP (VIP)
 VipResolve() { local lb="${1:-lb}" mac; MacLookupInfo "$lb"; }
 
-VipStatus()
+VipStatus() # run on pi5+
 {
 	local lb="${1:-lb}" names; echo "Press any key to stop resolving load balancer ($lb)..."
 	while true; do names="$(MacLookupName "$lb" | sed 's/\..*$//' | sort | NewlineToSpace)" && echo "$lb: $names"; ReadChars 1 1 && return; done

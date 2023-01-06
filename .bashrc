@@ -303,6 +303,12 @@ alias npmls='npm ls --depth=0'
 alias npmi='sudo npm install -g' # npm install
 alias npmu='sudo npm uninstall -g' # npm uninstall
 
+if [[ -d "$HOME/.nvm" ]]; then
+	export NVM_DIR="$HOME/.nvm"
+	SourceIfExists "$NVM_DIR/nvm.sh" || return
+	SourceIfExists "$NVM_DIR/bash_completion" || return
+fi
+
 #
 # directory management
 #

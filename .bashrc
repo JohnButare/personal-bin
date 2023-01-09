@@ -465,6 +465,7 @@ vsne() { hstart64.exe /NOCONSOLE /NONELEVATED "$(utw "$P/Microsoft Visual Studio
 #
 
 alias fa='FindAll'
+alias fai='FindAllIgnore'
 alias fcd='FindCd'
 alias fclip='FindClip'
 alias fs='FindStart'
@@ -472,6 +473,7 @@ alias ft='FindText'
 alias ftf='FindTextFile'
 
 FindAll() {	fd "$@" --one-file-system; }																											# FindAll PATTERN - find all files that match the pattern from the current directory
+FindAllIgnore() {	fd --no-ignore "$@" --one-file-system; }																		# FindAllIgnore PATTERN - ignore files ignored by .gitignore 
 FindClip() { local files; IFS=$'\n' ArrayMakeC files FindAll "$1" && clipw "${files[@]}"; }
 FindStart() { start "$(FindAll "$@" | head -1)"; }
 FindText() { grep --color -ire "$1" --include="$2" --exclude-dir=".git" "${3:-.}"; } 					# FindText TEXT FILE_PATTERN [START_DIR](.) - find all text in files matching the pattern, starting at the start directory

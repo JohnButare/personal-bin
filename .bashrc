@@ -920,21 +920,25 @@ GitPrompt()
 	GIT_PS1_SHOWDIRTYSTATE="true" # shows *
 	GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
 	GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
+
+	drive IsWin . && . "$bin/git-sh-prompt-win"
 	__git_ps1 " (%s)"
 }
 
 SetPrompt() 
 {
+	local blue='\[\e[34m\]'
 	local cyan='\[\e[36m\]'
 	local clear='\[\e[0m\]'
 	local green='\[\e[32m\]'
 	local red='\[\e[31m\]'
 	local yellow='\[\e[33m\]'
 
-	local dir='\w'
-	local git; IsFunction __git_ps1 && git='$(GitPrompt)'
+	local dir='${green}\w${clear}'
+	local git; #IsFunction __git_ps1 && git='${cyan}$(GitPrompt)${clear}'
 	local user; [[ "$USER" != "jjbutare" ]] && user="\u"
-	local root; IsRoot && user+="${red}*"
+	local elevated; IsElevated && elevated+="${red}-elevated${clear}"
+	local root; IsRoot && root+="${red}-root${clear}"
 
 	local host="${HOSTNAME#$USER-}"; host="${host#$SUDO_USER-}"; # remove the username from the hostname to shorten it
 	host="${host%%.*}" # remove DNS suffix
@@ -943,7 +947,7 @@ SetPrompt()
 
 	[[ $user ]] && user="@${user}"
 
- 	PS1="${title}${green}${host}${user}${clear}${cyan}${git}${clear}\$ "
+ 	PS1="${title}${green}${host}${user}${root}${elevated}${git} ${blue}$dir${clear} \$ "
 
 	# share history with other shells when the prompt changes
 	PROMPT_COMMAND='history -a; history -r;' 

@@ -92,7 +92,7 @@ if IsPlatform win; then
 	p32="$P32"																																	# programs
 	psm="$PROGRAMDATA/Microsoft/Windows/Start Menu"; pp="$psm/Programs" 				# public
 	usm="$UADATA/../Roaming/Microsoft/Windows/Start Menu"; up="$usm/Programs"		# user
-	wcode="$WIN_CODE" wh="$WIN_HOME" 	
+	wcode="$WIN_CODE" wh="$WIN_HOME"; alias wcode="$wcode"
 fi
 
 # Dropbox

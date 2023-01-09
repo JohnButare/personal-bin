@@ -521,7 +521,7 @@ alias unfunction='unset -f'
 # git
 #
 
-g() { SshAgentConf && git "$@"; }
+g() { local git=git; drive IsWin . && git="git.exe"; SshAgentConf && $git "$@"; }
 gcd() { ScriptCd GitHelper github dir "$@"; }
 gcdw() { ScriptCd GitHelper github dir --windows "$@"; }
 ghlp() { SshAgentConf && GitHelper "$@"; }

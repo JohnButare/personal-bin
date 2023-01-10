@@ -211,6 +211,9 @@ if IsBash; then
 	complete -A hostname -o default curl dig host mosh netcat nslookup on off ping telnet
 
 	# git
+	
+	export GIT_EDITOR="TextEdit -w"
+
 	case "$PLATFORM" in
 		linux) 
 			if [[ -f /usr/lib/git-core/git-sh-prompt ]] && ! IsFunction __git_ps1; then

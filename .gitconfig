@@ -161,7 +161,8 @@
 [core]
 	autocrlf = false
 	excludesfile = ~/.gitignore
-	editor = TextEdit --wait
+	#editor = TextEdit --wait
+	editor = 'C:/Program Files/Sublime Text/subl.exe' -n -w
 	pager = delta
 [diff]
 	tool = bc

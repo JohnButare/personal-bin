@@ -450,8 +450,8 @@ alias dt-get-cred-prode='az aks get-credentials -g dtwt-aks-prod-rg -n dtet-aks-
 alias dt-new-token='az login --scope https://management.core.windows.net//.default'
 
 # lookup
-alias ldata='cd $WIN_ROOT/temp/Lookup' # lookup data
-alias lcode='cd $WIN_CODE/Lookup' 		 # lookup code
+alias ldata='cd $WIN_ROOT/temp/Lookup' 		# lookup data
+alias lcode='cd $WIN_CODE/DT.Lookup' 		 	# lookup code
 alias ldev='cd "$WIN_CODE/Lookup/Shared.LookupEditor/App" && code .'
 
 # run in domain

@@ -15,7 +15,7 @@ st chrony || return
 IsPlatform wsl && IsHypervVm && { st time || return; } # fixes time drift in WSL under Hyper-V
 
 # applications
-st WindowManager AutoHotKey LogitechOptions pu slack teams || return
+st WindowManager AutoHotKey LogitechOptions pu slack || return
 
 # specific applciations
 case "$HOSTNAME" in

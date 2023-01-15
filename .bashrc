@@ -212,7 +212,6 @@ if IsBash; then
 
 	# git
 	
-	export GIT_EDITOR="TextEdit -w"
 
 	case "$PLATFORM" in
 		linux) 
@@ -241,10 +240,8 @@ if IsBash; then
 			;;
 	esac
 
-	# cd should not complete variables without a leading $
-	complete -r cd >& /dev/null 
-
-	# git
+	# completion
+	complete -r cd >& /dev/null # cd should not complete variables without a leading $
 	complete -o default -o nospace -F _git g 
 
 	# HashiCorp
@@ -523,6 +520,8 @@ alias unfunction='unset -f'
 #
 # git
 #
+
+export GIT_EDITOR="TextEdit -w"
 
 g() { local git=git; drive IsWin . && git="git.exe"; SshAgentConf && $git "$@"; }
 gcd() { ScriptCd GitHelper github dir "$@"; }

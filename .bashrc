@@ -81,19 +81,17 @@ fi
 # locations
 #
 
-tmp() { cd "$TMP"; }
-b="$BIN" bin="$BIN" pd="$PUB/Desktop" pub="$PUB" data="$DATA" win="$DATA/platform/win"
-home="$HOME" doc="$DOC" dl="$HOME/Downloads" code="$CODE"
-ubin="$HOME/data/bin" ud="$HOME/Desktop" udata="$HOME/data"  	# user
-p="$P"								 																				# programs
-adata="$DATA/appdata" adataw="$DATA/appdataw"
+adata="$DATA/appdata" adataw="$DATA/appdataw" b="$BIN" bin="$BIN" data="$DATA" p="$P" pd="$PUB/Desktop" pub="$PUB" tmp="/tmp" root="/" win="$DATA/platform/win" 	# system
+doc="$DOC" dl="$HOME/Downloads" code="$CODE" home="$HOME" ubin="$HOME/data/bin" ud="$HOME/Desktop" udata="$HOME/data"  																						# user
 
 if IsPlatform win; then
-	p32="$P32"																																	# programs
-	psm="$PROGRAMDATA/Microsoft/Windows/Start Menu"; pp="$psm/Programs" 				# public
-	usm="$UADATA/../Roaming/Microsoft/Windows/Start Menu"; up="$usm/Programs"		# user
-	wcode="$WIN_CODE" wh="$WIN_HOME"; alias wcode="$wcode"
+	p32="$P32" psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" wr="$WIN_ROOT" wtmp="$WIN_ROOT/temp"; pp="$psm/Programs" 			# system
+	usm="$UADATA/../Roaming/Microsoft/Windows/Start Menu" wcode="$WIN_CODE" wh="$WIN_HOME" ; up="$usm/Programs"								# user
+else
+	wcode="$CODE" wh="$HOME" wtmp="$TMP"
 fi
+
+alias wcode="$wcode"
 
 # Dropbox
 if [[ -d "$home/Dropbox" ]]; then
@@ -447,9 +445,9 @@ alias dt-get-cred-prode='az aks get-credentials -g dtwt-aks-prod-rg -n dtet-aks-
 alias dt-new-token='az login --scope https://management.core.windows.net//.default'
 
 # lookup
-alias ldata='cd $WIN_ROOT/temp/lookup/set' 		# lookup data
-alias lcode='cd $WIN_CODE/DT.Lookup' 		 	# lookup code
-alias ldev='cd "$WIN_CODE/Lookup/Shared.LookupEditor/App" && code .'
+alias ldata='cd $wtmp/lookup/set' 		# lookup data
+alias lcode='cd $wcode/DT.Lookup' 		# lookup code
+alias ldev='cd "$wcode/Lookup/Shared.LookupEditor/App" && code .'
 
 # run in domain
 dedge() { dtRun "$P32/Microsoft/Edge/Application/msedge.exe" --profile-directory=Default; }
@@ -627,8 +625,8 @@ NomadApps() { hashi app node status --active; }
 NomadAllocations() { hashi nomad node allocations -H=active; }
 
 # HashiCorp - Vagrant
-vagrant() { "$WIN_ROOT/HashiCorp/Vagrant/bin/vagrant.exe" "$@"; }
-vcd() { cd "$WIN_HOME/data/app/vagrant"; }
+vagrant() { "$wr/HashiCorp/Vagrant/bin/vagrant.exe" "$@"; }
+vcd() { cd "$wh/data/app/vagrant"; }
 
 #
 # Home Automation

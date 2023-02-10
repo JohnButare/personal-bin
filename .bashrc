@@ -137,7 +137,7 @@ code()
 	local p
 
 	if IsPlatform mac; then
-		p="$P/Visual Studio Code.app/Contents/Resources/app/bin/code"
+		p="$HOME/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
 	elif IsPlatform win && [[ -f "$UADATA/Programs/Microsoft VS Code/Code.exe" ]]; then
 		p="$UADATA/Programs/Microsoft VS Code/Code.exe"
 	elif IsPlatform win && [[ -f "$P/Microsoft VS Code/Code.exe" ]]; then
@@ -447,7 +447,7 @@ alias dt-new-token='az login --scope https://management.core.windows.net//.defau
 # lookup
 alias ldata='cd $wtmp/lookup/set' 		# lookup data
 alias lcode='cd $wcode/DT.Lookup' 		# lookup code
-alias ldev='cd "$wcode/Lookup/Shared.LookupEditor/App" && code .'
+alias ldev='lcode && code .'
 
 # run in domain
 dedge() { dtRun "$P32/Microsoft/Edge/Application/msedge.exe" --profile-directory=Default; }

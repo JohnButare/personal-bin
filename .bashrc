@@ -1046,6 +1046,7 @@ PiHostsOff() { consul members | grep " left " | tr -s " " | cut -d" " -f1 | sort
 PiImageLite() { pi image "$(i dir)/platform/linux/Raspberry Pi/Raspberry Pi OS/2020-05-27-raspios-buster-lite-armhf.zip"; }
 PiShell() { sx --host=all "$@"; } 																			# PiShell - run a shell on all servers
 PiSsh() { sx --host=all --errors --function --pseudo-terminal "$@"; } 	# PiSsh COMMAND - run a command on all servers
+PiVerifyCert() { PiSsh -- 'openssl x509 -in "'${1:-/opt/nomad/cert/nomad-client.pem}'" -text | grep "Not After"'; }
 PiCache() { clipw 'aconf && exit' && PiShell; } # cache passwords
 
 #

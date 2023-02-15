@@ -47,6 +47,7 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 ; Windows
 ;
 
+LWin & NumpadClear::Send "+^#z"
 ;RWin & q::Send "#{Numpad7}"
 ;RWin & w::Send "#{Numpad8}"
 ;RWin & e::Send "#{Numpad9}"

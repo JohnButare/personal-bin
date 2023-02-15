@@ -259,6 +259,7 @@ DumpBytes() { od --address-radix d -t x1 -t c -t a; } # echo -en "01\\n" | DumpB
 clock() { ClockHelper start; }
 clockt() { ClockHelper terminal; } 		# clock terminal
 clockc() { ClockHelper check; } 			# clock check
+clocks() { ClockHelper status; } 			# clock statis
 clockdiff() { ClockHelper diff; } 		# clock difference
 
 #

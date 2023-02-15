@@ -7,12 +7,11 @@ st xserver dbus network || return
 # start SSH before port forwarding, as we check for open ports using SSH
 st sshd ports || return
 
-# services - dbus docker chrony cron incron
+# services - dbus docker cron incron
 st docker || return 
 
 # clock
-st chrony || return
-IsPlatform wsl && IsHypervVm && { st time || return; } # fixes time drift in WSL under Hyper-V
+IsPlatform wsl && { st time || return; } # fixes time drift in WSL and major differences when Hyper-V guest resumes
 
 # applications
 st WindowManager AutoHotKey LogitechOptions LogitechOptionsPlus pu slack || return

@@ -181,7 +181,7 @@ alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 sfull() # set full
 {
 	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,FZF_CHECKED,NETWORK_CHECKED}="" 	# .bashrc
-	declare {PLATFORM,PLATFORM_LIKE,PLATFORM_ID}=""																											# bash.bashrc
+	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""																											# bash.bashrc
 	declare {CHROOT_CHECKED,VM_TYPE_CHECKED,HASHI_CHECKED}=""																						# function.sh
 
 	. "$bin/bash.bashrc"
@@ -211,7 +211,7 @@ if IsBash; then
 	# git
 	
 
-	case "$PLATFORM" in
+	case "$PLATFORM_OS" in
 		linux) 
 			if [[ -f /usr/lib/git-core/git-sh-prompt ]] && ! IsFunction __git_ps1; then
 				. /usr/lib/git-core/git-sh-prompt
@@ -702,7 +702,7 @@ kcinit() { ! InPath kubectl && return; eval "$(kubectl completion "$PLATFORM_SHE
 sysmon()
 { 
 	if HasWindowManager; then
-		case "$PLATFORM" in
+		case "$PLATFORM_OS" in
 			linux) 
 				InPath stacer && { coproc stacer; return; }
 				InPath gnome-system-monitor && { coproc gnome-system-monitor; return; }

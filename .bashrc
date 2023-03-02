@@ -556,6 +556,9 @@ alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modifi
 alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; }'
 alias lg='lazygit'
 
+# gfix - git fix, combine modified files with last commit and force push
+alias gfix='grfc && gria && g push --force'
+
 # gdir SERVER - change to the git directory on SERVER for repo creation
 gdir() { cd "$(GitHelper remote dir "$@")"; }
 

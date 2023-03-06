@@ -210,7 +210,6 @@ if IsBash; then
 
 	# git
 	
-
 	case "$PLATFORM_OS" in
 		linux) 
 			if [[ -f /usr/lib/git-core/git-sh-prompt ]] && ! IsFunction __git_ps1; then
@@ -529,6 +528,9 @@ ghlp() { SshAgentConf && GitHelper "$@"; }
 ghc() { GitClone "$@"; }
 ghcw() { GitClone --windows "$@"; }
 gg() { SshAgentConf && GitHelper gui "$@"; }
+gpullb() { g pull && g pull gh master; }
+gpushb() { g push && g push gh; }
+
 
 alias ga='g add'
 alias gd='g diff'

@@ -528,8 +528,8 @@ ghlp() { SshAgentConf && GitHelper "$@"; }
 ghc() { GitClone "$@"; }
 ghcw() { GitClone --windows "$@"; }
 gg() { SshAgentConf && GitHelper gui "$@"; }
-gpullb() { g pull && g pull gh master; }
-gpushb() { g push && g push gh; }
+gpull() { g pull && g pull gh master; }
+gpush() { g push && g push gh; }
 
 
 alias ga='g add'

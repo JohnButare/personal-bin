@@ -39,8 +39,9 @@ z7bak() { [[ $# == 1  ]] && 7z a -m1=LZMA2 "$1.7z" "$1" || 7z a -m1=LZMA2 "$1" "
 wcd() { cd "$(wsl get dir)/image"; }									# cd
 wcdi() { cd "$(wsl get ImageDir)"; }									# cd image
 wn() { wsl get name; }																# name
-wslr() { wsl dist run "$@"; }														# run DIST
+wslr() { wsl dist run "$@"; }													# run DIST
 wsld() { wsl shutdown; }															# shutdown WSL
+alias wslt=wsld																				# terminate WSL
 wslr() { wsl dist restore "$@" && wsl install "$1"; } # reset DIST SRC
 
 # test2 distribution

@@ -14,7 +14,7 @@ st docker || return
 IsPlatform wsl && { st time || return; } # fixes time drift in WSL and major differences when Hyper-V guest resumes
 
 # applications
-st WindowManager AutoHotKey LogitechOptions LogitechOptionsPlus pu slack || return
+st WindowManager AutoHotKey pu slack || return
 
 IsPlatform parallels && { drive mount all || return; }
 

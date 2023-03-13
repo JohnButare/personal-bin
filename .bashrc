@@ -254,13 +254,8 @@ fi
 DumpBytes() { od --address-radix d -t x1 -t c -t a; } # echo -en "01\\n" | DumpBytes
 
 # date/time
-
-clock() { ClockHelper start; }
-clockf() { ClockHelper fix; }
-clockt() { ClockHelper terminal; } 		# clock terminal
-clockc() { ClockHelper check; } 			# clock check
-clocks() { ClockHelper status; } 			# clock status
-clockdiff() { ClockHelper diff; } 		# clock difference
+clock() { ClockHelper $@; }
+alias clk="clock"
 
 #
 # cron

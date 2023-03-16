@@ -50,7 +50,7 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 LWin & NumpadClear::Send "+^#z"
 ;RWin & q::Send "#{Numpad7}"
 ;RWin & w::Send "#{Numpad8}"
-;RWin & e::Send "#{Numpad9}"
+;RWin & e::Send "#{Numpad9}"-
 ;RWin & a::Send "#{Numpad4}"
 ;RWin & s::Send "#{Numpad5}"
 ;RWin & d::Send "#{Numpad6}"
@@ -70,7 +70,8 @@ RShift & m::OpenMail()					; Mail
 RShift & n::OpenNotion()				; Notes
 RShift & t::OpenTextEditor()		; Text Editor
 RShift & w::RunWord()						; word
-
+#=::^=													; map cmd= (magnifier shortkcut) to ctrl= (text size increase)
+#-::^-												  ; map cmd- to ctrl- (text size decrease)
 ;RShift & v::OpenVm()
 
 ; coding

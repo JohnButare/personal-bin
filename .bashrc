@@ -725,9 +725,10 @@ sysmon()
 }
 
 # time
-alias t='time pause'
+alias t='TimeCommand'
 alias ton='TimerOn'
 alias toff='TimerOff'
+alias tw='TimerOn && pause && TimerOff' # timer wait
 
 # disk
 alias TestDisk='sudo bench32.exe'

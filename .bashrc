@@ -927,7 +927,7 @@ GitPrompt()
 	GIT_PS1_SHOWSTASHSTATE="true"	 # shows $
 	GIT_PS1_SHOWUNTRACKEDFILES="true" # shows %
 
-	drive IsWin . && . "$bin/git-sh-prompt-win"
+	drive IsWin . && . "$bin/git-sh-prompt-win.sh"
 	__git_ps1 " (%s)"
 }
 

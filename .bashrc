@@ -608,7 +608,7 @@ hct() { HashiConf --config-prefix=test "$@" && hashi status; } # hct - hashi con
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hs() { hashi status; }
 hsr() { HashiServiceRegister "$@"; } # hsr SERVICE_FILE - register a Nomad service
-hfree() { hashi app node | grep -Ev " lb| pool-controller| unifi| domotz-agent"; } # free nodes (can restrt)
+hfree() { hashi app node | grep -Ev " domotz-agent| homebridge| lb| pool-controller| unifi"; } # free nodes (can turn off, excudes apps which cannot move automatically)
 
 # test
 hti() { wiggin setup hashi test -- "$@" && HashiConf test; }									# Hashi Test Install

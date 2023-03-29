@@ -728,7 +728,8 @@ sysmon()
 alias t='TimeCommand'
 alias ton='TimerOn'
 alias toff='TimerOff'
-alias tw='TimerOn && pause && TimerOff' # timer wait
+alias tsplit='TimerSplit'
+alias twait='TimerOn && pause && TimerOff' # timer wait
 
 # disk
 alias TestDisk='sudo bench32.exe'

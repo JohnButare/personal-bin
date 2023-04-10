@@ -1072,7 +1072,7 @@ ListScheduledTasks()
 # scripts
 #
 
-mint() { e "$ccode/bash/template/min" "$ccode/bash/template/app"; } # bash min template
+mint() { e "$ccode/bash/template/app" "$ccode/bash/template/min"; } # bash min template
 alias scd='ScriptCd'
 alias se='ScriptEval'
 alias slist='file * .* | FilterShellScript | cut -d: -f1'

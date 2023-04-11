@@ -526,7 +526,7 @@ ghlp() { SshAgentConf && GitHelper "$@"; }
 ghc() { GitClone "$@"; }
 ghcw() { GitClone --windows "$@"; }
 gg() { SshAgentConf && GitHelper gui "$@"; }
-gpull() { g pull && g pull gh master; }
+gpull() { ghlp pull origin gh wiggin; }
 gpush() { ghlp push origin gh wiggin; }
 
 alias ga='g add'

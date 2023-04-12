@@ -75,7 +75,7 @@ if [[ $HOMEBREW_PREFIX ]]; then
 fi
 
 # Visual Studio Code
-[[ -d "$UADATA/Programs/Microsoft VS Code/bin" ]] && PathAdd "$UADATA/Programs/Microsoft VS Code/bin"
+[[ -d "$PUSER/Microsoft VS Code/bin" ]] && PathAdd "$PUSER/Microsoft VS Code/bin"
 
 #
 # locations
@@ -128,26 +128,10 @@ alias m='merge'
 alias pref='os preferences'
 
 bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
+code() { VisualStudioCodeHelper "$@"; }
 e() { TextEdit "$@"; }
 figlet() { pyfiglet "$@"; }
 terminator() { coproc /usr/bin/terminator "$@"; }
-
-code()
-{
-	local p
-
-	if IsPlatform mac; then
-		p="$HOME/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
-	elif IsPlatform win && [[ -f "$UADATA/Programs/Microsoft VS Code/Code.exe" ]]; then
-		p="$UADATA/Programs/Microsoft VS Code/Code.exe"
-	elif IsPlatform win && [[ -f "$P/Microsoft VS Code/Code.exe" ]]; then
-		p="$P/Microsoft VS Code/Code.exe"		
-	else
-		ScriptErr "Visual Studio Code is not installed", "code"; return 1
-	fi
-
-	(nohup "$p" "$@" >& /dev/null &)		
-}
 
 #
 # archive

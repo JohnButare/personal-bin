@@ -62,6 +62,8 @@ LWin & NumpadClear::Send "+^#z"
 ; Applications
 ;
 
+;RShift & e::run "explorer.exe  %HOMEDRIVE%%HOMEPATH%"	; Explorer
+RShift & e::OpenExplorer()			; Explorer
 RShift & 1::Open1Password() 		; 1Password
 RShift & 3::OpenTerminal() 			; Terminal
 RShift & b::OpenBrowser() 			; Browser

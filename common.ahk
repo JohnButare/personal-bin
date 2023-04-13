@@ -59,7 +59,8 @@ NewFolder()
 
 OpenExplorer()
 {
-	run  "explorer ::{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+	run  "explorer ::{20D04FE0-3AEA-1069-A2D8-08002B30309D}" ; This PC
+	;run  "explorer " EnvGet("HOMEDRIVE") EnvGet("HOMEPATH")
 }
 
 RunProcessExplorer()

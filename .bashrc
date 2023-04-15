@@ -870,13 +870,8 @@ TftpRestart() { service restart tftpd-hpa; }
 TftpLog() {	if IsPlatform qnap; then LogShow "/share/Logs/opentftpd.log"; else sudor RunScript LogShow "/var/log/syslog"; fi; }
 
 # Virtual IP (VIP)
-VipResolve() { local lb="${1:-lb}" mac; MacLookupInfo "$lb"; }
-
-VipStatus() # run on pi5+
-{
-	local lb="${1:-lb}" names; echo "Press any key to stop resolving load balancer ($lb)..."
-	while true; do names="$(MacLookupName "$lb" | sed 's/\..*$//' | sort | NewlineToSpace)" && echo "$lb: $names"; ReadChars 1 1 && return; done
-}
+VipStatus() { local lb="${1:-lb}" mac; MacLookup --detail "$lb"; }
+VipMonitor() { MacLookup --monitor "${1:-lb}"; }
 
 # web
 awd() { ScriptCd apache dir web "$@" && ls; }		# Apache Web Dir

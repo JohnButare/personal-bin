@@ -1237,6 +1237,17 @@ alias nua='wiggin network update all'					# network update all
 alias nud='wiggin network update dns'					# network update DNS
 alias nudh='wiggin network update dhcp'				# network update DHCP
 
+DownInfo()
+{
+	local sep=","
+	{
+		hilight "name${sep}mac"
+		DomotzHelper down || return
+	} | column -c $(tput cols -T "$TERM") -t -s"${sep}"
+}
+
+DownFix() { wiggin host fix -H=backyardsouthleftlight,backyardsouthmiddlelight,denaccentlight --errors --wait; }
+
 # QNAP
 qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command
 

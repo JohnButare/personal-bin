@@ -591,7 +591,7 @@ hcd() { cd "$ncd/system/hashi/$1"; }
 hconf() { [[ "$NETWORK" != "hagerman" ]] && return; HashiConf --config-prefix=prod "$@" && hashi config status; } # hc - hashi config
 hct() { HashiConf --config-prefix=test "$@" && hashi status; } # hct - hashi config test
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
-hs() { hashi status; }
+hstat() { hashi status; }
 hsr() { HashiServiceRegister "$@"; } # hsr SERVICE_FILE - register a Nomad service
 hfree() { hashi app node | grep -Ev " domotz-agent| homebridge| lb| pool-controller| unifi"; } # free nodes (can turn off, excudes apps which cannot move automatically)
 
@@ -1208,6 +1208,7 @@ mcd() { cd "//nas3/data/media"; } # mcd - media CD
 
 # files
 hadcd() { cd "$(appdata "$1")/$2"; } # hadcd HOST DIR - host appdata cd to directory
+HostSync() { cls && wiggin host sync --errors --force --no-prompt  -H=all; }; alias hs='HostSync'
 
 # backup
 bdir() { cd "$(appdata "$(network current server backup --service=smb)")/backup"; } # backup dir

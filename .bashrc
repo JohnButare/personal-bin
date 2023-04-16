@@ -1247,7 +1247,7 @@ DownInfo()
 	} | column -c $(tput cols -T "$TERM") -t -s"${sep}"
 }
 
-DownFix() { wiggin host fix -H=backyardsouthleftlight,backyardsouthmiddlelight,denaccentlight --errors --wait; }
+DownFix() { wiggin host fix -H=down --errors --wait; }
 
 # QNAP
 qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command

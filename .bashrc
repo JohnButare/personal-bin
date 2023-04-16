@@ -123,6 +123,7 @@ st() { startup --no-pause "$@"; }
 # applications
 #
 
+alias choco='choco.exe'
 alias f='firefox'
 alias grep='command grep --color=auto'
 alias m='merge'

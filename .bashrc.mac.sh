@@ -1,7 +1,6 @@
 #alias e='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
 alias dir='ls'
 alias estart="e /etc/profile /etc/bashrc $BIN/bash.bashrc $UBIN/.bash_profile $UBIN/.bashrc $UBIN/.profile"
-alias gcp="acp --progress"
 
 AppFixPermissions() { sudoc gchown root -R "/Applications/$1.app" && sudoc gchgrp wheel -R "/Applications/$1.app"; }
 AppCheckPermissions() { ls -al "/Applications" | grep $USER; } # Applications should be owned by root not the current user

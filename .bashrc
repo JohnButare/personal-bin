@@ -1209,7 +1209,7 @@ mcd() { cd "//nas3/data/media"; } # mcd - media CD
 # files
 hadcd() { cd "$(appdata "$1")/$2"; } # hadcd HOST DIR - host appdata cd to directory
 HostSync() { cls; HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --force --no-prompt "$@"; }; alias hs='HostSync'
-HostSyncFast() { cls; HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --force --no-prompt -- --no-platform --no-user; }; alias hsf='HostSyncFast'
+HostSyncFast() { cls; HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --force --no-prompt -- --no-platform ; }; alias hsf='HostSyncFast'
 
 # backup
 bdir() { cd "$(appdata "$(network current server backup --service=smb)")/backup"; } # backup dir

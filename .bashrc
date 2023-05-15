@@ -16,6 +16,7 @@ export LESSOPEN='|~/.lessfilter %s'
 # verbose="--verbose"
 # force="--force"
 export TIMEFORMAT='%R seconds elapsed'
+alias tc='TimeCommand'
 
 # ensure DISPLAY is set first
 InitializeXServer || return
@@ -123,6 +124,7 @@ st() { startup --no-pause "$@"; }
 # applications
 #
 
+appc() { cls; header "Checking Applications"; inst check "$@"; }
 alias choco='choco.exe'
 alias f='firefox'
 alias grep='command grep --color=auto'

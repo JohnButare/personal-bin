@@ -576,6 +576,7 @@ glb()
 # history
 #
 
+HISTFILE="$HOME/.${PLATFORM_SHELL}_history" # GitKraken shell changes the history file
 HISTSIZE=5000
 HISTFILESIZE=10000
 IsBash && HISTCONTROL=ignoreboth
@@ -1318,6 +1319,7 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 # - must be after after set prompt as this modifies the bash prompt
 # - sometimes it prevents the rest of the script from running
 if InPath mcfly && [[ "$__MCFLY_LOADED" != "loaded" ]] && [[ "$TERM_PROGRAM" != @(vscode) ]]; then
+	export MCFLY_HISTFILE="$HISTFILE"
 	eval "$(mcfly init "$PLATFORM_SHELL")"
 fi
 

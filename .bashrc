@@ -124,7 +124,9 @@ st() { startup --no-pause "$@"; }
 # applications
 #
 
-appc() { cls; header "Checking Applications"; inst check "$@"; }
+appc() { cls; header "Checking Applications"; inst check "$@"; }	# check app versions
+appd() { inst check | awk '{ if ($3 == "") print $1; }'; } 				# check app downloads
+
 alias choco='choco.exe'
 alias f='firefox'
 alias grep='command grep --color=auto'

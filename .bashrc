@@ -546,7 +546,7 @@ alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; 
 alias lg='lazygit'
 
 # gfix - git fix, combine modified files with last commit and force push
-alias gfix='grfc && gria && g push --force'
+alias gfix='grfc && gria && gpush --force'
 
 # gdir SERVER - change to the git directory on SERVER for repo creation
 gdir() { cd "$(GitHelper remote dir "$@")"; }

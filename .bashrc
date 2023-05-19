@@ -6,7 +6,7 @@ export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 
 # return if not interactive
-[[ "$-" != *i* ]] && return 
+[[ "$-" != *i* ]] && return
 
 #
 # Interactive Configuration
@@ -509,7 +509,7 @@ alias unfunction='unset -f'
 
 export GIT_EDITOR="TextEdit -w"
 
-g() { local git=git; drive IsWin . && git="git.exe"; SshAgentConf && $git "$@"; }
+g() { local git=git; InPath "git.exe" && drive IsWin . && git="git.exe"; SshAgentConf && $git "$@"; }
 gcd() { ScriptCd GitHelper github dir "$@"; }
 gcdw() { ScriptCd GitHelper github dir --windows "$@"; }
 ghlp() { SshAgentConf && GitHelper "$@"; }

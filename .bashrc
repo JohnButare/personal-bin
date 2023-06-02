@@ -1204,9 +1204,24 @@ cam() { wiggin device "$@" cam; }
 wcore() { wiggin device "$@" core; }
 wtest() { wiggin device "$@" test; }
 
-# encrypted files
-encm() { VeraCrypt mount "$cdata/VeraCrypt/personal.hc" p; } 	# mount encrypted file share on drive p
-encum() { VeraCrypt unmount p; }															# unmount encrypted file share from drive p
+# encrypted files - (un)mount personal encrypted file share in ~/Volumes/personal or drive p (/mnt/p)
+encm()
+{
+	if InPath cryfs; then
+		cryfs "$CDATA/CryFS/personal" "$HOME/Volumes/personal"
+	elif VeraCrypt IsInstalled; then
+		VeraCrypt mount "$cdata/VeraCrypt/personal.hc" p
+	fi
+}
+
+encum()
+{
+	if InPath cryfs; then
+		cryfs-unmount "$HOME/Volumes/personal"
+	elif VeraCrypt IsInstalled; then
+		VeraCrypt unmount p
+	fi
+}
 
 # media
 mcd() { cd "//nas3/data/media"; } # mcd - media CD

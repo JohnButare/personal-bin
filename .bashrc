@@ -97,9 +97,9 @@ alias wcode="$wcode"
 # Dropbox
 if [[ -d "$home/Dropbox" ]]; then
 	cr="$HOME/Juntos Holdings Dropbox"; IsPlatform  mac && cr="$HOME/Library/CloudStorage/Dropbox-JuntosHoldings" # cloud root
-	cloud="$home/Dropbox"; c="$cloud"; cf="$cr/Family" cdata="$cloud/data"; cdl="$cdata/download"; ccode="$c/code"
-	jh="$cr" jhc="$cr/Company"
-	IsPlatform win && alias jh='"$WIN_HOME/Juntos Holdings Dropbox/Company"'
+	cc="$cr/Company" cf="$cr/Family" 
+	cloud="$home/Dropbox"; c="$cloud"; cdata="$c/data"; cdl="$cdata/download" ccode="$c/code"
+
 	ncd="$cloud/network"; alias ncd="$ncd" # network configuration directory
 	confDir="$ncd/system"	
 fi

@@ -124,7 +124,7 @@ st() { startup --no-pause "$@"; }
 # applications
 #
 
-appc() { cls; header "Checking Applications"; inst check "$@"; }	# check app versions
+appc() { header "Checking Applications"; inst check "$@"; }	# check app versions
 appd() { inst check | awk '{ if ($3 == "") print $1; }'; } 				# check app downloads
 
 alias choco='choco.exe'
@@ -850,7 +850,7 @@ if IsPlatform win; then
 fi
 
 # NginxConfWatch CONF [PATTERN] - watch a configuration file for changes
-NginxConfWatch() { cls; FileWatch "/etc/nginx/sites-available/$1.conf" "${2:-  server }"; }
+NginxConfWatch() { FileWatch "/etc/nginx/sites-available/$1.conf" "${2:-  server }"; }
 
 # proxy server
 alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
@@ -1219,8 +1219,8 @@ mcd() { cd "//nas3/data/media"; } # mcd - media CD
 
 # files
 hadcd() { cd "$(appdata "$1")/$2"; } # hadcd HOST DIR - host appdata cd to directory
-HostSync() { cls; HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --force --no-prompt "$@"; }; alias hs='HostSync'
-HostSyncFast() { cls; HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --force --no-prompt -- --no-platform ; }; alias hsf='HostSyncFast'
+HostSync() { HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --force --no-prompt "$@"; }; alias hs='HostSync'
+HostSyncFast() { HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --force --no-prompt -- --no-platform ; }; alias hsf='HostSyncFast'
 
 # backup
 bdir() { cd "$(appdata "$(network current server backup --service=smb)")/backup"; } # backup dir

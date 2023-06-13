@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if ! IsWarp && [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # ensure bash.bashrc has been sourced
 [[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
 
@@ -31,7 +38,7 @@ IsPlatform qnap,synology && alias bash="/opt/bin/bash -l"
 IsPlatform mac && [[ $HOMEBREW_PREFIX ]] && alias bash="$HOMEBREW_PREFIX/bin/bash -l"
 
 # scripts
-[[ -f ~/.bashrc ]] && . ~/.bashrc
-[[ -f ~/.p10k.zsh ]] && . ~/.p10k.zsh
+[[ -f ~/.bashrc ]] && . ~/.bashrc # SourceIfExists not available yet
+! IsWarp && { SourceIfExists "$HOME/.p10k.zsh" || return; }
 
 return 0

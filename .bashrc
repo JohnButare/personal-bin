@@ -364,6 +364,16 @@ pm() { PartitionManager "$@"; }
 # display
 #
 
+# information
+ShowFortune() { ! InPath cowsay fortune lolcat && return; cowsay "$(fortune --all)" | lolcat; return 0; }
+ShowHost() { ! InPath pyfiglet lolcat && return; pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; }
+
+# clear
+ClearRun() { clear; ! IsWarp && { "$@"; return; }; "$@" &; disown; } # clear screen and run a command, Warp requires command be run in background to see it's output
+cb() { builtin cd ~; cls; } 				# clear screen and cd
+cf() { cb; ClearRun ShowFortune; } 	# clear both, fortune
+ch() { cb; ClearRun ShowHost; } 		# clear both, host
+
 alias ddm='DellDisplayManager'
 FullWakeup() { ssh "$1" caffeinate  -u -w 10; }
 sw() { ddm switch "$@"; } # switch monitor
@@ -398,11 +408,6 @@ alias ..='builtin cd ..'
 alias ...='builtin cd ../..'
 alias ....='builtin cd ../../..'
 alias .....='cbuiltin d ../../../..'
-
-function c() { [[ $# == 0 ]] && cls || credential "$@"; }
-cb() { builtin cd ~; cls; } 	# clear screen and cd
-cf() { cb; InPath cowsay fortune lolcat && cowsay "$(fortune --all)" | lolcat; return 0; } # clear both, fortune
-ch() { cb; InPath pyfiglet lolcat && pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; return 0; } # clear both, host
 
 alias del='rm'
 alias md='mkdir'
@@ -1076,6 +1081,7 @@ fue() { fuf "$@" | xargs sublime; } 													# FindUsagesEdit - edit all scr
 # security
 #
 
+c() { [[ $# == 0 ]] && cls || credential "$@"; } # clear, credential
 cred() { credential "$@"; }
 cms() { credental manager status "$@"; }
 1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }
@@ -1204,24 +1210,9 @@ cam() { wiggin device "$@" cam; }
 wcore() { wiggin device "$@" core; }
 wtest() { wiggin device "$@" test; }
 
-# encrypted files - (un)mount personal encrypted file share in ~/Volumes/personal or drive p (/mnt/p)
-encm()
-{
-	if InPath cryfs; then
-		cryfs "$CDATA/CryFS/personal" "$HOME/Volumes/personal"
-	elif VeraCrypt IsInstalled; then
-		VeraCrypt mount "$cdata/VeraCrypt/personal.hc" p
-	fi
-}
-
-encum()
-{
-	if InPath cryfs; then
-		cryfs-unmount "$HOME/Volumes/personal"
-	elif VeraCrypt IsInstalled; then
-		VeraCrypt unmount p
-	fi
-}
+# encrypted files
+encm() { VeraCrypt mount "$cdata/VeraCrypt/personal.hc" p; } 	# mount encrypted file share on drive p
+encum() { VeraCrypt unmount p; }															# unmount encrypted file share from drive p
 
 # media
 mcd() { cd "//nas3/data/media"; } # mcd - media CD

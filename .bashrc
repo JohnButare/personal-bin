@@ -1219,7 +1219,7 @@ mcd() { cd "//nas3/data/media"; } # mcd - media CD
 
 # files
 hadcd() { cd "$(appdata "$1")/$2"; } # hadcd HOST DIR - host appdata cd to directory
-HostSync() { HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --force --no-prompt "$@"; }; alias hs='HostSync'
+HostSync() { HeaderBig "Wiggin Host Sync"; wiggin host sync --errors --force --no-prompt "$@"; }; alias hs='HostSync'
 HostSyncFast() { HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --force --no-prompt -- --no-platform ; }; alias hsf='HostSyncFast'
 
 # backup

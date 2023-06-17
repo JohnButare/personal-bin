@@ -437,6 +437,9 @@ alias dt-get-cred-prodw='az aks get-credentials -g dtwt-aks-prod-rg -n dtwt-aks-
 alias dt-get-cred-prode='az aks get-credentials -g dtwt-aks-prod-rg -n dtet-aks-prod01-k8'
 alias dt-new-token='az login --scope https://management.core.windows.net//.default'
 
+# Pit Stop
+alias backstage='yarn backstage-cli' bs='backstage'
+
 # lookup
 alias ldata='cd $wtmp/lookup/set' 		# lookup data
 alias lcode='cd $wcode/DT.Lookup' 		# lookup code
@@ -1232,7 +1235,6 @@ borg() { [[ ! $BORG_REPO ]] && { BorgConf || return; }; command borg "$@"; }
 bb() { BorgHelper backup "$@" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
 bcd() { hadcd "${1:-$HOSTNAME}" "borg"; } 								# borg cd [HOST]
 bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount
-bs() { BorgHelper status "$@"; }													# borg status
 bum() { BorgHelper unmount "$@"; }												# borg unmount
 clipb() { BorgConf "$@" && clipw "$BORG_PASSPHRASE"; }
 

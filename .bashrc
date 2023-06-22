@@ -369,10 +369,18 @@ ShowFortune() { ! InPath cowsay fortune lolcat && return; cowsay "$(fortune --al
 ShowHost() { ! InPath pyfiglet lolcat && return; pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; }
 
 # clear
-ClearRun() { clear; ! IsWarp && { "$@"; return; }; "$@" &; disown; } # clear screen and run a command, Warp requires command be run in background to see it's output
 cb() { builtin cd ~; cls; } 				# clear screen and cd
 cf() { cb; ClearRun ShowFortune; } 	# clear both, fortune
 ch() { cb; ClearRun ShowHost; } 		# clear both, host
+
+# ClearRun - clear screen and run a command, Warp requires command be run in background to see it's output
+ClearRun()
+{ 
+	clear
+	! IsWarp && { "$@"; return; }
+	"$@" & # must be on separate line for Bash
+	disown
+}
 
 alias ddm='DellDisplayManager'
 FullWakeup() { ssh "$1" caffeinate  -u -w 10; }

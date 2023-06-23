@@ -6,6 +6,7 @@ GitInit()
 OfficeInit()
 BrowserInit()
 MailInit()
+NoteEditorInit()
 TerminalInit()
 TextEditorInit()
 VmInit()
@@ -16,6 +17,7 @@ VmInit()
 #Include browser.ahk
 #Include git.ahk
 #Include mail.ahk
+#Include NoteEditor.ahk
 #Include office.ahk
 #Include terminal.ahk
 #Include TextEditor.ahk
@@ -67,9 +69,9 @@ RShift & e::OpenExplorer()			; Explorer
 RShift & 1::Open1Password() 		; 1Password
 RShift & 3::OpenTerminal() 			; Terminal
 RShift & b::OpenBrowser() 			; Browser
-RShift & g::Opengit()					; Git
+RShift & g::Opengit()						; Git
 RShift & m::OpenMail()					; Mail
-RShift & n::OpenNotion()				; Notes
+RShift & n::OpenNoteEditor()		; Note Editor
 RShift & t::OpenTextEditor()		; Text Editor
 RShift & w::RunWord()						; word
 #=::^=													; map cmd= (magnifier shortkcut) to ctrl= (text size increase)

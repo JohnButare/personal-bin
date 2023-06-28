@@ -824,6 +824,7 @@ abd() { . app.sh; ScriptCd AppGetBackupDir; } # app backup dir
 # DNS
 DnsLog() { service log bind9; }
 DnsRestart() { service restart bind9; }
+alias NamedLog='DnsLog'
 
 # DHCP
 DhcpMonitor() {	IsPlatform win && { dhcptest.exe "$@"; return; }; }
@@ -832,9 +833,6 @@ DhcpOptions()
 	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }
 	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
 }
-
-alias BindLog='service log bind9'
-alias NamedLog='service log bind9'
 
 # mDNS
 MdnsList() { avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }

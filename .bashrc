@@ -743,13 +743,14 @@ DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); }
 DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
 DiskTestAll() { bonnie++ | tee >> "$(os name)_performance_$(GetDateStamp).txt"; }
 
+# DiskTestRead [DEVICE](di first)
 DiskTestRead()
 { 
 	local device="${1:-$(di | head -2 | tail -1 | cut -d" " -f1)}"
 	sudo hdparm -t "$device"; 
 } 
 
-# [DEST](disktest) [COUNT] - # use smaller count for Pi and other lower performance disks
+# DiskTestWrite [DEST](disktest) [COUNT] - # use smaller count for Pi and other lower performance disks
 DiskTestWrite() 
 {
 	local file="$1"; [[ ! $file ]] && file="disktest"

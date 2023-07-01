@@ -806,7 +806,7 @@ ScriptEval network proxy vars || return
 
 clf() { CloudFlare "$@"; }
 ncg() {	network current all; } # network current get
-ncu() {	network current update "$@" && ScriptEval network vars; } # network current update
+ncu() {	NetworkCurrentUpdate; }
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }

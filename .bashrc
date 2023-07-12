@@ -555,8 +555,6 @@ alias grfc='g rfc' 							# create a rebase fixup commit with changed files
 alias grs='g rsq' 							# create a rebase squash commit
 alias gmt='g mergetool'
 alias gpf='g push --force'			# push force
-alias grft='grf && g i Test' 		# fixup commit and push to test
-alias grfpp='grf && g i Pre-Production' # fixup commit and push to pre-production
 alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
 alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; }'
 alias lg='lazygit'
@@ -1221,8 +1219,10 @@ wcore() { wiggin device "$@" core; }
 wtest() { wiggin device "$@" test; }
 
 # encrypted files
-encm() { VeraCrypt mount "$cdata/VeraCrypt/personal.hc" p; } 	# mount encrypted file share on drive p
-encum() { VeraCrypt unmount p; }															# unmount encrypted file share from drive p
+encm() { encrypt mount "$cdata/app/CryFS/personal" "$@"; }
+encum() { encrypt unmount "personal" "$@"; }
+encmv() { VeraCrypt mount "$cdata/VeraCrypt/personal" "p" "$@"; } 	# mount encrypted file share on drive p
+encumv() { VeraCrypt unmount "p"  "$@"; }														# unmount encrypted file share from drive p
 
 # media
 mcd() { cd "//nas3/data/media"; } # mcd - media CD

@@ -1221,8 +1221,8 @@ wtest() { wiggin device "$@" test; }
 # encrypted files
 encm() { encrypt mount "$cdata/app/CryFS/personal" "$@"; }
 encum() { encrypt unmount "personal" "$@"; }
-encmv() { VeraCrypt mount "$cdata/VeraCrypt/personal" "p" "$@"; } 	# mount encrypted file share on drive p
-encumv() { VeraCrypt unmount "p"  "$@"; }														# unmount encrypted file share from drive p
+encmv() { VeraCrypt mount "$cdata/app/VeraCrypt/personal.hc" "p" "$@"; } 	# mount encrypted file share on drive p
+encumv() { VeraCrypt unmount "p"  "$@"; }															# unmount encrypted file share from drive p
 
 # media
 mcd() { cd "//nas3/data/media"; } # mcd - media CD

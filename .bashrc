@@ -604,10 +604,9 @@ HistoryClear() { IsBash && cat /dev/null > $HISTFILE; history -c; }
 # HashiCorp
 #
 
-alias h="hashi"
+alias h="hashi" hconf="HashiConfStatus"
 hcd() { cd "$ncd/system/hashi/$1"; }
 
-hconf() { [[ "$NETWORK" != "hagerman" ]] && return; HashiConf --config-prefix=prod "$@" && hashi config status; } # hc - hashi config
 hct() { HashiConf --config-prefix=test "$@" && hashi status; } # hct - hashi config test
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hstat() { hashi status; }
@@ -1089,11 +1088,12 @@ fue() { fuf "$@" | xargs sublime; } 													# FindUsagesEdit - edit all scr
 # security
 #
 
+alias cconf="CredentialConfStatus"
+
 c() { [[ $# == 0 ]] && cls || credential "$@"; } # clear, credential
 cred() { credential "$@"; }
 cms() { credental manager status "$@"; }
 1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }
-cconf() { CredentialConf --unlock "$@" && credential manager status; }
 cm() { cred manager "$@"; }
 cms() { cred manager status "$@"; }
 
@@ -1108,7 +1108,7 @@ SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell 
 # SSH
 #
 
-sconf() { SshAgentConf "$@" && SshAgent status; }
+alias sconf="SshAgentConfStatus"
 
 alias s=sx													# connect with ssh
 alias hvs="hyperv connect ssh" 			# connect to a Hyper-V host with ssh
@@ -1209,8 +1209,7 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 sd="$UDATA/sync" 														# sync dir
 sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
 
-aconf() { hconf "$@" && echo && sconf && echo && cconf --unlock; }	# all configure, i.e. aconf -a=pi1 -f
-aconfe() { aconf && exit; }																					# all configure then exit the shell, useful with PiShell
+aconf() { hconf "$@" && echo && cconf && sconf; }	# all configure, i.e. aconf -a=pi1 -f
 vpn() { network vpn "$@"; }
 
 # devices
@@ -1229,6 +1228,7 @@ mcd() { cd "//nas3/data/media"; } # mcd - media CD
 hadcd() { cd "$(appdata "$1")/$2"; } # hadcd HOST DIR - host appdata cd to directory
 HostSync() { HeaderBig "Wiggin Host Sync"; wiggin host sync --errors --force --no-prompt "$@"; }; alias hs='HostSync'
 HostSyncFast() { HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --force --no-prompt -- --no-platform ; }; alias hsf='HostSyncFast'
+HostUpdateAll() { HeaderBig "Wiggin Host Update"; wiggin host update --errors "$@"; }; alias hu='HostUpdateAll'
 
 # backup
 bdir() { cd "$(appdata "$(network current server backup --service=smb)")/backup"; } # backup dir

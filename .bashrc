@@ -1226,12 +1226,12 @@ mcd() { cd "//nas3/data/media"; } # mcd - media CD
 
 # files
 hadcd() { cd "$(appdata "$1")/$2"; } # hadcd HOST DIR - host appdata cd to directory
-HostSync() { HeaderBig "Wiggin Host Sync"; wiggin host sync --errors --dest-older "$@"; }; alias hs='HostSync'
-HostSyncFast() { HeaderBig "Wiggin Fast Host Sync"; wiggin host sync --errors --dest-older "$@" -- --no-platform ; }; alias hsf='HostSyncFast'
+HostSync() { HeaderBig "Wiggin Host File Sync"; wiggin host sync files --errors --dest-older "$@"; }; alias hs='HostSync'
+HostSyncFast() { HeaderBig "Wiggin Host Fast File Sync"; wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }; alias hsf='HostSyncFast'
 HostUpdateAll() { HeaderBig "Wiggin Host Update"; wiggin host update --errors --dest-older "$@"; }; alias hu='HostUpdateAll'
 
 # backup
-bdir() { cd "$(appdata "$(network current server backup --service=smb)")/backup"; } # backup dir
+bdir() { cd "$(AppGetBackupDir)"; } # backup dir
 
 # borg
 alias bh='BorgHelper'
@@ -1267,7 +1267,7 @@ DownInfo()
 	} | column -c $(tput cols -T "$TERM") -t -s"${sep}"
 }
 
-DownFix() { wiggin host fix -H=down --errors --wait; }
+DownFix() { wiggin host network fix -H=down --errors --wait; }
 
 # QNAP
 qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command

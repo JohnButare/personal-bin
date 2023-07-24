@@ -303,8 +303,8 @@ dirsct() { local args=(); ! InPath exa && args+=(--reverse); DoLs --native -l --
 
 DoCd()
 {
-	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }
-	builtin cd "$@"
+	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }	
+	builtin cd "$@" && PythonConf
 }
 
 DoLs()

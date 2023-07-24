@@ -21,6 +21,6 @@ SmbFix()
 }
 
 # iTerm
-! IsiTerm && SourceIfExists "$HOME/.iterm2_shell_integration.zsh" || return
+IsiTerm && { SourceIfExists "$HOME/.iterm2_shell_integration.zsh" || return; }
 
 return 0

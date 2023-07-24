@@ -15,6 +15,7 @@ export LESSOPEN='|~/.lessfilter %s'
 # debugging
 # verbose="--verbose"
 # force="--force"
+
 export TIMEFORMAT='%R seconds elapsed'
 alias tc='TimeCommand'
 
@@ -45,25 +46,17 @@ fi
 
 [[ ! $ASDF_DIR && ! $force ]] && { SourceIfExists "$HOME/.asdf/asdf.sh" || return; } 	# ASDF
 SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return 											# broot
-InPath direnv && eval "$(direnv hook "$PLATFORM_SHELL")"															# direnv
-[[ ! $EDITOR_CHECKED ]] && { SetTextEditor; EDITOR_CHECKED="true"; } 									# editor
-[[ -d "$HOME/.fzf" ]] && InPath "FzfInstall.sh" && { . FzfInstall.sh || return; }			# fzf
 [[ -d "/usr/games" ]] && PathAdd "/usr/games" 																				# games on Ubuntu 19.04+
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"																			# Go
 SourceIfExists "$HOME/.ghcup/env" || return																						# Haskell
 PathAdd front "/opt/local/bin" "/opt/local/sbin" 																			# Mac Ports
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return  																		# Ruby Version Manager
 [[ -d "$HOME/.cargo/bin" ]] && PathAdd "$HOME/.cargo/bin" 														# Rust
+export BROWSER="firefox" 																															# sensible-browser
 PathAdd "/opt/X11/bin" 																																# XQuartz
-PythonConf || return
-
-# browser - for sensible-browser command
-if firefox IsInstalled; then export BROWSER="firefox"
-elif chrome IsInstalled; then export BROWSER="chrome"
-fi
 
 # Homebrew
-if [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
+if ! IsPlatform mac && [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
 	export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew";
 	export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar";
 	export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew";
@@ -170,9 +163,8 @@ alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
 sfull() # set full
 {
-	declare {CREDENTIAL_MANAGER_CHECKED,COLORLS_CHECKED,EDITOR_CHECKED,FZF_CHECKED,NETWORK_CHECKED}="" 	# .bashrc
-	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""																											# bash.bashrc
-	declare {CHROOT_CHECKED,VM_TYPE_CHECKED,HASHI_CHECKED}=""																						# function.sh
+	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""	# bash.bashrc
+	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_PATH,NETWORK_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED}=""	# function.sh
 
 	. "$bin/bash.bashrc"
 	. "$bin/function.sh"
@@ -182,15 +174,6 @@ sfull() # set full
 #
 # completion
 #
-
-if [[ ! $COLORLS_CHECKED ]]; then
-	unset COLORLS
-	if InPath colorls; then
-		COLORLS="true"
-		. "$(GetFilePath "$(gem which colorls 2> /dev/null)")/tab_complete.sh" # slow .1s
-	fi
-	COLORLS_CHECKED="true"
-fi
 
 if IsBash; then
 
@@ -304,8 +287,7 @@ fi
 alias cd='DoCd'
 
 alias ls='DoLs'
-alias lsc='DoLs'											# list with colorls
-alias lsn='DoLs --native'							# list native (do not use colorls)
+alias lsc='DoLs'											# list with 
 alias la='DoLs -Al'										# list all
 alias lgs="DoLs -A --git-status" 			# list git status
 alias ll='DoLs -l'										# list long
@@ -336,11 +318,8 @@ DoLs()
 
 	if InPath exa; then
 		exa --ignore-glob "desktop.ini" --classify --group-directories-first "$@"
-	elif [[ ! $COLORLS || "$1" == "-d" || "$1" == "--native" || "$1" == "--full-time" ]]; then
-		[[ "$1" == "--native" ]] && shift
-		command ${G}ls --hide="desktop.ini" -F --group-directories-first --color "$@"
 	else
-		colorls --group-directories-first "$@"
+		command ${G}ls --hide="desktop.ini" -F --group-directories-first --color "$@"
 	fi
 }
 
@@ -565,15 +544,8 @@ alias gfix='grfc && gria && gpush --force'
 # gdir SERVER - change to the git directory on SERVER for repo creation
 gdir() { cd "$(GitHelper remote dir "$@")"; }
 
-gfd() # git fuzzy diff
-{
-  preview="git diff $@ --color=always -- {-1}"
-  git diff $@ --name-only | fzf -m --ansi --preview $preview
-}
-
 # Git Headquarters (ghq)
 ghqg() { local url="$1"; ghq get "$1"; url="$(echo "$url" | cut -d/ -f3-)"; cd "$(ghq root)/$(ghq list | grep "$url")"; } # get REPO
-ghqcd() { cd "$(ghq root)/$(ghq list | fzf)"; } # select an existing ghq repository to change to
 
 # GitLab
 glc() { sudoedit /etc/gitlab/gitlab.rb; } # GitLab configuration
@@ -799,8 +771,7 @@ alias hc='HostCleanup'
 # network
 #
 
-ScriptEval network proxy vars || return
-
+alias nconf="NetworkConf"
 clf() { CloudFlare "$@"; }
 ncg() {	network current all; } # network current get
 ncu() {	NetworkCurrentUpdate; }
@@ -1032,6 +1003,7 @@ pscountm() { while true; do printf "process count: "; pscount; sleep 1; done; }
 # python
 #
 
+alias pconf="PythonConf"
 alias py='python3'
 alias pip='py -m pip'
 alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distutils error
@@ -1209,7 +1181,7 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 sd="$UDATA/sync" 														# sync dir
 sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
 
-aconf() { hconf "$@" && echo && cconf && sconf; }	# all configure, i.e. aconf -a=pi1 -f
+aconf() { hconf "$@" && echo && cconf "$@" && nconf "$@" && sconf "$@"; }	# all configure, i.e. aconf -a=pi1 -f
 vpn() { network vpn "$@"; }
 
 # devices
@@ -1315,27 +1287,20 @@ alias XmlValue='xml sel -t -v'
 alias XmlShow='xml sel -t -c'
 
 #
-# final
+# platform
 #
 
-# SSH Agent environment
-[[ ! $SSH_AUTH_SOCK || $force ]] && ScriptEval SshAgent environment --quiet
-
-# network
-[[ ! $NETWORK_CHECKED || $force ]] && { ScriptEval network vars; NETWORK_CHECKED="true"; }
-
-# credential manager environment
-[[ ! $CREDENTIAL_MANAGER_CHECKED || $force ]] && CredentialConf $verbose $force --quiet
-
-# platform specific .bashrc
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 
-# McFly - initialie last since
-# - must be after after set prompt as this modifies the bash prompt
-# - sometimes it prevents the rest of the script from running
-if InPath mcfly && [[ "$__MCFLY_LOADED" != "loaded" ]] && [[ "$TERM_PROGRAM" != @(vscode) ]]; then
-	export MCFLY_HISTFILE="$HISTFILE"
-	eval "$(mcfly init "$PLATFORM_SHELL")"
-fi
+#
+# configuration - items that can take time
+#
+
+SshAgentEnvConf $force 									# used by CredentialConf, ignore errors
+CredentialConf $verbose $force --quiet 	# ignore errors
+McflyConf $force || return
+NetworkConf $force || return
+PythonConf $force || return
+SetTextEditor $force || return
 
 return 0

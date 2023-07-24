@@ -33,11 +33,18 @@ zstyle ':completion:*' known-hosts-files "$DATA/setup/hosts"
 ZSH_THEME_TERM_TAB_TITLE_IDLE="terminal %21<..<%~%<<" # 21 char left truncated PWD
 ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"
 
+#
 # zsh specific aliases
-IsPlatform qnap,synology && alias bash="/opt/bin/bash -l"
-IsPlatform mac && [[ $HOMEBREW_PREFIX ]] && alias bash="$HOMEBREW_PREFIX/bin/bash -l"
+#
 
+# bashl - bash login
+IsPlatform qnap,synology && alias bashl="/opt/bin/bash -l"
+IsPlatform mac && [[ $HOMEBREW_PREFIX ]] && alias bashl="$HOMEBREW_PREFIX/bin/bash -l"
+
+#
 # scripts
+#
+
 [[ -f ~/.bashrc ]] && . ~/.bashrc # SourceIfExists not available yet
 ! IsWarp && { SourceIfExists "$HOME/.p10k.zsh" || return; }
 

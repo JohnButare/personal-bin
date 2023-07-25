@@ -1299,7 +1299,7 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 SshAgentEnvConf $force 									# used by CredentialConf, ignore errors
 CredentialConf $verbose $force --quiet 	# ignore errors
 McflyConf $force || return
-NetworkConf $force || return
+NetworkConf $force --quiet || return
 PythonConf $force || return
 SetTextEditor $force || return
 

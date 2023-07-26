@@ -15,7 +15,7 @@ IsPlatform wsl && { st time || return; } # fixes time drift in WSL and major dif
 
 # applications
 st WindowManager || return										# start first
-st NoMachine slack || return									# common
+st slack || return														# common
 st AutoHotKey alttab pu UltraMon || return		# win
 st alfred alttab rectangle shottr || return		# mac
 

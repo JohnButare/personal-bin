@@ -12,9 +12,11 @@ export LESSOPEN='|~/.lessfilter %s'
 # Interactive Configuration
 #
 
-# debugging
-# verbose="--verbose"
-# force="--force"
+# arguments
+quiet="--quiet"
+ScriptOptForce "$@" || return
+ScriptOptVerbose "$@" || return
+[[ $verbose ]] && unset quiet
 
 export TIMEFORMAT='%R seconds elapsed'
 alias tc='TimeCommand'
@@ -152,7 +154,7 @@ trest() { local dir; [[ $2 ]] && dir=( --directory "$2" ); sudo tar --extract --
 #
 
 # edit/set 
-alias sa=". ~/.bashrc" ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; # set aliases
+alias sa='. ~/.bashrc "$@"' ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; # set aliases
 alias s10k="sz" e10k="e ~/.p10k.zsh"
 eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 					# edit all aliases
 efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  	# edit all functions
@@ -166,8 +168,8 @@ sfull() # set full
 	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""	# bash.bashrc
 	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_PATH,NETWORK_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED}=""	# function.sh
 
-	. "$bin/bash.bashrc"
-	. "$bin/function.sh"
+	. "$bin/bash.bashrc" "$@"
+	. "$bin/function.sh" "$@"
 	IsZsh && { . ~/.zshrc; } || { kstart; . ~/.bash_profile; }
 }
 
@@ -774,7 +776,7 @@ alias hc='HostCleanup'
 alias nconf="NetworkConf"
 clf() { CloudFlare "$@"; }
 ncg() {	network current all; } # network current get
-ncu() {	NetworkCurrentUpdate; }
+ncu() {	NetworkCurrentUpdate "$@"; }
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }
@@ -1296,11 +1298,20 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 # configuration - items that can take time
 #
 
-SshAgentEnvConf $force 									# used by CredentialConf, ignore errors
-CredentialConf $verbose $force --quiet 	# ignore errors
-McflyConf $force || return
-NetworkConf $force --quiet || return
-PythonConf $force || return
-SetTextEditor $force || return
+SshAgentEnvConf $force $quiet $verbose  # used by CredentialConf, ignore errors
+CredentialConf $force $quiet $verbose 	# ignore errors
+McflyConf $force $quiet $verbose || return
+NetworkConf $force $quiet $verbose || return
+PythonConf $force $quiet $verbose || return
+SetTextEditor $force $quiet $verbose || return
+
+# logging
+if [[ $verbose ]]; then
+	hilight "SSH Agent"; SshAgent status
+	hilight "Credential Manager"; credential manager status
+	hilight "Network"; network current status	
+fi
+
+unset -v force quiet verbose
 
 return 0

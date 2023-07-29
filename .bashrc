@@ -1252,6 +1252,7 @@ SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # update
 u() { SshAgentConf && HostUpdate "$@"; }
+ua() { cls && slf -do "$@" && u "$@" && hs && hu; }
 
 #
 # windows

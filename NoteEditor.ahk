@@ -2,10 +2,10 @@ NoteEditorInit()
 {
 	global
 
-	Notion := LOCALAPPDATA "\Programs\Notion\Notion.exe"	
-	Obsidian := LOCALAPPDATA "\obsidian\Obsidian.exe"
+	Notion := UADATA "\Programs\Notion\Notion.exe"	
+	Obsidian := UADATA "\obsidian\Obsidian.exe"
 	ObsidianTitle := ".* - Obsidian v.*"
-	StandardNotes := LOCALAPPDATA "\Programs\standard-notes\Standard Notes.exe"
+	StandardNotes := UADATA "\Programs\standard-notes\Standard Notes.exe"
 
 	if FileExist(Obsidian)
 	{

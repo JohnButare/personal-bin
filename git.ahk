@@ -2,8 +2,8 @@ GitInit()
 {
   global
 
-  GitKraken := LOCALAPPDATA "\gitkraken\app-8.10.3\resources\bin\gitkraken.cmd"
-  fork := LOCALAPPDATA "\..\Local\Fork\Fork.exe"
+  GitKraken := UADATA "\gitkraken\app-9.6.0\resources\bin\gitkraken.cmd"
+  fork := UADATA "\..\Local\Fork\Fork.exe"
 	
   if FileExist(GitKraken)
   	git := "GitKraken"
@@ -45,7 +45,7 @@ NewGitKraken()
 
 OpenGitKraken()
 { 
-  If WinExist("ahk_exe" "gitkraken.exe")
+  if WinExist("GitKraken") or WinExist("ahk_exe" "gitkraken.exe")
     WinActivate "GitKraken"
   else
     NewGitKraken

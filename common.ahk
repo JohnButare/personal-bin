@@ -12,7 +12,7 @@ CommonInit()
 	PUBLIC := "c:\Users\Public"
 	PROGRAMS64 :="c:\Program Files"
 	PROGRAMS32 :="c:\Program Files (x86)"
-	LOCALAPPDATA := EnvGet("LOCALAPPDATA")
+	UADATA := EnvGet("LOCALAPPDATA")
 }
 
 InitTitleMatchMode()

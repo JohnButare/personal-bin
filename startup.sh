@@ -1,3 +1,4 @@
+# cache processes for faster checks below
 export CACHED_PROCESSES="$(ProcessList)"
 
 # start X Server, D-Bus, and network first

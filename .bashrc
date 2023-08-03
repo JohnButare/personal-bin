@@ -166,7 +166,7 @@ alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 sfull() # set full
 {
 	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""	# bash.bashrc
-	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_PATH,NETWORK_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED}=""	# function.sh
+	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_PATH,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh
 
 	. "$bin/bash.bashrc" "$@"
 	. "$bin/function.sh" "$@"
@@ -251,16 +251,6 @@ codev() { command rich "$@" -n -g --theme monokai; } # code view
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # DOT.NET Development
-
-if ! InPath dotnet; then # .NET on macOS use .NET from /usr/local/share/dotnet, fails if DOTNET_ROOT is set to $HOME/.dotnet
-	if [[ -d "$HOME/.dotnet" ]]; then
-		PathAdd "$HOME/.dotnet"; export DOTNET_ROOT="$HOME/.dotnet"
-	elif [[ -d "$P/dotnet" ]]; then
-		PathAdd "$P/dotnet"; export DOTNET_ROOT="$P/dotnet"
-	fi
-	! InPath dotnet && IsPlatform win && { alias dotnet="dotnet.exe"; }
-fi
-
 build() { n build /verbosity:minimal /m "$code/$1"; }
 BuildClean() { n build /t:Clean /m "$code/$1"; }
 
@@ -273,12 +263,6 @@ alias node='\node --use-strict'
 alias npmls='npm ls --depth=0'
 alias npmi='sudo npm install -g' # npm install
 alias npmu='sudo npm uninstall -g' # npm uninstall
-
-if [[ -d "$HOME/.nvm" ]]; then
-	export NVM_DIR="$HOME/.nvm"
-	SourceIfExists "$NVM_DIR/nvm.sh" || return
-	SourceIfExists "$NVM_DIR/bash_completion" || return
-fi
 
 #
 # directory management
@@ -1299,10 +1283,21 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 # configuration - items that can take time
 #
 
-SshAgentEnvConf $force $quiet $verbose  # used by CredentialConf, ignore errors
-CredentialConf $force $quiet $verbose 	# ignore errors
-McflyConf $force $quiet $verbose || return
+# run first - used by CredentialConf
+DbusConf || return
 NetworkConf $force $quiet $verbose || return
+SshAgentEnvConf $force $quiet $verbose  # ignore errors
+
+# run next
+CredentialConf $force $quiet $verbose 	# ignore errors
+
+# run last - depends on CredentialConf
+HashiConf || return
+
+# other
+DotNetConf $force $quiet $verbose || return
+McflyConf $force $quiet $verbose || return
+NodeConf $force $quiet $verbose || return
 PythonConf $force $quiet $verbose || return
 SetTextEditor $force $quiet $verbose || return
 

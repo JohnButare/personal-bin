@@ -1,14 +1,16 @@
 # cache processes for faster checks below
 export CACHED_PROCESSES="$(ProcessList)"
 
-# start X Server, D-Bus, and network first
-# - D-Bus enables the GNOME Keyring credential manager which is used below for credentials
-st xserver dbus network || return
+# ensure network configure is correct first
+st network || return
 
-# start SSH before port forwarding, as we check for open ports using SSH
+# start X Server and D-Bus (for credentials)
+st xserver dbus || return
+
+# start SSH before port forwarding (ports check uses SSH)
 st sshd ports || return
 
-# services - dbus docker cron incron
+# other services - dbus docker cron incron
 st docker || return 
 
 # clock

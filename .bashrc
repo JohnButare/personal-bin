@@ -1235,8 +1235,8 @@ alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # update
-u() { cls && slf && HostUpdate "$@"; }		# update this host
-ua() { u && hs && hu; }												# update all hosts
+u() { cls; { [[ ! $@ ]] && slf; }; HostUpdate "$@"; }		# update this host
+ua() { u && hs && hu; }																		# update all hosts
 
 #
 # windows

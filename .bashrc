@@ -1186,7 +1186,7 @@ mcd() { cd "//nas3/data/media"; } # mcd - media CD
 hadcd() { cd "$(appdata "$1")/$2"; } # hadcd HOST DIR - host appdata cd to directory
 HostSync() { HeaderBig "Wiggin Host File Sync"; wiggin host sync files --errors --dest-older "$@"; }; alias hs='HostSync'
 HostSyncFast() { HeaderBig "Wiggin Host Fast File Sync"; wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }; alias hsf='HostSyncFast'
-HostUpdateAll() { HeaderBig "Wiggin Host Update"; wiggin host update --errors --dest-older "$@"; }; alias hu='HostUpdateAll'
+HostUpdateAll() { HeaderBig "Wiggin Host Update"; wiggin host update --errors --dest-older "$@"; }; alias hua='HostUpdateAll'
 
 # backup
 bdir() { cd "$(AppGetBackupDir)"; } # backup dir

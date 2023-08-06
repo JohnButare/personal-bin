@@ -1179,14 +1179,11 @@ wtest() { wiggin device "$@" test; }
 encm() { encrypt mount "$cdata/app/CryFS/personal" "$@"; }
 encum() { encrypt unmount "personal" "$@"; }
 
-# media
-mcd() { cd "//nas3/data/media"; } # mcd - media CD
-
 # files
 hadcd() { cd "$(appdata "$1")/$2"; } # hadcd HOST DIR - host appdata cd to directory
-HostSync() { HeaderBig "Wiggin Host File Sync"; wiggin host sync files --errors --dest-older "$@"; }; alias hs='HostSync'
-HostSyncFast() { HeaderBig "Wiggin Host Fast File Sync"; wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }; alias hsf='HostSyncFast'
-HostUpdateAll() { HeaderBig "Wiggin Host Update"; wiggin host update --errors --dest-older "$@"; }; alias hua='HostUpdateAll'
+
+# media
+mcd() { cd "//nas3/data/media"; } # mcd - media CD
 
 # backup
 bdir() { cd "$(AppGetBackupDir)"; } # backup dir
@@ -1235,8 +1232,24 @@ alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # update
-u() { cls; { [[ ! $@ ]] && slf; }; HostUpdate "$@"; }		# update this host
-ua() { u && hs && hu; }																		# update all hosts
+alias ue="UpdateEverything" uea="UpdateEverythingAll"
+UpdateEverything() { header "file" && slf && header "download" && ud && header "update" && HostUpdate "$@"; }
+UpdateEverythingAll() { ue "$@" && ufa && ua; }
+
+# update download
+alias ud="UpdateDownload"
+UpdateDownload() { HostUpdate -w=download "$@"; }
+
+# update hosts
+alias u='update' ua='UpdateAll' 
+update() { HostUpdate "$@"; }
+UpdateAll() { wiggin host update --errors --dest-older "$@"; }
+
+# update files
+alias uf='UpdateFile' ufa='UpdateFileAll' ufaf='UpdateFileAllFast' 
+UpdateFile() { slf "$@"; }
+UpdateFileAll() { wiggin host sync files --errors --dest-older "$@"; }
+UpdateFileAllFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
 
 #
 # windows

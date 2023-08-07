@@ -1233,8 +1233,8 @@ SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # update
 alias ue="UpdateEverything" uea="UpdateEverythingAll"
-UpdateEverything() { header "file" && slf && header "download" && ud && header "update" && HostUpdate "$@"; }
-UpdateEverythingAll() { ue "$@" && ufa && ua; }
+UpdateEverything() { header "file" && slf "$@" && header "download" && ud "$@" && header "update" && HostUpdate "$@"; }
+UpdateEverythingAll() { ue "$@" && ufa "$@" && ua "$@"; }
 
 # update download
 alias ud="UpdateDownload"

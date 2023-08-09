@@ -1,3 +1,5 @@
+# TimerOn
+
 # ensure bash.bashrc has been sourced
 [[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
 
@@ -1322,5 +1324,6 @@ if [[ $verbose ]]; then
 fi
 
 unset -v force quiet verbose
+# TimerOff
 
 return 0

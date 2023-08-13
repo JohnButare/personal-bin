@@ -38,6 +38,7 @@ ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"
 #
 
 # bashl - bash login
+alias bashl="bash"
 IsPlatform qnap,synology && alias bashl="/opt/bin/bash -l"
 IsPlatform mac && [[ $HOMEBREW_PREFIX ]] && alias bashl="$HOMEBREW_PREFIX/bin/bash -l"
 

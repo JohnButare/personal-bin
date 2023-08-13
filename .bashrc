@@ -1170,6 +1170,7 @@ sd="$UDATA/sync" 														# sync dir
 sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
 
 aconf() { hconf "$@" && echo && cconf "$@" && nconf "$@" && sconf "$@"; }	# all configure, i.e. aconf -a=pi1 -f
+unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }
 
 # devices

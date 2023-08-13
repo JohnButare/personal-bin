@@ -1308,7 +1308,7 @@ SshAgentEnvConf $force $quiet $verbose  # ignore errors
 CredentialConf $force $quiet $verbose 	# ignore errors
 
 # run last - depends on CredentialConf
-HashiConf || return
+HashiConf  $force $quiet $verbose || return
 
 # other
 DotNetConf $force $quiet $verbose || return

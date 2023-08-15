@@ -640,11 +640,11 @@ alias hh='HomebridgeHelper'
 alias hconfig="e $HOME/.homebridge/config.json" 						# edit configuration
 alias hcconfig="e $ncd/system/homebridge/config/config.json" # edit cloud configuration
 alias hlogclean="sudoc rm /var/lib/homebridge/homebridge.log"
-alias hssh="sudo cp ~/.ssh/config ~/.ssh/known_hosts ~homebridge/.ssh && sudo chown homebridge ~homebridge/.ssh/config ~homebridge/.ssh/known_hosts" # update SSH configuration 
+alias hssh="sudoc cp ~/.ssh/config ~/.ssh/known_hosts ~homebridge/.ssh && sudo chown homebridge ~homebridge/.ssh/config ~homebridge/.ssh/known_hosts" # update SSH configuration 
 alias hrestart="service restart homebridge"
-alias hstart='sudo hb-service start'
-alias hstop='sudo hb-service stop'
-alias hlog='sudo hb-service logs'
+alias hstart='sudoc hb-service start'
+alias hstop='sudoc hb-service stop'
+alias hlog='sudoc hb-service logs'
 alias hloge='e /var/lib/homebridge/homebridge.log' # log edit
 alias hbakall='hbak pi5'
 

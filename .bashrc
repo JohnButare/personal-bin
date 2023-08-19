@@ -16,6 +16,7 @@ export LESSOPEN='|~/.lessfilter %s'
 
 # arguments
 quiet="--quiet"
+#verbose=-vv verboseLevel=2
 ScriptOptForce "$@" || return
 ScriptOptVerbose "$@" || return
 [[ $verbose ]] && unset quiet

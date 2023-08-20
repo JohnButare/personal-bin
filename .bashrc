@@ -838,9 +838,9 @@ SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
 
 # sync files
 alias slf='SyncLocalFiles sync'
-alias FindSyncTxt='fa ".*_sync.txt"'
+alias FindSyncTxt='fa --hidden '\..*_sync.txt''
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
-alias HideSyncTxt="FindSyncTxt | xargs run.sh FileHide"
+alias HideSyncTxt="FileHide .*_sync.txt"
 
 # TFTP
 TftpConf() { sudoe "/etc/default/tftpd-hpa"; }
@@ -1040,10 +1040,13 @@ alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs grep -iE "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
-fu() { FindText "$1" "*" "$BIN"; FindText "$1" "*" "$UBIN"; } # FindUsages TEXT - find all script usages of specified TEXT
-fuh() { HeaderBig "$@" && fu "$@"; } 													# FindUsageHeader
-fuf() { fu "$@" | cut -d: -f1 | sort | uniq; } 								# FindUsagesFiles - find all script names that use the specified TEXT
-fue() { fuf "$@" | xargs sublime; } 													# FindUsagesEdit - edit all script names that use the specified TEXT
+fuh() { HeaderBig "$@ Usages" && fu "$@"; } # FindUsageHeader
+fuf() { fu -l "$@" | sort | uniq; } 				# FindUsagesFiles - find all script names that use the specified TEXT
+fue() { fuf "$@" | xargs sublime; } 				# FindUsagesEdit - edit all script names that use the specified TEXT
+
+# FindUsages TEXT - find all script usages of specified TEXT, fu1 Find Usages 1 line
+fu() { rg "$@" "$BIN" "$UBIN" --trim --hidden --smart-case -g="!.git" -g="!.p10k.zsh" -g="!git-sh-prompt-win.sh"; } 
+fu1() { grep --color -ire "$1" --include="*" --exclude-dir=".git" --exclude=".p10k.zsh" --exclude="git-sh-prompt-win.sh" "$BIN" "$UBIN"; }
 
 #
 # security

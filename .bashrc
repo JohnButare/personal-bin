@@ -159,14 +159,20 @@ trest() { local dir; [[ $2 ]] && dir=( --directory "$2" ); sudo tar --extract --
 # edit/set 
 alias sa='. ~/.bashrc "$@"' ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; # set aliases
 alias s10k="sz" e10k="e ~/.p10k.zsh"
-eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; } 					# edit all aliases
-efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" $bin/function.sh; }  	# edit all functions
+
+# edit/set all
+eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; }
+saa() { local file files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; .  ~/.bashrc && for file in "${files[@]}"; do . "$file" || return; done; }
+
+efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" "$bin/function.sh"; }
+sfa() { local file files; GetPlatformFiles "$UBIN/function." ".sh" || return 0; . "$bin/function.sh" && for file in "${files[@]}"; do . "$file" || return; done; }
 
 alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.profile $UBIN/.bash_profile $UBIN/.zlogin $UBIN/.p10k.zsh $UBIN/.zshrc $UBIN/.bashrc"
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
 alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 
-sfull() # set full
+# set full
+sfull()
 {
 	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""	# bash.bashrc
 	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_PATH,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh

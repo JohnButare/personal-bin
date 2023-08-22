@@ -1193,6 +1193,10 @@ aconf() { hconf "$@" && echo && cconf "$@" && nconf "$@" && sconf "$@"; }	# all 
 unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }
 
+# apps
+
+usls='UpdateServerLs' 
+
 # devices
 cam() { wiggin device "$@" cam; }
 wcore() { wiggin device "$@" core; }
@@ -1250,18 +1254,23 @@ DownFix() { wiggin host network fix -H=down --errors --wait; }
 # QNAP
 qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command
 
+# servers
+alias sls='ServerLs' sns='ServerNodeStatus'
+ServerLs() { wiggin host ls -H="$1" "${@:2}"; } # ServerLs all|down|hashi-prod|hashi-test|locked|important|network|reboot|restart|unlock|web
+ServerNodeStatus() { hashi app node status --active "$@"; }
+
 # UniFi
 alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
-# update
+# update client
 alias u='update' ua="UpdateAll" ud="UpdateDownload" uf='UpdateFile'
 update() { HostUpdate "$@"; }
 UpdateAll() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && header "update" && HostUpdate "$@"; }
 UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
 
-# servers
+# update servers
 alias us='UpdateServer' usa="UpdateServerAll" usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usrb="UpdateServerReboot" usrs="UpdateServerRestart"
 UpdateServer() { wiggin host update --errors --dest-older "$@"; }
 UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@"; }

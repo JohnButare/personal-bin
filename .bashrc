@@ -1262,8 +1262,9 @@ UpdateFile() { slf "$@"; }
 UpdateAll() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && header "update" && HostUpdate "$@"; }
 
 # servers
-alias us='UpdateServer' usf="UpdateServerFile" usff="UpdateServerFileFast" usa="UpdateServerAll"
+alias us='UpdateServer' usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usa="UpdateServerAll"
 UpdateServer() { wiggin host update --errors --dest-older "$@"; }
+UpdateServerCredentials() { wiggin host credential -H=locked "@"; }
 UpdateServerFile() { wiggin host sync files --errors --dest-older "$@"; }
 UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
 UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@"; }

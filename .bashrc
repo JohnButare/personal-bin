@@ -1255,19 +1255,21 @@ alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # update
-alias u='update' ud="UpdateDownload" uf='UpdateFile' ua="UpdateAll"
+alias u='update' ua="UpdateAll" ud="UpdateDownload" uf='UpdateFile'
 update() { HostUpdate "$@"; }
+UpdateAll() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && header "update" && HostUpdate "$@"; }
 UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
-UpdateAll() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && header "update" && HostUpdate "$@"; }
 
 # servers
-alias us='UpdateServer' usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usa="UpdateServerAll"
+alias us='UpdateServer' usa="UpdateServerAll" usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usr="UpdateServerReboot" usrs="UpdateServerRestart"
 UpdateServer() { wiggin host update --errors --dest-older "$@"; }
+UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@"; }
 UpdateServerCredentials() { wiggin host credential -H=locked "@"; }
 UpdateServerFile() { wiggin host sync files --errors --dest-older "$@"; }
 UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
-UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@"; }
+UpdateServerReboot() { wiggin host update reboot "$@"; }
+UpdateServerRestart() { wiggin host update restart "$@"; }
 
 #
 # windows

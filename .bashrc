@@ -105,9 +105,19 @@ fi
 alias cdv="cd ~/Volumes"
 
 # application data and configuration directories
-aconfig() { IsLocalHost "$1" && echo "$ACONFIG" || echo "//$1/admin$ACONFIG"; }
-adata() { IsLocalHost "$1" && echo "$ADATA" || echo "//$1/admin$ADATA"; }
-acd() { ScriptCd appdata "$1"; }
+aconfig() { AppDirGet "$ACONFIG" "$@"; } 	# aconfig [w] [n] [host]
+adata() { AppDirGet "$ADATA" "$@"; } 			# adata [w] [n] [host]
+acd() { ScriptCd adata "$@"; }
+acdw() { ScriptCd adata "w" "$@"; }
+
+# AppDirGet BASE_DIR [n] [w] [host]
+AppDirGet()
+{
+	local baseDir="$1"; shift
+	local w; [[ "$(LowerCase "$1")" == "w" ]] && { w="$1"; shift; }	
+	local n; IsInteger "$1" && { n="$1"; shift; [[ "$n" == "1" ]] && n=""; }
+	IsLocalHost "$1" && echo "${ADATA}$n$w" || echo "//$1/admin$ADATA"; 
+}
 
 #
 # other
@@ -1245,24 +1255,18 @@ alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 # update
-alias ue="UpdateEverything" uea="UpdateEverythingAll"
-UpdateEverything() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && header "update" && HostUpdate "$@"; }
-UpdateEverythingAll() { UpdateEverything "$@" && UpdateFileAll "$@" && UpdateAll "$@"; }
-
-# update download
-alias ud="UpdateDownload"
-UpdateDownload() { HostUpdate -w=download "$@"; }
-
-# update hosts
-alias u='update' ua='UpdateAll' 
+alias u='update' ud="UpdateDownload" uf='UpdateFile' ua="UpdateAll"
 update() { HostUpdate "$@"; }
-UpdateAll() { wiggin host update --errors --dest-older "$@"; }
-
-# update files
-alias uf='UpdateFile' ufa='UpdateFileAll' ufaf='UpdateFileAllFast' 
+UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
-UpdateFileAll() { wiggin host sync files --errors --dest-older "$@"; }
-UpdateFileAllFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
+UpdateAll() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && header "update" && HostUpdate "$@"; }
+
+# servers
+alias us='UpdateServer' usf="UpdateServerFile" usff="UpdateServerFileFast" usa="UpdateServerAll"
+UpdateServer() { wiggin host update --errors --dest-older "$@"; }
+UpdateServerFile() { wiggin host sync files --errors --dest-older "$@"; }
+UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
+UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@"; }
 
 #
 # windows

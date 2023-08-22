@@ -1262,10 +1262,10 @@ UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
 
 # servers
-alias us='UpdateServer' usa="UpdateServerAll" usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usr="UpdateServerReboot" usrs="UpdateServerRestart"
+alias us='UpdateServer' usa="UpdateServerAll" usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usrb="UpdateServerReboot" usrs="UpdateServerRestart"
 UpdateServer() { wiggin host update --errors --dest-older "$@"; }
 UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@"; }
-UpdateServerCredentials() { wiggin host credential -H=locked "@"; }
+UpdateServerCredentials() { wiggin host credential -H=locked "$@"; }
 UpdateServerFile() { wiggin host sync files --errors --dest-older "$@"; }
 UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
 UpdateServerReboot() { wiggin host update reboot "$@"; }

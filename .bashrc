@@ -588,7 +588,6 @@ hct() { HashiConf --config-prefix=test "$@" && hashi status; } # hct - hashi con
 hr() { hashi resolve "$@"; }	# hr SERVER - resolve a consul service address
 hstat() { hashi status; }
 hsr() { HashiServiceRegister "$@"; } # hsr SERVICE_FILE - register a Nomad service
-hfree() { hashi app node | grep -Ev " domotz-agent| homebridge| lb| pool-controller| unifi"; } # free nodes (can turn off, excudes apps which cannot move automatically)
 
 # test
 hti() { wiggin setup hashi test -- "$@" && HashiConf test; }									# Hashi Test Install
@@ -606,8 +605,6 @@ clipv() { HashiConfVault && clipw "$VAULT_TOKEN"; }
 
 # HashiCorp - Nomad
 j() { hashi nomad job "$@"; }	# job
-NomadApps() { hashi app node status --active; }
-NomadAllocations() { hashi nomad node allocations -H=active; }
 
 # HashiCorp - Vagrant
 vagrant() { "$wr/HashiCorp/Vagrant/bin/vagrant.exe" "$@"; }
@@ -1194,8 +1191,10 @@ unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }
 
 # apps
+alias wsa='WigginServerApps' wsc='WigginServerCount' 
+WigginServerApps() { hashi app node status --active; }
+WigginServerCount() { hashi nomad node allocations -H=active; }
 
-usls='UpdateServerLs' 
 
 # devices
 cam() { wiggin device "$@" cam; }
@@ -1257,7 +1256,7 @@ qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command
 # servers
 alias sls='ServerLs' sns='ServerNodeStatus'
 ServerLs() { wiggin host ls -H="$1" "${@:2}"; } # ServerLs all|down|hashi-prod|hashi-test|locked|important|network|reboot|restart|unlock|web
-ServerNodeStatus() { hashi app node status --active "$@"; }
+ServerNodeStatus() { hashi app node status -- "$@"; }
 
 # UniFi
 alias uc='UniFiController'

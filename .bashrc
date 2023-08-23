@@ -1284,6 +1284,7 @@ UpdateServerRestart() { wiggin host update restart "$@"; }
 #
 
 SetTitle() { printf "\e]2;$*\a"; }
+stopx() { gnome-session-quit --no-prompt } # startx|stopx
 
 # Xpra
 xprac() { if IsPlatform win; then "$P/Xpra/xpra_cmd.exe" "$@"; else xpra "$@"; fi; } # client

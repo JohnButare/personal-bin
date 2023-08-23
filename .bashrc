@@ -1256,7 +1256,7 @@ qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command
 # servers
 alias sls='ServerLs' sns='ServerNodeStatus'
 ServerLs() { wiggin host ls -H="$1" "${@:2}"; } # ServerLs all|down|hashi-prod|hashi-test|locked|important|network|reboot|restart|unlock|web
-ServerNodeStatus() { hashi app node status -- "$@"; }
+ServerNodeStatus() { hashi app node status --active "$@"; }
 
 # UniFi
 alias uc='UniFiController'

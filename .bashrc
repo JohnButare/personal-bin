@@ -283,6 +283,9 @@ alias npmls='npm ls --depth=0'
 alias npmi='sudo npm install -g' # npm install
 alias npmu='sudo npm uninstall -g' # npm uninstall
 
+alias nodew='$P/nodejs/node.exe'
+alias npmw='$P/nodejs/npm'
+
 #
 # directory management
 #

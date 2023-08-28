@@ -285,6 +285,7 @@ alias npmu='sudo npm uninstall -g' # npm uninstall
 
 alias nodew='$P/nodejs/node.exe'
 alias npmw='$P/nodejs/npm'
+alias ngw='cmd.exe /c "$(utw "$UADATA/../Roaming/npm/ng.cmd")"'
 
 #
 # directory management

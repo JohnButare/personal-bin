@@ -33,6 +33,19 @@ zstyle ':completion:*' known-hosts-files "$DATA/setup/hosts"
 ZSH_THEME_TERM_TAB_TITLE_IDLE="terminal %21<..<%~%<<" # 21 char left truncated PWD
 ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"
 
+# prompt
+
+function p10k-on-pre-prompt()
+{
+  emulate -L zsh -o extended_glob
+  local dir=${(%):-%~}
+  if (( $#dir > 50 )) || [[ -n ./(../)#(.git)(#qN) ]]; then
+    p10k display '1/left/dir'=hide '2'=show
+  else
+    p10k display '1/left/dir'=show '2'=hide
+  fi
+}
+
 #
 # zsh specific aliases
 #

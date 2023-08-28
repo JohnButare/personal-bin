@@ -543,7 +543,7 @@ alias grs='g rsq' 							# create a rebase squash commit
 alias gmt='g mergetool'
 alias gpf='g push --force'			# push force
 alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
-alias eg='e ~/.gitconfig; IsPlatform win && { pause; cp ~/.gitconfig $WIN_HOME; }'
+alias eg='GitHelper edit'
 alias lg='lazygit'
 
 # gfix - git fix, combine modified files with last commit and force push

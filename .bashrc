@@ -400,10 +400,10 @@ swe()
 # file management
 #
 
-alias ..='builtin cd ..'
-alias ...='builtin cd ../..'
-alias ....='builtin cd ../../..'
-alias .....='cbuiltin d ../../../..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 
 alias del='rm'
 alias md='mkdir'
@@ -892,7 +892,7 @@ CheckAll()
 
 alias SetBashGitPrompt='source "$(brew --prefix bash-git-prompt)/share/gitprompt.sh"'
 
-GitPrompt()
+GitPromptBash()
 {
 	local red='\e[31m'
 	unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWSTASHSTATE GIT_PS1_SHOWUNTRACKEDFILES GIT_PS1_SHOWUPSTREAM
@@ -906,7 +906,7 @@ GitPrompt()
 	__git_ps1 " (%s)"
 }
 
-SetPrompt() 
+SetPromptBash() 
 {
 	local blue='\[\e[34m\]'
 	local cyan='\[\e[36m\]'
@@ -916,7 +916,7 @@ SetPrompt()
 	local yellow='\[\e[33m\]'
 
 	local dir='${green}\w${clear}'
-	local git; #IsFunction __git_ps1 && git='${cyan}$(GitPrompt)${clear}'
+	local git; #IsFunction __git_ps1 && git='${cyan}$(GitPromptBash)${clear}'
 	local user; [[ "$USER" != "jjbutare" ]] && user="\u"
 	local elevated; IsElevated && elevated+="${red}-elevated${clear}"
 	local root; IsRoot && root+="${red}-root${clear}"
@@ -936,7 +936,7 @@ SetPrompt()
 
 if [[ ! $SET_PROMPT_CHECK ]]; then
 	SET_PROMPT_CHECK="true"
-	IsBash && SetPrompt # slow .1s
+	IsBash && SetPromptBash # slow .1s
 fi
 
 #

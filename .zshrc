@@ -37,13 +37,40 @@ ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"
 
 function p10k-on-pre-prompt()
 {
-  emulate -L zsh -o extended_glob
-  local dir=${(%):-%~}
-  if (( $#dir > 50 )) || [[ -n ./(../)#(.git)(#qN) ]]; then
-    p10k display '1/left/dir'=hide '2'=show
-  else
-    p10k display '1/left/dir'=show '2'=hide
+  local dir="${PROMPT_DIR_STATUS:-show}"
+  p10k display '1/left/dir'=$dir
+}
+
+chpwd()
+{
+  local last; GetFileName "$PWD" last
+  
+  local gitLen=0 anchorLen=0
+  if IsGitDir; then
+    local anchor="$(GitRoot | GetFileName)" branch="$(GitBranch)"
+    ((gitLen = 10 + $#branch))
+    [[ "$last" != "$anchor" ]] && ((anchorLen+=$#anchor))
   fi
+  
+  # determine what have room for
+  local dir="show" truncate="truncate_to_unique"
+
+  if (( COLUMNS - $#last - gitLen < 40 )); then
+    dir="hide"
+    truncate="truncate_to_last"
+  elif (( COLUMNS - anchorLen - $#last - gitLen < 40 )); then
+    truncate="truncate_to_last"
+  fi
+
+  # configure
+  #echo "prompt: columns=$COLUMNS pwd=$#PWD last=$#last anchorLen=$anchorLen gitLen=$gitLen dir=$dir truncate=$truncate"
+  export PROMPT_DIR_STATUS="$dir"
+  [[ "$POWERLEVEL9K_SHORTEN_STRATEGY" == "$truncate" ]] && return
+  export POWERLEVEL9K_SHORTEN_STRATEGY="$truncate"; p10k reload
+}
+
+TRAPWINCH () {
+  chpwd; p10k-on-pre-prompt
 }
 
 #

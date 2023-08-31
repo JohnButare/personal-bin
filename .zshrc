@@ -23,6 +23,13 @@ plugins=(zsh-syntax-highlighting)
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="mm/dd/yyyy"
 
+# cleanup orphan Docker completion file
+# - prevents ~/oh-my-zsh.sh error if Docker is not running
+# - link created when Docker starts
+dir="/usr/share/zsh/vendor-completions/_docker"
+[[ -L "$dir" && ! -f "$dir" ]] && sudoc rm "$dir"
+unset dir
+
 # Oh My Zsh
 SourceIfExists "$ZSH/oh-my-zsh.sh" || return
 

@@ -13,8 +13,8 @@ st sshd ports || return
 # other services - chrony docker cron incron
 st chrony docker || return 
 
-# clock
-IsPlatform wsl && { st time || return; } # fixes time drift in WSL and major differences when Hyper-V guest resumes
+# clock - fix time drift in WSL and major differences when Hyper-V guest resumes
+IsPlatform wsl && { st time || return; }
 
 # applications
 st WindowManager || return										# start first

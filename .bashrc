@@ -1276,7 +1276,7 @@ UpdateFile() { slf "$@"; }
 # update servers
 alias us='UpdateServer' usa="UpdateServerAll" usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usrb="UpdateServerReboot" usrs="UpdateServerRestart"
 UpdateServer() { wiggin host update --errors --dest-older "$@"; }
-UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@"; }
+UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@" && wiggin host credential -H=locked; }
 UpdateServerCredentials() { wiggin host credential -H=locked "$@"; }
 UpdateServerFile() { wiggin host sync files --errors --dest-older "$@"; }
 UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }

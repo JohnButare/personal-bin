@@ -283,9 +283,9 @@ alias npmls='npm ls --depth=0'
 alias npmi='sudo npm install -g' # npm install
 alias npmu='sudo npm uninstall -g' # npm uninstall
 
-alias nodew='$P/nodejs/node.exe'
+alias nodew='start "$P/nodejs/node.exe"'
 alias npmw='$P/nodejs/npm'
-alias ngw='cmd.exe /c "$(utw "$UADATA/../Roaming/npm/ng.cmd")"'
+alias ngw='start "$UADATA/../Roaming/npm/ng.cmd"'
 
 #
 # directory management

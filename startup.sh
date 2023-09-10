@@ -18,7 +18,7 @@ IsPlatform wsl && { st time || return; }
 
 # applications
 st WindowManager || return										# start first
-st GitAnnex slack || return										# common
+st slack || return														# common
 st AutoHotKey alttab pu UltraMon || return		# win
 st alfred alttab rectangle shottr || return		# mac
 

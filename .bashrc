@@ -185,7 +185,7 @@ alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 sfull()
 {
 	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""	# bash.bashrc
-	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_PATH,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh
+	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,GIT_ANNEX_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_PATH,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh
 
 	. "$bin/bash.bashrc" "$@"
 	. "$bin/function.sh" "$@"
@@ -511,6 +511,7 @@ alias unfunction='unset -f'
 # git
 #
 
+alias gah='GitAnnexHelper'
 export GIT_EDITOR="TextEdit -w"
 
 g() { local git=git; InPath "git.exe" && drive IsWin . && git="git.exe"; SshAgentConf && $git "$@"; }
@@ -555,6 +556,22 @@ gdir() { cd "$(GitHelper remote dir "$@")"; }
 
 # Git Headquarters (ghq)
 ghqg() { local url="$1"; ghq get "$1"; url="$(echo "$url" | cut -d/ -f3-)"; cd "$(ghq root)/$(ghq list | grep "$url")"; } # get REPO
+
+# git-annex
+
+GitAnnexConf()
+{
+	local force forceLevel; ScriptOptForce "$@"
+	local verbose verboseLevel; ScriptOptVerbose "$@"
+
+	# return if configuration is set
+	[[ ! $force && $GIT_ANNEX_CHECKED ]] && return
+
+	# configure
+	(( verboseLevel > 1 )) && header "GitAnnex Configuration"
+	! GitAnnexHelper IsRunning && GitAnnexHelper startup
+	GIT_ANNEX_CHECKED="true"
+}
 
 # GitLab
 glc() { sudoedit /etc/gitlab/gitlab.rb; } # GitLab configuration
@@ -1342,6 +1359,7 @@ HashiConf  $force $quiet $verbose || return
 
 # other
 DotNetConf $force $quiet $verbose || return
+GitAnnexConf $force $quiet $verbose || return
 McflyConf $force $quiet $verbose || return
 NodeConf $force $quiet $verbose || return
 PythonConf $force $quiet $verbose || return

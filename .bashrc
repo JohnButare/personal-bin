@@ -511,8 +511,10 @@ alias unfunction='unset -f'
 # git
 #
 
-alias gah='GitAnnexHelper'
 export GIT_EDITOR="TextEdit -w"
+
+alias gax='git annex'
+alias gah='GitAnnexHelper'
 
 g() { local git=git; InPath "git.exe" && drive IsWin . && git="git.exe"; SshAgentConf && $git "$@"; }
 gcd() { ScriptCd GitHelper github dir "$@"; }
@@ -569,7 +571,7 @@ GitAnnexConf()
 
 	# configure
 	(( verboseLevel > 1 )) && header "GitAnnex Configuration"
-	! GitAnnexHelper IsRunning && GitAnnexHelper startup
+	GitAnnexHelper IsInstalled && ! GitAnnexHelper IsRunning && GitAnnexHelper startup
 	GIT_ANNEX_CHECKED="true"
 }
 

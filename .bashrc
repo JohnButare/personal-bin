@@ -357,16 +357,15 @@ ShowFortune() { ! InPath cowsay fortune lolcat && return; cowsay "$(fortune --al
 ShowHost() { ! InPath pyfiglet lolcat && return; pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; }
 
 # clear
-cb() { builtin cd ~; cls; } 				# clear screen and cd
-cf() { cb; ClearRun ShowFortune; } 	# clear both, fortune
-ch() { cb; ClearRun ShowHost; } 		# clear both, host
+c() { cls; } 								# clear screen
+ca() { builtin cd ~; cls; } # clear all - cd and clear screen
 
 # ClearRun - clear screen and run a command, Warp requires command be run in background to see it's output
 ClearRun()
 { 
-	clear
+	cls; [[ ! $@ ]] && return
 	! IsWarp && { "$@"; return; }
-	"$@" & # must be on separate line for Bash
+	[[ $1 ]] && "$@" & # must be on separate line for Bash
 	disown
 }
 
@@ -1090,12 +1089,8 @@ fu1() { grep --color -ire "$1" --include="*" --exclude-dir=".git" --exclude=".p1
 
 alias cconf="CredentialConfStatus"
 
-c() { [[ $# == 0 ]] && cls || credential "$@"; } # clear, credential
 cred() { credential "$@"; }
-cms() { credental manager status "$@"; }
 1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }
-cm() { cred manager "$@"; }
-cms() { cred manager status "$@"; }
 
 CertGetDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
 CertGetPublicKey() { openssl x509 -noout -pubkey -in "$1"; }

@@ -357,8 +357,9 @@ ShowFortune() { ! InPath cowsay fortune lolcat && return; cowsay "$(fortune --al
 ShowHost() { ! InPath pyfiglet lolcat && return; pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; }
 
 # clear
-c() { cls; } 								# clear screen
-ca() { builtin cd ~; cls; } # clear all - cd and clear screen
+c() { cls; } 											# clear screen
+ca() { builtin cd ~; cls; } 			# clear all - cd and clear screen
+ch() { ca; ClearRun ShowHost; } 	# clear host - cd, clear screen, host
 
 # ClearRun - clear screen and run a command, Warp requires command be run in background to see it's output
 ClearRun()

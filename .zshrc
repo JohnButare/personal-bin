@@ -53,7 +53,7 @@ chpwd()
   local last; GetFileName "$PWD" last
   
   local gitLen=0 anchorLen=0
-  if IsGitDir; then
+  if IsGitWorkTree; then
     local anchor="$(GitRoot | GetFileName)" branch="$(GitBranch)"
     ((gitLen = 10 + $#branch))
     [[ "$last" != "$anchor" ]] && ((anchorLen+=$#anchor))

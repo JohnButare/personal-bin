@@ -816,8 +816,8 @@ p()
 abd() { . app.sh; ScriptCd AppGetBackupDir; } # app backup dir
 
 # DNS
-DnsLog() { service log bind9; }
-DnsRestart() { service restart bind9; }
+DnsLog() { service log named; }
+DnsRestart() { service restart named; }
 alias NamedLog='DnsLog'
 
 # DHCP

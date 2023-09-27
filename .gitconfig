@@ -225,8 +225,8 @@
 [safe]
 	directory = %(prefix)///wsl.localhost/Ubuntu/usr/local/data/bin
 	directory = %(prefix)///wsl.localhost/Ubuntu/home/jjbutare/data/bin
-	directory = /mnt/c/Users/johnbutare/code/Lookup
-	directory = /home/jjbutare/data/sync
+	directory = %(prefix)//mnt/c/Users/johnbutare/code/Lookup
+	directory = %(prefix)//home/jjbutare/data/sync
 
 # not windows
 [credential "https://github.com"]

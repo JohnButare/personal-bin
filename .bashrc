@@ -1,7 +1,7 @@
 # TimerOn
 
-# ensure bash.bashrc has been sourced
-[[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
+# ensure bash.bashrc and function.sh have been sourced
+[[ ! $BIN || ! $FUNCTIONS ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
 
 # non-interactive initialization - available from child processes and scripts, i.e. ssh <script>
 export LESS='-R'

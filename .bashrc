@@ -937,7 +937,7 @@ SetPromptBash()
 	local dir='${green}\w${clear}'
 	local git; #IsFunction __git_ps1 && git='${cyan}$(GitPromptBash)${clear}'
 	local user; [[ "$USER" != "jjbutare" ]] && user="\u"
-	local elevated; IsElevated && elevated+="${red}-elevated${clear}"
+	local elevated; IsPlatform win && IsElevated && elevated+="${red}-elevated${clear}"
 	local root; IsRoot && root+="${red}-root${clear}"
 
 	local host="${HOSTNAME#$USER-}"; host="${host#$SUDO_USER-}"; # remove the username from the hostname to shorten it

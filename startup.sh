@@ -22,6 +22,6 @@ st slack || return														# common
 st AutoHotKey alttab pu UltraMon || return		# win
 st alfred alttab rectangle shottr || return		# mac
 
-IsPlatform parallels && { drive mount all || return; }
+IsPlatform parallels && { drive mount all --no-optical || return; }
 
 return 0

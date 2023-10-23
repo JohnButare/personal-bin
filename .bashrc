@@ -276,6 +276,8 @@ BuildClean() { n build /t:Clean /m "$code/$1"; }
 # GO
 [[ -d "/usr/local/go/bin" ]] && { PathAdd "/usr/local/go/bin"; GOPATH=$HOME/go; }
 
+# JavaScript
+alias tsr='npx esrun'
 
 # Node.js
 alias node='\node --use-strict'

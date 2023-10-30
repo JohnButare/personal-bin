@@ -1292,7 +1292,7 @@ UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
 
 # update servers
-alias us='UpdateServer' usa="UpdateServerAll" usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usrb="UpdateServerReboot" usrs="UpdateServerRestart"
+alias us='UpdateServer' usa="UpdateServerAll" usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot"
 UpdateServer() { wiggin host update --errors --dest-older "$@"; }
 UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@" && wiggin host credential -H=locked; }
 UpdateServerCredentials() { wiggin host credential -H=locked "$@"; }
@@ -1300,6 +1300,7 @@ UpdateServerFile() { wiggin host sync files --errors --dest-older "$@"; }
 UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
 UpdateServerReboot() { wiggin host update reboot "$@"; }
 UpdateServerRestart() { wiggin host update restart "$@"; }
+UpdateServerRoot() { wiggin host sync root "$@"; }
 
 #
 # windows

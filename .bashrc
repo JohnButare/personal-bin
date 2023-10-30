@@ -991,6 +991,7 @@ NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 # media
 #
 
+alias gp="media get" # get pictures
 alias mg="media get"
 
 #

@@ -175,6 +175,8 @@
 	#proxy = http://proxy.rr.intel.com:911
 [http]
 	#proxy = http://proxy.rr.intel.com:911
+[init]
+	defaultBranch = main
 [interactive]
 	diffFilter = delta --color-only --features=interactive
 [merge]

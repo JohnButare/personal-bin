@@ -437,6 +437,8 @@ alias dt-new-token='az login --scope https://management.core.windows.net//.defau
 
 # Pit Stop
 alias backstage='yarn backstage-cli' bs='backstage'
+backs="$CODE/pitstop/backstage"; backsc() {  code "$backs"; } 		# Backstage code
+pits="$CODE/pitstop/cx.ui.pitstop.web"; pitsc() { ProxyDisable; code "$pits"; } # Pitstop code
 
 # lookup
 alias ldata='cd $wtmp/lookup/set' 		# lookup data

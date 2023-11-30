@@ -289,6 +289,9 @@ alias nodew='start "$P/nodejs/node.exe"'
 alias npmw='$P/nodejs/npm'
 alias ngw='start "$UADATA/../Roaming/npm/ng.cmd"'
 
+# React
+cra() { npx create-react-app --template typescript "$@"; }
+
 #
 # directory management
 #

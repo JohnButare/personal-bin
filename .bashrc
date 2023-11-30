@@ -291,6 +291,8 @@ alias ngw='start "$UADATA/../Roaming/npm/ng.cmd"'
 
 # React
 cra() { npx create-react-app --template typescript "$@"; }
+yd() { yarn dev "$@"; }
+ys() { yarn start "$@"; }
 
 #
 # directory management

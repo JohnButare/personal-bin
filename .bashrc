@@ -424,8 +424,9 @@ lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}"
 
 FileTypes() { file * | sort -k 2; }
 
-# uclean FILE - remove the specified file from the Unison root directory for the platform
-uclean()
+# UnisonClean FILE - remove the specified file from the Unison root directory for the platform
+alias uclean='UnisonClean'
+UnisonClean()
 { 
 	local dir="$(UnisonRootConfigDir)"; IsPlatform mac && dir="$(UnisonConfigDir)"
 	sudor rm "$dir/$1"

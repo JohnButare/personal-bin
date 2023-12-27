@@ -898,6 +898,7 @@ alias HideSyncTxt="FileHide .*_sync.txt"
 TftpConf() { sudoe "/etc/default/tftpd-hpa"; }
 TftpRestart() { service restart tftpd-hpa; }
 TftpLog() {	if IsPlatform qnap; then LogShow "/share/Logs/opentftpd.log"; else sudor RunScript LogShow "/var/log/syslog"; fi; }
+TftpTest() { cd /tmp && tftp "${1:-$HOSTNAME}" -c get boot.cfg && echo "boot.cfg found ($(cat boot.cfg | wc -l) lines)" && rm boot.cfg; }
 
 # Virtual IP (VIP) - keepalived load balancer
 VipStatus() { local lb="${1:-lb}" mac; MacLookup --detail "$lb"; }

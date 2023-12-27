@@ -424,6 +424,13 @@ lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}"
 
 FileTypes() { file * | sort -k 2; }
 
+# uclean FILE - remove the specified file from the Unison root directory for the platform
+uclean()
+{ 
+	local dir="$(UnisonRootConfigDir)"; IsPlatform mac && dir="$(UnisonConfigDir)"
+	sudor rm "$dir/$1"
+}
+
 #
 # DriveTime
 #
@@ -892,7 +899,7 @@ TftpConf() { sudoe "/etc/default/tftpd-hpa"; }
 TftpRestart() { service restart tftpd-hpa; }
 TftpLog() {	if IsPlatform qnap; then LogShow "/share/Logs/opentftpd.log"; else sudor RunScript LogShow "/var/log/syslog"; fi; }
 
-# Virtual IP (VIP)
+# Virtual IP (VIP) - keepalived load balancer
 VipStatus() { local lb="${1:-lb}" mac; MacLookup --detail "$lb"; }
 VipMonitor() { MacLookup --monitor "${1:-lb}"; }
 
@@ -1039,8 +1046,12 @@ pscountm() { while true; do printf "process count: "; pscount; sleep 1; done; }
 #
 
 alias pconf="PythonConf"
+alias peconf="PyEnvConf"
+
 alias py='python3'
 alias pip='py -m pip'
+alias pec='PyEnvCreate'
+
 alias FixPythonPackage='sudo -H pip3 install --ignore-installed' # if get distutils error
 
 PyInfo() { pip show "$@"; }

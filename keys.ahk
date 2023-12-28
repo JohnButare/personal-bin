@@ -79,7 +79,8 @@ RShift & w::RunWord()						; word
 ;RShift & v::OpenVm()
 
 ; coding
-RShift & v::OpenVisualStudio()
+RShift & v::OpenVisualStudioCode()
+; RShift & v::OpenVisualStudio()
 RShift & s::OpenSqlServerManagementStudio()
 
 ; DriveTime

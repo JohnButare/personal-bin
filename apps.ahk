@@ -44,3 +44,13 @@ OpenVisualStudio()
   else
 		run program
 }
+
+OpenVisualStudioCode()
+{
+	program := EnvGet("APPDATA") "\..\Local\Programs\Microsoft VS Code\Code.exe"	
+
+  If WinExist("ahk_exe" "Code.exe")
+  	WinActivate ".* - Visual Studio Code"
+  else
+		run program
+}

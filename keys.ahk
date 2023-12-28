@@ -44,6 +44,7 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 #2::WinMinimize "A"
 #3::WinMaximize "A"
 ^#a::reload 													; Reload AutoHotKeys
+#NumpadAdd::reload										; Reload AutoHotKeys - hides magnifier shortcut key
 
 ;
 ; Windows

@@ -21,6 +21,7 @@ VmInit()
 #Include office.ahk
 #Include terminal.ahk
 #Include TextEditor.ahk
+#Include windows.ahk
 #Include vm.ahk
 
 Test()
@@ -50,7 +51,7 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 ; Windows
 ;
 
-LWin & NumpadClear::Send "+^#z"
+LWin & NumpadClear::CenterWindow()
 ;RWin & q::Send "#{Numpad7}"
 ;RWin & w::Send "#{Numpad8}"
 ;RWin & e::Send "#{Numpad9}"-
@@ -75,7 +76,7 @@ RShift & m::OpenMail()					; Mail
 RShift & n::OpenNoteEditor()		; Note Editor
 RShift & t::OpenTextEditor()		; Text Editor
 RShift & w::RunWord()						; word
-#=::^=													; map cmd= (magnifier shortkcut) to ctrl= (text size increase)
+#=::^=													; map cmd= (magnifier shortcut) to ctrl= (text size increase)
 #-::^-												  ; map cmd- to ctrl- (text size decrease)
 ;RShift & v::OpenVm()
 

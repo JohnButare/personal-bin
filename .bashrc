@@ -425,12 +425,9 @@ lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}"
 FileTypes() { file * | sort -k 2; }
 
 # UnisonClean FILE - remove the specified file from the Unison root directory for the platform
-alias uclean='UnisonClean'
-UnisonClean()
-{ 
-	local dir="$(UnisonRootConfigDir)"; IsPlatform mac && dir="$(UnisonConfigDir)"
-	sudor rm "$dir/$1"
-}
+alias uclean='UnisonClean' ucleanr='UnisonCleanRoot'
+UnisonClean() { rm "$(UnisonConfDir)/$1"; }
+UnisonCleanRoot() { sudoc rm "$(UnisonRootConfDir)/$1"; }
 
 #
 # DriveTime
@@ -1307,7 +1304,7 @@ SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 # update client
 alias u='update' ua="UpdateAll" ud="UpdateDownload" uf='UpdateFile'
 update() { HostUpdate "$@"; }
-UpdateAll() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && header "update" && HostUpdate "$@"; }
+UpdateAll() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && wiggin sync public && header "update" && HostUpdate "$@"; }
 UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
 

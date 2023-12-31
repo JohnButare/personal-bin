@@ -105,7 +105,7 @@ fi
 alias cdv="cd ~/Volumes"
 
 # application data and configuration directories
-aconfig() { AppDirGet "$ACONFIG" "$@"; } 	# aconfig [w] [n] [host]
+aconf() { AppDirGet "$ACONF" "$@"; } 	# ACONF [w] [n] [host]
 adata() { AppDirGet "$ADATA" "$@"; } 			# adata [w] [n] [host]
 acd() { ScriptCd adata "$@"; }
 acdw() { ScriptCd adata "w" "$@"; }

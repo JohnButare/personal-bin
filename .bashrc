@@ -869,11 +869,6 @@ fi
 # NginxConfWatch CONF [PATTERN] - watch a configuration file for changes
 NginxConfWatch() { FileWatch "/etc/nginx/sites-available/$1.conf" "${2:-  server }"; }
 
-# proxy server
-alias ProxyEnable="ScriptEval network proxy vars --enable; network proxy vars --status"
-alias ProxyDisable="ScriptEval network proxy vars --disable; network proxy vars --status"
-alias ProxyStatus="network proxy --status"
-
 # salt
 RunAll() { a="$@"; sudoc salt '*' cmd.run "/usr/local/data/bin/RunScript $a"; }
 

@@ -34,7 +34,9 @@ unset dir
 SourceIfExists "$ZSH/oh-my-zsh.sh" || return
 
 # completion
+_allFiles() { compadd $(ls -1); }
 zstyle ':completion:*' known-hosts-files "$DATA/setup/hosts"
+compdef _allFiles start
 
 # set terminal title after oh-my-zsh.sh - https://github.com/trystan2k/zsh-tab-title
 ZSH_THEME_TERM_TAB_TITLE_IDLE="terminal %21<..<%~%<<" # 21 char left truncated PWD

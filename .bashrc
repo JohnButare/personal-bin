@@ -811,6 +811,7 @@ alias hc='HostCleanup'
 #
 
 alias nconf="NetworkConf"
+alias tf="TftpHelper"
 clf() { CloudFlare "$@"; }
 ncg() {	network current all; } # network current get
 ncu() {	NetworkCurrentUpdate "$@"; }
@@ -886,19 +887,6 @@ alias slf='SyncLocalFiles sync'
 alias FindSyncTxt='fa --hidden '\..*_sync.txt''
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'
 alias HideSyncTxt="FileHide .*_sync.txt"
-
-# TFTP
-TftpConf() { sudoe "/etc/default/tftpd-hpa"; }
-TftpStatus() { service status tftpd-hpa; }
-TftpDetail() { service detail tftpd-hpa; }
-TftpRestart() { service restart tftpd-hpa; }
-TftpStart() { service start tftpd-hpa; }
-TftpStop() { service stop tftpd-hpa; }
-TftpLog() {	if IsPlatform qnap; then LogShow "/share/Logs/opentftpd.log"; else sudor RunScript LogShow "/var/log/syslog"; fi; }
-TftpTest() { cd /tmp && tftp "${1:-$HOSTNAME}" -c get boot.cfg && echo "boot.cfg found ($(cat boot.cfg | wc -l) lines)" && rm boot.cfg; }
-TftpPs() { ps -aux | grep in.tftpd | grep -v grep; }
-TftpManual() { sudoc /usr/sbin/in.tftpd --foreground --listen --user tftp --address :69 --secure --verbose "/srv/apache-web/htdocs/netboot.xyz"; }
-TftpKill() { sudoc pkill in.tftpd; } # kill manual instance
 
 # Virtual IP (VIP) - keepalived load balancer
 VipStatus() { local lb="${1:-lb}" mac; MacLookup --detail "$lb"; }

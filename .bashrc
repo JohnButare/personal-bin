@@ -1221,7 +1221,7 @@ vpn() { network vpn "$@"; }
 # apps
 alias wsa='WigginServerApps' wsc='WigginServerCount' 
 WigginServerApps() { hashi app node status --active; }
-WigginServerCount() { hashi nomad node allocs -H=active; }
+WigginServerCount() { hashi nomad node allocs --numeric -H=active; }
 
 
 # devices

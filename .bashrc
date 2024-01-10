@@ -447,6 +447,7 @@ alias dt-new-token='az login --scope https://management.core.windows.net//.defau
 
 # Pit Stop
 alias backstage='yarn backstage-cli' bs='backstage'
+pss() { cd "$pits" && yarn dev; } # Pitstop Start
 backs="$CODE/pitstop/backstage"; backsc() {  code "$backs"; } 		# Backstage code
 pits="$CODE/pitstop/cx.ui.pitstop.web"; pitsc() { ProxyDisable; code "$pits"; } # Pitstop code
 

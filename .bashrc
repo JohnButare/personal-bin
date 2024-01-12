@@ -285,6 +285,20 @@ alias npmls='npm ls --depth=0'
 alias npmi='sudo npm install -g' # npm install
 alias npmu='sudo npm uninstall -g' # npm uninstall
 
+# NodeSwitch - emulate n syntax using nvm
+NodeSwitch()
+{
+	IsNumeric "$1" && { nvm use "$1"; return; }
+	[[ "$1" == "lts" ]] && { nvm use --lts; return; }
+	[[ "$1" == "system" ]] && { nvm use system; return; }
+	nvm "$@"
+}
+
+! InPath n && alias n="NodeSwitch"
+
+nlts() { nvm use --lts "$@"; }
+nlts() { nvm use --lts "$@"; }
+
 alias nodew='start "$P/nodejs/node.exe"'
 alias npmw='$P/nodejs/npm'
 alias ngw='start "$UADATA/../Roaming/npm/ng.cmd"'
@@ -320,7 +334,7 @@ dirsct() { local args=(); ! InPath exa && args+=(--reverse); DoLs --native -l --
 DoCd()
 {
 	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }	
-	builtin cd "$@" && PythonConf
+	builtin cd "$@" && NodeConf && PythonConf
 }
 
 DoLs()

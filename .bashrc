@@ -290,7 +290,7 @@ NodeSwitch()
 {
 	IsNumeric "$1" && { nvm use "$1"; return; }
 	[[ "$1" == "lts" ]] && { nvm use --lts; return; }
-	[[ "$1" == "system" ]] && { nvm use system; return; }
+	[[ "$1" == @(default|stable|system) ]] && { nvm use "$@"; return; }
 	nvm "$@"
 }
 

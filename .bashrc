@@ -460,10 +460,14 @@ alias dt-get-cred-prode='az aks get-credentials -g dtwt-aks-prod-rg -n dtet-aks-
 alias dt-new-token='az login --scope https://management.core.windows.net//.default'
 
 # Pit Stop
+
 alias backstage='yarn backstage-cli' bs='backstage'
-pss() { cd "$pits" && yarn dev; } # Pitstop Start
 backs="$CODE/pitstop/backstage"; backsc() {  code "$backs"; } 		# Backstage code
-pits="$CODE/pitstop/cx.ui.pitstop.web"; pitsc() { ProxyDisable; code "$pits"; } # Pitstop code
+
+pits="$CODE/pitstop/cx.ui.pitstop.web"
+pits() { cd "$pits"; }
+pitsc() { ProxyDisable; code "$pits"; } # Pitstop code
+pss() { cd "$pits" && yarn dev; } # Pitstop Start
 
 # lookup
 alias ldata='cd $wtmp/lookup/set' 		# lookup data

@@ -99,7 +99,7 @@ if [[ -d "$home/Dropbox" ]]; then
 	cloud="$home/Dropbox"; c="$cloud"; cdata="$c/data"; cdl="$cdata/download" ccode="$c/code"
 
 	ncd="$cloud/network"; alias ncd="$ncd" # network configuration directory
-	confDir="$ncd/system"	
+	scd="$ncd/system"	
 fi
 
 alias cdv="cd ~/Volumes"

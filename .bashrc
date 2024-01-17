@@ -54,6 +54,7 @@ SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return 											# bro
 [[ -d "/usr/games" ]] && PathAdd "/usr/games" 																				# games on Ubuntu 19.04+
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"																			# Go
 SourceIfExists "$HOME/.ghcup/env" || return																						# Haskell
+IsiTerm && { SourceIfExists "$HOME/.iterm2_shell_integration.zsh" || return; }				# iTerm
 PathAdd front "/opt/local/bin" "/opt/local/sbin" 																			# Mac Ports
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return  																		# Ruby Version Manager
 [[ -d "$HOME/.cargo/bin" ]] && PathAdd "$HOME/.cargo/bin" 														# Rust

@@ -20,7 +20,4 @@ SmbFix()
 	sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server.plist EnabledServices -array disk || return
 }
 
-# iTerm
-IsiTerm && { SourceIfExists "$HOME/.iterm2_shell_integration.zsh" || return; }
-
 return 0

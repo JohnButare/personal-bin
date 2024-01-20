@@ -1313,7 +1313,7 @@ SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 # update client
 alias u='update' ua="UpdateAll" ud="UpdateDownload" uf='UpdateFile'
 update() { HostUpdate "$@"; }
-UpdateAll() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && wiggin sync public && header "update" && HostUpdate "$@"; }
+UpdateAll() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && wiggin sync public --no-prompt "$@" && header "update" && HostUpdate "$@"; }
 UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
 

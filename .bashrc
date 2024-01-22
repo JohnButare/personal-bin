@@ -449,7 +449,9 @@ UnisonCleanRoot() { sudoc rm "$(UnisonRootConfDir)/$1"; }
 #
 
 dtc="$c/group/DriveTime" # DriveTime Cloud personal files
+vsne() { hstart64.exe /NOCONSOLE /NONELEVATED "$(utw "$P/Microsoft Visual Studio/2022/Professional/Common7/IDE/devenv.exe")"; } # Visual Studio Not Elevated
 
+# aliases
 alias ah='AzureHelper'
 alias dtc="$dtc"; alias dtcp="$dtc/projects"
 alias dt-setsub-dev='az account set --subscription 8bc2fde5-e1ad-4bc0-9287-85957096f0b4'
@@ -460,7 +462,14 @@ alias dt-get-cred-prodw='az aks get-credentials -g dtwt-aks-prod-rg -n dtwt-aks-
 alias dt-get-cred-prode='az aks get-credentials -g dtwt-aks-prod-rg -n dtet-aks-prod01-k8'
 alias dt-new-token='az login --scope https://management.core.windows.net//.default'
 
-# Pit Stop
+# domain run
+dedge() { dtRun "$P32/Microsoft/Edge/Application/msedge.exe" --profile-directory=Default; } # domain edge
+dff() { dtRun "$P/Mozilla Firefox/firefox.exe"; }																						# domain Firefox
+dssms() { dtRun "$P32/Microsoft SQL Server Management Studio 18/Common7/IDE/Ssms.exe"; }		# domain ssms
+dvs() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }						# domain Visual Studio
+dvsp() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }					# domain Visual Studio Preview
+
+# Pitstop
 
 alias backstage='yarn backstage-cli' bs='backstage'
 backs="$CODE/pitstop/backstage"; backsc() {  code "$backs"; } 		# Backstage code
@@ -470,19 +479,43 @@ pits() { cd "$pits"; }
 pitsc() { ProxyDisable; code "$pits"; } # Pitstop code
 pss() { cd "$pits" && yarn dev; } # Pitstop Start
 
-# lookup
-alias ldata='cd $wtmp/lookup/set' 		# lookup data
-alias lcode='cd $wcode/DT.Lookup' 		# lookup code
-alias ldev='lcode && code .'
+alias pda='PitstopDockerBuild && PitstopDockerClean && PitstopDockerRun'
+alias pdb='PitstopDockerBuild'
+alias pdc='PitstopDockerClean'
+alias pdr='PitstopDockerRun'
+alias pds='PitstopDockerStop'
 
-# run in domain
-dedge() { dtRun "$P32/Microsoft/Edge/Application/msedge.exe" --profile-directory=Default; }
-dff() { dtRun "$P/Mozilla Firefox/firefox.exe"; }
-dssms() { dtRun "$P32/Microsoft SQL Server Management Studio 18/Common7/IDE/Ssms.exe"; }
-dvs() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }
-dvsp() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe"; }
+PitstopDockerBuild()
+{
+	# install packages and compile
+	{ yarn install --frozen-lockfile && yarn tsc; } || return
 
-vsne() { hstart64.exe /NOCONSOLE /NONELEVATED "$(utw "$P/Microsoft Visual Studio/2022/Professional/Common7/IDE/devenv.exe")"; }
+	# build backend
+	gsed -z -i 's/},*\n  "devDependencies": {/,/g' packages/backend/package.json || return	# no dev dependencies
+	gsed -z -i 's/7007/3000/g' app-config.yaml || return																		# use port 3000
+	yarn build:backend --config ../../app-config.yaml || return 														# outputs packages/app/dist/static
+
+	# build Docker container with local configuration files 
+	gsed -i 's/*.local.yaml//g' .dockerignore || return							# do not ignore app-config.local.yaml
+	gsed -i 's/app-config//g' packages/backend/Dockerfile || return	# copy all configuration yaml files
+	echo "EXPOSE 3000/tcp" >> packages/backend/Dockerfile || return	#	expose port 3000
+	gsed -z -i 's/7007/3000/g' app-config.local.yaml || return			# use port 3000
+	docker build -t pitstop -f "packages/backend/Dockerfile" . || return
+}
+
+PitstopDockerClean()
+{
+	git checkout HEAD -- .dockerignore app-config.yaml packages/backend/Dockerfile packages/backend/package.json 	# reset git files
+	gsed -z -i 's/3000/7007/2;s/port: 3000/port: 7007/3' app-config.local.yaml 																# fix backen baseUrl and port
+}
+
+PitstopDockerRun()
+{
+	export LAUNCHDARKLY_CLIENT_ID="$(grep "launchDarklyClientId:" app-config.local.yaml | cut -d: -f2 | cut -d" " -f2)"
+	docker run --publish 3000:3000/tcp --env NODE_ENV=local --env LAUNCHDARKLY_CLIENT_ID="$LAUNCHDARKLY_CLIENT_ID" pitstop
+}
+
+PitstopDockerStop() { docker stop "$(docker ps | grep pitstop | tail -1 | cut -d" " -f1)"; }
 
 #
 # find

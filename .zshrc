@@ -78,10 +78,6 @@ chpwd()
   export POWERLEVEL9K_SHORTEN_STRATEGY="$truncate"; p10k reload
 }
 
-TRAPWINCH () {
-  chpwd; p10k-on-pre-prompt
-}
-
 #
 # zsh specific aliases
 #
@@ -94,8 +90,15 @@ IsPlatform mac && [[ $HOMEBREW_PREFIX ]] && alias bashl="$HOMEBREW_PREFIX/bin/ba
 #
 # scripts
 #
-
 [[ -f ~/.bashrc ]] && . ~/.bashrc # SourceIfExists not available yet
 SourceIfExists "$HOME/.p10k.zsh" || return
+
+#
+# Change Password - move here to prevent Windows division by 0 errors starting shell
+#
+
+TRAPWINCH () {
+  chpwd; p10k-on-pre-prompt
+}
 
 return 0

@@ -49,7 +49,11 @@ WindowsTerminalOpen()
 TerminalNew()
 {
 	global
-  run WindowsTerminal
+	wt := UADATA "\Windows Terminal\wt.exe"
+  if not FileExist(wt)
+  	wt := PROGRAMS64 "\Windows Terminal\wt.exe"
+
+  run wt
 }
 
 ;

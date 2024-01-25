@@ -1151,6 +1151,7 @@ fu1() { grep --color -ire "$1" --include="*" --exclude-dir=".git" --exclude=".p1
 #
 
 alias cconf="CredentialConfStatus"
+cclip() { clipw $(cred get secure default); }
 
 cred() { credential "$@"; }
 1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }

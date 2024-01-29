@@ -133,8 +133,8 @@ st() { startup --no-pause "$@"; }
 # applications
 #
 
-appc() { header "Checking Applications"; inst check "$@"; }	# check app versions
-appd() { inst check | awk '{ if ($3 == "") print $1; }'; } 				# check app downloads
+appc() { header "Checking Applications"; inst check --update "$@"; }	# check app versions
+appd() { inst check | awk '{ if ($3 == "") print $1; }'; } 						# check app downloads
 
 alias choco='choco.exe'
 alias f='firefox'

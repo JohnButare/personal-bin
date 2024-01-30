@@ -949,7 +949,6 @@ VipMonitor() { MacLookup --monitor "${1:-lb}"; }
 # web
 awd() { ScriptCd apache dir web "$@" && ls; }		# Apache Web Dir
 curle() { curl "$(UrlEncode "$1")" "${@:2}"; } 	# curl encode - encode spaces in the URL
-HttpHeader() { curl --silent --show-error --location --dump-header - --output /dev/null "$1"; }
 HttpServer() { HttpHeader "$1" | grep --ignore-case "X-Server" | cut -d: -f2 | RemoveCarriageReturn | RemoveSpaceTrim; }
 HttpLbTest() { PiSsh 'curl --silent https://web.butare.net/info.php | grep NOMAD_HOST= | cut -d= -f2 | cut -d\< -f1'; } # test the HTTP load balancer from all Rasberry Pi servers
 

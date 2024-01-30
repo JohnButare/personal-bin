@@ -124,10 +124,10 @@ AppDirGet()
 # other
 #
 
-cls() { clear; }
-ei() { TextEdit $bin/inst; }
-ehp() { start "$udata/replicate/default.htm"; }
-st() { startup --no-pause "$@"; }
+cls() { clear; }																	# clear
+ei() { TextEdit $bin/inst; }											# edit inst
+ehp() { start "$udata/replicate/default.htm"; }		# edit home page
+st() { startup --no-pause "$@"; }									# startup
 
 #
 # applications
@@ -146,6 +146,7 @@ bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
 code() { VisualStudioCodeHelper "$@"; }
 e() { TextEdit "$@"; }
 figlet() { pyfiglet "$@"; }
+qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command
 terminator() { coproc /usr/bin/terminator "$@"; }
 
 #
@@ -1277,25 +1278,6 @@ alias wsa='WigginServerApps' wsc='WigginServerCount'
 WigginServerApps() { hashi app node status --active; }
 WigginServerCount() { hashi nomad node allocs --numeric -H=active; }
 
-
-# devices
-cam() { wiggin device "$@" cam; }
-wcore() { wiggin device "$@" core; }
-wtest() { wiggin device "$@" test; }
-
-# encrypted files
-encm() { encrypt mount "$cdata/app/CryFS/personal" "$@"; }
-encum() { encrypt unmount "personal" "$@"; }
-
-# files
-hadcd() { cd "$(appdata "$1")/$2"; } # hadcd HOST DIR - host appdata cd to directory
-
-# media
-mcd() { cd "//nas3/data/media"; } # mcd - media CD
-
-# backup
-bdir() { cd "$(AppGetBackupDir)"; } # backup dir
-
 # borg
 alias bh='BorgHelper'
 bconf() { BorgConf "$@" && BorgHelper status; }
@@ -1313,6 +1295,27 @@ bbh()
 	for host in "${hosts[@]}"; do bb "$dir" --host="$host" "$@" || return; done
 } 
 
+
+# devices
+cam() { wiggin device "$@" cam; }
+wcore() { wiggin device "$@" core; }
+wtest() { wiggin device "$@" test; }
+
+# directories
+hadcd() { cd "$(appdata "$1")/$2"; } 	# hadcd HOST DIR - host appdata cd to directory
+mcd() { cd "//nas3/data/media"; } 		# mcd - media CD
+bdir() { cd "$(AppGetBackupDir)"; } 	# backup dir
+
+# encrypted files
+encm() { encrypt mount "$cdata/app/CryFS/personal" "$@"; }
+encum() { encrypt unmount "personal" "$@"; }
+
+# netbootxyz
+alias nbuw='netbootxyz update win'																					# netbootxyz update win
+alias nbem='netbootxyz edit menu' 																					# netbootxyz edit menu
+alias nbew='cd "$(netbootxyz dir conf)/web/custom/windows/scripts/install"' # netbootxyz edit win
+alias nbda='netbootxyz deploy all'																					# netbootxyz deploy all
+
 # network DNS and DHCP configuration
 alias ne='wiggin network edit'								# network edit
 alias nep='e $DATA/setup/ports'								# network edit poirt
@@ -1320,6 +1323,8 @@ alias nb='wiggin network backup all'					# network backup
 alias nua='wiggin network update all'					# network update all
 alias nud='wiggin network update dns'					# network update DNS
 alias nudh='wiggin network update dhcp'				# network update DHCP
+
+DownFix() { wiggin host network fix -H=down --errors --wait "$@"; }
 
 DownInfo()
 {
@@ -1330,11 +1335,6 @@ DownInfo()
 	} | column -c $(tput cols -T "$TERM") -t -s"${sep}"
 }
 
-DownFix() { wiggin host network fix -H=down --errors --wait "$@"; }
-
-# QNAP
-qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command
-
 # servers
 alias sls='ServerLs' sns='ServerNodeStatus'
 ServerLs() { wiggin host ls -H="$1" "${@:2}"; } # ServerLs all|down|hashi-prod|hashi-test|locked|important|network|reboot|restart|unlock|web
@@ -1343,6 +1343,10 @@ ServerNodeStatus() { hashi app node status --active "$@"; }
 # UniFi
 alias uc='UniFiController'
 SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
+
+#
+# Wiggin Update
+#
 
 # update client
 alias u='update' ua="UpdateAll" ud="UpdateDownload" uf='UpdateFile'

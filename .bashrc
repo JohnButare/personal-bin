@@ -1151,7 +1151,7 @@ fu1() { grep --color -ire "$1" --include="*" --exclude-dir=".git" --exclude=".p1
 #
 
 alias cconf="CredentialConfStatus"
-cclip() { clipw $(cred get secure default); }
+csd() { clipw $(cred get secure default); } # clip secure default
 
 cred() { credential "$@"; }
 1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }
@@ -1314,6 +1314,7 @@ alias nbuw='netbootxyz update win auto'																			# netbootxyz update wi
 alias nbem='netbootxyz edit menu' 																					# netbootxyz edit menu
 alias nbew='cd "$(netbootxyz dir conf)/web/custom/windows/scripts/install"' # netbootxyz edit win
 alias nbda='netbootxyz deploy all'																					# netbootxyz deploy all
+alias nbt='hyperv create --type=win --start'																# netbootxyz test
 
 # network DNS and DHCP configuration
 alias ne='wiggin network edit'								# network edit

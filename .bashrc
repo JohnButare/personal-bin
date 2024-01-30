@@ -1318,7 +1318,7 @@ alias nbt='hyperv create --type=win --start'																# netbootxyz test
 
 # network DNS and DHCP configuration
 alias ne='wiggin network edit'								# network edit
-alias nep='e $DATA/setup/ports'								# network edit poirt
+alias nep='e $DATA/setup/ports'								# network edit ports
 alias nb='wiggin network backup all'					# network backup
 alias nua='wiggin network update all'					# network update all
 alias nud='wiggin network update dns'					# network update DNS

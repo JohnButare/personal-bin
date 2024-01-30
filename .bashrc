@@ -1310,7 +1310,7 @@ encm() { encrypt mount "$cdata/app/CryFS/personal" "$@"; }
 encum() { encrypt unmount "personal" "$@"; }
 
 # netbootxyz
-alias nbuw='netbootxyz update win'																					# netbootxyz update win
+alias nbuw='netbootxyz update win auto'																			# netbootxyz update win
 alias nbem='netbootxyz edit menu' 																					# netbootxyz edit menu
 alias nbew='cd "$(netbootxyz dir conf)/web/custom/windows/scripts/install"' # netbootxyz edit win
 alias nbda='netbootxyz deploy all'																					# netbootxyz deploy all

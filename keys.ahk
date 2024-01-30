@@ -44,8 +44,8 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 ;#2::WinMoveBottom "A" 								; move the active window to the back
 #2::WinMinimize "A"
 #3::WinMaximize "A"
-^#a::reload 													; Reload AutoHotKeys
-#NumpadAdd::reload										; Reload AutoHotKeys - hides magnifier shortcut key
+RShift & a::reload 										; Reload AutoHotKey
+#NumpadAdd::reload										; Reload AutoHotKeys - hides magnifier shortcut keyR
 
 ;
 ; Windows

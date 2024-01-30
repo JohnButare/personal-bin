@@ -1310,16 +1310,16 @@ encm() { encrypt mount "$cdata/app/CryFS/personal" "$@"; }
 encum() { encrypt unmount "personal" "$@"; }
 
 # netbootxyz
-alias nbuw='netbootxyz update win auto'																			# netbootxyz update win
+alias nb='netbootxyz'
 alias nbem='netbootxyz edit menu' 																					# netbootxyz edit menu
-alias nbew='cd "$(netbootxyz dir conf)/web/custom/windows/scripts/install"' # netbootxyz edit win
 alias nbda='netbootxyz deploy all'																					# netbootxyz deploy all
 alias nbt='hyperv create --type=win --start'																# netbootxyz test
+alias nbwu='netbootxyz update win auto'																			# netbootxyz win update
+alias nbwv='cat "$(netbootxyz dir win-install)/releases.txt"'								# netbootxyz win versions
 
 # network DNS and DHCP configuration
 alias ne='wiggin network edit'								# network edit
 alias nep='e $DATA/setup/ports'								# network edit ports
-alias nb='wiggin network backup all'					# network backup
 alias nua='wiggin network update all'					# network update all
 alias nud='wiggin network update dns'					# network update DNS
 alias nudh='wiggin network update dhcp'				# network update DHCP

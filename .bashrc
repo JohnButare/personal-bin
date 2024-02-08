@@ -475,10 +475,13 @@ dvsp() { dtRun "$P/Microsoft Visual Studio/2022/Preview/Common7/IDE/devenv.exe";
 alias backstage='yarn backstage-cli' bs='backstage'
 backs="$CODE/pitstop/backstage"; backsc() {  code "$backs"; } 		# Backstage code
 
-pits="$CODE/pitstop/cx.ui.pitstop.web"
+pits="$CODE/pitstop"
+pitsui="$CODE/pitstop/cx.ui.pitstop.web"
 pits() { cd "$pits"; }
-pitsc() { ProxyDisable; code "$pits"; } # Pitstop code
-pss() { cd "$pits" && yarn dev; } # Pitstop Start
+pitsui() { cd "$pitsui"; }
+pitsc() { ProxyDisable && cd "$pitsui" && code "$pits/cx.ui.pitstop.web"; } # Pitstop UI code
+
+pss() { cd "$pitsui" && yarn dev; } # Pitstop Start
 
 alias pda='PitstopDockerBuild && PitstopDockerClean && PitstopDockerRun'
 alias pdb='PitstopDockerBuild'

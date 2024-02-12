@@ -1276,6 +1276,7 @@ unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }
 
 # apps
+alias adc="AlarmDotCom"
 alias wsa='WigginServerApps' wsc='WigginServerCount' 
 WigginServerApps() { hashi app node status --active; }
 WigginServerCount() { hashi nomad node allocs --numeric -H=active; }

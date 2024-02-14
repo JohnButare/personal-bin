@@ -82,6 +82,8 @@ chpwd()
 # zsh specific aliases
 #
 
+alias zshl="zsh -l"
+
 # bashl - bash login
 alias bashl="bash"
 IsPlatform qnap,synology && alias bashl="/opt/bin/bash -l"

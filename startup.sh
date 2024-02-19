@@ -10,8 +10,8 @@ st xserver dbus || return
 # start SSH before port forwarding (ports check uses SSH)
 st sshd ports || return
 
-# other services - docker cron incron
-st docker || return 
+# other services - docker cron incron nix
+st docker nix || return 
 
 # clock - fix time drift in WSL and major differences when Hyper-V guest resumes
 IsPlatform wsl && { st time || return; }

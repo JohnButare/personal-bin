@@ -49,6 +49,8 @@ fi
 # Application Configuration
 #
 
+alias ns="NixHelper start"
+
 [[ ! $ASDF_DIR && ! $force ]] && { SourceIfExists "$HOME/.asdf/asdf.sh" || return; } 	# ASDF
 SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return 											# broot
 [[ -d "/usr/games" ]] && PathAdd "/usr/games" 																				# games on Ubuntu 19.04+

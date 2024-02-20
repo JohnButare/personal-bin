@@ -577,7 +577,7 @@ dtRun()
 # functions
 #
 
-def() { IsBash && type "$1" || whence -f "$1"; }
+def() { IsBash && { type "$1"; return; }; whence -f "$1"; }
 alias unexport='unset'
 alias unfunction='unset -f'
 

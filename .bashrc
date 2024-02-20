@@ -338,7 +338,7 @@ dirsct() { local args=(); ! InPath exa && args+=(--reverse); DoLs --native -l --
 DoCd()
 {
 	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }	
-	if IsAlias z; then z "$@" || return
+	if IsDefined __zoxide_z; then 	__zoxide_z "$@" || return
 	else builtin cd "$@" || return
 	fi
 	NodeConf && PythonConf

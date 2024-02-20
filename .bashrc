@@ -482,8 +482,6 @@ backs="$CODE/pitstop/backstage"; backsc() {  code "$backs"; } 		# Backstage code
 
 pits="$CODE/pitstop"
 pitsui="$CODE/pitstop/cx.ui.pitstop.web"
-pits() { cd "$pits"; }
-pitsui() { cd "$pitsui"; }
 pitsc() { ProxyDisable && cd "$pitsui" && code "$pits/cx.ui.pitstop.web"; } # Pitstop UI code
 
 pss() { cd "$pitsui" && yarn dev; } # Pitstop Start

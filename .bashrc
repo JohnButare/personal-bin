@@ -338,7 +338,10 @@ dirsct() { local args=(); ! InPath exa && args+=(--reverse); DoLs --native -l --
 DoCd()
 {
 	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }	
-	builtin cd "$@" && NodeConf && PythonConf
+	if IsAlias z; then z "$@" || return
+	else builtin cd "$@" || return
+	fi
+	NodeConf && PythonConf
 }
 
 DoLs()
@@ -1436,6 +1439,7 @@ McflyConf $force $quiet $verbose || return
 NodeConf $force $quiet $verbose || return
 PythonConf $force $quiet $verbose || return
 SetTextEditor $force $quiet $verbose || return
+ZoxideConf $force $quiet $verbose || return
 
 # logging
 if [[ $verbose ]]; then

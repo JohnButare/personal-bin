@@ -2,29 +2,27 @@
 export CACHED_PROCESSES="$(ProcessList)"
 
 # ensure network configure is correct first
-st network || return
+st network
 
 # start X Server and D-Bus (for credentials)
-st xserver dbus || return
+st xserver dbus
 
 # start SSH before port forwarding (ports check uses SSH)
-st sshd ports || return
+st sshd ports
 
 # other services - docker cron incron nix
-st docker nix || return 
+st docker nix
 
 # clock - fix time drift in WSL and major differences when Hyper-V guest resumes
-IsPlatform wsl && { st time || return; }
+IsPlatform wsl && { st time; }
 
 # applications
-st WindowManager || return										# start first
-st slack || return														# common
-st AutoHotKey alttab pu UltraMon || return		# win
+st WindowManager						# start first
+st slack										# common
+st AutoHotKey pu UltraMon		# win
 st alfred alttab rectangle shottr || return		# mac
 
 IsPlatform parallels && { drive mount all --no-optical || return; }
 
 # time synchronization - run last, can fail
-st chrony || return 
-
-return 0
+st chrony

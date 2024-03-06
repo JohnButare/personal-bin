@@ -135,9 +135,6 @@ st() { startup --no-pause "$@"; }									# startup
 # applications
 #
 
-appc() { header "Checking Applications"; inst check --update "$@"; }	# check app versions
-appd() { inst check | awk '{ if ($3 == "") print $1; }'; } 						# check app downloads
-
 alias choco='choco.exe'
 alias f='firefox'
 alias grep='command grep --color=auto'
@@ -150,6 +147,18 @@ e() { TextEdit "$@"; }
 figlet() { pyfiglet "$@"; }
 qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command
 terminator() { coproc /usr/bin/terminator "$@"; }
+
+# application installation
+appd() { inst check | awk '{ if ($3 == "") print $1; }'; } 						# check app downloads
+
+# appc [all|app] - check app versions
+appc()
+{
+	local args=(); 
+	[[ ! $@ ]] && args+=(--update)
+	[[ "$1" == "all" ]] && shift
+	header "Checking Applications"; inst check "${args[@]}" "$@"; 
+}
 
 #
 # archive

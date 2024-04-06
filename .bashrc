@@ -816,7 +816,7 @@ alias twait='TimerOn && pause && TimerOff' # timer wait
 
 # disk
 alias TestDisk='sudo bench32.exe'
-DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); }
+DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); } # DiskTestCopy FILE
 DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
 DiskTestAll() { bonnie++ | tee >> "$(os name)_performance_$(GetDateStamp).txt"; }
 
@@ -827,23 +827,38 @@ DiskTestRead()
 	sudo hdparm -t "$device"; 
 } 
 
-# DiskTestWrite [DEST](disktest) [COUNT] - # use smaller count for Pi and other lower performance disks
+# DiskTestWrite [DEST](/tmp) [COUNT] - # use smaller count for Pi and other lower performance disks
 DiskTestWrite() 
 {
-	local file="$1"; [[ ! $file ]] && file="disktest"
+	local dir="${1:-.}"
 	local count="$2"; [[ ! $count ]] && count="1024" 
-	
-	sync
-	${G}dd if=/dev/zero of="$file" bs=1M count="$count"
-	sync
+
+	[[ ! -d "$dir" ]] && { ScriptErr "Directory '$dir' does not exist"; return 1; }
+	local file="$dir/DiskTestWrite"
+	echo "Testing directory '$dir'..."
+
+	# test write
+	${G}dd if=/dev/zero of="$file" bs=1M count="$count" oflag=direct
+
+	# cleanup
 	rm "$file"
 } 
 
+# DiskTestFio [DEST](/tmp)
 DiskTestFio()
 {
-	local dir="${1:-/tmp}" sudo; InPath sudo && sudo="sudoc"
+	! InPath fio && { package fio || return; }
+
+	local dir="${1:-.}" sudo; InPath sudo && sudo="sudoc"
 	[[ ! -d "$dir" ]] && { ScriptErr "Directory '$dir' does not exist"; return 1; }
 	dir+="/FioTest"; $sudo mkdir -p "$dir" || return
+	echo "Testing directory '$dir'..."
+
+	# read throughput
+	$sudo fio --name=read_throughput --directory="$dir" --numjobs=8 \
+	--size=10G --time_based --runtime=60s --ramp_time=2s --ioengine=libaio \
+	--direct=1 --verify=0 --bs=1M --iodepth=64 --rw=read \
+	--group_reporting=1
 
 	# write throughput
 	$sudo fio --name=write_throughput --directory="$dir" --numjobs=8 \
@@ -851,10 +866,30 @@ DiskTestFio()
 	--direct=1 --verify=0 --bs=1M --iodepth=64 --rw=write \
 	--group_reporting=1
 
+	# cleanup
+	$sudo rm -fr "$dir"
+}
+
+DiskTestFioSmall()
+{
+	! InPath fio && { package fio || return; }
+
+	local dir="${1:-.}" sudo; InPath sudo && sudo="sudoc"
+	[[ ! -d "$dir" ]] && { ScriptErr "Directory '$dir' does not exist"; return 1; }
+	dir+="/FioTest"; $sudo mkdir -p "$dir" || return
+	
 	# read throughput
-	$sudo fio --name=read_throughput --directory="$dir" --numjobs=8 \
-	--size=10G --time_based --runtime=60s --ramp_time=2s --ioengine=libaio \
+	hilight "Testing read in '$dir'..."
+	$sudo fio --name=read_throughput --directory="$dir" --numjobs=1 \
+	--size=1G --time_based --runtime=10s --ramp_time=2s --ioengine=libaio \
 	--direct=1 --verify=0 --bs=1M --iodepth=64 --rw=read \
+	--group_reporting=1
+
+	# write throughput
+	hilight "Testing write in '$dir'..."
+	$sudo fio --name=write_throughput --directory="$dir" --numjobs=1 \
+	--size=1G --time_based --runtime=10s --ramp_time=2s --ioengine=libaio \
+	--direct=1 --verify=0 --bs=1M --iodepth=64 --rw=write \
 	--group_reporting=1
 
 	# cleanup

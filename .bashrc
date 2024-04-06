@@ -767,6 +767,7 @@ alias hstop='sudoc hb-service stop'
 alias hlog='sudoc hb-service logs'
 alias hloge='e /var/lib/homebridge/homebridge.log' # log edit
 alias hbakall='hbak pi5'
+alias hshell='sudoc hb-service-shell'
 
 hbak() { HomebridgeHelper backup "$@"; } # hbak HOST
 hrest() { HomebridgeHelper restore "$@"; } # hrest HOST

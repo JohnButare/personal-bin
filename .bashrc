@@ -838,62 +838,53 @@ DiskTestWrite()
 	echo "Testing directory '$dir'..."
 
 	# test write
-	${G}dd if=/dev/zero of="$file" bs=1M count="$count" oflag=direct
+	${G}dd if=/dev/zero of="$file" bs=1M count="$count" oflag=direct # conv=fdatasync
 
 	# cleanup
 	rm "$file"
 } 
 
 # DiskTestFio [DEST](/tmp)
+DiskTestFioBig() { DiskTestFio "$1" 8 10G 60s }
+DiskTestFioSmall() { DiskTestFio "$1" 1 1G 10s }
+
+# DiskTestFio [DEST](/tmp) [JOBS](1) [SIZE](1G) [RUNTIME](10s)
 DiskTestFio()
 {
 	! InPath fio && { package fio || return; }
 
-	local dir="${1:-.}" sudo; InPath sudo && sudo="sudoc"
-	[[ ! -d "$dir" ]] && { ScriptErr "Directory '$dir' does not exist"; return 1; }
-	dir+="/FioTest"; $sudo mkdir -p "$dir" || return
-	echo "Testing directory '$dir'..."
+	local dirOrig="${1:-.}"; [[ ! -d "$dirOrig" ]] && { ScriptErr "Directory '$dirOrig' does not exist"; return 1; }
+	local jobs="${2:-1}" size="${3:-1G}" runtime="${4:-10s}"
 
-	# read throughput
-	$sudo fio --name=read_throughput --directory="$dir" --numjobs=8 \
-	--size=10G --time_based --runtime=60s --ramp_time=2s --ioengine=libaio \
-	--direct=1 --verify=0 --bs=1M --iodepth=64 --rw=read \
-	--group_reporting=1
-
-	# write throughput
-	$sudo fio --name=write_throughput --directory="$dir" --numjobs=8 \
-	--size=10G --time_based --runtime=60s --ramp_time=2s --ioengine=libaio \
-	--direct=1 --verify=0 --bs=1M --iodepth=64 --rw=write \
-	--group_reporting=1
-
-	# cleanup
-	$sudo rm -fr "$dir"
-}
-
-DiskTestFioSmall()
-{
-	! InPath fio && { package fio || return; }
-
-	local dir="${1:-.}" sudo; InPath sudo && sudo="sudoc"
-	[[ ! -d "$dir" ]] && { ScriptErr "Directory '$dir' does not exist"; return 1; }
-	dir+="/FioTest"; $sudo mkdir -p "$dir" || return
+	local sudo; InPath sudo && sudo="sudoc"
+	local dir="$dirOrig/FioTest"; $sudo mkdir -p "$dir" || return
+	local output; output="$(mktemp)" || return
+	local engine="libaio"; IsPlatform mac && engine="posixaio"
 	
 	# read throughput
-	hilight "Testing read in '$dir'..."
-	$sudo fio --name=read_throughput --directory="$dir" --numjobs=1 \
-	--size=1G --time_based --runtime=10s --ramp_time=2s --ioengine=libaio \
+	hilight "Testing read in '$dirOrig'..."
+	$sudo fio --name=read_throughput --directory="$dir" --numjobs=$jobs \
+	--size=$size --time_based --runtime=$runtime --ramp_time=2s --ioengine=$engine \
 	--direct=1 --verify=0 --bs=1M --iodepth=64 --rw=read \
-	--group_reporting=1
+	--group_reporting=1 --output "$output" || return
+	local read; read="$(${G}grep "READ" "$output" | cut -d'(' -f2 | cut -d')' -f1)" || return
+	echo
 
 	# write throughput
-	hilight "Testing write in '$dir'..."
-	$sudo fio --name=write_throughput --directory="$dir" --numjobs=1 \
-	--size=1G --time_based --runtime=10s --ramp_time=2s --ioengine=libaio \
+	hilight "Testing write in '$dirOrig'..."
+	$sudo fio --name=write_throughput --directory="$dir" --numjobs=$jobs \
+	--size=$size --time_based --runtime=$runtime --ramp_time=2s --ioengine=$engine \
 	--direct=1 --verify=0 --bs=1M --iodepth=64 --rw=write \
-	--group_reporting=1
+	--group_reporting=1 --output "$output" || return
+	local write; write="$(${G}grep "WRITE" "$output" | cut -d'(' -f2 | cut -d')' -f1)" || return
+	echo
+
+	# display results
+	hilight "Results..."
+	echo "read=$read write=$write"
 
 	# cleanup
-	$sudo rm -fr "$dir"
+	$sudo rm -fr "$dir" "$output"
 }
 
 # network

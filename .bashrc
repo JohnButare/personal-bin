@@ -846,8 +846,8 @@ DiskTestWrite()
 } 
 
 # DiskTestFio [DEST](/tmp)
-DiskTestFioBig() { DiskTestFio "$1" 8 10G 60s }
-DiskTestFioSmall() { DiskTestFio "$1" 1 1G 10s }
+DiskTestFioBig() { DiskTestFio "$1" 8 10G 60s; }
+DiskTestFioSmall() { DiskTestFio "$1" 1 1G 10s; }
 
 # DiskTestFio [DEST](/tmp) [JOBS](1) [SIZE](1G) [RUNTIME](10s)
 DiskTestFio()

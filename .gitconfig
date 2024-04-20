@@ -166,11 +166,13 @@
 	pager = delta
 [diff]
 	tool = bc
-	guitool = bc
 [difftool]
 	prompt = false
+	trustExitCode = true
 [difftool "bc"]
 	cmd = BeyondCompare --wait \"$LOCAL\" \"$REMOTE\"
+[difftool "Kaleidoscope"]
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
 [https]
 	#proxy = http://proxy.rr.intel.com:911
 [http]
@@ -186,6 +188,13 @@
 	keepBackup = false
 [mergetool "bc"]
 	cmd = BeyondCompare --wait \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+[mergetool "Kaleidoscope"]
+	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+	trustExitCode = true
+[mergetool "meld"]
+	cmd = /opt/homebrew/bin/meld --diff \"$BASE\" \"$LOCAL\" \"$REMOTE\" --output \"$MERGED\"
+[mergetool "sm"]
+	cmd = SublimeMerge start -- \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
 [pull]
 	ff = only
 [push]
@@ -235,3 +244,7 @@
 	helper = !/usr/local/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = !/usr/local/bin/gh auth git-credential
+[diff]
+	tool = Kaleidoscope
+[merge]
+	tool = Kaleidoscope

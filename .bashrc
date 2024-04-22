@@ -1394,23 +1394,24 @@ SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 # Wiggin Update
 #
 
-# update client
-alias u='update' ua="UpdateAll" ud="UpdateDownload" uf='UpdateFile'
-update() { HostUpdate "$@"; }
-UpdateAll() { header "file" && slf "$@" && header "download" && UpdateDownload "$@" && wiggin sync public --no-prompt "$@" && header "update" && HostUpdate "$@"; }
+# update
+alias u='UpdateClient' ua="UpdateAll" us='UpdateServer'
+UpdateAll() { HostUpdate all "$@"; }
+UpdateClient() { HostUpdate "$@"; }
+UpdateServer() { HostUpdate --what=server "$@"; }
+
+alias ud="UpdateDownload" uf='UpdateFile'
 UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
 
-# update servers
-alias us='UpdateServer' usa="UpdateServerAll" usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot"
-UpdateServer() { wiggin host update --errors --dest-older "$@"; }
+alias usa="UpdateServerAll" usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot"
 UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@" && wiggin host credential -H=locked; }
-UpdateServerCredentials() { wiggin host credential -H=locked "$@"; }
-UpdateServerFile() { wiggin host sync files --errors --dest-older "$@"; }
+UpdateServerCredentials() { HostUpdate --what=server-credential "$@"; }
+UpdateServerFile() { HostUpdate --what=files "$@"; }
 UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
 UpdateServerReboot() { wiggin host update reboot "$@"; }
 UpdateServerRestart() { wiggin host update restart "$@"; }
-UpdateServerRoot() { wiggin host sync root "$@"; }
+UpdateServerRoot() { HostUpdate --what=server-root-user "$@"; }
 
 #
 # windows

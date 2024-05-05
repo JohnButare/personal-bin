@@ -394,7 +394,7 @@ pm() { PartitionManager "$@"; }
 
 # information
 ShowFortune() { ! InPath cowsay fortune lolcat && return; cowsay "$(fortune --all)" | lolcat; return 0; }
-ShowHost() { ! InPath pyfiglet lolcat && return; pyfiglet --justify=center --width=$COLUMNS "$(hostname)" | lolcat; }
+ShowHost() { HeaderFancy "$HOST"; }
 
 # clear
 c() { cls; } 											# clear screen
@@ -1320,9 +1320,16 @@ aconf() { hconf "$@" && cconf "$@" && nconf "$@" && sconf "$@"; }	# all configur
 unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }
 
+# gm - GOod Morning
+gm()
+{
+	cls; echo; echo; HeaderFancy "Good     Morning     John"
+	SpotifyStart && SpotifyPlay && UpdateAll "$@"
+}
+
 # apps
 alias adc="AlarmDotCom"
-alias wsa='WigginServerApps' wsc='WigginServerCount' 
+alias wsa='WigginServerApps' wsc='WigginServerCount'
 WigginServerApps() { hashi app node status --active; }
 WigginServerCount() { hashi nomad node allocs --numeric -H=active; }
 
@@ -1388,6 +1395,13 @@ DownInfo()
 alias sls='ServerLs' sns='ServerNodeStatus'
 ServerLs() { wiggin host ls -H="$1" "${@:2}"; } # ServerLs all|down|hashi-prod|hashi-test|locked|important|network|reboot|restart|unlock|web
 ServerNodeStatus() { hashi app node status --active "$@"; }
+
+# Spotify
+alias sp='SpotifyToggle'
+SpotifyStart() { start Spotify; }
+SpotifyPlay() { osascript -e 'tell application "Spotify" to play'; }
+SpotifyPause() { osascript -e 'tell application "Spotify" to pause'; }
+SpotifyToggle() { osascript -e 'tell application "Spotify" to playpause'; }
 
 # UniFi
 alias uc='UniFiController'

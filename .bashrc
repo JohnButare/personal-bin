@@ -1074,6 +1074,7 @@ off() { power off "$@"; }; alias down='off'
 slp() { power sleep "$@"; local result="$?"; (( $# == 0 )) && cls; return "$result"; }
 reb() { power reboot "$@"; }
 
+# logoff [USER](current)
 logoff()
 {
 	local user="${${1}:-$USER}"
@@ -1081,7 +1082,9 @@ logoff()
 	if IsSsh; then exit
 	elif IsPlatform win; then logoff.exe
 	elif IsPlatform ubuntu; then gnome-session-quit --no-prompt
-	elif IsPlatform mac; then sudoc launchctl bootout "user/$(id -u "$user")"
+	elif IsPlatform mac; then
+		[[ "$user" != "$USER" ]] && { sudoc launchctl bootout "user/$(id -u "$user")"; return; } # does not prompt to re-open windows, login screen comes up quickly
+		printf 'tell application "loginwindow" to \xc2\xabevent aevtrlgo\xc2\xbb' | osascript
 	else ScriptErr "logoff not supported", "logoff"; return 1;
 	fi		
 }

@@ -18,8 +18,8 @@ IsPlatform wsl && { st time; }
 
 # applications
 st WindowManager																					# start first
-st AutoHotKey pu UltraMon																	# win
-st alfred alttab hammerspoon rectangle shottr || return		# mac
+st AutoHotKey pu UltraMon											# win
+st alfred alttab moom rectangle shottr || return		# mac
 
 IsPlatform parallels && { drive mount all --no-optical || return; }
 

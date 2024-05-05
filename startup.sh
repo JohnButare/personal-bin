@@ -17,8 +17,9 @@ st docker nix
 IsPlatform wsl && { st time; }
 
 # applications
-st WindowManager																					# start first
-st AutoHotKey pu UltraMon											# win
+st WindowManager																		# start first
+st dropbox																					# shared
+st AutoHotKey pu UltraMon														# win
 st alfred alttab moom rectangle shottr || return		# mac
 
 IsPlatform parallels && { drive mount all --no-optical || return; }

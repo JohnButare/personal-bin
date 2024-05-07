@@ -819,9 +819,8 @@ alias tsplit='TimerSplit'
 alias twait='TimerOn && pause && TimerOff' # timer wait
 
 # disk
-alias TestDisk='sudo bench32.exe'
 DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); } # DiskTestCopy FILE
-DiskTestGui() { start --elevate ATTODiskBenchmark.exe; }
+DiskTestGui() { ! IsPlatform win && return; start --elevate ATTODiskBenchmark.exe; }
 DiskTestAll() { bonnie++ | tee >> "$(os name)_performance_$(GetDateStamp).txt"; }
 
 # DiskTestRead [DEVICE](di first)

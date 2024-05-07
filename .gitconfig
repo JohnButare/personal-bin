@@ -238,6 +238,7 @@
 	directory = %(prefix)///wsl.localhost/Ubuntu/home/jjbutare/data/bin
 	directory = %(prefix)//mnt/c/Users/johnbutare/code/Lookup
 	directory = %(prefix)//home/jjbutare/data/sync
+	directory = /opt/rpi-eeprom
 
 # not windows
 [credential "https://github.com"]

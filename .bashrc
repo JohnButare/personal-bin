@@ -1397,10 +1397,10 @@ ServerNodeStatus() { hashi app node status --active "$@"; }
 
 # Spotify
 alias sp='SpotifyToggle'
-SpotifyStart() { start Spotify; }
-SpotifyPlay() { osascript -e 'tell application "Spotify" to play'; }
-SpotifyPause() { osascript -e 'tell application "Spotify" to pause'; }
-SpotifyToggle() { osascript -e 'tell application "Spotify" to playpause'; }
+SpotifyStart() { ! IsPlatform mac && return; start Spotify; }
+SpotifyPlay() { ! IsPlatform mac && return; osascript -e 'tell application "Spotify" to play'; }
+SpotifyPause() { ! IsPlatform mac && return; osascript -e 'tell application "Spotify" to pause'; }
+SpotifyToggle() { ! IsPlatform mac && return; osascript -e 'tell application "Spotify" to playpause'; }
 
 # UniFi
 alias uc='UniFiController'

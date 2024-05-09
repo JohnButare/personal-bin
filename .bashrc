@@ -1330,6 +1330,7 @@ gm()
 # apps
 alias adc="AlarmDotCom"
 alias wsa='WigginServerApps' wsc='WigginServerCount'
+remmina() {  (nohup flatpak run --user org.remmina.Remmina >& /dev/null &); }
 WigginServerApps() { hashi app node status --active; }
 WigginServerCount() { hashi nomad node allocs --numeric -H=active; }
 

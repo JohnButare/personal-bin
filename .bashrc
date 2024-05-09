@@ -168,7 +168,6 @@ appc()
 #
 
 alias fm='start "$p/7-Zip/7zFM.exe"'
-alias untar='tar -z -v -x --atime-preserve <'
 zbak() { [[ $# == 1  ]] && zip -r --symlinks "$1.zip" "$1" || zip --symlinks "$1" "${@:2}"; } # zbak DIR [FILE]
 zrest() { unzip "${@}"; }
 zls() { unzip -l "${@}"; }
@@ -177,6 +176,8 @@ zll() { unzip -ll "${@}"; }
 tls() { sudo tar --list --gunzip --verbose --file="$1"; }
 tbak() { sudo tar --create --preserve-permissions --numeric-owner --verbose --gzip --file="${2:-$1.tar.gz}" "$1"; } # tak DIR [FILE]
 trest() { local dir; [[ $2 ]] && dir=( --directory "$2" ); sudo tar --extract --preserve-permissions --verbose --gunzip --file="$1" "${dir[@]}"; }
+
+untar() { local args=(); ! IsPlatform mac && args+=(--atime-preserve);  tar -z -v -x "${args[@]}" < "$@"; }
 
 #
 # configuration

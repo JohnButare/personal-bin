@@ -1313,6 +1313,8 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # Wiggin Network
 #
 
+config() { wiggin config change "$@"; }
+
 sd="$UDATA/sync" 														# sync dir
 sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
 

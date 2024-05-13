@@ -78,7 +78,6 @@ NewFirefox()
 OpenFirefox()
 { 
   local title := ".* Mozilla Firefox"
-  local titleCmdow := "* Mozilla Firefox"
 
   If !WinExist("ahk_exe" " firefox.exe")
   {
@@ -89,10 +88,6 @@ OpenFirefox()
   if TopActive(title)
     return
 
-  ;WinActivate "ahk_exe" " firefox.exe" 
-  ;WinRestore title 
-  ;run 'cmdow.exe "' titleCmdow '" /res /act', "C:\Users\Public\Documents\data\platform\win\", "Hide" 
-  ;run 'nircmd.exe win normal ititle "- Mozilla Firefox"', "C:\Users\Public\Documents\data\platform\win\", "Hide" 
   PostMessage 0x112, 0xF120,,, title  ; 0x112 = WM_SYSCOMMAND, 0xF120 = SC_RESTORE 
 }
 

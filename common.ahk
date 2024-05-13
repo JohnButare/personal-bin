@@ -21,14 +21,10 @@ InitTitleMatchMode()
 	SetTitleMatchMode "fast"
 }
 
-; TopActive(title) - if the window is not minimized move it to the top and make it active
-; We prefer sending windows to the background instead of minimizing them as restoring windows
-; seems to be problematic: 
+; TopActive(title) - if the window is not minimized move it to the top and make it active.
+; Do not minimize windows as it causes issues:
 ; 1) X windows are maximized on restore and sometime X410 hange
 ; 2) Firefox becomes sluggish after a while
-;
-; Restoring with X commands and AutoHotKey seem to have these issues.  cmdow.exe does not, but
-; it is slower to restore with cmdow.exe
 TopActive(title)
 {
 	if ! WinExist(title)

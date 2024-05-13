@@ -89,25 +89,7 @@ TerminatorNew()
 TerminatorActivate()
 {
 	global
-
-	; Assumes terminal starts with TerminatorTitle, which depends on shell configuration 
-	; and is not the case a command is running.
-	;if TopActive(TerminatorTitle)
-	;	return
-
-	;WinActivate TerminatorTitle
-
-	; making it top most and not top most works in WSL 2
 	WinActivate TerminatorTitle
 	WinSetAlwaysOnTop 1, TerminatorTitle
 	WinSetAlwaysOnTop 0, TerminatorTitle
-
-	;run "cmdow.exe terminator* /res /top /not", , "Hide"
-
-	; Uses the X window class but is slower
-	;run "wsl.exe /usr/local/data/bin/RunScript -x WinSetState " TerminatorClass " -a", , "Hide"
-
-	; manipulate the X Server
-	;WinActivate "X410_XAppWin"
-	;TopActive("X410_XAppWin")
 }

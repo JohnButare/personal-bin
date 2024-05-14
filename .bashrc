@@ -148,6 +148,7 @@ bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
 code() { VisualStudioCodeHelper "$@"; }
 e() { TextEdit "$@"; }
 figlet() { pyfiglet "$@"; }
+KarabinerCd() { ScriptCd KarabinerElements dir; }
 qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command
 terminator() { coproc /usr/bin/terminator "$@"; }
 

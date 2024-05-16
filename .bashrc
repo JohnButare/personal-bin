@@ -1334,8 +1334,8 @@ gm()
 alias adc="AlarmDotCom"
 alias wsa='WigginServerApps' wsc='WigginServerCount'
 remmina() {  (nohup flatpak run --user org.remmina.Remmina >& /dev/null &); }
-WigginServerApps() { hashi app node status --active; }
-WigginServerCount() { hashi nomad node allocs --numeric -H=active; }
+WigginServerApps() { hashi app node status --active "$@"; }
+WigginServerCount() { hashi nomad node allocs --numeric -H=active "$@"; }
 
 # borg
 alias bh='BorgHelper'
@@ -1425,9 +1425,10 @@ alias ud="UpdateDownload" uf='UpdateFile'
 UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
 
-alias usa="UpdateServerAll" usc="UpdateServerCredentials" usf="UpdateServerFile" usff="UpdateServerFileFast" usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot"
+alias usa="UpdateServerAll" usc="UpdateServerCredentials" use="UpdateServerEligibility" usf="UpdateServerFile" usff="UpdateServerFileFast" usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot"
 UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@" && wiggin host credential -H=locked; }
 UpdateServerCredentials() { HostUpdate --what=server-credential "$@"; }
+UpdateServerEligibility() { HostUpdate --what=server-eligibility "$@"; }
 UpdateServerFile() { HostUpdate --what=files "$@"; }
 UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
 UpdateServerReboot() { wiggin host update reboot "$@"; }

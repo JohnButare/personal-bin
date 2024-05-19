@@ -1418,7 +1418,7 @@ SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 # update
 alias u='UpdateClient' ua="UpdateAll" us='UpdateServer'
 UpdateAll() { HostUpdate all "$@"; }
-UpdateClient() { HostUpdate "$@"; }
+UpdateClient() { HostUpdate -w=file "$@" && HostUpdate "$@"; }
 UpdateServer() { HostUpdate --what=server "$@"; }
 
 alias ud="UpdateDownload" uf='UpdateFile'

@@ -96,16 +96,27 @@ fi
 alias wcode="$wcode"
 
 # Dropbox
-if [[ -d "$home/Dropbox" ]]; then
-	cr="$HOME/Juntos Holdings Dropbox"; IsPlatform  mac && cr="$HOME/Library/CloudStorage/Dropbox-JuntosHoldings" # cloud root
-	cc="$cr/Company" cf="$cr/Family" 
-	cloud="$home/Dropbox"; c="$cloud"; cdata="$c/data"; cdl="$cdata/download" ccode="$c/code"
+if [[ $force || ! $CLOUD_CHECKED ]] && CloudConf --quiet; then
 
+	# common
+	c="$CLOUD" cdata="$CLOUD/data" cdl="$cdata/download" ccode="$CLOUD/code"
 	ncd="$cloud/network"; alias ncd="$ncd" # network configuration directory
-	scd="$ncd/system"
+	ccd() { cd "$CLOUD"; } # cloud cd
 
-	dbsa() { dropbox search --open "@"; }
-	dbs() { dropbox search  --open --recent --word "$@"; }
+	# CLOUD_ROOT - for company or organization
+	export CLOUD_ROOT="$CLOUD"
+	if [[ -d "${CLOUD}Root" ]]; then
+		export CLOUD_ROOT="${CLOUD}Root"
+		crcd() { cd "$CLOUD_ROOT"; } # cloud root cd
+	fi
+
+	# Dropbox
+	if [[ "$CLOUD" =~ \ Dropbox ]]; then
+		dbsa() { dropbox search --open "@"; }
+		dbs() { dropbox search  --open --recent --word "$@"; }
+	fi
+
+	CLOUD_CHECKED="true"
 fi
 
 alias cdv="cd ~/Volumes"
@@ -203,7 +214,7 @@ alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 sfull()
 {
 	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""	# bash.bashrc
-	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,GIT_ANNEX_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_PATH,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh
+	declare {CHROOT_CHECKED,CLOUD_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,GIT_ANNEX_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_PATH,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh
 
 	. "$bin/bash.bashrc" "$@"
 	. "$bin/function.sh" "$@"

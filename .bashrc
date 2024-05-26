@@ -101,7 +101,7 @@ if CloudConf --quiet; then
 
 	# common
 	c="$CLOUD" cr="$CLOUD_ROOT" cdata="$CLOUD/data" cdl="$cdata/download" ccode="$CLOUD/code"
-	ncd="$cloud/network"; alias ncd="$ncd" # network configuration directory
+	ncd="$c/network"; alias ncd="$ncd" # network configuration directory
 	ccd() { cd "$c"; } 				# cloud cd
 	crcd() { cd "$cr"; } 			# cloud root cd
 
@@ -172,7 +172,6 @@ appc()
 #
 
 alias fm='start "$p/7-Zip/7zFM.exe"'
-zbak() { [[ $# == 1  ]] && zip -r --symlinks "$1.zip" "$1" || zip --symlinks "$1" "${@:2}"; } # zbak DIR [FILE]
 zrest() { unzip "${@}"; }
 zls() { unzip -l "${@}"; }
 zll() { unzip -ll "${@}"; }
@@ -182,6 +181,33 @@ tbak() { sudo tar --create --preserve-permissions --numeric-owner --verbose --gz
 trest() { local dir; [[ $2 ]] && dir=( --directory "$2" ); sudo tar --extract --preserve-permissions --verbose --gunzip --file="$1" "${dir[@]}"; }
 
 untar() { local args=(); ! IsPlatform mac && args+=(--atime-preserve);  tar -z -v -x "${args[@]}" < "$@"; }
+
+# zbak DIR [FILE] [-a|--all] - backup directory to file
+# -a|--all - backup link target not just the link
+zbak()
+{
+	# arguments
+	local dir file recursive="-r" symlinks="--symlinks"
+
+	while (( $# != 0 )); do
+		case "$1" in "") : ;;
+			-a|--all) unset symlinks;;
+			*)
+				if [[ ! $dir ]]; then dir="$1"
+				elif [[ ! $file ]]; then file="$1"
+				else UnknownOption "$1" "zbak"; return; fi
+		esac
+		shift
+	done
+
+	[[ ! $dir ]] && { MissingOperand "dir" "zbak"; return; }
+	[[ ! $file ]] && file="$(GetFileName "$dir")"
+
+
+	local exclude=(--exclude '*/.*_sync.txt')
+	zip $recursive $symlinks "$file" "$dir" "${exclude[@]}"
+} 
+
 
 #
 # configuration

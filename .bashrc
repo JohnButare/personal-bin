@@ -1203,8 +1203,8 @@ fuf() { fu -l "$@" | sort | uniq; } 				# FindUsagesFiles - find all script name
 fue() { fuf "$@" | xargs sublime; } 				# FindUsagesEdit - edit all script names that use the specified TEXT
 
 # FindUsages TEXT - find all script usages of specified TEXT, fu1 Find Usages 1 line
-fu() { rg "$@" "$BIN" "$UBIN" --trim --hidden --smart-case -g="!.git" -g="!.p10k.zsh" -g="!git-sh-prompt-win.sh"; } 
-fu1() { grep --color -ire "$1" --include="*" --exclude-dir=".git" --exclude=".p10k.zsh" --exclude="git-sh-prompt-win.sh" "$BIN" "$UBIN"; }
+fu() { ! InPath rg && { fug "$@"; return; }; rg "$@" "$BIN" "$UBIN" --trim --hidden --smart-case -g="!.git" -g="!.p10k.zsh" -g="!git-sh-prompt-win.sh"; } 
+fug() { grep --color -ire "$1" --include="*" --exclude-dir=".git" --exclude=".p10k.zsh" --exclude="git-sh-prompt-win.sh" "$BIN" "$UBIN"; }
 
 #
 # security
@@ -1334,7 +1334,28 @@ aconf() { hconf "$@" && cconf "$@" && nconf "$@" && sconf "$@"; }	# all configur
 unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }
 
-# gm - GOod Morning
+# BinSync - create or merge bin zip files
+BinSync()
+{
+	local dir="$TEMP"; IsInDomain sandia && dir="$cdl" 
+	local exclude=('.git/*' '.*_sync.txt')
+
+	# bin
+	if [[ -f "$dir/pbin.zip" ]]; then
+		( cd "$dir" && unzip "pbin.zip" -d "pbin" && merge --wait "pbin" "$bin" && rm -fr "pbin" "pbin.zip"; ) || return
+	else
+		( cd "$bin" && zip "$dir/pbin.zip" . -r --exclude "${exclude[@]}"; ) || return
+	fi
+	
+	# ubin
+	if [[ -f "$dir/ubin.zip" ]]; then
+		( cd "$dir" && unzip "ubin.zip" -d "ubin" && merge --wait "ubin" "$ubin" && rm -fr "ubin" "ubin.zip"; ) || return
+	else
+		( cd "$ubin" && zip "$dir/ubin.zip" . -r --exclude "${exclude[@]}"; ) || return
+	fi
+}
+
+# gm - Good Morning
 gm()
 {
 	cls; echo; echo; HeaderFancy "Good     Morning     John"

@@ -1352,25 +1352,54 @@ aconf() { hconf "$@" && cconf "$@" && nconf "$@" && sconf "$@"; }	# all configur
 unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }
 
-# BinSync - create or merge bin zip files
-BinSync()
+# SyncBin - create or merge bin zip files
+SyncBin()
 {
-	local dir="$TEMP"; IsInDomain sandia && dir="$cdl" 
-	local exclude=('.git/*' '.*_sync.txt')
+	local dir="$dl"; IsInDomain sandia && dir="$cdl" 
+	local exclude=('.git/*' '*.*_sync.txt')
 
 	# bin
 	if [[ -f "$dir/pbin.zip" ]]; then
-		( cd "$dir" && unzip "pbin.zip" -d "pbin" && merge --wait "pbin" "$bin" && rm -fr "pbin" "pbin.zip"; ) || return
+		( cd "$TMP" && unzip "$dir/pbin.zip" -d "pbin" && merge --wait "pbin" "$bin" && rm -fr "pbin" "$dir/pbin.zip"; ) || return
 	else
 		( cd "$bin" && zip "$dir/pbin.zip" . -r --exclude "${exclude[@]}"; ) || return
 	fi
 	
 	# ubin
 	if [[ -f "$dir/ubin.zip" ]]; then
-		( cd "$dir" && unzip "ubin.zip" -d "ubin" && merge --wait "ubin" "$ubin" && rm -fr "ubin" "ubin.zip"; ) || return
+		( cd "$TMP" && unzip "$dir/ubin.zip" -d "ubin" && merge --wait "ubin" "$ubin" && rm -fr "ubin" "$dir/ubin.zip"; ) || return
 	else
 		( cd "$ubin" && zip "$dir/ubin.zip" . -r --exclude "${exclude[@]}"; ) || return
 	fi
+}
+
+SyncPlatform()
+{
+	local dir="$dl"; IsInDomain sandia && dir="$cdl" 
+	local exclude=('.git/*' '*.*_sync.txt')
+
+	if [[ -f "$dir/platform.zip" ]]; then
+		( cd "$TMP" && unzip "$dir/platform.zip" -d "platform.bak" && merge --wait "platform.bak" "$DATA/platform" && rm -fr "platform.bak" "$dir/platform.zip"; ) || return
+		return
+	fi
+
+	(
+		# copy platform directory
+		cd "$DATA" || return
+		cp -rpL platform platform.bak || return
+
+		# cleanup win directory
+		cd "platform.bak/win" || return
+		eval eval rm -f "$(SyncLocalFiles exclude all)" || return
+
+		# compress platform directory
+		cd "$DATA/platform.bak" || return
+		zip "$dir/platform.zip" . -r --exclude "${exclude[@]}"
+
+		# cleanup
+		cd "$DATA" || return
+		rm -fr "platform.bak" || return
+	)
 }
 
 # gm - Good Morning

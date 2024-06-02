@@ -13,7 +13,7 @@ alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 alias wt='WindowsTerminal'
 
 ahk() { AutoHotKey "$@"; } # AutoHotKey
-FlipFlopWheel() { elevate powershell FlipFlopWheel.ps1; }
+FlipFlopWheel() { RunScript --functions --elevate -- powershell "$(utw "$win/FlipFlopWheel.ps1")"; }
 PortForward() { RunScript --elevate -- powershell.exe WslPortForward.ps1 > /dev/null; }
 rdesk() { ( mstsc.exe '/f' '/v:'"${@}" & ) }
 sqlcmd() { "$P/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/SQLCMD.EXE" "$@"; }

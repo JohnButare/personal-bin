@@ -6,7 +6,7 @@ Open1Password()
 	if ! FileExist(program) 
 		program := EnvGet("ProgramFiles") "\1Password\app\8\1Password.exe"	
 
-	if ! FileExist(program) 
+	if ! FileExist(program)
 		return
 
   If WinExist("ahk_exe" "1password.exe")
@@ -31,6 +31,20 @@ OpenSqlServerManagementStudio()
 
   If WinExist("ahk_exe" "Ssms.exe")
   	WinActivate ".*Microsoft SQL Server Management Studio"
+  else
+		run program
+}
+
+OpenTeams()
+{
+	program := UADATA "\Microsoft\WindowsApps\ms-teams.exe"	
+	title := ".*Microsoft Teams"
+
+  If WinExist("ahk_exe" "ms-teams.exe")
+  {
+  	WinRestore title
+		WinActivate title
+	}
   else
 		run program
 }

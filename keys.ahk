@@ -10,6 +10,7 @@ NoteEditorInit()
 TerminalInit()
 TextEditorInit()
 VmInit()
+WindowInit()
 
 #Include common.ahk
 
@@ -44,7 +45,7 @@ LWin & Space::Send "^{Esc}"						; Start Menu (search)
 ;#2::WinMoveBottom "A" 								; move the active window to the back
 #2::WinMinimize "A"
 #3::WinMaximize "A"
-RShift & a::reload 										; Reload AutoHotKey
+RShift & r::reload 										; Reload AutoHotKey
 #NumpadAdd::reload										; Reload AutoHotKeys - hides magnifier shortcut keyR
 
 ;
@@ -52,6 +53,7 @@ RShift & a::reload 										; Reload AutoHotKey
 ;
 
 LWin & NumpadClear::CenterWindow()
+RShift & q::CenterWindow()
 ;RWin & q::Send "#{Numpad7}"
 ;RWin & w::Send "#{Numpad8}"
 ;RWin & e::Send "#{Numpad9}"-
@@ -67,15 +69,16 @@ LWin & NumpadClear::CenterWindow()
 ;
 
 ;RShift & e::run "explorer.exe  %HOMEDRIVE%%HOMEPATH%"	; Explorer
-RShift & e::OpenExplorer()			; Explorer
-RShift & 1::Open1Password() 		; 1Password
-RShift & 3::OpenTerminal() 			; Terminal
-RShift & b::OpenBrowser() 			; Browser
-RShift & g::Opengit()						; Git
-RShift & m::OpenMail()					; Mail
-RShift & n::OpenNoteEditor()		; Note Editor
-RShift & t::OpenTextEditor()		; Text Editor
-RShift & w::RunWord()						; word
+RShift & e::OpenExplorer()			; Explorer(e)
+RShift & 1::Open1Password() 		; 1Password(1)
+RShift & 3::OpenTerminal() 			; Terminal(3)
+RShift & b::OpenBrowser() 			; Browser(b)
+RShift & a::OpenTeams() 				; CollAboration(a)
+RShift & g::Opengit()						; Git(g)
+RShift & m::OpenMail()					; Mail(m)
+RShift & n::OpenNoteEditor()		; Note Editor(n)
+RShift & t::OpenTextEditor()		; Text Editor(t)
+RShift & w::RunWord()						; word(w)
 #=::^=													; map cmd= (magnifier shortcut) to ctrl= (text size increase)
 #-::^-												  ; map cmd- to ctrl- (text size decrease)
 ;RShift & v::OpenVm()

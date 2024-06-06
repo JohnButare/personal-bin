@@ -633,7 +633,6 @@ export GIT_EDITOR="TextEdit -w"
 alias gax='git annex'
 alias gah='GitAnnexHelper'
 
-g() { local git=git; InPath "git.exe" && drive IsWin . && git="git.exe"; SshAgentConf && $git "$@"; }
 gcd() { ScriptCd GitHelper github dir "$@"; }
 gcdw() { ScriptCd GitHelper github dir --windows "$@"; }
 ghlp() { SshAgentConf && GitHelper "$@"; }
@@ -666,6 +665,9 @@ alias gpf='g push --force'			# push force
 alias ge='g status --porcelain=2 | cut -f9 -d" " | xargs edit' # git edit modified files
 alias eg='GitHelper edit'
 alias lg='lazygit'
+
+# g - git
+g() { local git=git; InPath "$P/Git/bin/git.exe" && drive IsWin . && git="$P/Git/bin/git.exe"; SshAgentConf && $git "$@"; }
 
 # gfix - git fix, combine modified files with last commit and force push
 alias gfix='grfc && gria && gpush --force'

@@ -1392,6 +1392,20 @@ SyncPlatform()
 	)
 }
 
+SyncInstall()
+{
+	local dir="$dl"; IsInDomain sandia && dir="$cdl" 
+	local exclude=('.git/*' '*.*_sync.txt')
+	local installDir; installDir="$(FindInstallFile)" || return
+
+	# bin
+	if [[ -f "$dir/install.zip" ]]; then
+		( cd "$TMP" && unzip "$dir/install.zip" -d "install" && merge --wait "install" "$installDir" && rm -fr "$TMP/install" "$dir/install.zip"; ) || return
+	else
+		( cd "$installDir" && zip "$dir/install.zip" . -r --exclude "${exclude[@]}"; ) || return
+	fi
+}
+
 # gm - Good Morning
 gm()
 {

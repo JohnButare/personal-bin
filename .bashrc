@@ -1218,9 +1218,9 @@ alias sedit='slist | xargs RunFunction.sh TextEdit'
 alias slistapp='slist | xargs grep -iE "IsInstalledCommand\(\)" | cut -d: -f1'
 alias seditapp='slistapp | xargs RunFunction.sh TextEdit'
 
-fuh() { HeaderBig "$@ Usages" && fu "$@"; } # FindUsageHeader
-fuf() { fu -l "$@" | sort | uniq; } 				# FindUsagesFiles - find all script names that use the specified TEXT
-fue() { fuf "$@" | xargs sublime; } 				# FindUsagesEdit - edit all script names that use the specified TEXT
+fuh() { HeaderBig "$@ Usages" && fu "$@"; } 				# FindUsageHeader
+fuf() { fu "$@" | cut -d":" -f1 | sort | uniq; } 		# FindUsagesFiles - find all script names that use the specified TEXT
+fue() { fuf "$@" | xargs sublime; } 								# FindUsagesEdit - edit all script names that use the specified TEXT
 
 # FindUsages TEXT - find all script usages of specified TEXT, fu1 Find Usages 1 line
 fu() { ! InPath rg && { fug "$@"; return; }; rg "$@" "$BIN" "$UBIN" --trim --hidden --smart-case -g="!.git" -g="!.p10k.zsh" -g="!git-sh-prompt-win.sh"; } 

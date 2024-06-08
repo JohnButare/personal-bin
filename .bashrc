@@ -606,17 +606,6 @@ FindCd()
 }
 
 #
-# DriveTime network
-#
-
-# dtRun PROGRAM [ARGS] – run a program as a DriveTime domain user
-dtRun() 
-{ 
-	IsInDomain && { "$@"; return; } # we are in the domain, just run the program
-	runas.exe /netonly /user:$(ConfigGet "dtAdDomain")\\$(ConfigGet "dtUser") "\"$(utw "$(FindInPath "$1")")\" ${@:2}" 
-}
-
-#
 # functions
 #
 
@@ -948,7 +937,6 @@ ncg() {	network current all; } # network current get
 ncu() {	NetworkCurrentUpdate "$@"; }
 PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
-DnsSuffixFix() { echo "search $(ConfigGet "domain")\n" | sudo tee -a "/etc/resolv.conf" || return; }
 
 # ping HOST - resolves virtual hostnames
 p()

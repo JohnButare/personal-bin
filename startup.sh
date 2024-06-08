@@ -10,13 +10,13 @@ st xserver
 
 # start SSH before port forwarding (ports check uses SSH)
 st sshd
-! IsInDomain && st ports
+! IsDomainRestricted && st ports
 
 # other services - docker cron incron nix
 st docker nix
 
 # clock - fix time drift in WSL and major differences when Hyper-V guest resumes
-! IsInDomain && IsPlatform wsl && { st time; }
+! IsDomainRestricted && IsPlatform wsl && { st time; }
 
 # applications
 st WindowManager																		# start first

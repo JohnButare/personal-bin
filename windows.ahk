@@ -2,14 +2,14 @@ WindowInit()
 {
   global
 
-  maxTo := UADATA "$UADATA\MaxTo\MaxTo.Core.exe"
+  maxTo := UADATA "\MaxTo\MaxTo.Core.exe"
   
   if FileExist(maxTo)
     win := "MaxTo"
   else
     win := "Win"
 
-  ;MsgBox window
+  ;MsgBox win
 }
 
 CenterWindow()

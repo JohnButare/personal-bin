@@ -657,6 +657,7 @@ alias lg='lazygit'
 
 # g - git
 g() { local git=git; InPath "$P/Git/bin/git.exe" && drive IsWin . && git="$P/Git/bin/git.exe"; SshAgentConf && $git "$@"; }
+gw() { "$P/Git/bin/git.exe" "$@"; }
 
 # gfix - git fix, combine modified files with last commit and force push
 alias gfix='grfc && gria && gpush --force'

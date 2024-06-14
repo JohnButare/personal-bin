@@ -9,8 +9,7 @@ st xserver
 ! { IsPlatform win && IsSystemd; } && st dbus # Unable to set up transient service directory
 
 # start SSH before port forwarding (ports check uses SSH)
-st sshd
-! IsDomainRestricted && st ports
+st sshd ports
 
 # other services - docker cron incron nix
 st docker nix

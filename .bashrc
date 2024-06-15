@@ -1029,6 +1029,34 @@ CheckAll()
 	done
 }
 
+# vpn - remove route which makes WSL network fail when connected to VPN
+VpnFix()
+{
+	# validate
+	network adapter exists vpn --quiet || { ScriptErr "not connected to VPN" "VpnFix"; return 1; }
+
+	# network adapter vars - network adapter vars show 
+	local name description linkSpeed ifIndex status cidr ip mask network broadcast defaultGateway mac
+	
+	# get VPN info
+	ScriptEval network adapter vars vpn || return
+	local vpnIp="$ip"
+	local vpnIfIndex="$ifIndex"
+
+	# get WSL info
+	ScriptEval network adapter vars 'vEthernet (WSL (Hyper-V firewall))'
+	echo "vpnIp=$vpnIp vpnIfIndex=$vpnIfIndex network=$network mask=$mask"
+
+	# check for route to delete - may need to do this multiple times
+	while route.exe print -4 | tr -s " " | qgrep"^ $network $mask On-link $vpnIp";  do
+		elevate route.exe delete "$network" mask "$mask" 0.0.0.0 IF "$vpnIfIndex"
+		sleep 1
+	done
+
+	# update the network configuration
+	NetworkCurrentUpdate || return	
+}
+
 #
 # prompt
 #

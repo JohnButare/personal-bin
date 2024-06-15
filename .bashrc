@@ -1407,6 +1407,31 @@ SyncInstall()
 	fi
 }
 
+SyncMd()
+{
+	local src="$cdata/app/Obsidian/Sandia/other" dest="bc" destDir="data/app/Obsidian/personal/sandia"
+	local _platformTarget _platformLocal _platformOs _platformLike _platformId _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
+	ScriptEval HostGetInfo "$dest" --detail --local || return; destDir="${whome}/${destDir}" # Windows home directory
+
+	# transfer Classify Out to dest
+	local file="$src/Classify Out.md"
+	if [[ -f "$file" ]]; then
+		local size; size="$(GetFileSize "$file")" || return
+		(( size > 0 )) && { { echo "# $(GetFileTimeStampPretty "$file")"; cat "$file"; echo; } | ssh "$dest" "cat - >> \"$destDir/Classify In.md\"" || return; }
+		: > "$file" || return
+	fi
+
+
+	# transfer Classify In from dest
+	file="/tmp/Classify In.md"
+	scp -p "$dest:$destDir/Classify\ Out.md" "$file" || return
+	size="$(GetFileSize "$file")" || return
+	(( size > 0 )) && { { echo "# $(GetFileTimeStampPretty "$file")"; cat "$file"; echo; } >> "$src/Classify In.md" || return; }
+	ssh "$dest" ": > \"$destDir/Classify\ Out.md\"" || return
+
+	return 0
+}
+
 # gm - Good Morning
 gm()
 {

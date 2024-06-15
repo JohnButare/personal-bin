@@ -8,11 +8,8 @@ st network
 st xserver
 ! { IsPlatform win && IsSystemd; } && st dbus # Unable to set up transient service directory
 
-# start SSH before port forwarding (ports check uses SSH)
-st sshd ports
-
-# other services - docker cron incron nix
-st docker nix
+# other services - docker cron incron nix ssh ports (ports check uses SSH)
+st docker nix sshd ports
 
 # clock - fix time drift in WSL and major differences when Hyper-V guest resumes
 ! IsDomainRestricted && IsPlatform wsl && { st time; }

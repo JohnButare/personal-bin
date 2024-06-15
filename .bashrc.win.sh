@@ -14,7 +14,7 @@ alias wt='WindowsTerminal'
 
 ahk() { AutoHotKey "$@"; } # AutoHotKey
 FlipFlopWheel() { RunScript --functions --elevate -- powershell "$(utw "$win/FlipFlopWheel.ps1")"; }
-PortForward() { RunScript --elevate -- powershell.exe WslPortForward.ps1 > /dev/null; }
+PortForward() { RunScript --elevate -- powershell.exe WslPortForward.ps1; }
 rdesk() { ( mstsc.exe '/f' '/v:'"${@}" & ) }
 sqlcmd() { "$P/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn/SQLCMD.EXE" "$@"; }
 

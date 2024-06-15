@@ -1409,6 +1409,8 @@ SyncInstall()
 
 SyncMd()
 {
+	SshAgentConf || return
+	
 	local src="$cdata/app/Obsidian/Sandia/other" dest="bc" destDir="data/app/Obsidian/personal/sandia"
 	local _platformTarget _platformLocal _platformOs _platformLike _platformId _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
 	ScriptEval HostGetInfo "$dest" --detail --local || return; destDir="${whome}/${destDir}" # Windows home directory

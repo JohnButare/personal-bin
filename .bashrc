@@ -1439,7 +1439,7 @@ SyncMd()
 {
 	SshAgentConf || return
 	
-	local src="$cdata/app/Obsidian/Sandia/other" dest="bc" destDir="data/app/Obsidian/personal/sandia"
+	local src="$cdata/app/Obsidian/Sandia/other" dest="bc" destDir="data/app/Obsidian/personal/Personal"
 	local _platformTarget _platformLocal _platformOs _platformLike _platformId _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
 	ScriptEval HostGetInfo "$dest" --detail --local || return; destDir="${whome}/${destDir}" # Windows home directory
 
@@ -1450,7 +1450,6 @@ SyncMd()
 		(( size > 0 )) && { { echo "# $(GetFileTimeStampPretty "$file")"; cat "$file"; echo; } | ssh "$dest" "cat - >> \"$destDir/Classify In.md\"" || return; }
 		: > "$file" || return
 	fi
-
 
 	# transfer Classify In from dest
 	file="/tmp/Classify In.md"

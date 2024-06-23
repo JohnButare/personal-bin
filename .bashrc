@@ -1619,25 +1619,21 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 # configuration - items that can take time
 #
 
-# run first - used by CredentialConf
-DbusConf || return
-NetworkConf $force $quiet $verbose || return
-SshAgentEnvConf $force $quiet $verbose  # ignore errors
-
-# run next
-CredentialConf $force $quiet $verbose 	# ignore errors
-
-# run last - depends on CredentialConf
-HashiConf  $force $quiet $verbose || return
-
 # other
 DotNetConf $force $quiet $verbose || return
 GitAnnexConf $force $quiet $verbose || return
-McflyConf $force $quiet $verbose || return
+McflyConf $force $quiet $verbose || return # do adter set prompt as this modifies the bash prompt
 NodeConf $force $quiet $verbose || return
 PythonConf $force $quiet $verbose || return
 SetTextEditor $force $quiet $verbose || return
 ZoxideConf $force $quiet $verbose || return
+
+# run last
+DbusConf || return
+NetworkConf $force $quiet $verbose || return
+SshAgentEnvConf $force $quiet $verbose  # ignore errors
+CredentialConf $force $quiet $verbose 	# ignore errors, uses DbusConf
+HashiConf  $force $quiet $verbose || return # depends on CredentialConf
 
 # logging
 if [[ $verbose ]]; then

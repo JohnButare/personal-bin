@@ -1288,14 +1288,19 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # Wiggin Network
 #
 
-config() { wiggin config change "$@" && ScriptEval network vars; }
-
-sd="$UDATA/sync" 														# sync dir
-sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
-
 aconf() { hconf "$@" && cconf "$@" && nconf "$@" && sconf "$@"; }	# all configure, i.e. aconf -a=pi1 -f
+config() { wiggin config change "$@" && ScriptEval network vars; }
 unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }
+
+# server
+alias wsa='WigginServerApps' wsc='WigginServerCount'
+WigginServerApps() { hashi app node status --active "$@"; }
+WigginServerCount() { hashi nomad node allocs --numeric -H=active "$@"; }
+
+# sync
+sd="$UDATA/sync" 														# sync dir
+sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
 
 # SyncBin - create or merge bin zip files
 SyncBin()
@@ -1396,10 +1401,7 @@ gm()
 
 # apps
 alias adc="AlarmDotCom"
-alias wsa='WigginServerApps' wsc='WigginServerCount'
 remmina() {  (nohup flatpak run --user org.remmina.Remmina >& /dev/null &); }
-WigginServerApps() { hashi app node status --active "$@"; }
-WigginServerCount() { hashi nomad node allocs --numeric -H=active "$@"; }
 
 # borg
 alias bh='BorgHelper'

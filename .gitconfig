@@ -249,3 +249,10 @@
 	tool = Kaleidoscope
 [merge]
 	tool = Kaleidoscope
+[credential]
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[credential "https://ados.sandia.gov"]
+	provider = generic

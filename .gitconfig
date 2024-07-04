@@ -241,14 +241,14 @@
 	directory = /usr/local/data/bin/.git
 
 # not windows
-[credential "https://github.com"]
-	helper = !/usr/local/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-	helper = !/usr/local/bin/gh auth git-credential
 [diff]
 	tool = Kaleidoscope
 [merge]
 	tool = Kaleidoscope
+[credential "https://github.com"]
+	helper = !/usr/local/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = !/usr/local/bin/gh auth git-credential
 [credential]
 	helper = 
 	helper = /usr/local/share/gcm-core/git-credential-manager

@@ -1179,7 +1179,6 @@ csd() { clipw $(cred get secure default); } # clip secure default
 cred() { credential "$@"; }
 1conf() { ScriptEval 1PasswordHelper unlock "$@" && 1PasswordHelper status; }
 
-CertGetDates() { local c; for c in "$@"; do echo "$c:"; openssl x509 -in "$c" -text | grep "Not "; done; }
 CertGetPublicKey() { openssl x509 -noout -pubkey -in "$1"; }
 CertKeyGetPublicKey() { openssl pkey -pubout -in "$1"; }
 CertVerifyKey() { [[ "$(CertGetPublicKey "$1")" == "$(CertKeyGetPublicKey "$2")" ]]; } # CertVerify CERT KEY - validate the private key if for the certificate

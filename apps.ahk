@@ -42,7 +42,7 @@ OpenTeams()
 
   If WinExist("ahk_exe" "ms-teams.exe")
   {
-  	WinRestore title
+  	;WinRestore title
 		WinActivate title
 	}
   else

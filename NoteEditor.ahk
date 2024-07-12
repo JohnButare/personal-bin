@@ -28,7 +28,7 @@ OpenNoteEditor()
 
 	If WinExist(NoteEditorTitle)
 	{
-		WinRestore NoteEditorTitle
+		;WinRestore NoteEditorTitle
 		WinActivate NoteEditorTitle
 	}
 	else

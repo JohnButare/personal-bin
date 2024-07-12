@@ -34,7 +34,7 @@ OpenTextEditor()
 
 	If WinExist(TextEditorTitle)
 	{
-		WinRestore TextEditorTitle
+		;WinRestore TextEditorTitle
 		WinActivate TextEditorTitle
 	}
 	else

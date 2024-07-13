@@ -153,6 +153,8 @@ e() { TextEdit "$@"; }
 figlet() { pyfiglet "$@"; }
 KarabinerCd() { ScriptCd KarabinerElements dir; }
 qr() { qnap cli run -- "$@"; } # qcli run - run a QNAP CLI command
+rdcman() { start RDCMan.exe "$CLOUD/data/app/Remote Desktop Connection Manager/default.rdg"; }
+
 terminator() { coproc /usr/bin/terminator "$@"; }
 
 # application installation

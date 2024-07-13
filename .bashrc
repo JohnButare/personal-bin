@@ -1560,9 +1560,9 @@ ZoxideConf $force $quiet $verbose || return
 # run last
 DbusConf || return
 NetworkConf $force $quiet $verbose || return
-SshAgentEnvConf $force $quiet $verbose  # ignore errors
-CredentialConf $force $quiet $verbose 	# ignore errors, uses DbusConf
-HashiConf  $force $quiet $verbose || return # depends on CredentialConf
+SshAgentEnvConf $force $quiet $verbose  		# ignore errors
+CredentialConf $force $quiet $verbose 			# ignore errors, uses DbusConf
+HashiConf $force $quiet $verbose || return 	# depends on CredentialConf
 
 # logging
 if [[ $verbose ]]; then

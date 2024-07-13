@@ -448,7 +448,7 @@ sw() { ddm switch "$@"; } # switch monitor
 mp()
 {
 	local dir="$UADATA/../Roaming/Realtime Soft/UltraMon/3.4.1/Profiles"
-	local cdir="$cloud/data/UltraMon"
+	local cdir="$CLOUD/data/UltraMon"
 
 	if [[ -f "$dir/$1.umprofile" ]]; then start "$dir/$1.umprofile"
 	elif [[ -f "$dir/study/$1.umprofile" ]]; then start "$dir/study/$1.umprofile"
@@ -457,7 +457,7 @@ mp()
 	fi
 }
 
-mpl() { tree "$UADATA/../Roaming/Realtime Soft/UltraMon/3.4.1/Profiles"	"$cloud/data/UltraMon"; }
+mpl() { tree "$UADATA/../Roaming/Realtime Soft/UltraMon/3.4.1/Profiles"	"$CLOUD/data/UltraMon"; }
 
 # swe - switch monitor to ender
 swe()

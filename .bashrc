@@ -106,7 +106,7 @@ if CloudConf --quiet; then
 	crcd() { cd "$cr"; } 			# cloud root cd
 
 	# Dropbox
-	if [[ "$CLOUD" =~ \ Dropbox ]]; then
+	if [[ "$CLOUD" =~ Dropbox ]]; then
 		dbsa() { dropbox search --open "@"; }
 		dbs() { dropbox search  --open --recent --word "$@"; }
 	fi

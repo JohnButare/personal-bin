@@ -31,7 +31,11 @@ InitializeXServer || return
 IsPlatform wsl2 && { LANG="C.UTF-8"; }
 
 # keyboard
-IsZsh && bindkey "^H" backward-kill-word
+if IsZsh; then
+	bindkey "^H" backward-kill-word
+	bindkey "^[[1;2D" emacs-backward-word
+	bindkey "^[[1;2C" emacs-forward-word
+fi
 
 # options
 IsBash && shopt -s autocd cdspell cdable_vars dirspell histappend direxpand globstar
@@ -1303,7 +1307,7 @@ WigginServerCount() { hashi nomad node allocs --numeric -H=active "$@"; }
 sd="$UDATA/sync" 														# sync dir
 sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
 
-# SyncBin - create or merge bin zip files
+# SyncBin - create or merge bin and user bin directories using the cloud download directory
 SyncBin()
 {
 	local dir="$dl"; IsInDomain sandia && dir="$cdl" 
@@ -1324,6 +1328,7 @@ SyncBin()
 	fi
 }
 
+# SyncPlatform - create or merge the platform directory using the cloud download directory
 SyncPlatform()
 {
 	local dir="$dl"; IsInDomain sandia && dir="$cdl" 
@@ -1353,6 +1358,7 @@ SyncPlatform()
 	)
 }
 
+# SyncInstall - create or merge the public install directory using the cloud download directory
 SyncInstall()
 {
 	local dir="$dl"; IsInDomain sandia && dir="$cdl" 
@@ -1367,6 +1373,7 @@ SyncInstall()
 	fi
 }
 
+# SyncMd - synchronize markdown classify in and out files from a Sandia computer to bc
 SyncMd()
 {
 	SshAgentConf || return

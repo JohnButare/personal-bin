@@ -943,6 +943,7 @@ alias HideSyncTxt="FileHide .*_sync.txt"
 # Virtual IP (VIP) - keepalived load balancer
 VipStatus() { local lb="${1:-lb}" mac; MacLookup --detail "$lb"; }
 VipMonitor() { MacLookup --monitor "${1:-lb}"; }
+VipConnect() { local lb="${1:-lb}"; SshHelper connect --trust "$lb"; }
 
 # web
 awd() { ScriptCd apache dir web "$@" && ls; }		# Apache Web Dir

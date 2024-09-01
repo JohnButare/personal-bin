@@ -1447,11 +1447,12 @@ encum() { encrypt unmount "personal" "$@"; }
 
 # netbootxyz
 alias nb='netbootxyz'
-alias nbem='netbootxyz edit menu' 																					# netbootxyz edit menu
-alias nbda='netbootxyz deploy all'																					# netbootxyz deploy all
-alias nbt='hyperv create --type=win --start'																# netbootxyz test
-alias nbwu='netbootxyz update win auto'																			# netbootxyz win update
-alias nbwv='cat "$(netbootxyz dir win-install)/releases.txt"'								# netbootxyz win versions
+alias nbcd='cd $(netbootxyz dir conf)'													# netbootxyz cd
+alias nbem='netbootxyz edit menu' 															# netbootxyz edit menu
+alias nbda='netbootxyz deploy all'															# netbootxyz deploy all
+alias nbt='hyperv create --type=win --start'										# netbootxyz test
+alias nbwu='netbootxyz update win auto'													# netbootxyz win update
+alias nbwv='cat "$(netbootxyz dir win-install)/releases.txt"'		# netbootxyz win versions
 
 # network DNS and DHCP configuration
 alias ne='wiggin network edit'								# network edit

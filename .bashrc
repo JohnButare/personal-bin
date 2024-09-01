@@ -1,7 +1,7 @@
 # TimerOn
 
-# ensure bash.bashrc and function.sh have been sourced
-[[ ! $BIN || ! $FUNCTIONS ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
+# source function.sh if needed - don't depend on BIN variable
+[[ ! $FUNCTIONS ]] && { . "/usr/local/data/bin/function.sh" || return; }
 
 # non-interactive initialization - available from child processes and scripts, i.e. ssh <script>
 export LESS='-R'

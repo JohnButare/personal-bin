@@ -604,8 +604,8 @@ ghqg() { local url="$1"; ghq get "$1"; url="$(echo "$url" | cut -d/ -f3-)"; cd "
 
 GitAnnexConf()
 {
-	local force forceLevel; ScriptOptForce "$@"
-	local verbose verboseLevel; ScriptOptVerbose "$@"
+	local force forceLevel forceLess; ScriptOptForce "$@"
+	local verbose verboseLevel verboseLess; ScriptOptVerbose "$@"
 
 	# return if configuration is set
 	[[ ! $force && $GIT_ANNEX_CHECKED ]] && return

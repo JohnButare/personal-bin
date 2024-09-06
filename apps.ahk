@@ -4,12 +4,12 @@ Open1Password()
 	program := EnvGet("APPDATA") "\..\Local\1Password\app\8\1Password.exe"	
 
 	if ! FileExist(program) 
-		program := EnvGet("ProgramFiles") "\1Password\app\8\1Password.exe"	
+		program := EnvGet("ProgramFiles") "\1Password\app\8\1Password.exe"
 
 	if ! FileExist(program)
 		return
 
-  If WinExist("ahk_exe" "1password.exe")
+  If WinExist("ahk_exe" "1Password.exe")
   	WinActivate "1Password"
   else
 		run program

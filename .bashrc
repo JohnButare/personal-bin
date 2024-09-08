@@ -107,12 +107,14 @@ if CloudConf --quiet; then
 	c="$CLOUD" cr="$CLOUD_ROOT" cdata="$CLOUD/data" cdl="$cdata/download" ccode="$CLOUD/code"
 	ncd="$c/network"; alias ncd="$ncd" # network configuration directory
 	ccd() { cd "$c"; } 				# cloud cd
-	crcd() { cd "$cr"; } 			# cloud root cd
+	crcd() { cd "$cr"; } 			# cloud root cd	
 
 	# Dropbox
 	if [[ "$CLOUD" =~ Dropbox ]]; then
 		dbsa() { dropbox search --open "@"; }
 		dbs() { dropbox search  --open --recent --word "$@"; }
+	elif [[ "$CLOUD" =~ OneDrive ]]; then
+		CloudConflicts() { cd "$cdata/app/Obsidian" && fd "\-S1"; }
 	fi
 
 fi

@@ -382,9 +382,9 @@ alias lt='DoLs --tree --dirs'					# list tree
 alias ltime='DoLs --full-time -Ah'		# list time
 
 alias dir='cmd.exe /c dir' # Windows dir
-dirss() { local args=(); ! InPath exa && args+=(--reverse); DoLs -l --sort=size "${args[@]}" "$@"; } 													# sort by size
-dirst() { local args=(); ! InPath exa && args+=(--reverse); DoLs -l --sort=time "${args[@]}" "$@"; } 													# sort by last modification time
-dirsct() { local args=(); ! InPath exa && args+=(--reverse); DoLs --native -l --time=ctime --sort=time "${args[@]}" "$@"; } 	# sort by creation time
+dirss() { local args=(); DoLsExtended && args+=(--reverse); DoLs -l --sort=size "${args[@]}" "$@"; } 													# sort by size
+dirst() { local args=(); DoLsExtended && args+=(--reverse); DoLs -l --sort=time "${args[@]}" "$@"; } 													# sort by last modification time
+dirsct() { local args=(); DoLsExtended && args+=(--reverse); DoLs -l --time=ctime --sort=time "${args[@]}" "$@"; } 	# sort by creation time
 
 DoCd()
 {
@@ -404,12 +404,17 @@ DoLs()
 		set -- "${@:1:(( $# - 1 ))}" "$dir"
 	fi
 
-	if InPath exa; then
+	if InPath eza; then
+		eza --ignore-glob "desktop.ini" --classify --group-directories-first "$@"
+	elif InPath Aexa; then
 		exa --ignore-glob "desktop.ini" --classify --group-directories-first "$@"
 	else
 		command ${G}ls --hide="desktop.ini" -F --group-directories-first --color "$@"
 	fi
 }
+
+# DoLsExtended - return true if extended ls arguments are supported using exa (Mac) or eza
+DoLsExtended() { InPath eza || InPath exa; }
 
 #
 # disk

@@ -241,10 +241,6 @@
 	directory = /usr/local/data/bin/.git
 
 # not windows
-[diff]
-	tool = Kaleidoscope
-[merge]
-	tool = Kaleidoscope
 [credential "https://ados.sandia.gov"]
 	provider = generic
 	helper = !/usr/local/share/gcm-core/git-credential-manager

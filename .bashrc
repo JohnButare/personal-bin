@@ -406,7 +406,7 @@ DoLs()
 
 	if InPath eza; then
 		eza --ignore-glob "desktop.ini" --classify --group-directories-first "$@"
-	elif InPath Aexa; then
+	elif InPath exa; then
 		exa --ignore-glob "desktop.ini" --classify --group-directories-first "$@"
 	else
 		command ${G}ls --hide="desktop.ini" -F --group-directories-first --color "$@"

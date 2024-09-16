@@ -1073,7 +1073,7 @@ logoff()
 	elif IsPlatform win; then logoff.exe
 	elif IsPlatform ubuntu; then gnome-session-quit --no-prompt
 	elif IsPlatform mac; then
-		[[ "$user" != "$USER" ]] && { sudoc launchctl bootout "user/$(id -u "$user")"; return; } # does not prompt to re-open windows, login screen comes up quickly
+		[[ "$user" != "$USER" ]] && { sudoc launchctl bootout "user/$(${G}id -u "$user")"; return; } # does not prompt to re-open windows, login screen comes up quickly
 		printf 'tell application "loginwindow" to \xc2\xabevent aevtrlgo\xc2\xbb' | osascript
 	else ScriptErr "logoff not supported", "logoff"; return 1;
 	fi		

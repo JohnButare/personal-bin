@@ -1257,10 +1257,19 @@ tmas() { tmux attach -t "${1:-0}"; } 	# tmux attach session
 # variables
 #
 
-alias ListVars='declare -p | grep -v "\-x"'
-alias ListExportVars='export'
-alias ListFunctions='declare -F'
-alias ListFunctionsAll='declare -f'
+if IsZsh; then
+	ListAllVars() { comm  -2 -3 <(typeset + | rev | cut -d" " -f1 | rev | ${G}sort) <(ListSpecialVars); }
+	ListVars() { comm  -2 -3 <(ListAllVars) <(ListExportVars); }	
+	ListExportVars() { typeset -x -t + | ${G}sort; }
+	ListFunctions() { typeset +f | ${G}sort; }
+	ListSpecialVars() { typeset -h | ${G}sort; }
+else
+	ListAllVars() { declare -p | cut -d" " -f3 | cut -d"=" -f1 | ${G}sort; }
+	ListVars() { declare -p | ${G}grep -v "^declare -x " | cut -d" " -f3 | cut -d"=" -f1 | ${G}sort; }
+	ListExportVars() { declare -p | ${G}grep "^declare -x " | cut -d" " -f3 | cut -d"=" -f1 | ${G}sort; }
+	ListFunctions() { declare -F | cut -d" " -f3 | ${G}sort; }
+fi
+
 UnsetVars() { eval unset \${\!$1*}; }
 
 #
@@ -1568,7 +1577,7 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 # other
 DotNetConf $force $quiet $verbose || return
 GitAnnexConf $force $quiet $verbose || return
-McflyConf $force $quiet $verbose || return # do adter set prompt as this modifies the bash prompt
+#McflyConf $force $quiet $verbose || return # do after set prompt as this modifies the bash prompt
 NodeConf $force $quiet $verbose || return
 PythonConf $force $quiet $verbose || return
 SetTextEditor $force $quiet $verbose || return

@@ -1,7 +1,7 @@
 # TimerOn
 
 # source function.sh if needed - don't depend on BIN variable
-[[ ! $FUNCTIONS ]] && { . "/usr/local/data/bin/function.sh" || return; }
+{ [[ ! $FUNCTIONS ]] || ! declare -f "IsFunction" >& /dev/null; } && { . "/usr/local/data/bin/function.sh" || return; }
 
 # non-interactive initialization - available from child processes and scripts, i.e. ssh <script>
 export LESS='-R'
@@ -548,7 +548,7 @@ FindCd()
 # functions
 #
 
-def() { IsBash && { type "$1"; return; }; whence -f "$1"; }
+IsZsh && def() { whence -f "$1"; } || def() { type "$1"; }
 alias unexport='unset'
 alias unfunction='unset -f'
 

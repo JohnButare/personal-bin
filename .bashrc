@@ -60,7 +60,6 @@ SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return 											# bro
 [[ -d "/usr/games" ]] && PathAdd "/usr/games" 																				# games on Ubuntu 19.04+
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"																			# Go
 SourceIfExists "$HOME/.ghcup/env" || return																						# Haskell
-IsiTerm && { SourceIfExists "$HOME/.iterm2_shell_integration.zsh" || return; }				# iTerm
 PathAdd front "/opt/local/bin" "/opt/local/sbin" 																			# Mac Ports
 SourceIfExists "$HOME/.rvm/scripts/rvm" || return  																		# Ruby Version Manager
 [[ -d "$HOME/.cargo/bin" ]] && PathAdd "$HOME/.cargo/bin" 														# Rust
@@ -78,6 +77,24 @@ if [[ $HOMEBREW_PREFIX ]]; then
 	PathAdd front "$HOMEBREW_PREFIX/bin" "$HOMEBREW_PREFIX/sbin" # use Homebrew utilities before system utilities
 	InfoPathAdd "$HOMEBREW_PREFIX/share/info"
 	ManPathAdd "$HOMEBREW_PREFIX/share/man"
+fi
+
+# iTerm
+if IsiTerm; then
+	SourceIfExists "$HOME/.iterm2_shell_integration.zsh" || return
+
+	# set dyname user variables, get with it2getvar "user.date"
+	function iterm2_print_user_vars() {
+	  iterm2_set_user_var test "success"
+	  iterm2_set_user_var date "$(date)"
+	  iterm2_set_user_var vaultToken "$(date)"
+	  it2git
+	}
+
+	# badge
+	printf "\e]1337;SetBadgeFormat=%s\a" \
+  	$(echo -n "\(session.autoName)\n\(user.gitBranch) \(user.gitDirty) \(user.gitPushCount) \(user.gitPullCount)" | base64)
+
 fi
 
 # Visual Studio Code

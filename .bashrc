@@ -257,7 +257,7 @@ alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 sfull()
 {
 	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""	# bash.bashrc
-	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,GIT_ANNEX_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_PATH,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh
+	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,GIT_ANNEX_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_CHECKED,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh
 
 	. "$bin/bash.bashrc" "$@"
 	. "$bin/function.sh" "$@"
@@ -660,7 +660,8 @@ glb()
 HISTFILE="$HOME/.${PLATFORM_SHELL}_history" # GitKraken shell changes the history file
 HISTSIZE=5000
 HISTFILESIZE=10000
-IsBash && HISTCONTROL=ignoreboth
+HISTIGNORE='history*' # troubleshooting
+IsBash && { HISTCONTROL=ignoreboth; }
 IsZsh && setopt SHARE_HISTORY HIST_IGNORE_DUPS
 
 HistoryClear() { IsBash && cat /dev/null > $HISTFILE; history -c; }
@@ -1060,7 +1061,8 @@ SetPromptBash()
  	PS1="${title}${green}${host}${user}${root}${elevated}${git} ${cyan}$dir${clear} \$ "
 
 	# share history with other shells when the prompt changes
-	PROMPT_COMMAND='history -a; history -r;' 
+	PROMPT_COMMAND='history -a; history -n;' 
+	# PROMPT_COMMAND='history -a; history -r;' 
 }
 
 if [[ ! $SET_PROMPT_CHECK ]]; then
@@ -1594,18 +1596,18 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 # other
 DotNetConf $force $quiet $verbose || return
 GitAnnexConf $force $quiet $verbose || return
-#McflyConf $force $quiet $verbose || return # do after set prompt as this modifies the bash prompt
+McflyConf $force $quiet $verbose || return # do after set prompt as this modifies the bash prompt
 NodeConf $force $quiet $verbose || return
 PythonConf $force $quiet $verbose || return
 SetTextEditor $force $quiet $verbose || return
 ZoxideConf $force $quiet $verbose || return
 
 # run last
-DbusConf || return
 NetworkConf $force $quiet $verbose || return
-SshAgentEnvConf $force $quiet $verbose  		# ignore errors
-CredentialConf $force $quiet $verbose 			# ignore errors, uses DbusConf
-HashiConf $force $quiet $verbose || return 	# depends on CredentialConf
+DbusConf || return
+SshAgentEnvConf $force $quiet $verbose  			# ignore errors
+CredentialConf $force $quiet $verbose 				# ignore errors, uses DbusConf
+HashiConf $force $quiet $verbose || return 		# depends on CredentialConf, NetworkConf
 
 # logging
 if [[ $verbose ]]; then

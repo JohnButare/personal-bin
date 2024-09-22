@@ -82,12 +82,14 @@ chpwd()
 # zsh specific aliases
 #
 
-alias zshl="zsh -l"
+
+EnvClean() { env -u FUNCTIONS "$@"; }
+alias zshl="EnvClean zsh -l"
 
 # bashl - bash login
-alias bashl="bash"
-IsPlatform qnap,synology && alias bashl="/opt/bin/bash -l"
-IsPlatform mac && [[ $HOMEBREW_PREFIX ]] && alias bashl="$HOMEBREW_PREFIX/bin/bash -l"
+alias bashl="EnvClean bash"
+IsPlatform qnap,synology && alias bashl="EnvClean /opt/bin/bash -l"
+IsPlatform mac && [[ $HOMEBREW_PREFIX ]] && alias bashl="EnvClean -- $HOMEBREW_PREFIX/bin/bash -l"
 
 #
 # scripts

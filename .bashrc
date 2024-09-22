@@ -260,7 +260,7 @@ alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 sfull()
 {
 	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""	# bash.bashrc
-	declare {CHROOT_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,GIT_ANNEX_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_CHECKED,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh
+	declare {CHROOT_CHECKED,COLORS_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,GIT_ANNEX_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_CHECKED,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh
 
 	. "$bin/bash.bashrc" "$@"
 	. "$bin/function.sh" "$@"
@@ -387,7 +387,10 @@ ys() { yarn start "$@"; }
 # directory management
 #
 
-[[ ! $LS_COLORS && -f "$ubin/default.dircolors" ]] && InPath dircolors && eval "$(dircolors "$ubin/default.dircolors")"
+# from https://github.com/trapd00r/LS_COLORS - https://raw.githubusercontent.com/trapd00r/LS_COLORS/refs/heads/master/LS_COLORS
+[[ $force || ! $COLORS_CHECKED ]] && [[ -f "$ubin/default.dircolors" ]] && InPath ${G}dircolors && eval "$(${G}dircolors "$ubin/default.dircolors")"
+InPath exa && export EXA_COLORS="$LS_COLORS:da=1;34" # https://the.exa.website/docs/colour-themes
+InPath eza && export EZA_COLORS="$LS_COLORS:da=1;34" # https://github.com/eza-community/eza-themes
 
 alias cd='DoCd'
 

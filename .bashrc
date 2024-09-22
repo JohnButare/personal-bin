@@ -83,18 +83,20 @@ fi
 if IsiTerm; then
 	SourceIfExists "$HOME/.iterm2_shell_integration.zsh" || return
 
-	# set dyname user variables, get with it2getvar "user.date"
-	function iterm2_print_user_vars() {
-	  iterm2_set_user_var test "success"
-	  iterm2_set_user_var date "$(date)"
-	  iterm2_set_user_var vaultToken "$(date)"
-	  it2git
-	}
+	# if IsPlatform mac; then
 
-	# badge
-	printf "\e]1337;SetBadgeFormat=%s\a" \
-  	$(echo -n "\(session.autoName)\n\(user.gitBranch) \(user.gitDirty) \(user.gitPushCount) \(user.gitPullCount)" | base64)
+		# set dyname user variables, get with it2getvar "user.date"
+		function iterm2_print_user_vars() {
+		  iterm2_set_user_var test "success"
+		  iterm2_set_user_var date "$(date)"
+		  ~/.iterm2/it2git
+		}
 
+		# badge
+		printf "\e]1337;SetBadgeFormat=%s\a" \
+	  	"$(echo -n "\(session.autoName)\n\(user.gitBranch) \(user.gitDirty) \(user.gitPushCount) \(user.gitPullCount)" | base64)"
+
+  # fi
 fi
 
 # Visual Studio Code

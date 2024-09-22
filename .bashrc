@@ -1057,7 +1057,7 @@ SetPromptBash()
 
 	[[ $user ]] && user="@${user}"
 
- 	PS1="${title}${green}${host}${user}${root}${elevated}${git} ${blue}$dir${clear} \$ "
+ 	PS1="${title}${green}${host}${user}${root}${elevated}${git} ${cyan}$dir${clear} \$ "
 
 	# share history with other shells when the prompt changes
 	PROMPT_COMMAND='history -a; history -r;' 

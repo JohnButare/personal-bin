@@ -774,6 +774,27 @@ alias k="kubectl"
 kcinit() { ! InPath kubectl && return; eval "$(kubectl completion "$PLATFORM_SHELL")"; } # kubectl initialization - initialize completion
 
 #
+# Obsidian
+#
+
+obrp="$CLOUD/data/app/Obsidian/personal" # Obsidian root personal
+function obdup() { fd '\-s'; } 					 # Obsidian Duplicates by S#
+
+# obm - Obsidian Merge, find -S files, merge them with the original, then remove them
+function obm()
+{
+	local file files; files=(); IFS=$'\n' ArrayMake files "$(obdup)"
+	for file in "${files[@]}"; do
+		local original="$(echo "$file" | sed 's/-S.*\./\./')"
+		while ! cmp -s "$original" "$file"; do
+			echo "Merging $original..."; m --wait "$file" "$original"
+		done
+		rm "$file" || return
+	done
+}
+
+
+#
 # performance
 #
 
@@ -890,6 +911,16 @@ alias hc='HostCleanup'
 #
 # projects
 #
+
+# PTC
+ptcr="$CLOUD/project/PTC" 			# PTC Root
+ptcs="$ptcr/shared/technical" 	# PTC Shared
+ptco="$ptcs/Documentation/PTC"	# PTC Obsidian
+
+# Solumina
+solr="$CLOUD/project/Solumina" 			# Solumina Root
+sols="$solr/shared/technical" 			# Solumina Shared
+solo="$sols/Documentation/Solumina" # Solumina Obsidian
 
 #
 # network
@@ -1421,17 +1452,18 @@ SyncMd()
 {
 	SshAgentConf || return
 	
-	local src="$cdata/app/Obsidian/Sandia/other" dest="bc" destDir="data/app/Obsidian/personal/Personal"
+	local src="$cdata/app/Obsidian/personal/other" dest="bc" destDir="data/app/Obsidian/personal/Personal"
 	local _platformTarget _platformLocal _platformOs _platformLike _platformId _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
 	ScriptEval HostGetInfo "$dest" --detail --local || return; destDir="${whome}/${destDir}" # Windows home directory
 
-	# transfer Classify Out to dest
+	# validation
 	local file="$src/Classify Out.md"
-	if [[ -f "$file" ]]; then
-		local size; size="$(GetFileSize "$file")" || return
-		(( size > 0 )) && { { echo "# $(GetFileTimeStampPretty "$file")"; cat "$file"; echo; } | ssh "$dest" "cat - >> \"$destDir/Classify In.md\"" || return; }
-		: > "$file" || return
-	fi
+	[[ ! -f "$file" ]] && { ScriptErr "'$(FileToDesc "$file")' does not exist"; return 1; }
+
+	# transfer Classify Out to dest
+	local size; size="$(GetFileSize "$file")" || return
+	(( size > 0 )) && { { echo "# $(GetFileTimeStampPretty "$file")"; cat "$file"; echo; } | ssh "$dest" "cat - >> \"$destDir/Classify In.md\"" || return; }
+	: > "$file" || return
 
 	# transfer Classify In from dest
 	file="/tmp/Classify In.md"

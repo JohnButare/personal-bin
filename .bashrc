@@ -259,7 +259,7 @@ alias ebo='e ~/.inputrc /etc/bash.bash_logout ~/.bash_logout'
 # set full
 sfull()
 {
-	declare {PLATFORM_OS,PLATFORM_LIKE,PLATFORM_ID}=""	# bash.bashrc
+	declare {PLATFORM_OS,PLATFORM_ID_MAIN,PLATFORM_ID_LIKE}=""	# bash.bashrc
 	declare {CHROOT_CHECKED,COLORS_CHECKED,CREDENTIAL_MANAGER_CHECKED,DOTNET_CHECKED,GIT_ANNEX_CHECKED,EDITOR,VM_TYPE_CHECKED,HASHI_CHECKED,MCFLY_CHECKED,NETWORK_CHECKED,NODE_CHECKED,PYTHON_CHECKED,PYTHON_ROOT_CHECKED,X_SERVER_CHECKED}=""	# function.sh
 
 	. "$bin/bash.bashrc" "$@"
@@ -1453,7 +1453,7 @@ SyncMd()
 	SshAgentConf || return
 	
 	local src="$cdata/app/Obsidian/personal/other" dest="bc" destDir="data/app/Obsidian/personal/Personal"
-	local _platformTarget _platformLocal _platformOs _platformLike _platformId _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
+	local _platformTarget _platformLocal _platformOs _platformIdMain _platformIdLike _platformIdDetail _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
 	ScriptEval HostGetInfo "$dest" --detail --local || return; destDir="${whome}/${destDir}" # Windows home directory
 
 	# validation

@@ -5,8 +5,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# ensure bash.bashrc has been sourced
-[[ ! $BIN ]] && { BASHRC="/usr/local/data/bin/bash.bashrc"; [[ -f "$BASHRC" ]] && . "$BASHRC"; }
+# source function.sh if needed - don't depend on BIN variable
+{ [[ ! $FUNCTIONS ]] || ! declare -f "IsFunction" >& /dev/null; } && { . "/usr/local/data/bin/function.sh" || return; }
 
 # set the home directory - must be before Powerlevel10k otherwise the old directory is displayed
 [[ "${(L)PWD}" == (${(L)WINDIR}/system32|${(L)WIN_HOME}|${(L)WIN_ROOT}) ]] && cd

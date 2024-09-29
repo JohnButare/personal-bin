@@ -446,7 +446,7 @@ DoLsExtended() { InPath eza || InPath exa; }
 alias duh='${G}du --human-readable' # disk usage human readable
 alias dsu='DiskSpaceUsage'					# disk space usage
 tdug() { sudoc ncdu --color=dark -x /; } 							# total disk usage graphical
-tdu() { di -d m | head -2 | tail -1 | tr -s " " | cut -d" " -f4; } # total disk usage in MB
+tdu() { di -d m | head -2 | ${G}tail --lines=-1 | tr -s " " | cut -d" " -f4; } # total disk usage in MB
 tdud() { local b="$(tdu)"; pause; echo "$(echo "$(tdu) - $b" | bc)MB"; } # total disk usage difference in MB
 dus() { ${G}du --summarize --human-readable "$@" |& grep -Ev "Permission denied|Transport endpoint is not connected"; } # disk usage summary
 
@@ -556,7 +556,7 @@ fsql() { ft "$1" "*.sql"; } # FindSql TET
 esql() { fte "$1" "*.sql"; } # EditSql TEXT
 fsqlv() { fsql "-- version $1"; } # FindSqlVersion [VERSION]
 esqlv() { esql "-- version $1"; } # EditSqlVersion [VERSION]
-msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | grep -Eiv "deploy|skip|ignore|NonVersioned" | sort | tail -1; } # MaxSqlVersion
+msqlv() { fsqlv | cut -f 2 -d : | cut -f 3 -d ' ' | grep -Eiv "deploy|skip|ignore|NonVersioned" | sort | ${G}tail --lines=-1; } # MaxSqlVersion
 
 eai() { fte "0.0.0.0" "VersionInfo.cs"; } # EditAssemblyInfo that are set to deploy (v0.0.0.0)
 
@@ -834,7 +834,7 @@ DiskTestAll() { bonnie++ | tee >> "$(os name)_performance_$(GetDateStamp).txt"; 
 # DiskTestRead [DEVICE](di first)
 DiskTestRead()
 { 
-	local device="${1:-$(di | head -2 | tail -1 | cut -d" " -f1)}"
+	local device="${1:-$(di | head -2 | ${G}tail --lines=-1 | cut -d" " -f1)}"
 	sudo hdparm -t "$device"; 
 } 
 

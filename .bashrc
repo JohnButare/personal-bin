@@ -777,22 +777,67 @@ kcinit() { ! InPath kubectl && return; eval "$(kubectl completion "$PLATFORM_SHE
 # Obsidian
 #
 
-obrp="$CLOUD/data/app/Obsidian/personal" # Obsidian root personal
-function obdup() { fd '\-s'; } 					 # Obsidian Duplicates by S#
+po="$CLOUD/data/app/Obsidian/personal" # Personal Obsidian
 
-# obm - Obsidian Merge, find -S files, merge them with the original, then remove them
-function obm()
+alias obm="ObsidianMerge"
+alias obmp="ObsidianMergePlugins"
+alias obmpa="ObsidianMergePluginsAll"
+
+function obdup() { fd '\-s'; } 				 # Obsidian Duplicates by S#
+
+# ObsidianMerge - merge and remove conflicting files
+function ObsidianMerge()
 {
+	# check if current folder has Markdown files
+	! FileExists *.md && { ScriptErr "the current directory does not contain Markdown files" "obm"; return 1; }
+
+	# get conflicting files		
 	local file files; files=(); IFS=$'\n' ArrayMake files "$(obdup)"
+
+	# iterate through existing files, compare until same, remove
 	for file in "${files[@]}"; do
-		local original="$(echo "$file" | sed 's/-S.*\./\./')"
+		local original="$(echo "$file" | sed 's/-[Ss].*\./\./')"
+		[[ "$file" == "$original" ]] && continue
+		echo "Comparing $original to $file..."
 		while ! cmp -s "$original" "$file"; do
 			echo "Merging $original..."; m --wait "$file" "$original"
 		done
-		rm "$file" || return
+	  ask "Remove '$file'" && { rm "$file" || return; }
 	done
+
+	echo "All conflicting files have been merged."
 }
 
+# ObsidianSyncPlugins DIR DIR - merge Obsidian plugins in the configuration directories
+function ObsidianMergePlugins()
+{
+	local src="$1/plugins" dest="$2/plugins"
+	[[ ! -d "$src" ]] && { ScriptErr "Source directory '$src' does not exist"; return; }
+	[[ ! -d "$2" ]] && { ScriptErr "Destination directory '$2' does not exist"; return; }
+	[[ ! -d "$dest" ]] && { mkdir "$dest" || return; }
+	m --wait "$src" "$dest"
+}
+
+# ObsidianSyncPlugins DIR DIR - merge Obsidian plugins in the configuration directories
+function ObsidianMergePluginsAll()
+{
+	local src="$po/.s1113731" dest
+
+	# Obsidian directories
+	local dir dirs=("$po" "$ptco" "$solo")
+	for dir in "${dirs[@]}"; do
+
+		# Obsidian hosts
+		local hosts=(s1113731 s1114928 s1081454)
+		for host in "${hosts[@]}"; do
+			dest="$dir/.$host"
+			[[ ! -d "$dest" ]] && { echo "$(os name alias "$host") is not configured for '$(FileToDesc "$dir")'"; continue; }
+			[[ "$src" == "$dest" ]] && continue
+			ObsidianMergePlugins "$src" "$dest" || return
+		done
+
+	done
+}
 
 #
 # performance
@@ -913,13 +958,13 @@ alias hc='HostCleanup'
 #
 
 # PTC
-ptcr="$CLOUD/project/PTC" 			# PTC Root
-ptcs="$ptcr/shared/technical" 	# PTC Shared
+ptc="$CLOUD/project/PTC" 				# PTC Root
+ptcs="$ptc/shared/technical" 	# PTC Shared
 ptco="$ptcs/Documentation/PTC"	# PTC Obsidian
 
 # Solumina
-solr="$CLOUD/project/Solumina" 			# Solumina Root
-sols="$solr/shared/technical" 			# Solumina Shared
+sol="$CLOUD/project/Solumina" 			# Solumina Root
+sols="$sol/shared/technical" 			# Solumina Shared
 solo="$sols/Documentation/Solumina" # Solumina Obsidian
 
 #

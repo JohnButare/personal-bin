@@ -189,8 +189,9 @@ appv() { inst version "$@"; }
 # appc [all|app] - check app versions
 appc()
 {
-	local args=(); 
-	[[ ! $@ ]] && args+=(--update)
+	local arg args=() hasArg
+	for arg in "$@"; do ! IsOption "$arg" && hasArg="true" && break; done
+	[[ ! $hasArg ]] && args+=(--update)
 	[[ "$1" == "all" ]] && shift
 	header "Checking Applications"; inst check "${args[@]}" "$@"; 
 }

@@ -1,7 +1,7 @@
 # TimerOn
 
 # source function.sh if needed - don't depend on BIN variable
-{ [[ ! $FUNCTIONS ]] || ! declare -f "IsFunction" >& /dev/null; } && { . "/usr/local/data/bin/function.sh" || return; }
+{ [[ ! $FUNCTIONS ]] || ! declare -f "IsFunction" >& /dev/null; } && { . "/usr/local/data/bin/function.sh" "" || return; }
 
 # non-interactive initialization - available from child processes and scripts, i.e. ssh <script>
 export LESS='-R'

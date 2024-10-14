@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # source function.sh if needed - don't depend on BIN variable
-{ [[ ! $FUNCTIONS ]] || ! declare -f "IsFunction" >& /dev/null; } && { . "/usr/local/data/bin/function.sh" || return; }
+{ [[ ! $FUNCTIONS ]] || ! declare -f "IsFunction" >& /dev/null; } && { . "/usr/local/data/bin/function.sh" "" || return; }
 
 # set the home directory - must be before Powerlevel10k otherwise the old directory is displayed
 [[ "${(L)PWD}" == (${(L)WINDIR}/system32|${(L)WIN_HOME}|${(L)WIN_ROOT}) ]] && cd

@@ -960,13 +960,18 @@ alias hc='HostCleanup'
 
 # PTC
 ptc="$CLOUD/project/PTC" 				# PTC Root
-ptcs="$ptc/shared/technical" 	# PTC Shared
+ptcs="$ptc/shared/technical" 		# PTC Shared
 ptco="$ptcs/Documentation/PTC"	# PTC Obsidian
+
+# System Administration
+sa="$CLOUD/project/System Administration" 			# System Administration Root
+sas="$sa/shared/technical" 											# System Administration Shared
+sao="$sas/Documentation/System Administration" 	# System Administration Obsidian
 
 # Solumina
 sol="$CLOUD/project/Solumina" 			# Solumina Root
-sols="$sol/shared/technical" 			# Solumina Shared
-solo="$sols/Documentation/Solumina" # Solumina Obsidian
+sols="$sa/shared/technical" 				# Solumina Shared
+solo="$sas/Documentation/Solumina" 	# Solumina Obsidian
 
 #
 # network

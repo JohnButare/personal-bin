@@ -243,7 +243,7 @@ zbak()
 #
 
 # edit/set 
-alias sa='. ~/.bashrc "$@"' ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh" ef="e $BIN/function.sh"; # set aliases
+alias sa='. ~/.bashrc "$@"' ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh \"\"" ef="e $BIN/function.sh"; # set aliases
 alias s10k="sz" e10k="e ~/.p10k.zsh"
 
 # edit/set all
@@ -251,7 +251,7 @@ eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEd
 saa() { local file files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; .  ~/.bashrc && for file in "${files[@]}"; do . "$file" || return; done; }
 
 efa() { local files; GetPlatformFiles "$bin/function." ".sh" || return 0; TextEdit "${files[@]}" "$bin/function.sh"; }
-sfa() { local file files; GetPlatformFiles "$UBIN/function." ".sh" || return 0; . "$bin/function.sh" && for file in "${files[@]}"; do . "$file" || return; done; }
+sfa() { local file files; GetPlatformFiles "$UBIN/function." ".sh" || return 0; . "$bin/function.sh" "" && for file in "${files[@]}"; do . "$file" || return; done; }
 
 alias estart="e /etc/environment /etc/profile /etc/bash.bashrc $BIN/bash.bashrc $UBIN/.profile $UBIN/.bash_profile $UBIN/.zlogin $UBIN/.p10k.zsh $UBIN/.zshrc $UBIN/.bashrc"
 alias kstart='bind -f ~/.inputrc' ek='e ~/.inputrc'
@@ -970,8 +970,8 @@ sao="$sas/Documentation/System Administration" 	# System Administration Obsidian
 
 # Solumina
 sol="$CLOUD/project/Solumina" 			# Solumina Root
-sols="$sa/shared/technical" 				# Solumina Shared
-solo="$sas/Documentation/Solumina" 	# Solumina Obsidian
+sols="$sol/shared/technical" 				# Solumina Shared
+solo="$sols/Documentation/Solumina" # Solumina Obsidian
 
 #
 # network

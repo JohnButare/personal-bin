@@ -133,7 +133,7 @@ if CloudConf --quiet; then
 		dbsa() { dropbox search --open "@"; }
 		dbs() { dropbox search  --open --recent --word "$@"; }
 	elif [[ "$CLOUD" =~ OneDrive ]]; then
-		CloudConflicts() { cd "$cdata/app/Obsidian" && fd "\-S1"; }
+		:
 	fi
 
 fi
@@ -505,6 +505,43 @@ swe()
 }
 
 #
+# Dropbox
+#
+
+function dbdup() { fd ' conflicted copy'; } # Dropbox Duplicates
+
+# DropboxMerge - merge and remove conflicting files
+function DropboxMerge()
+{
+	{ [[ $CLOUD_ROOT ]] && cd "$CLOUD_ROOT"; } || return
+
+	# get and fix conflicting files		
+	local file files; files=(); IFS=$'\n' ArrayMake files "$(dbdup)"
+	for file in "${files[@]}"; do
+		local original="$(echo "$file" | sed 's/ (.* conflicted copy .*)//')"
+		ConflictFix "$original" "$file" || return
+	done
+
+	echo "All conflicting files have been merged."
+}
+
+# ConflictFix FILE CONFLICT - merge orginal and conflict then remote conflict
+function ConflictFix()
+{
+	local file="$1" conflict="$2"
+	local fileDesc="$(FileToDesc "$file")" conflictDesc="$(FileToDesc "$conflict")"
+	
+	[[ "$file" == "$conflcit" ]] && return
+
+	echo "Comparing '$fileDesc' to '$conflictDesc'..."
+	while [[ -f "$file" && -f "$conflict" ]] && ! cmp -s "$file" "$conflict"; do
+		echo "Merging $file..."; m --wait "$file" "$conflict"
+	done
+	[[ -f "$conflict" ]] && ask "Remove '$conflictDesc'" && { rm "$conflict" || return; }	
+  return
+}
+
+#
 # file management
 #
 
@@ -792,18 +829,11 @@ function ObsidianMerge()
 	# check if current folder has Markdown files
 	! FileExists *.md && { ScriptErr "the current directory does not contain Markdown files" "obm"; return 1; }
 
-	# get conflicting files		
+	# get and fix conflicting files		
 	local file files; files=(); IFS=$'\n' ArrayMake files "$(obdup)"
-
-	# iterate through existing files, compare until same, remove
 	for file in "${files[@]}"; do
 		local original="$(echo "$file" | sed 's/-[Ss].*\./\./')"
-		[[ "$file" == "$original" ]] && continue
-		echo "Comparing $original to $file..."
-		while ! cmp -s "$original" "$file"; do
-			echo "Merging $original..."; m --wait "$file" "$original"
-		done
-	  ask "Remove '$file'" && { rm "$file" || return; }
+		ConflictFix "$original" "$file" || return
 	done
 
 	echo "All conflicting files have been merged."

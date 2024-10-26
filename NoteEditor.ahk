@@ -3,9 +3,13 @@ NoteEditorInit()
 	global
 
 	Notion := UADATA "\Programs\Notion\Notion.exe"	
-	Obsidian := UADATA "\Programs\obsidian\Obsidian.exe"
-	ObsidianTitle := ".* - Obsidian v.*"
 	StandardNotes := UADATA "\Programs\standard-notes\Standard Notes.exe"
+
+	ObsidianTitle := ".* - Obsidian v.*"
+	if FileExist(PROGRAMS64 "\Obsidian\Obsidian.exe")
+    Obsidian := PROGRAMS64 "\Obsidian\Obsidian.exe"
+  else
+    Obsidian := UADATA "\Programs\obsidian\Obsidian.exe"
 
 	NoteEditorTitle := ""
 	NoteEditor := ""

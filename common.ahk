@@ -68,3 +68,11 @@ OpenRecycleBin()
 {
 	run "explorer ::{645FF040-5081-101B-9F08-00AA002F954E}"
 }
+
+OpenRemoteDesktop()
+{
+  If WinExist("ahk_exe " "RDCMan.exe")
+    WinActivate "ahk_exe " "RDCMan.exe"
+  else
+		run PUBLIC "\data\appdata\win\RDCMan.exe"
+}

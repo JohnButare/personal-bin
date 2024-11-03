@@ -1081,7 +1081,7 @@ SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
 # sync files
 alias slf='SyncLocalFiles sync'
 alias FindSyncTxt='fa --hidden '\..*_sync.txt''
-alias RemoveSyncTxt='FindSyncTxt | xargs rm'
+alias RemoveSyncTxt='FindSyncTxt | xargs rm'; alias rst=RemoveSyncTxt
 alias HideSyncTxt="FileHide .*_sync.txt"
 
 # Virtual IP (VIP) - keepalived load balancer

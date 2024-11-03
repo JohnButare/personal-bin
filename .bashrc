@@ -27,8 +27,8 @@ alias tc='TimeCommand'
 # ensure DISPLAY is set first
 InitializeXServer || return
 
-# fix locale error
-IsPlatform wsl2 && { LANG="C.UTF-8"; }
+# WSL 2 - fix locale error and umask (WSL does not respect USERGROUPS_ENAB)
+IsPlatform wsl2 && { LANG="C.UTF-8"; umask 002; }
 
 # keyboard
 if IsZsh; then

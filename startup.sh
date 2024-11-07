@@ -16,7 +16,7 @@ st docker nix sshd ports
 
 # applications
 st WindowManager																		# start first
-st dropbox																					# shared
+st dropbox OneDrive																	# shared
 st AutoHotKey UltraMon															# win
 st alfred alttab moom rectangle shottr || return		# mac
 

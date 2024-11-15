@@ -533,11 +533,11 @@ function ConflictFix()
 	
 	[[ "$file" == "$conflcit" ]] && return
 
-	echo "Comparing '$fileDesc' to '$conflictDesc'..."
-	while [[ -f "$file" && -f "$conflict" ]] && ! cmp -s "$file" "$conflict"; do
+	echo "Comparing '$fileDesc' to '$conflictDesc'..."	
+	while [[ -f "$file" && -f "$conflict" ]] && ! cmp -s "$file" "$conflict"; do		
 		echo "Merging $file..."; m --wait "$file" "$conflict"
 	done
-	[[ -f "$conflict" ]] && ask "Remove '$conflictDesc'" && { rm "$conflict" || return; }	
+	[[ -f "$conflict" ]] && ask "Conflict '$conflict' is identical, do you want to remove it" && { rm "$conflict" || return; }	
   return
 }
 

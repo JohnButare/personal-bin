@@ -1656,13 +1656,15 @@ alias ud="UpdateDownload" uf='UpdateFile'
 UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
 
-alias usa="UpdateServerAll" usc="UpdateServerCredentials" use="UpdateServerEligibility"
+alias usa="UpdateServerAll" usc="UpdateServerCleanup" use="UpdateServerEligibility"
 alias usf="UpdateServerFile" usff="UpdateServerFileFast" usfu="UpdateServerFileUnison"
 alias usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot"
 
 UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@" && wiggin host credential -H=locked; }
+UpdateServerCleanup() { UpdateServerCredentials "$@" && UpdateServerEligibility "$@" && UpdateServerFailed; }
 UpdateServerCredentials() { HostUpdate --what=server-credential "$@"; }
 UpdateServerEligibility() { HostUpdate --what=server-eligibility "$@"; }
+UpdateServerFailed() { hashi consul remove failed; }
 UpdateServerFile() { HostUpdate --what=files "$@"; }
 UpdateServerFileUnison() { HostUpdate --what=files "$@" -- --unison; }
 UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }

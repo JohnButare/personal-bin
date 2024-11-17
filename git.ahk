@@ -40,7 +40,8 @@ OpenFork()
 
 NewGitKraken()
 {
-  run GitKraken
+  ; run GitKraken
+  run "wsl.exe gitkraken"
 }
 
 OpenGitKraken()

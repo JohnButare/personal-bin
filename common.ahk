@@ -76,3 +76,11 @@ OpenRemoteDesktop()
   else
 		run PUBLIC "\data\appdata\win\RDCMan.exe"
 }
+
+WinVisible(Title)
+{
+  DetectHiddenWindows false ; Force to not detect hidden windows
+  result := WinExist(Title) ; Return 0 for hidden windows or the ahk_id
+  DetectHiddenWindows true ; Return to "normal" state
+  return result
+}

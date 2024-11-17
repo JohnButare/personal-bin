@@ -1,4 +1,5 @@
 # TimerOn
+[[ $timerOn ]] && TimerOn
 
 # source function.sh if needed - don't depend on BIN variable
 { [[ ! $FUNCTIONS ]] || ! declare -f "IsFunction" >& /dev/null; } && { . "/usr/local/data/bin/function.sh" "" || return; }
@@ -139,8 +140,8 @@ if CloudConf --quiet; then
 fi
 
 # application data and configuration directories
-aconf() { AppDirGet "$ACONF" "$@"; } 	# ACONF [w] [n] [host]
-adata() { AppDirGet "$ADATA" "$@"; } 			# adata [w] [n] [host]
+appconf() { AppDirGet "$ACONF" "$@"; } 	# appconf [w] [n] [host]
+adata() { AppDirGet "$ADATA" "$@"; } 		# adata [w] [n] [host]
 acd() { ScriptCd adata "$@"; }
 acdw() { ScriptCd adata "w" "$@"; }
 
@@ -1242,7 +1243,7 @@ NetConsoleEnable() # HOST
 	[[ ! $host ]] && { MissingOperand "host" "NetConsoleEnable"; return 1; }
 
 	! grep "netconsole" /etc/modules && { echo "netconsole" | sudo tee -a "/etc/modules" || return; }
-	echo "options netconsole netconsole=6666@$(GetIpAddress)/$(GetPrimaryAdapterName),6666@$(GetIpAddress "$host")/$(GetMacAddress "$host")" | sudo tee "/etc/modprobe.d/netconsole.conf"
+	echo "options netconsole netconsole=6666@$(GetIpAddress)/$(GetAdapterName),6666@$(GetIpAddress "$host")/$(GetMacAddress "$host")" | sudo tee "/etc/modprobe.d/netconsole.conf"
 }
 
 NetConsoleDisable()
@@ -1448,7 +1449,7 @@ vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 # Wiggin Network
 #
 
-aconf() { hconf "$@" && cconf "$@" && nconf "$@" && sconf "$@"; }	# all configure, i.e. aconf -a=pi1 -f
+aconf() { nconf "$@" && hconf "$@" && cconf "$@" && sconf "$@"; }	# all configure, i.e. aconf -a=pi1 -f
 config() { wiggin config change "$@" && ScriptEval network vars; }
 unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }
@@ -1719,20 +1720,12 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 #
 
 # other
-DotNetConf $force $quiet $verbose || return
-GitAnnexConf $force $quiet $verbose || return
-McflyConf $force $quiet $verbose || return # do after set prompt as this modifies the bash prompt
-NodeConf $force $quiet $verbose || return
-PythonConf $force $quiet $verbose || return
-SetTextEditor $force $quiet $verbose || return
-ZoxideConf $force $quiet $verbose || return
+RunFunctions DotNetConf GitAnnexConf McflyConf NodeConf PythonConf SetTextEditor ZoxideConf || retrurn
 
 # run last
-NetworkConf $force $quiet $verbose || return
-DbusConf || return
-SshAgentEnvConf $force $quiet $verbose  			# ignore errors
-CredentialConf $force $quiet $verbose 				# ignore errors, uses DbusConf
-HashiConf $force $quiet $verbose || return 		# depends on CredentialConf, NetworkConf
+RunFunctions NetworkConf DbusConf || return
+RunFunctions --ignore-errors SshAgentEnvConf CredentialConf || return
+RunFunctions HashiConf || return # depends on CredentialConf, NetworkConf
 
 # logging
 if [[ $verbose ]]; then
@@ -1742,6 +1735,6 @@ if [[ $verbose ]]; then
 fi
 
 unset -v force quiet verbose
-# TimerOff
+[[ $timerOn ]] && TimerOff
 
 return 0

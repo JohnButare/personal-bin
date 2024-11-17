@@ -114,7 +114,7 @@ function executeCommand {
   # network change - modify the command to update network variables
   if force= UpdateSince "network" "$networkLastUpdateSeconds"; then
     networkLastUpdateSeconds="$(GetSeconds)"
-    BUFFER="ScriptEval network vars proxy; HashiConf --force; $BUFFER"
+    BUFFER="ScriptEval network vars proxy; HashiConf -ff; $BUFFER"
   fi
 
   zle accept-line

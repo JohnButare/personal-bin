@@ -50,10 +50,15 @@ function p10k-on-pre-prompt()
   p10k display '1/left/dir'=$dir
 }
 
+# chpwd - directory changed
 chpwd()
 {
   local last; GetFileName "$PWD" last
   
+  # prompt configuration
+  NodeConf && PythonConf
+
+  # determine git length
   local gitLen=0 anchorLen=0
   if IsGitWorkTree; then
     local anchor="$(GitRoot | GetFileName)" branch="$(GitBranch)"
@@ -98,9 +103,40 @@ IsPlatform mac && [[ $HOMEBREW_PREFIX ]] && alias bashl="EnvClean -- $HOMEBREW_P
 SourceIfExists "$HOME/.p10k.zsh" || return
 
 #
-# Change Password - move here to prevent Windows division by 0 errors starting shell
+# events
 #
 
+networkLastUpdateSeconds="$(GetSeconds)"
+
+# executeCommand - executed before a command is run, allows command modification to update environment
+function executeCommand {
+
+  # network change - modify the command to update network variables
+  if force= UpdateSince "network" "$networkLastUpdateSeconds"; then
+    networkLastUpdateSeconds="$(GetSeconds)"
+    BUFFER="ScriptEval network vars proxy; HashiConf --force; $BUFFER"
+  fi
+
+  zle accept-line
+}
+
+zle -N executeCommandWidget executeCommand
+bindkey '^J' executeCommandWidget
+bindkey '^M' executeCommandWidget
+
+# preexec - execute before command is run
+# preexec()
+# {
+#   :
+# }
+
+# precmd - executed after command is run
+# precmd()
+# {  
+#   :
+# }
+
+# TRAPWINCH - executed on window resize
 TRAPWINCH () {
   chpwd; p10k-on-pre-prompt
 }

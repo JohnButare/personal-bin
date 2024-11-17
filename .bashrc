@@ -417,7 +417,6 @@ DoCd()
 	if IsDefined __zoxide_z; then 	__zoxide_z "$@" || return
 	else builtin cd "$@" || return
 	fi
-	NodeConf && PythonConf
 }
 
 DoLs()

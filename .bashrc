@@ -1720,7 +1720,7 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 #
 
 # other
-RunFunctions DotNetConf GitAnnexConf McflyConf NodeConf PythonConf SetTextEditor ZoxideConf || retrurn
+RunFunctions DotNetConf GitAnnexConf McflyConf NodeConf PythonConf SetTextEditor ZoxideConf || return
 
 # run last
 RunFunctions NetworkConf DbusConf || return

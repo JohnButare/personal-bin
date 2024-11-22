@@ -1659,6 +1659,7 @@ UpdateFile() { slf "$@"; }
 alias usa="UpdateServerAll" usc="UpdateServerCleanup" use="UpdateServerEligibility"
 alias usf="UpdateServerFile" usff="UpdateServerFileFast" usfu="UpdateServerFileUnison"
 alias usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot"
+alias usfail="UpdateServerFailed"
 
 UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@" && wiggin host credential -H=locked; }
 UpdateServerCleanup() { UpdateServerCredentials "$@" && UpdateServerEligibility "$@" && UpdateServerFailed; }

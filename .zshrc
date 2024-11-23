@@ -109,12 +109,12 @@ SourceIfExists "$HOME/.p10k.zsh" || return
 networkLastUpdateSeconds="$(GetSeconds)"
 
 # executeCommand - executed before a command is run, allows command modification to update environment
-function executeCommand {
+function executeCommand {  
 
   # network change - modify the command to update network variables
-  if force= UpdateSince "network" "$networkLastUpdateSeconds"; then
+  if force= UpdateSince "network" "$networkLastUpdateSeconds"; then    
     networkLastUpdateSeconds="$(GetSeconds)"
-    BUFFER="ScriptEval network vars proxy; HashiConf -ff; $BUFFER"
+    [[ "$(UpdateGetForce "network")" != "$(UpdateGetForce "network-old")" ]] && BUFFER="ScriptEval network vars proxy; HashiConf -ff; $BUFFER"
   fi
 
   zle accept-line

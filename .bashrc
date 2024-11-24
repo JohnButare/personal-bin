@@ -238,6 +238,11 @@ zbak()
 	zip $recursive $symlinks "$file" "$dir" "${exclude[@]}"
 } 
 
+#
+# Bash
+#
+
+alias bashl="EnvClean -- "$SHELL_DIR/bash" -l"
 
 #
 # configuration
@@ -1255,6 +1260,7 @@ NetConsoleDisable()
 # process
 #
 
+EnvClean() { env -u FUNCTIONS "$@"; }
 ParentProcessName() {  cat /proc/$PPID/status | head -1 | cut -f2; }
 pscountm() { while true; do printf "process count: "; pscount; sleep 1; done; }
 
@@ -1708,6 +1714,12 @@ ln1t() { xprat ln1; } 																							# ln1 terminator
 
 alias XmlValue='xml sel -t -v'
 alias XmlShow='xml sel -t -c'
+
+#
+# ZSH
+#
+
+alias zshl="EnvClean -- "$SHELL_DIR/zsh" -l"
 
 #
 # platform

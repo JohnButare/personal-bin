@@ -98,10 +98,10 @@ networkLastUpdateSeconds="$(GetSeconds)"
 # executeCommand - executed before a command is run, allows command modification to update environment
 function executeCommand {  
 
-  # network change - modify the command to update network variables
+  # network change - if the network has changed since we last run a command update the network configuration
   if force= UpdateSince "network" "$networkLastUpdateSeconds"; then    
     networkLastUpdateSeconds="$(GetSeconds)"
-    [[ "$(UpdateGetForce "network")" != "$(UpdateGetForce "network-old")" ]] && BUFFER="ScriptEval network vars proxy; HashiConf -ff; $BUFFER"
+    [[ "$(NetworkCurrent)" != "$(NetworkOld)" ]] && BUFFER="NetworkCurrentConfig;$BUFFER"
   fi
 
   zle accept-line

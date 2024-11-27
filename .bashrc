@@ -685,7 +685,7 @@ GitAnnexConf()
 
 	# configure
 	(( verboseLevel > 1 )) && header "GitAnnex Configuration"
-	GitAnnexHelper IsInstalled && ! GitAnnexHelper IsRunning && GitAnnexHelper startup --quiet
+	InPath git-annex && GitAnnexHelper IsInstalled && ! GitAnnexHelper IsRunning && GitAnnexHelper startup --quiet
 	GIT_ANNEX_CHECKED="true"
 }
 

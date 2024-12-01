@@ -18,7 +18,7 @@ st docker nix sshd ports
 st WindowManager																		# start first
 st dropbox OneDrive																	# shared
 st AutoHotKey UltraMon															# win
-st alfred alttab moom rectangle shottr || return		# mac
+st alfred AltTab moom rectangle shottr || return		# mac
 
 IsPlatform parallels && { drive mount all --no-optical || return; }
 

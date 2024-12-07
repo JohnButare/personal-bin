@@ -31,6 +31,9 @@ InitializeXServer || return
 # WSL 2 - fix locale error and umask (WSL does not respect USERGROUPS_ENAB)
 IsPlatform wsl2 && { LANG="C.UTF-8"; umask 002; }
 
+# Mac - fix umask
+IsPlatform mac && { umask 002; }
+
 # keyboard
 if IsZsh; then
 	bindkey "^H" backward-kill-word

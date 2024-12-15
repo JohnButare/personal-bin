@@ -823,7 +823,9 @@ kcinit() { ! InPath kubectl && return; eval "$(kubectl completion "$PLATFORM_SHE
 # Obsidian
 #
 
-po="$CLOUD/data/app/Obsidian/personal" # Personal Obsidian
+
+po="$WIN_UDATA/app/Obsidian/personal" # Personal Obsidian
+IsDomainRestricted && po="$CLOUD/data/app/Obsidian/personal" 
 
 alias obm="ObsidianMerge"
 alias obmp="ObsidianMergePlugins"

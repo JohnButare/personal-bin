@@ -893,7 +893,7 @@ sysmon()
 				InPath gnome-system-monitor && { coproc gnome-system-monitor; return; }
 				;;
 			mac) start "Activity Monitor.app";;
-			win) start taskmgr; return;; 
+			win) start taskmgr.exe; return;; 
 		esac
 	fi
 	
@@ -903,6 +903,12 @@ sysmon()
 
 	ScriptErr "no system monitor installed" "sysmon"
 	return 1
+}
+
+glances()
+{
+	local args=(); [[ "$HOST" == @(vast) ]] && args=(--disable-plugin sensors)
+	command glances "${args[@]}"
 }
 
 # time

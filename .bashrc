@@ -1088,7 +1088,7 @@ RunAll() { a="$@"; sudoc salt '*' cmd.run "/usr/local/data/bin/RunScript $a"; }
 # Squid Proxy Server
 SquidLog="$HOME/Library/Logs/squid/squid-access.log"
 SquidLog() { LogShow "$SquidLog"; }
-SquidCheck() { IsAvailablePort proxy.butare.net 3128; }
+SquidCheck() { IsAvailablePort "${1:-"proxy.butare.net"}" 3128; }
 SquidHits() { grep "HIER_NONE" "$SquidLog"; }
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
 SquidUtilization() { squidclient -h "${1:-127.0.0.1}" cache_object://localhost/ mgr:utilization; }

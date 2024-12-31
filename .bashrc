@@ -85,7 +85,7 @@ fi
 
 # iTerm
 if IsiTerm; then
-	SourceIfExists "$HOME/.iterm2_shell_integration.zsh" || return
+	SourceIfExists "$HOME/.iterm2_shell_integration.$PLATFORM_SHELL" || return
 
 	# if IsPlatform mac; then
 

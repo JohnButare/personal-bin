@@ -470,7 +470,7 @@ pm() { PartitionManager "$@"; }
 
 # information
 ShowFortune() { ! InPath cowsay fortune lolcat && return; cowsay "$(fortune --all)" | lolcat; return 0; }
-ShowHost() { HeaderFancy "$HOST"; }
+ShowHost() { HeaderFancy "$HOSTNAME"; }
 
 # clear
 c() { cls; } 											# clear screen
@@ -906,7 +906,7 @@ sysmon()
 
 glances()
 {
-	local args=(); [[ "$HOST" == @(vast) ]] && args=(--disable-plugin sensors)
+	local args=(); [[ "$HOSTNAME" == @(vast) ]] && args=(--disable-plugin sensors)
 	command glances "${args[@]}"
 }
 

@@ -115,7 +115,7 @@ doc="$DOC" dl="$HOME/Downloads" code="$CODE" home="$HOME" ubin="$HOME/data/bin" 
 
 if IsPlatform win; then
 	p32="$P32" psm="$PROGRAMDATA/Microsoft/Windows/Start Menu" wr="$WIN_ROOT" wtmp="$WIN_ROOT/temp"; pp="$psm/Programs" 			# system
-	usm="$UADATA/../Roaming/Microsoft/Windows/Start Menu" wcode="$WIN_CODE" wh="$WIN_HOME" ; up="$usm/Programs"								# user
+	usm="$UADATA/../Roaming/Microsoft/Windows/Start Menu" wcode="$WIN_HOME/code" wh="$WIN_HOME" ; up="$usm/Programs"								# user
 else
 	wcode="$CODE" wh="$HOME" wtmp="$TMP"
 fi
@@ -823,7 +823,7 @@ kcinit() { ! InPath kubectl && return; eval "$(kubectl completion "$PLATFORM_SHE
 # Obsidian
 #
 
-po="$WIN_UDATA/app/Obsidian/personal" # Personal Obsidian
+po="$$WIN_HOME/data/app/Obsidian/personal" # Personal Obsidian
 IsDomainRestricted && po="$CLOUD/data/app/Obsidian/personal" 
 
 alias obm="ObsidianMerge"

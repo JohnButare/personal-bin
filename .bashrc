@@ -209,8 +209,8 @@ zrest() { unzip "${@}"; }
 zls() { unzip -l "${@}"; }
 zll() { unzip -ll "${@}"; }
 
-tls() { sudo tar --list --gunzip --verbose --file="$1"; }
-tbak() { sudo tar --create --preserve-permissions --numeric-owner --verbose --gzip --file="${2:-$1.tar.gz}" "$1"; } # tak DIR [FILE]
+tls() { tar --list --gunzip --verbose --file="$1"; }
+tbak() { tar --create --preserve-permissions --numeric-owner --verbose --gzip --file="${2:-$1.tar.gz}" "$1"; } # tak DIR [FILE]
 trest() { local dir; [[ $2 ]] && dir=( --directory "$2" ); sudo tar --extract --preserve-permissions --verbose --gunzip --file="$1" "${dir[@]}"; }
 
 untar() { local args=(); ! IsPlatform mac && args+=(--atime-preserve);  tar -z -v -x "${args[@]}" < "$@"; }
@@ -1101,7 +1101,7 @@ SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
 
 # sync files
 alias slf='SyncLocalFiles'
-alias FindSyncTxt='fa --hidden '\..*_sync.txt''
+alias FindSyncTxt='fa --hidden --no-ignore '\..*_sync.txt''
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'; alias rst=RemoveSyncTxt
 alias HideSyncTxt="FileHide .*_sync.txt"
 

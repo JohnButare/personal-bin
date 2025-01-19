@@ -1033,7 +1033,6 @@ alias tf="TftpHelper"
 clf() { CloudFlare "$@"; }
 ncg() {	network current all; } # network current get
 ncu() {	NetworkCurrentUpdate "$@"; }
-PortUsage() { IsPlatform win && { netstat.exe -an; return; }; sudoc netstat -tulpn; }
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 
 # ping HOST - resolves virtual hostnames

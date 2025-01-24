@@ -559,7 +559,7 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
 alias del='rm'
-alias md='mkdir'
+alias md='${G}mkdir'
 alias rd='rmdir'
 
 alias inf="FileInfo"
@@ -570,6 +570,17 @@ lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}"
 
 FileTypes() { file * | sort -k 2; }
 
+# FileCheck|FixRw - return files that do not have user or group rw
+alias fcrw="FileCheckRw"
+alias ffrw="FileCheckRw | xargs --no-run-if-empty chmod ug+rw"
+
+FileCheckRw()
+{
+	command ls -1al --almost-all |
+	  ${G}grep -vE -e "^total" -e "^[-d]rw.?rw.?" |
+ 		${G}awk '{ print $NF}'
+}
+	
 # UnisonClean FILE - remove the specified file from the Unison root directory for the platform
 alias uclean='UnisonClean' ucleanr='UnisonCleanRoot'
 UnisonClean() { rm "$(UnisonConfDir)/$1"; }
@@ -668,7 +679,7 @@ g() { local git=git; InPath "$P/Git/bin/git.exe" && drive IsWin . && git="$P/Git
 gw() { "$P/Git/bin/git.exe" "$@"; }
 
 # gfix - git fix, combine modified files with last commit and force push
-alias gfix='grfc && gria && gpush --force'
+gfix() { grfc && gria && gpush --force --quiet; }
 
 # gdir SERVER - change to the git directory on SERVER for repo creation
 gdir() { cd "$(GitHelper remote dir "$@")"; }
@@ -700,7 +711,7 @@ glb()
 { 
 	sudoc gitlab-rake gitlab:backup:create STRATEGY=copy
 	local dir="$(unc mount //oversoul/drop)" || return
-	mkdir --parents "$dir/gitlab" || return
+	${G}mkdir --parents "$dir/gitlab" || return
 	sudo rsync --info=progress2 --archive --recursive --delete "/var/opt/gitlab/backups" "$dir/gitlab"
 	unc unmount //oversoul/drop || return
 }
@@ -854,7 +865,7 @@ function ObsidianMergePlugins()
 	local src="$1/plugins" dest="$2/plugins"
 	[[ ! -d "$src" ]] && { ScriptErr "Source directory '$src' does not exist"; return; }
 	[[ ! -d "$2" ]] && { ScriptErr "Destination directory '$2' does not exist"; return; }
-	[[ ! -d "$dest" ]] && { mkdir "$dest" || return; }
+	[[ ! -d "$dest" ]] && { ${G}mkdir "$dest" || return; }
 	m --wait "$src" "$dest"
 }
 
@@ -959,7 +970,7 @@ DiskTestFio()
 	local jobs="${2:-1}" size="${3:-1G}" runtime="${4:-10s}"
 
 	local sudo; InPath sudo && sudo="sudoc"
-	local dir="$dirOrig/FioTest"; $sudo mkdir -p "$dir" || return
+	local dir="$dirOrig/FioTest"; $sudo ${G}mkdir -p "$dir" || return
 	local output; output="$(mktemp)" || return
 	local engine="libaio"; IsPlatform mac && engine="posixaio"
 	

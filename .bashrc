@@ -1041,6 +1041,8 @@ solo="$sols/Documentation/Solumina" # Solumina Obsidian
 
 alias nconf="NetworkConf"
 alias tf="TftpHelper"
+alias wfn='WaitForNetwork'
+
 clf() { CloudFlare "$@"; }
 ncg() {	network current all; } # network current get
 ncu() {	NetworkCurrentUpdate "$@"; }
@@ -1255,6 +1257,13 @@ NumProcessors() { cat /proc/cpuinfo | grep processor | wc -l; }
 
 alias gp="media get" # get pictures
 alias mg="media get"
+
+# Spotify
+alias sp='SpotifyToggle'
+SpotifyStart() { ! IsPlatform mac && return; start Spotify; }
+SpotifyPlay() { ! IsPlatform mac && return; osascript -e 'tell application "Spotify" to play'; }
+SpotifyPause() { ! IsPlatform mac && return; osascript -e 'tell application "Spotify" to pause'; }
+SpotifyToggle() { ! IsPlatform mac && return; osascript -e 'tell application "Spotify" to playpause'; }
 
 #
 # monitoring
@@ -1477,7 +1486,49 @@ vmon() { vmware -n "$1" run start; } # on (start)
 vmoff() { vmware -n "$1" run suspend; } # off (suspend)
 
 #
-# Wiggin Network
+# windows
+#
+
+SetTitle() { printf "\e]2;$*\a"; }
+stopx() { gnome-session-quit --no-prompt; } # startx|stopx
+
+# Xpra
+xprac() { if IsPlatform win; then "$P/Xpra/xpra_cmd.exe" "$@"; else xpra "$@"; fi; } # client
+
+XpraConnect() { echo "ssh://$USER@$(os name "$1")/$2"; }
+XpraCheck() { plink.exe "$USER@$(os name "$1")"; } # store SSH key in cache
+
+XpraConf() { RunPlatform XpraConf "$@"; }
+XpraConfMac() { "$P/Xpra.app/Contents/Helpers/Config_info" "$@"; }
+XpraConfWin() { "$P/Xpra/Config_info.exe" "$@"; }
+
+XpraPaths() { RunPlatform XpraPaths "$@"; }
+XpraPathsMac() { "$P/Xpra.app/Contents/Helpers/Path_info" "$@"; }
+XpraPathsWin() { "$P/Xpra/Path_info.exe" "$@"; }
+
+xpraa() { xprac attach "$(XpraConnect "$@")/$2"; } 						# attach
+xprad() { xprac detach "$(XpraConnect "$@")/$2"; } 						# detatch
+xprae() { xprac exit "$(XpraConnect "$@")/$2"; } 							# exit
+xpral() { s "$1" -- xpra list; } 															# list
+xpras() { xprac start "$(XpraConnect "$@")" --start "$2"; } 				# start
+xprat() { xprac start "$(XpraConnect "$@")" --start terminator; } 	# terminator
+ln1t() { xprat ln1; } 																							# ln1 terminator
+
+#
+# xml
+#
+
+alias XmlValue='xml sel -t -v'
+alias XmlShow='xml sel -t -c'
+
+#
+# ZSH
+#
+
+alias zshl="EnvClean -- "$SHELL_DIR/zsh" -l"
+
+#
+# Butare Network
 #
 
 aconf() { nconf "$@" && hconf "$@" && cconf "$@" && sconf "$@"; }	# all configure, i.e. aconf -a=pi1 -f
@@ -1560,12 +1611,12 @@ SyncInstall()
 	fi
 }
 
-# SyncMd - synchronize markdown classify in and out files from a Sandia computer to bc
+# SyncMd [HOST](bl4) - synchronize markdown classify in and out files from a Sandia computer to bc
 SyncMd()
 {
 	SshAgentConf || return
 	
-	local src="$cdata/app/Obsidian/personal/other" dest="bc" destDir="data/app/Obsidian/personal/Personal"
+	local src="$cdata/app/Obsidian/personal/other" dest="${1:-bl4}" destDir="data/app/Obsidian/personal/Personal"
 	local _platformTarget _platformLocal _platformOs _platformIdMain _platformIdLike _platformIdDetail _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
 	ScriptEval HostGetInfo "$dest" --detail --local || return; destDir="${whome}/${destDir}" # Windows home directory
 
@@ -1616,7 +1667,6 @@ bbh()
 	for host in "${hosts[@]}"; do bb "$dir" --host="$host" "$@" || return; done
 } 
 
-
 # devices
 cam() { wiggin device "$@" cam; }
 wcore() { wiggin device "$@" core; }
@@ -1663,21 +1713,6 @@ alias sls='ServerLs' sns='ServerNodeStatus'
 ServerLs() { wiggin host ls -H="$1" "${@:2}"; } # ServerLs all|down|hashi-prod|hashi-test|locked|important|network|reboot|restart|unlock|web
 ServerNodeStatus() { hashi app node status --active "$@"; }
 
-# Spotify
-alias sp='SpotifyToggle'
-SpotifyStart() { ! IsPlatform mac && return; start Spotify; }
-SpotifyPlay() { ! IsPlatform mac && return; osascript -e 'tell application "Spotify" to play'; }
-SpotifyPause() { ! IsPlatform mac && return; osascript -e 'tell application "Spotify" to pause'; }
-SpotifyToggle() { ! IsPlatform mac && return; osascript -e 'tell application "Spotify" to playpause'; }
-
-# UniFi
-alias uc='UniFiController'
-SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
-
-#
-# Wiggin Update
-#
-
 # update
 alias u='HostUpdate' uc='UpdateClient' ua="UpdateAll" us='UpdateServer'
 UpdateAll() { HostUpdate all "$@"; }
@@ -1705,57 +1740,26 @@ UpdateServerReboot() { wiggin host update reboot "$@"; }
 UpdateServerRestart() { wiggin host update restart "$@"; }
 UpdateServerRoot() { HostUpdate --what=server-root-user "$@"; }
 
-#
-# windows
-#
 
-SetTitle() { printf "\e]2;$*\a"; }
-stopx() { gnome-session-quit --no-prompt; } # startx|stopx
-
-# Xpra
-xprac() { if IsPlatform win; then "$P/Xpra/xpra_cmd.exe" "$@"; else xpra "$@"; fi; } # client
-
-XpraConnect() { echo "ssh://$USER@$(os name "$1")/$2"; }
-XpraCheck() { plink.exe "$USER@$(os name "$1")"; } # store SSH key in cache
-
-XpraConf() { RunPlatform XpraConf "$@"; }
-XpraConfMac() { "$P/Xpra.app/Contents/Helpers/Config_info" "$@"; }
-XpraConfWin() { "$P/Xpra/Config_info.exe" "$@"; }
-
-XpraPaths() { RunPlatform XpraPaths "$@"; }
-XpraPathsMac() { "$P/Xpra.app/Contents/Helpers/Path_info" "$@"; }
-XpraPathsWin() { "$P/Xpra/Path_info.exe" "$@"; }
-
-xpraa() { xprac attach "$(XpraConnect "$@")/$2"; } 						# attach
-xprad() { xprac detach "$(XpraConnect "$@")/$2"; } 						# detatch
-xprae() { xprac exit "$(XpraConnect "$@")/$2"; } 							# exit
-xpral() { s "$1" -- xpra list; } 															# list
-xpras() { xprac start "$(XpraConnect "$@")" --start "$2"; } 				# start
-xprat() { xprac start "$(XpraConnect "$@")" --start terminator; } 	# terminator
-ln1t() { xprat ln1; } 																							# ln1 terminator
+# UniFi
+alias uc='UniFiController'
+SwitchPoeStatus() { ssh admin@$1 swctrl poe show; }
 
 #
-# xml
+# Sandia
 #
 
-alias XmlValue='xml sel -t -v'
-alias XmlShow='xml sel -t -c'
+if IsInDomain sandia; then
+	vpnon() { vpn on && WaitForNetwork "sandia" && "$@"; }
+	vpnoff() { vpn off && WaitForNetwork "butare" && "$@"; }
+fi
 
 #
-# ZSH
+# Final Configuration
 #
 
-alias zshl="EnvClean -- "$SHELL_DIR/zsh" -l"
-
-#
 # platform
-#
-
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
-
-#
-# configuration - items that can take time
-#
 
 # other
 RunFunctions DotNetConf GitAnnexConf McflyConf NodeConf PythonConf SetTextEditor ZoxideConf || return

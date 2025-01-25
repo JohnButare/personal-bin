@@ -4,15 +4,20 @@
 CommonInit()
 VpnInit()
 
-
-if A_Args.Length < 1
+if A_Args.Length != 1
 {
-    MsgBox "usage: vpn VpOn|VpnOff|VpnConnectionToggle|VpnShow|VpnHide|VpnWindowToggle" A_Args.Length "."
+    MsgBox "usage: vpn on|off|toggle|show|hide|wint" A_Args.Length "."
     ExitApp
 }
 
-; %A_Args[1]%
-for n, param in A_Args
+Switch A_Args[1]
 {
-    MsgBox param
+Case "on": VpnOn
+Case "off": VpnOff
+Case "toggle": VpnConnectionToggle
+Case "show": VpnShow
+Case "hide": VpnHide
+Case "wint": VpnWindowToggle
+Default: MsgBox "'" A_Args[1] "' is not a valid command"
 }
+    

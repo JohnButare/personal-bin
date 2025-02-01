@@ -6,7 +6,6 @@
 
 # non-interactive initialization - available from child processes and scripts, i.e. ssh <script>
 export LESS='-R'
-export LESSOPEN='|~/.lessfilter %s'
 
 # return if not interactive
 [[ "$-" != *i* ]] && return
@@ -829,6 +828,27 @@ NodeRedCode() { cd "$HOME/.node-red/projects/$1"; }; alias nrc="NodeRedCode"
 
 alias k="kubectl"
 kcinit() { ! InPath kubectl && return; eval "$(kubectl completion "$PLATFORM_SHELL")"; } # kubectl initialization - initialize completion
+
+#
+# less
+#
+
+# LESSOPEN
+if [[ -f "/opt/homebrew/bin/lesspipe.sh" ]]; then
+	export LESSOPEN="|/opt/homebrew/bin/lesspipe.sh %s"
+	PathAdd front "/opt/homebrew/opt/gawk/libexec/gnubin" # gawk
+elif InPath lesspipe.sh; then export LESSOPEN="|lesspipe.sh %s"
+elif [[ -f "$HOME/.lessfilter" ]]; then export LESSOPEN='|~/.lessfilter %s'
+fi
+
+# colorful man pages
+export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
+export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
+export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
+export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
 #
 # Obsidian

@@ -21,7 +21,7 @@ st nix sshd ports
 
 # applications
 st WindowManager													# start first
-st 1Password dropbox OneDrive							# shared
+st 1Password dropbox OneDrive AnyplaceUSB	# shared
 st AutoHotKey UltraMon										# win
 st alfred AltTab moom rectangle shottr		# mac
 

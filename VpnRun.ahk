@@ -6,7 +6,7 @@ VpnInit()
 
 if A_Args.Length != 1
 {
-    MsgBox "usage: vpn on|off|toggle|show|hide|wint" A_Args.Length "."
+    MsgBox "usage: vpn on|off|toggle|show|hide|wint"
     ExitApp
 }
 

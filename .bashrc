@@ -174,6 +174,7 @@ alias f='firefox'
 alias grep='command grep --color=auto'
 alias m='merge'
 alias pref='os preferences'
+alias usb="AnyplaceUSB cli"
 
 bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
 code() { VisualStudioCodeHelper "$@"; }

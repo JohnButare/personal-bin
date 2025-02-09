@@ -13,7 +13,12 @@ st xserver
 ! { IsPlatform win && IsSystemd; } && st dbus # Unable to set up transient service directory
 
 # other services - docker cron incron nix ssh ports (ports check uses SSH)
-[[ "$HOSTNAME" == @(bl?) ]] && st docker
+[[ "$HOSTNAME" == @(bl?) ]] && st docker consul nomad
+
+# guacamole
+[[ "$HOSTNAME" == "bl3" ]] && { docker start 02ecdca0f8f8 94fee2880bdd > /dev/null; }
+[[ "$HOSTNAME" == "bl4" ]] && { docker start 61ed050aca17 9086d94e43bd > /dev/null; }
+
 st nix sshd ports
 
 # clock - fix time drift in WSL and major differences when Hyper-V guest resumes

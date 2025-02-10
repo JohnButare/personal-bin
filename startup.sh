@@ -19,7 +19,7 @@ st xserver
 [[ "$HOSTNAME" == "bl3" ]] && { docker start 02ecdca0f8f8 94fee2880bdd > /dev/null; }
 [[ "$HOSTNAME" == "bl4" ]] && { docker start 61ed050aca17 9086d94e43bd > /dev/null; }
 
-st nix sshd ports
+st nix sshd
 
 # clock - fix time drift in WSL and major differences when Hyper-V guest resumes
 ! IsDomainRestricted && IsPlatform wsl && { st time; }

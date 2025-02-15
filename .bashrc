@@ -1065,8 +1065,9 @@ alias tf="TftpHelper"
 alias wfn='WaitForNetwork'
 
 clf() { CloudFlare "$@"; }
-ncg() {	network current all; } # network current get
-ncu() {	NetworkCurrentUpdate "$@"; }
+ncg() {	network current all; } 					# network current get
+ncu() {	NetworkCurrentUpdate "$@"; }		# network current update
+ncut() { ncu --force --timeout=1000; } 	# network current update with forst and higher timeout 
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 
 # ping HOST - resolves virtual hostnames

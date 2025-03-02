@@ -213,7 +213,8 @@ tls() { tar --list --gunzip --verbose --file="$1"; }
 tbak() { tar --create --preserve-permissions --numeric-owner --verbose --gzip --file="${2:-$1.tar.gz}" "$1"; } # tak DIR [FILE]
 trest() { local dir; [[ $2 ]] && dir=( --directory "$2" ); sudo tar --extract --preserve-permissions --verbose --gunzip --file="$1" "${dir[@]}"; }
 
-untar() { local args=(); ! IsPlatform mac && args+=(--atime-preserve);  tar -z -v -x "${args[@]}" < "$@"; }
+untar() { local args=(); ! IsPlatform mac && args+=(--atime-preserve);  tar --gzip -v -x "${args[@]}" < "$@"; }
+untarbz() { local args=(); ! IsPlatform mac && args+=(--atime-preserve);  tar --bzip2 -v -x "${args[@]}" < "$@"; }
 
 # zbak DIR [FILE] [-a|--all] - backup directory to file
 # -a|--all - backup link target not just the link

@@ -42,8 +42,18 @@ compdef _allFiles start
 ZSH_THEME_TERM_TAB_TITLE_IDLE="terminal %21<..<%~%<<" # 21 char left truncated PWD
 ZSH_THEME_TERM_TITLE_IDLE="terminal %n@%m: %~"
 
+# configure
+alias sp10=". $HOME/.p10k.zsh" ep10="e $HOME/.p10k.zsh"
+
 # prompt
 
+SetP10ContextFull() { export PROMPT_CONTEXT_FULL="true"; sp10; }
+SetP10ContextMinimal() { unset PROMPT_CONTEXT_FULL; sp10; }
+
+# show full prompt when logged in locally for single board computers
+IsZsh && [[ "$HOSTNAME" =~ (bl*|pi*|rp*) ]] && export PROMPT_CONTEXT_FULL="true"
+
+# p10k-on-pre-prompt - run before prompt
 function p10k-on-pre-prompt()
 {
   local dir="${PROMPT_DIR_STATUS:-show}"

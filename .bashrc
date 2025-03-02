@@ -252,8 +252,7 @@ alias bashl="EnvClean -- "$SHELL_DIR/bash" -l"
 #
 
 # edit/set 
-alias sa='. ~/.bashrc "$@"' ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh \"\"" ef="e $BIN/function.sh"; # set aliases
-alias s10k="sz" e10k="e ~/.p10k.zsh"
+alias sa='. ~/.bashrc "$@"' ea="e ~/.bashrc" sz=". ~/.zshrc" ez="e ~/.zshrc" sf=". $BIN/function.sh \"\"" ef="e $BIN/function.sh" # set aliases
 
 # edit/set all
 eaa() { local files; GetPlatformFiles "$UBIN/.bashrc." ".sh" || return 0; TextEdit "${files[@]}" ~/.bashrc; }

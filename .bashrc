@@ -170,6 +170,7 @@ st() { startup --no-pause "$@"; }									# startup
 #
 
 alias choco='choco.exe'
+alias code='vsc'
 alias f='firefox'
 alias grep='command grep --color=auto'
 alias m='merge'
@@ -177,7 +178,7 @@ alias pref='os preferences'
 alias usb="AnyplaceUSB"
 
 bcat() { InPath batcat && batcat "$@" || command cat "$@"; }
-code() { VisualStudioCodeHelper "$@"; }
+vsc() { VisualStudioCodeHelper "$@"; }
 e() { TextEdit "$@"; }
 figlet() { pyfiglet "$@"; }
 KarabinerCd() { ScriptCd KarabinerElements dir; }

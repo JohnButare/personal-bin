@@ -633,7 +633,7 @@ IsZsh && def() { whence -f "$1"; } || def() { type "$1"; }
 alias unexport='unset'
 alias unfunction='unset -f'
 
-TestFunction() { HeaderBig "Bash" && bash -c ". TestFunction.sh" && HeaderBig "Zsh" && zsh -c ". TestFunction.sh"; }
+TestFunction() { HeaderBig "Bash" && bash -c ". TestFunction.sh $@" && HeaderBig "Zsh" && zsh -c ". TestFunction.sh $@"; }
 #
 # git
 #

@@ -1127,10 +1127,10 @@ NginxConfWatch() { FileWatch "/etc/nginx/sites-available/$1.conf" "${2:-  server
 RunAll() { a="$@"; sudoc salt '*' cmd.run "/usr/local/data/bin/RunScript $a"; }
 
 # Squid Proxy Server
-SquidLog="$HOME/Library/Logs/squid/squid-access.log"
-SquidLog() { LogShow "$SquidLog"; }
+SquidLog() { LogShow "$(SquidLogFile)"; }
+SquidLogFile() { local file="/var/log/squid/access.log"; IsPlatform mac && file="$HOME/Library/Logs/squid/squid-access.log"; echo "$file"; }
 SquidCheck() { IsAvailablePort "${1:-"proxy.butare.net"}" 3128; }
-SquidHits() { grep "HIER_NONE" "$SquidLog"; }
+SquidHits() { grep "HIER_NONE" "$(SquidLogFile)"; }
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
 SquidUtilization() { squidclient -h "${1:-127.0.0.1}" cache_object://localhost/ mgr:utilization; }
 SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }

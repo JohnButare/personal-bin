@@ -1134,6 +1134,8 @@ SquidHits() { grep "HIER_NONE" "$(SquidLogFile)"; }
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
 SquidUtilization() { squidclient -h "${1:-127.0.0.1}" cache_object://localhost/ mgr:utilization; }
 SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
+ProxyCheck4() { local server="${1:-proxy.butare.net:3128}"; curl --silent --proxy "http://$server" "http://www.msftconnecttest.com/connecttest.txt"; }
+ProxyCheck6() {	local server="${1:-proxy.butare.net:3128}"; curl --silent --proxy "http://$server" "http://ipv6.msftncsi.com/connecttest.txt"; }
 
 # sync files
 alias slf='SyncLocalFiles'

@@ -1744,6 +1744,7 @@ alias u='HostUpdate' uc='UpdateClient' ua="UpdateAll" us='UpdateServer'
 UpdateAll() { HostUpdate all "$@"; }
 UpdateClient() { HostUpdate -w=file "$@" && HostUpdate "$@"; }
 UpdateServer() { HostUpdate --what=server "$@"; }
+UpdateServerWhat() { local what="${1:-os}"; [[ "$1" ]] && shift; PiSsh -- HostUpdate --what="$what" --force "$@"; }
 
 alias ud="UpdateDownload" uf='UpdateFile'
 UpdateDownload() { HostUpdate -w=download "$@"; }
@@ -1751,7 +1752,7 @@ UpdateFile() { slf "$@"; }
 
 alias usa="UpdateServerAll" usc="UpdateServerCleanup" use="UpdateServerEligibility" usfail="UpdateServerFailed"
 alias usf="UpdateServerFile" usff="UpdateServerFileFast" usfu="UpdateServerFileUnison"
-alias usp="UpdateServerProxy" usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot"
+alias usp="UpdateServerProxy" usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot" usw="UpdateServerWhat"
 
 UpdateServerAll() { usf "$@" && us "$@" && usc "@" && usr "$@"; }
 UpdateServerCleanup() { hashi vault unseal && UpdateServerCredentials "$@" && UpdateServerEligibility "$@" && UpdateServerFailed; }

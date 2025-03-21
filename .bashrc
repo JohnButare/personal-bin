@@ -1749,23 +1749,22 @@ alias ud="UpdateDownload" uf='UpdateFile'
 UpdateDownload() { HostUpdate -w=download "$@"; }
 UpdateFile() { slf "$@"; }
 
-alias usa="UpdateServerAll" usc="UpdateServerCleanup" use="UpdateServerEligibility"
+alias usa="UpdateServerAll" usc="UpdateServerCleanup" use="UpdateServerEligibility" usfail="UpdateServerFailed"
 alias usf="UpdateServerFile" usff="UpdateServerFileFast" usfu="UpdateServerFileUnison"
-alias usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot"
-alias usfail="UpdateServerFailed"
+alias usp="UpdateServerProxy" usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot"
 
-UpdateServerAll() { UpdateServerFile "$@" && UpdateServer "$@" && wiggin host credential -H=locked; }
-UpdateServerCleanup() { UpdateServerCredentials "$@" && UpdateServerEligibility "$@" && UpdateServerFailed; }
+UpdateServerAll() { usf "$@" && us "$@" && usc "@" && usr "$@"; }
+UpdateServerCleanup() { hashi vault unseal && UpdateServerCredentials "$@" && UpdateServerEligibility "$@" && UpdateServerFailed; }
 UpdateServerCredentials() { HostUpdate --what=server-credential "$@"; }
 UpdateServerEligibility() { HostUpdate --what=server-eligibility "$@"; }
 UpdateServerFailed() { hashi consul remove failed; }
 UpdateServerFile() { HostUpdate --what=files "$@"; }
 UpdateServerFileUnison() { HostUpdate --what=files "$@" -- --unison; }
 UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
+UpdateServerProxy() { wiggin; }
 UpdateServerReboot() { wiggin host update reboot "$@"; }
 UpdateServerRestart() { wiggin host update restart "$@"; }
 UpdateServerRoot() { HostUpdate --what=server-root-user "$@"; }
-
 
 # UniFi
 alias uc='UniFiController'

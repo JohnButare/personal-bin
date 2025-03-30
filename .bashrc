@@ -1438,10 +1438,16 @@ alias sound='os sound'
 alias TestSound='playsound "$data/setup/test.wav"'
 
 playsound()
-{ 
-	InPath play && { play "$@"; return; } # requires sox
-	IsPlatform mac && { afplay "$@"; return; }
-	ScriptErr "no audio program was found" "playsoud"; return 1
+{
+	if InPath play; then play "$@" # requires sox
+	elif IsPlatform mac; then  afplay "$@"
+	elif IsPlatform win; then
+		powershell -c "$(cat <<-EOF
+			(New-Object Media.SoundPlayer "$(utw "$@")").PlaySync();
+		EOF
+		)"
+	else ScriptErr "no audio program was found" "playsoud"; return
+	fi
 }
 
 #

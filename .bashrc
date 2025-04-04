@@ -1799,7 +1799,7 @@ RunFunctions DotNetConf GitAnnexConf McflyConf NodeConf PythonConf SetTextEditor
 # run last
 RunFunctions NetworkConf DbusConf || return
 RunFunctions --ignore-errors SshAgentEnvConf CredentialConf || return
-RunFunctions HashiConf || return # depends on CredentialConf, NetworkConf
+! IsDomainRestricted && {M RunFunctions HashiConf || return; } # depends on CredentialConf, NetworkConf
 
 # logging
 if [[ $verbose ]]; then

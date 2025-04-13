@@ -953,8 +953,18 @@ alias twait='TimerOn && pause && TimerOff' # timer wait
 
 # disk
 DiskTestCopy() { tar cf - "$1" | pv | (cd "${2:-.}"; tar xf -); } # DiskTestCopy FILE
-DiskTestGui() { ! IsPlatform win && return; start --elevate ATTODiskBenchmark.exe; }
 DiskTestAll() { bonnie++ | tee >> "$(os name)_performance_$(GetDateStamp).txt"; }
+
+# DiskTestGui
+DiskTestGui()
+{
+	! IsPlatform win && return
+
+	local file
+	if file="$P/CrystalDiskMark8/DiskMark64A.exe" && [[ -f "$file" ]]; then start --elevate "$file"
+	else start --elevate ATTODiskBenchmark.exe;
+	fi
+}
 
 # DiskTestRead [DEVICE](di first)
 DiskTestRead()

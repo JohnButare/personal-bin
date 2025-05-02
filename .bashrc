@@ -1658,25 +1658,32 @@ SyncMd()
 {
 	SshAgentConf || return
 	
-	local src="$cdata/app/Obsidian/personal/other" dest="${1:-bl4}" destDir="data/app/Obsidian/personal/Personal"
+	local localDir="$cdata/app/Obsidian/personal/other" remote="${1:-bc}" remoteDir="data/app/Obsidian/personal/Personal"
 	local _platformTarget _platformLocal _platformOs _platformIdMain _platformIdLike _platformIdDetail _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
-	ScriptEval HostGetInfo "$dest" --detail --local || return; destDir="${whome}/${destDir}" # Windows home directory
+	ScriptEval HostGetInfo "$remote" --detail --local || return; remoteDir="${whome}/${remoteDir}" # Windows home directory
 
-	# validation
-	local file="$src/Classify Out.md"
-	[[ ! -f "$file" ]] && { ScriptErr "'$(FileToDesc "$file")' does not exist"; return 1; }
+	# transfer Classify Out to remote
+	local srcFile="$localDir/Classify Out.md"
+	[[ ! -f "$srcFile" ]] && { ScriptErr "'$(FileToDesc "$srcFile")' does not exist"; return 1; }
 
-	# transfer Classify Out to dest
-	local size; size="$(GetFileSize "$file")" || return
-	(( size > 0 )) && { { echo "# $(GetFileTimeStampPretty "$file")"; cat "$file"; echo; } | ssh "$dest" "cat - >> \"$destDir/Classify In.md\"" || return; }
-	: > "$file" || return
+	local size; size="$(GetFileSize "$srcFile")" || return
+	if (( size > 0 )); then
+		local destFile="$remoteDir/Classify In.md"
+		echo "Copying '$(FileToDesc "$srcFile")' to '$remote:$destFile'..."
+		{ { echo "# $(GetFileTimeStampPretty "$srcFile")"; cat "$srcFile"; echo; } | ssh "$remote" "cat - >> \"$destFile\"" || return; }
+		: > "$srcFile" || return
+	fi
 
-	# transfer Classify In from dest
-	file="/tmp/Classify In.md"
-	scp -p "$dest:$destDir/Classify\ Out.md" "$file" || return
-	size="$(GetFileSize "$file")" || return
-	(( size > 0 )) && { { echo "# $(GetFileTimeStampPretty "$file")"; cat "$file"; echo; } >> "$src/Classify In.md" || return; }
-	ssh "$dest" ": > \"$destDir/Classify\ Out.md\"" || return
+	# transfer Classify In from remote
+	local tmpFile="/tmp/Classify In.md" src="$remote:$remoteDir/Classify\ Out.md"
+	scp -p "$src" "$tmpFile" || return
+	size="$(GetFileSize "$tmpFile")" || return
+	if (( size > 0 )); then
+		local destFile="$localDir/Classify In.md"
+		echo "Copying '$src' to '$(FileToDest "$remoteFile")'..."
+		{ { echo "# $(GetFileTimeStampPretty "$file")"; cat "$file"; echo; } >> "$destFile" || return; }
+		ssh "$remote" ": > \"$remoteDir/Classify\ Out.md\"" || return
+	fi
 
 	return 0
 }

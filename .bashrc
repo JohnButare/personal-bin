@@ -1102,12 +1102,18 @@ alias NamedLog='DnsLog'
 # DHCP
 DhcpMonitor() {	IsPlatform win && { dhcptest.exe "$@"; return; }; }
 DhcpServers() { nmapp --script broadcast-dhcp-discover --script-args='broadcast-dhcp-discover.timeout=1' |& grep "Server Identifier: " | RemoveCarriageReturn | cut -d":" -f2 | ${G}sed 's/ //g' | sort | uniq; }
-DhcpValidate() { local ip; ip="$(GetIpAddress "$1")" || return; DhcpServers | qgrep "^$ip$"; } # DhcpValidate HOST - ensure DHCP is running on HOST
 
 DhcpOptions()
 { 
 	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }
 	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
+}
+
+# DhcpValidate HOST - ensure DHCP is running on HOST
+DhcpValidate()
+{
+	local ip; ip="$(GetIpAddress "$1")" || return; [[ ! $1 ]] && { EchoWrap "Usage: DhcpValidate HOST"; return 1; }
+	DhcpServers | qgrep "^$ip$"
 }
 
 # DhcpValidateReservation [server] - validate the current systems DHCP reservation on the specied DHCP server

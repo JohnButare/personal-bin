@@ -649,8 +649,8 @@ ghlp() { SshAgentConf && GitHelper "$@"; }
 ghc() { GitClone "$@"; }
 ghcw() { GitClone --windows "$@"; }
 gg() { SshAgentConf && GitHelper gui "$@"; }
-gpull() { ghlp pull origin gh wiggin "$@"; }
-gpush() { ghlp push origin gh wiggin "$@"; }
+gpull() { ghlp pull origin gh gitlab wiggin "$@"; }
+gpush() { ghlp push origin gh gitlab wiggin "$@"; }
 
 alias ga='g add'
 alias gd='g diff'

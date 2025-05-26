@@ -774,7 +774,7 @@ hassUser="homeassistant" hassService="home-assistant@$hassUser"
 
 hass() { HomeAssistant "$@"; }
 hass-conf() { ScriptEval HomeAssistant cli vars "$@"; }
-hass-config() { sudoe ~"homeassistant/.homeassistant/configuration.yaml" && yamllint ~"homeassistant/.homeassistant/configuration.yaml"; }
+hass-config() { sudoe ~homeassistant/.homeassistant/configuration.yaml && yamllint ~homeassistant/.homeassistant/configuration.yaml; }
 hass-shell() { SwitchUser "$hassUser"; }
 
 hass-log() { service log "$hassService" "$@"; }

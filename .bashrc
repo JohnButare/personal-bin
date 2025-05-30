@@ -1599,6 +1599,8 @@ alias zshl="EnvClean -- "$SHELL_DIR/zsh" -l"
 #
 
 aconf() { nconf "$@" && hconf "$@" && cconf "$@" && sconf "$@"; }	# all configure, i.e. aconf -a=pi1 -f
+bpull() { ( cd "$bin" && gpull ) && ( cd "$ubin" && gpull ); }
+bpullr() { ( cd "$bin" && g rbo && gpull ) && ( cd "$ubin" && g rbo && gpull ); }
 config() { wiggin config change "$@" && ScriptEval network vars; }
 unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }

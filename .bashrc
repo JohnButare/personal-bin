@@ -696,12 +696,13 @@ GitAnnexConf()
 	local force forceLevel forceLess; ScriptOptForce "$@"
 	local verbose verboseLevel verboseLess; ScriptOptVerbose "$@"
 
-	# return if configuration is set
+	# return if needed
 	[[ ! $force && $GIT_ANNEX_CHECKED ]] && return
+	{ ! InPath git-annex || ! GitAnnexHelper IsInstalled; } && { GIT_ANNEX_CHECKED="true"; return; }
 
-	# configure
+	# configure	
 	(( verboseLevel > 1 )) && header "GitAnnex Configuration"
-	InPath git-annex && GitAnnexHelper IsInstalled && ! GitAnnexHelper IsRunning && GitAnnexHelper startup --quiet
+	! GitAnnexHelper IsRunning && GitAnnexHelper startup --quiet
 	GIT_ANNEX_CHECKED="true"
 }
 

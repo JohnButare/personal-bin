@@ -16,7 +16,7 @@ export LESS='-R'
 
 # arguments
 quiet="--quiet"
-#verbose=-vv verboseLevel=2
+# verbose=-vvv verboseLevel=3
 ScriptOptForce "$@" || return
 ScriptOptVerbose "$@" || return
 [[ $verbose ]] && unset quiet
@@ -1843,8 +1843,10 @@ SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 RunFunctions DotNetConf GitAnnexConf McflyConf NodeConf PythonConf SetTextEditor ZoxideConf || return
 
 # run last
-RunFunctions NetworkConf DbusConf || return
-RunFunctions --ignore-errors SshAgentEnvConf CredentialConf || return
+RunFunctions DbusConf || return
+RunFunctions --ignore-errors SshAgentEnvConf || return
+RunFunctions NetworkConf || return # depends on CredentialConf
+RunFunctions --ignore-errors CredentialConf || return # depends on NetworkConf if on Sandia network
 ! IsDomainRestricted && { RunFunctions HashiConf || return; } # depends on CredentialConf, NetworkConf
 
 # logging

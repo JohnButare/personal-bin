@@ -1600,9 +1600,9 @@ alias zshl="EnvClean -- "$SHELL_DIR/zsh" -l"
 #
 
 aconf() { nconf "$@" && hconf "$@" && cconf "$@" && sconf "$@"; }	# all configure, i.e. aconf -a=pi1 -f
-bpull() { ( header "bin pull" && cd "$bin" && gpull ) && ( header "ubin pull" && cd "$ubin" && gpull ); }											# bin pull
-bpullr() { ( header "bin pull reset" && cd "$bin" && g rbo && gpull ) && ( header "ubin pull reset" && cd "$ubin" && g rbo && gpull ); }		# bin pull reset
-bpush() { ( header "bin push" && cd "$bin" && gpush ) && ( header "ubin push" && cd "$ubin" && gpush ); }											# bin push
+bpull() { ( header "bin pull" && cd "$bin" && gpull "$@" ) && ( header "ubin pull" && cd "$ubin" && gpull "$@"); }																	# bin pull
+bpullr() { ( header "bin pull reset" && cd "$bin" && g rbo && gpull "$@" ) && ( header "ubin pull reset" && cd "$ubin" && g rbo && gpull "$@"); }		# bin pull reset
+bpush() { ( header "bin push" && cd "$bin" && gpush "$@" ) && ( header "ubin push" && cd "$ubin" && gpush "$@" ); }																	# bin push
 config() { wiggin config change "$@" && ScriptEval network vars; }
 unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }

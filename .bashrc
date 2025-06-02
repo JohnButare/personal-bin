@@ -1691,7 +1691,7 @@ SyncMd()
 	local _platformTarget _platformLocal _platformOs _platformIdMain _platformIdLike _platformIdDetail _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
 	ScriptEval HostGetInfo "$remote" --detail --local || return; remoteDir="${whome}/${remoteDir}" # Windows home directory
 
-	# transfer Classify Out to remote
+	# transfer "Classify Out" to remote "Classify In"
 	local srcFile="$localDir/Classify Out.md"
 	[[ ! -f "$srcFile" ]] && { ScriptErr "'$(FileToDesc "$srcFile")' does not exist"; return 1; }
 
@@ -1703,14 +1703,14 @@ SyncMd()
 		: > "$srcFile" || return
 	fi
 
-	# transfer Classify In from remote
+	# transfer "Classify In" from remote "Classify Out"
 	local tmpFile="/tmp/Classify In.md" src="$remote:$remoteDir/Classify\ Out.md"
 	scp -p "$src" "$tmpFile" || return
 	size="$(GetFileSize "$tmpFile")" || return
 	if (( size > 0 )); then
 		local destFile="$localDir/Classify In.md"
-		echo "Copying '$src' to '$(FileToDest "$remoteFile")'..."
-		{ { echo "# $(GetFileTimeStampPretty "$file")"; cat "$file"; echo; } >> "$destFile" || return; }
+		echo "Copying '$src' to '$(FileToDesc "$destFile")'..."
+		{ { echo "# $(GetFileTimeStampPretty "$tmpFile")"; cat "$tmpFile"; echo; } >> "$destFile" || return; }
 		ssh "$remote" ": > \"$remoteDir/Classify\ Out.md\"" || return
 	fi
 

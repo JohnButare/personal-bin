@@ -1102,12 +1102,17 @@ alias NamedLog='DnsLog'
 
 # DHCP
 DhcpMonitor() {	IsPlatform win && { dhcptest.exe "$@"; return; }; }
-DhcpServers() { nmapp --script broadcast-dhcp-discover --script-args='broadcast-dhcp-discover.timeout=1' |& grep "Server Identifier: " | RemoveCarriageReturn | cut -d":" -f2 | ${G}sed 's/ //g' | sort | uniq; }
+DhcpServers() { nmapp --script broadcast-dhcp-discover --script-args='broadcast-dhcp-discover.timeout=1' |& grep "Server Identifier: " | RemoveCarriageReturn | cut -d":" -f2 | ${G}sed 's/ //g' | sort --numeric | uniq | DnsResolveBatch | sort; }
 
 DhcpOptions()
 { 
 	IsPlatform win && { pushd $win > /dev/null; powershell ./DhcpOptions.ps1; popd > /dev/null; return; }
 	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
+}
+
+DhcpTest()
+{
+	 dhcptest.exe --query --wait --timeout ${1:-2} |& grep "Received packet from 1" | cut -d" " -f4 | cut -d":" -f1 | grep -v '^10.10.100.1$' | DnsResolveBatch | sort | uniq
 }
 
 # DhcpValidate HOST - ensure DHCP is running on HOST

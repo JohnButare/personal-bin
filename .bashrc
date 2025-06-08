@@ -1109,16 +1109,10 @@ DhcpOptions()
 	[[ -f "/var/lib/dhcp/dhclient.leases" ]] && cat "/var/lib/dhcp/dhclient.leases"
 }
 
-DhcpTest()
+DhcpServersWin()
 {
-	 dhcptest.exe --query --wait --timeout ${1:-2} |& grep "Received packet from 1" | cut -d" " -f4 | cut -d":" -f1 | grep -v '^10.10.100.1$' | DnsResolveBatch | sort | uniq
-}
-
-# DhcpValidate HOST - ensure DHCP is running on HOST
-DhcpValidate()
-{
-	local ip; ip="$(GetIpAddress "$1")" || return; [[ ! $1 ]] && { EchoWrap "Usage: DhcpValidate HOST"; return 1; }
-	DhcpServers | qgrep "^$ip$"
+	! IsPlatform win && return 1
+	dhcptest.exe --query --wait --timeout ${1:-2} |& grep "Received packet from 1" | cut -d" " -f4 | cut -d":" -f1 | grep -v '^10.10.100.1$' | DnsResolveBatch | sort | uniq
 }
 
 # DhcpValidateReservation [server] - validate the current systems DHCP reservation on the specied DHCP server
@@ -1127,7 +1121,7 @@ DhcpValidateReservation()
 	local verbose verboseLevel verboseLess; ScriptOptVerbose "$@"; [[ $verbose ]] && shift
 	local server="$1"; [[ ! $server ]] && { server="$(GetServers dhcp | head -1)" || return; }
 	
-	local dhcpIp; dhcpIp="$(nmapp -sU -p67 --script dhcp-discover "$server" --script-args='dhcp-discover.dhcptype=DHCPREQUEST,dhcp-discover.mac=native' | grep "IP Offered" | RemoveCarriageReturn | cut -d":" -f2 | RemoveSpaceTrim)" || return
+	local dhcpIp; dhcpIp="$(nmapp --sudo -sU -p67 --script dhcp-discover "$server" --script-args='dhcp-discover.dhcptype=DHCPREQUEST,dhcp-discover.mac=native' | grep "IP Offered" | RemoveCarriageReturn | cut -d":" -f2 | RemoveSpaceTrim)" || return
 	log1 "dhcpIp=$dhcpIp" "DhcpValidateReservation"
 
 	local ip; ip="$(GetIpAddress -4)" || return

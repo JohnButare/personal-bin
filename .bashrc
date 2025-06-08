@@ -1102,7 +1102,6 @@ alias NamedLog='DnsLog'
 
 # DHCP
 DhcpMonitor() {	IsPlatform win && { dhcptest.exe "$@"; return; }; }
-DhcpServers() { nmapp --sudo --script broadcast-dhcp-discover --script-args='broadcast-dhcp-discover.timeout=2' |& grep "Server Identifier: " | RemoveCarriageReturn | cut -d":" -f2 | ${G}sed 's/ //g' | sort --numeric | uniq | DnsResolveBatch | sort; }
 
 DhcpOptions()
 { 

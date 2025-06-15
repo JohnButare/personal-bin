@@ -237,8 +237,8 @@
 	directory = %(prefix)///wsl.localhost/Ubuntu/usr/local/data/bin
 	directory = %(prefix)///wsl.localhost/Ubuntu/home/jjbutare/data/bin
 	directory = %(prefix)//home/jjbutare/data/sync
-	directory = /opt/rpi-eeprom
 	directory = /usr/local/data/bin/.git
+	directory = /opt/rpi-eeprom
 
 # not windows
 [credential "https://ados.sandia.gov"]

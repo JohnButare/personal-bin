@@ -554,20 +554,22 @@ function ConflictFix()
 # file management
 #
 
+# cleanup aliases in ~/.oh-my-zsh/lib/directories.zsh (md, rd)
+unalias md rd >& /dev/null
+
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
-alias del='rm'
-alias md='${G}mkdir'
-alias rd='rmdir'
-
 alias inf="FileInfo"
 alias l='explore'
 alias rc='CopyDir'
 
+del() { ${G}rm "$@"; }
 lcf() { local f="$1"; mv "$f" "${f,,}.hold" || return; mv "${f,,}.hold" "${f,,}" || return; } # lower case file
+md() { ${G}mkdir "$@"; }
+rd() { ${G}rmdir "$@"; }
 
 FileTypes() { file * | sort -k 2; }
 

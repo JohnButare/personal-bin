@@ -1180,9 +1180,9 @@ alias RemoveSyncTxt='FindSyncTxt | xargs rm'; alias rst=RemoveSyncTxt
 alias HideSyncTxt="FileHide .*_sync.txt"
 
 # Virtual IP (VIP) - keepalived load balancer
-VipStatus() { local lb="${1:-lb}" mac; MacLookup --detail "$lb"; }
-VipMonitor() { MacLookup --monitor "${1:-lb}"; }
-VipConnect() { local lb="${1:-lb}"; SshHelper connect --trust "$lb"; }
+VipStatus() { local vip="${1:-vip}" mac; MacLookup --detail "$vip"; }
+VipMonitor() { MacLookup --monitor "${1:-vip}"; }
+VipConnect() { [[ ! $1 ]] && set -- "vip"; SshHelper connect --trust "$@"; }
 
 # web
 awd() { ScriptCd apache dir web "$@" && ls; }		# Apache Web Dir

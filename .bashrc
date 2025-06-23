@@ -860,7 +860,7 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 # Obsidian
 #
 
-po="$$WIN_HOME/data/app/Obsidian/personal" # Personal Obsidian
+po="$WIN_HOME/data/app/Obsidian/personal" # Personal Obsidian
 IsDomainRestricted && po="$CLOUD/data/app/Obsidian/personal" 
 
 alias obm="ObsidianMerge"

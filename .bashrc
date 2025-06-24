@@ -1,4 +1,4 @@
-# TimerOn
+# timerOn=true
 [[ $timerOn ]] && TimerOn
 
 # source function.sh if needed - don't depend on BIN variable
@@ -1838,8 +1838,8 @@ fi
 # platform
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 
-# other
-RunFunctions DotNetConf GitAnnexConf McflyConf NodeConf PythonConf SetTextEditor ZoxideConf || return
+# other - NodeConf (.5s)
+RunFunctions DotNetConf GitAnnexConf McflyConf PythonConf SetTextEditor ZoxideConf || return
 
 # run last
 RunFunctions DbusConf || return

@@ -943,7 +943,7 @@ sysmon()
 
 glances()
 {
-	local args=(); [[ "$HOSTNAME" == @(vast) ]] && args=(--disable-plugin sensors)
+	local args=(); [[ "$HOSTNAME" == @(bl?|vast) ]] && args=(--disable-plugin sensors)
 	command glances "${args[@]}"
 }
 

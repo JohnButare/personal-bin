@@ -11,7 +11,7 @@ st 1Password dropbox OneDrive AnyplaceUSB	# shared
 st AutoHotKey UltraMon										# win
 st alfred AltTab moom rectangle shottr		# mac
 IsPlatform parallels && { drive mount all --no-optical || return; }
-[[ "$HOSTNAME" == @(bc|bl?) ]] && st BgInfo
+[[ "$HOSTNAME" == @(bl?) ]] && st BgInfo
 
 # services
 st chrony nix sshd

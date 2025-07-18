@@ -469,7 +469,7 @@ pm() { PartitionManager "$@"; }
 # display
 #
 
-# information
+ScreenFix() { os screen resize; }
 ShowFortune() { ! InPath cowsay fortune lolcat && return; cowsay "$(fortune --all)" | lolcat; return 0; }
 ShowHost() { HeaderFancy "$HOSTNAME"; }
 

@@ -1077,6 +1077,7 @@ solo="$sols/Documentation/Solumina" # Solumina Obsidian
 
 alias gma="GetMacAddress"
 alias nconf="NetworkConf"
+alias nw="network"
 alias tf="TftpHelper"
 alias wfn='WaitForNetwork'
 
@@ -1170,8 +1171,6 @@ SquidHits() { grep "HIER_NONE" "$(SquidLogFile)"; }
 SquidRestart() { sudo /etc/init.d/ProxyServer.sh restart; }
 SquidUtilization() { squidclient -h "${1:-127.0.0.1}" cache_object://localhost/ mgr:utilization; }
 SquidInfo() { squidclient -h "$1" cache_object://localhost/ mgr:info; }
-ProxyCheck4() { local server="${1:-proxy.butare.net:3128}"; curl --silent --proxy "http://$server" "http://www.msftconnecttest.com/connecttest.txt"; }
-ProxyCheck6() {	local server="${1:-proxy.butare.net:3128}"; curl --silent --proxy "http://$server" "http://ipv6.msftncsi.com/connecttest.txt"; }
 
 # sync files
 alias slf='SyncLocalFiles'
@@ -1813,7 +1812,7 @@ UpdateServerFailed() { hashi consul remove failed; }
 UpdateServerFile() { HostUpdate --what=files "$@"; }
 UpdateServerFileUnison() { HostUpdate --what=files "$@" -- --unison; }
 UpdateServerFileFast() { wiggin host sync files --errors --dest-older "$@" -- --no-platform ; }
-UpdateServerProxy() { wiggin; }
+UpdateServerProxy() { PiSsh -- network proxy update "$@"; }
 UpdateServerReboot() { wiggin host update reboot "$@"; }
 UpdateServerRestart() { wiggin host update restart "$@"; }
 UpdateServerRoot() { HostUpdate --what=server-root-user "$@"; }

@@ -1592,6 +1592,7 @@ aconf() { nconf "$@" && hconf "$@" && cconf "$@" && sconf "$@"; }	# all configur
 bpull() { ( header "bin pull" && cd "$bin" && gpull "$@" ) && ( header "ubin pull" && cd "$ubin" && gpull "$@"); }																	# bin pull
 bpullr() { ( header "bin pull reset" && cd "$bin" && g rbo && gpull "$@" ) && ( header "ubin pull reset" && cd "$ubin" && g rbo && gpull "$@"); }		# bin pull reset
 bpush() { ( header "bin push" && cd "$bin" && gpush "$@" ) && ( header "ubin push" && cd "$ubin" && gpush "$@" ); }																	# bin push
+breset() { ( header "bin reset" && cd "$bin" && g rbo "$@" ) && ( header "ubin reset" && cd "$ubin" && g rbo "$@"); }																# bin reset
 config() { wiggin config change "$@" && ScriptEval network vars; }
 unlock() { wiggin host credential -H=locked; }
 vpn() { network vpn "$@"; }

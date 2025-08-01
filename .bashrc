@@ -175,6 +175,7 @@ alias f='firefox'
 alias grep='command grep --color=auto'
 alias m='merge'
 alias pref='os preferences'
+alias ssms='SqlServerManagementStudio'
 alias usb="AnyplaceUSB"
 
 bcat() { InPath batcat && batcat "$@" || command cat "$@"; }

@@ -164,6 +164,7 @@
 	#editor = TextEdit --wait
 	editor = 'C:/Program Files/Sublime Text/subl.exe' -n -w
 	pager = delta
+	fscache = true
 [diff]
 	tool = bc
 [difftool]
@@ -173,16 +174,15 @@
 	cmd = BeyondCompare --wait \"$LOCAL\" \"$REMOTE\"
 [difftool "Kaleidoscope"]
 	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
-[https]
-	#proxy = http://proxy.rr.intel.com:911
-[http]
-	#proxy = http://proxy.rr.intel.com:911
+[fetch]
+	prune = false
 [init]
 	defaultBranch = main
 [interactive]
 	diffFilter = delta --color-only --features=interactive
 [merge]
 	tool = bc
+	guitool = bc
 [mergetool]
 	prompt = false
 	keepBackup = false
@@ -197,10 +197,13 @@
 	cmd = SublimeMerge start -- \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
 [pull]
 	ff = only
+	rebase = false
 [push]
 	default = current # http://prgmr.io/coding/git-push-default/
 [rebase]
 	autosquash = true
+	autoStash = false
+	updateRefs = false
 [user]
 	name = John Butare
 	email = johns@butare.net
@@ -237,8 +240,8 @@
 	directory = %(prefix)///wsl.localhost/Ubuntu/usr/local/data/bin
 	directory = %(prefix)///wsl.localhost/Ubuntu/home/jjbutare/data/bin
 	directory = %(prefix)//home/jjbutare/data/sync
-	directory = /usr/local/data/bin/.git
-	directory = /opt/rpi-eeprom
+	directory = %(prefix)//usr/local/data/bin/.git
+	directory = %(prefix)//opt/rpi-eeprom
 
 # not windows
 [credential "https://ados.sandia.gov"]

@@ -56,9 +56,7 @@ fi
 # Application Configuration
 #
 
-alias ns="NixHelper start"
-
-[[ ! $ASDF_DIR && ! $force ]] && { SourceIfExists "$HOME/.asdf/asdf.sh" || return; } 	# ASDF
+alias ns="NixHelper start"																														# nix
 SourceIfExists "$HOME/.config/broot/launcher/bash/br" || return 											# broot
 [[ -d "/usr/games" ]] && PathAdd "/usr/games" 																				# games on Ubuntu 19.04+
 [[ -d "$HOME/go/bin" ]] && PathAdd "$HOME/go/bin"																			# Go
@@ -68,6 +66,14 @@ SourceIfExists "$HOME/.rvm/scripts/rvm" || return  																		# Ruby Vers
 [[ -d "$HOME/.cargo/bin" ]] && PathAdd "$HOME/.cargo/bin" 														# Rust
 export BROWSER="firefox" 																															# sensible-browser
 PathAdd "/opt/X11/bin" 																																# XQuartz
+
+# asdf
+export ASDF_DATA_DIR="$HOME/.asdf"
+if [[ -d "$ASDF_DATA_DIR" ]] && [[ ! $ASDF_DIR || $force ]]; then
+	if IsPlatform mac; then SourceIfExists "$(brew --prefix asdf)/libexec/asdf.sh" || return
+	else SourceIfExists "$ASDF_DATA_DIR/asdf.sh" || return
+	fi
+fi
 
 # Homebrew
 if ! IsPlatform mac && [[ -d "/home/linuxbrew/.linuxbrew" ]]; then
@@ -407,14 +413,14 @@ InPath eza && export EZA_COLORS="$LS_COLORS:da=1;34" # https://github.com/eza-co
 alias cd='DoCd'
 
 alias ls='DoLs'
-alias lsc='DoLs'											# list with 
+alias lsc='command ls -1'							# list for copying
 alias la='DoLs -Al'										# list all
 alias lgs="DoLs -A --git-status" 			# list git status
 alias ll='DoLs -l'										# list long
 alias llh='DoLs -d -l .*'							# list long hidden
 alias lh='DoLs -d .*' 								# list hiden
 alias lt='DoLs --tree --dirs'					# list tree
-alias ltime='DoLs --full-time -Ah'		# list time
+alias lftime='DoLs --full-time -Ah'		# list full time
 
 alias dir='cmd.exe /c dir' # Windows dir
 dirss() { DoLs -l --sort=size "$@"; } 	# sort by size

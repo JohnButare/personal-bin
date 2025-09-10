@@ -5,7 +5,17 @@ alias estart="e /etc/profile /etc/bashrc $BIN/bash.bashrc $UBIN/.bash_profile $U
 AppFixPermissions() { sudoc gchown root -R "/Applications/$1.app" && sudoc gchgrp wheel -R "/Applications/$1.app"; }
 AppCheckPermissions() { ls -al "/Applications" | grep $USER; } # Applications should be owned by root not the current user
 
-GetPreferenceChange() # determine the configure domain for a preferences change
+# GetPreferenceFile APP - find the preference file for APP
+GetPreferenceFile()
+{
+	local app="$1"
+	local id="$(defaults domains | tr ',' '\n' | ${G}grep -i "$app" | RemoveSpaceTrim)"
+	echo "Searching for '$id.plist'..."
+	fd "$id.plist" ~/Library /Library /System/Library
+}
+
+# GetPreferenceChange - determine the configure domain for a preferences change
+GetPreferenceChange()
 {
 	defaults read > /tmp/orig.txt
 	pause "Make a change in Preferences..."

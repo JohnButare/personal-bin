@@ -431,7 +431,7 @@ dirsct() { local args=(--time=ctime); DoLsExtended && args+=(--time=created); Do
 DoCd()
 {
 	IsUncPath "$1" && { ScriptCd unc mount "$1"; return; }	
-	if IsDefined __zoxide_z; then 	__zoxide_z "$@" || return
+	if IsDefined __zoxide_z; then __zoxide_z "$@" || return
 	else builtin cd "$@" || return
 	fi
 }

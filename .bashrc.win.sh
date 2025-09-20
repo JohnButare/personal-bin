@@ -29,8 +29,8 @@ alias ewhosts='elevate RunScript TextEdit /mnt/c/Windows/System32/drivers/etc/ho
 procmon() { start --elevate procmon.exe; }
 
 # VBA
-alias ws='start wscript.exe /nologo'
-alias cs='start cscript.exe /nologo'
+alias wsr='start wscript.exe /nologo'
+alias csr='start cscript.exe /nologo'
 
 # utilities
 alias ffw='elevate powershell FlipFlopWheel.ps1'

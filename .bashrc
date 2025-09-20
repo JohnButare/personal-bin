@@ -1179,9 +1179,10 @@ alias RemoveSyncTxt='FindSyncTxt | xargs rm'; alias rst=RemoveSyncTxt
 alias HideSyncTxt="FileHide .*_sync.txt"
 
 # Virtual IP (VIP) - keepalived load balancer
-VipStatus() { local vip="${1:-vip}" mac; MacLookup --detail "$vip"; }
-VipMonitor() { MacLookup --monitor "${1:-vip}"; }
+VipStatus() { VipCheck && MacLookup --detail "${1:-vip}"; }
+VipMonitor() { VipCheck && MacLookup --monitor "${1:-vip}"; }
 VipConnect() { [[ ! $1 ]] && set -- "vip"; SshHelper connect --trust "$@"; }
+VipCheck() { ! IsPlatform win && return; ScriptErr "cannot get the VIP status on Windows"; }
 
 # web
 awd() { ScriptCd apache dir web "$@" && ls; }		# Apache Web Dir

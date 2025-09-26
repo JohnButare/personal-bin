@@ -2,15 +2,14 @@ GitInit()
 {
   global
 
-  GitKraken := UADATA "\gitkraken\app-9.11.0\resources\bin\gitkraken.cmd"
+  GitKraken := UADATA "\gitkraken\app-11.4.0\resources\bin\gitkraken.cmd"
+  GitKraken := "\\wsl.localhost\Ubuntu\usr\bin\gitkraken"
   fork := UADATA "\..\Local\Fork\Fork.exe"
 	
   if FileExist(GitKraken)
   	git := "GitKraken"
   else if FileExist(fork)
     git := "Fork"
-
-  ;MsgBox git
 }
 
 NewGit()
@@ -41,7 +40,7 @@ OpenFork()
 NewGitKraken()
 {
   ; run GitKraken
-  run "wsl.exe gitkraken"
+  Run "wsl.exe -- DISPLAY=0.0.0.0:0 gitkraken --path /usr/local/data/bin", , "Min"
 }
 
 OpenGitKraken()

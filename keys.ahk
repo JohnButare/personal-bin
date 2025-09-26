@@ -87,7 +87,16 @@ RShift & w::RunWord()							; word(w)
 #-::^-												  	; map cmd- to ctrl- (text size decrease)
 ;RShift & v::OpenVm()
 
+;
 ; coding
+;
+
 RShift & v::OpenVisualStudioCode()
 ; RShift & v::OpenVisualStudio()
 RShift & s::OpenSqlServerManagementStudio()
+
+;
+; other
+;
+
++#q::DllCall("LockWorkStation")		; Lock

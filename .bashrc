@@ -414,7 +414,7 @@ alias cd='DoCd'
 
 alias ls='DoLs'
 alias lsc='command ls -1'							# list for copying
-alias lsp='gstat -c "%A %a %n"'				# list permissions
+alias lsp='${G}stat -c "%A %a %n"'				# list permissions
 alias la='DoLs -Al'										# list all
 alias lgs="DoLs -A --git-status" 			# list git status
 alias ll='DoLs -l'										# list long

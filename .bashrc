@@ -413,15 +413,15 @@ InPath eza && export EZA_COLORS="$LS_COLORS:da=1;34" # https://github.com/eza-co
 alias cd='DoCd'
 
 alias ls='DoLs'
-alias lsc='command ls -1'							# list for copying
-alias lsp='${G}stat -c "%A %a %n"'				# list permissions
-alias la='DoLs -Al'										# list all
-alias lgs="DoLs -A --git-status" 			# list git status
-alias ll='DoLs -l'										# list long
-alias llh='DoLs -d -l .*'							# list long hidden
-alias lh='DoLs -d .*' 								# list hiden
-alias lt='DoLs --tree --dirs'					# list tree
-alias lftime='DoLs --full-time -Ah'		# list full time
+alias lsc='command ls -1'												# list for copying
+alias lsp='${G}stat -c "%A %a %n" ${@:-*}'			# list permissions
+alias la='DoLs -Al'															# list all
+alias lgs="DoLs -A --git-status" 								# list git status
+alias ll='DoLs -l'															# list long
+alias llh='DoLs -d -l .*'												# list long hidden
+alias lh='DoLs -d .*' 													# list hiden
+alias lt='DoLs --tree --dirs'										# list tree
+alias lftime='DoLs --full-time -Ah'							# list full time
 
 alias dir='cmd.exe /c dir' # Windows dir
 dirss() { DoLs -l --sort=size "$@"; } 	# sort by size

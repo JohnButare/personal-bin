@@ -2,7 +2,6 @@ GitInit()
 {
   global
 
-  GitKraken := UADATA "\gitkraken\app-11.4.0\resources\bin\gitkraken.cmd"
   GitKraken := "\\wsl.localhost\Ubuntu\usr\bin\gitkraken"
   fork := UADATA "\..\Local\Fork\Fork.exe"
 	

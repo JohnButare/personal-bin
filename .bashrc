@@ -1140,6 +1140,31 @@ DhcpValidateReservation()
 	[[ "$ip" == "$dhcpIp" ]]
 }
 
+# Load Balancer - NGINX load balancer 
+LbCd() { cd "$(LbDir)"; }
+LbDir() { echo "$HOME/data/sync/etc/nginx"; }
+
+alias lbcd='LbCd'
+alias lbs='LbSync'
+
+# LbConfWatch CONF [PATTERN] - watch an NGINX configuration file for changes, useful if the configuration file is templatized
+LbConfWatch()
+{
+	FileWatch "/etc/nginx/sites-available/$1.conf" "${2:-  server }"
+}
+
+# LbSync [HOST](all)
+LbSync()
+{
+	local host; [[ $1 ]] && ! IsOption "$1" && { [[ "$1" != "all" ]] && host="$1"; shift; }
+	local hostArg; [[ $host ]] && hostArg="--host=$host"
+	local dir="$(LbDir)"
+	sudoc chown -R root "$dir" || return
+	wiggin sync lb $hostArg "$@" || return
+	sudoc chown -R "$USER" "$dir" || return
+	SshHelper connect --interactive "${host:-$(GetAllServers lb | tail -1)}" -- sudoc nginx -t || return
+}
+
 # mDNS
 MdnsList() { avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
 MdnsListFull() { avahi-browse -p --all -c -r; }
@@ -1164,9 +1189,6 @@ if IsPlatform win; then
 	}
 fi
 
-# NginxConfWatch CONF [PATTERN] - watch a configuration file for changes
-NginxConfWatch() { FileWatch "/etc/nginx/sites-available/$1.conf" "${2:-  server }"; }
-
 # salt
 RunAll() { a="$@"; sudoc salt '*' cmd.run "/usr/local/data/bin/RunScript $a"; }
 
@@ -1176,7 +1198,7 @@ alias FindSyncTxt='fa --hidden --no-ignore '\..*_sync.txt''
 alias RemoveSyncTxt='FindSyncTxt | xargs rm'; alias rst=RemoveSyncTxt
 alias HideSyncTxt="FileHide .*_sync.txt"
 
-# Virtual IP (VIP) - keepalived load balancer
+# Virtual IP (VIP) - keepalived IP fialover
 VipStatus() { VipCheck && MacLookup --detail "${1:-vip}"; }
 VipMonitor() { VipCheck && MacLookup --monitor "${1:-vip}"; }
 VipConnect() { [[ ! $1 ]] && set -- "vip"; SshHelper connect --trust "$@"; }

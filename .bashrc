@@ -1708,7 +1708,7 @@ SyncMd()
 	SshAgentConf || return
 	
 	local localDir="$cdata/app/Obsidian/personal/other" remote="${1:-bc}" remoteDir="data/app/Obsidian/personal/Personal"
-	local _platformTarget _platformLocal _platformOs _platformIdMain _platformIdLike _platformIdDetail _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
+	local _platformTarget _platformLocal _platformOs _platformIdMain _platformIdLike _platformIdBase _platformIdDetail _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
 	ScriptEval HostGetInfo "$remote" --detail --local || return; remoteDir="${whome}/${remoteDir}" # Windows home directory
 
 	# transfer "Classify Out" to remote "Classify In"

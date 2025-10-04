@@ -219,7 +219,7 @@ zll() { unzip -ll "${@}"; }
 
 tls() { tar --list --gunzip --verbose --file="$1"; }
 tbak() { tar --create --preserve-permissions --numeric-owner --verbose --gzip --file="${2:-$1.tar.gz}" "$1"; } # tak DIR [FILE]
-trest() { local dir; [[ $2 ]] && dir=( --directory "$2" ); sudo tar --extract --preserve-permissions --verbose --gunzip --file="$1" "${dir[@]}"; }
+trest() { local dir=(); [[ $2 ]] && dir=( --directory "$2" ); ${G}tar --extract --preserve-permissions --verbose --gunzip --file="$1" "${dir[@]}"; }
 
 untar() { local args=(); ! IsPlatform mac && args+=(--atime-preserve);  tar --gzip -v -x "${args[@]}" < "$@"; }
 untarbz() { local args=(); ! IsPlatform mac && args+=(--atime-preserve);  tar --bzip2 -v -x "${args[@]}" < "$@"; }

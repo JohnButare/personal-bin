@@ -72,8 +72,8 @@
 	msg = commit --allow-empty -m
 
 	# diff
-	changes = diff --name-status -r
-	check = diff --check
+	changes = "!f() { [[ \"$(git status --porcelain)\" != \"\" ]]; }; f" 	# changes - return 1 if the repository has changes, 0 otherwise
+	check = diff --check 													# check - check for common whitespace errors (trailing whitespace at end of lines, etc.)
 	d = diff --ignore-all-space
 	dc = diff --cached --ignore-all-space
 	dcw = diff --color-words

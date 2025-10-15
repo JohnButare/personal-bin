@@ -181,6 +181,7 @@ alias f='firefox'
 alias grep='command grep --color=auto'
 alias m='merge'
 alias pref='os preferences'
+alias rdh='RemoteDesktopHelper'
 alias ssms='SqlServerManagementStudio'
 alias usb="AnyplaceUSB"
 
@@ -643,6 +644,7 @@ alias unexport='unset'
 alias unfunction='unset -f'
 
 TestFunction() { HeaderBig "Bash" && bash -c ". TestFunction.sh $@" && HeaderBig "Zsh" && zsh -c ". TestFunction.sh $@"; }
+
 #
 # git
 #

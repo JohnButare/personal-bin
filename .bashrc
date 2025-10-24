@@ -1084,7 +1084,6 @@ solo="$sols/Documentation/Solumina" # Solumina Obsidian
 # network
 #
 
-alias gma="GetMacAddress"
 alias nconf="NetworkConf"
 alias nw="network"
 alias tf="TftpHelper"
@@ -1365,7 +1364,7 @@ NetConsoleEnable() # HOST
 	[[ ! $host ]] && { MissingOperand "host" "NetConsoleEnable"; return 1; }
 
 	! grep "netconsole" /etc/modules && { echo "netconsole" | sudo tee -a "/etc/modules" || return; }
-	echo "options netconsole netconsole=6666@$(GetIpAddress)/$(GetAdapterName),6666@$(GetIpAddress "$host")/$(GetMacAddress "$host")" | sudo tee "/etc/modprobe.d/netconsole.conf"
+	echo "options netconsole netconsole=6666@$(GetIpAddress)/$(GetAdapterName),6666@$(GetIpAddress "$host")/$(MacLookup "$host")" | sudo tee "/etc/modprobe.d/netconsole.conf"
 }
 
 NetConsoleDisable()

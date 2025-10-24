@@ -111,7 +111,7 @@ function executeCommand {
   # network change - if the network has changed since we last run a command update the network configuration
   if force= UpdateSince "${NETWORK_CACHE:-network}" "$networkLastUpdateSeconds"; then    
     networkLastUpdateSeconds="$(GetSeconds)"
-    [[ "$(NetworkCurrent)" != "$(NetworkOld)" ]] && BUFFER="NetworkCurrentConfig;$BUFFER"
+    [[ "$(NetworkCurrent)" != "$(NetworkOld)" ]] && BUFFER="NetworkCurrentConfigShell;$BUFFER"
   fi
 
   zle accept-line

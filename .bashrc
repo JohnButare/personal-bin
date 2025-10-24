@@ -1091,9 +1091,8 @@ alias tf="TftpHelper"
 alias wfn='WaitForNetwork'
 
 clf() { CloudFlare "$@"; }
-ncg() {	network current all; } 					# network current get
-ncu() {	NetworkCurrentUpdate "$@"; }		# network current update
-ncut() { ncu --force --timeout=1000; } 	# network current update with forst and higher timeout 
+ncu() {	NetworkCurrentUpdate --config "$@"; }		# network current update - update current network and configure it if needed
+ncut() { ncu --force --timeout=1000; } 					# network current update with force and higher timeout 
 PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 
 # ping HOST - resolves virtual hostnames
@@ -1248,7 +1247,7 @@ VpnFix()
 	done
 
 	# update the network configuration
-	NetworkCurrentUpdate || return	
+	NetworkCurrentUpdate --config || return	
 }
 
 #
@@ -1872,8 +1871,8 @@ RunFunctions DotNetConf GitAnnexConf McflyConf PythonConf SetTextEditor ZoxideCo
 # run last
 RunFunctions DbusConf || return
 RunFunctions --ignore-errors SshAgentEnvConf || return
-RunFunctions NetworkConf || return # depends on CredentialConf
-RunFunctions --ignore-errors CredentialConf || return # depends on NetworkConf if on Sandia network
+RunFunctions NetworkConf -- --config || return
+RunFunctions --ignore-errors CredentialConf || return 				# depends on NetworkConf if on Sandia network
 ! IsDomainRestricted && { RunFunctions HashiConf || return; } # depends on CredentialConf, NetworkConf
 
 # logging

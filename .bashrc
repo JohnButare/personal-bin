@@ -1831,6 +1831,8 @@ alias usa="UpdateServerAll" usc="UpdateServerCleanup" use="UpdateServerEligibili
 alias usf="UpdateServerFile" usff="UpdateServerFileFast" usfu="UpdateServerFileUnison"
 alias usp="UpdateServerProxy" usrb="UpdateServerReboot" usrs="UpdateServerRestart" usr="UpdateServerRoot" usw="UpdateServerWhat"
 
+usfnu() { usf "$@" -- --no-unison; } # update server file no Unison - do not synchronize hosts which require Unison
+
 UpdateServerAll() { usf "$@" && us "$@" && usc "@" && usr "$@"; }
 UpdateServerCleanup() { hashi vault unseal && UpdateServerCredentials "$@" && UpdateServerEligibility "$@" && UpdateServerFailed; }
 UpdateServerCredentials() { HostUpdate --what=server-credential "$@"; }

@@ -7,9 +7,9 @@ st network xserver WindowManager
 ! { IsPlatform win && IsSystemd; } && st dbus
 
 # applications
-st 1Password dropbox OneDrive AnyplaceUSB	# shared
-st AutoHotKey UltraMon										# win
-st alfred AltTab moom rectangle shottr		# mac
+st 1Password dropbox OneDrive AnyplaceUSB						# shared
+st AutoHotKey UltraMon															# win
+st alfred AltTab bartender moom rectangle shottr		# mac
 IsPlatform parallels && { drive mount all --no-optical || return; }
 [[ "$HOSTNAME" == @(bl?) ]] && st BgInfo
 

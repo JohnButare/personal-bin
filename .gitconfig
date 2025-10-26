@@ -110,6 +110,7 @@
 	rba = rebase --abort
 	rbc = rebase --continue
 	rbs = rebase --skip
+	rba = "!f() { git rebase --autosquash HEAD~$((1 + $(git --no-pager log --pretty=format:'%s' --abbrev-commit -40 | awk '{ if ($1 ~ /^fixup!/) print $1; else exit 0; };' | ${G}wc -l))); }; f" # rebase auto, rebase all fixup! commits
 	rbi = rebase --interactive --autosquash
 	rbia = "!f() { git rebase --interactive --autosquash HEAD~$((1 + $(git --no-pager log --pretty=format:'%s' --abbrev-commit -40 | awk '{ if ($1 ~ /^fixup!/) print $1; else exit 0; };' | ${G}wc -l))); }; f" # rebase interactive auto, rebase all fixup! commits
 	rbo = rebase HEAD~1 --onto # rebase onto

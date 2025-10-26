@@ -675,6 +675,7 @@ alias gs='ghlp changes'   			# status
 alias gbs='g bs'								# branch status [PATTERN]
 alias gr='g rb' 								# rebase
 alias gr1='g rb HEAD~1 --onto' 	# rebase first commit onto specified branch
+alias gra='g rba' 							# rebase auto, rebase all fixup! commits
 alias gri='g rbi' 							# rebase interactive
 alias gria='g rbia' 						# rebase interactive auto, rebase all fixup! commits
 alias grc='g rbc' 							# rebase continue
@@ -691,8 +692,9 @@ alias lg='lazygit'
 g() { local git=git; InPath "$P/Git/bin/git.exe" && drive IsWin . && git="$P/Git/bin/git.exe"; SshAgentConf && $git "$@"; }
 gw() { "$P/Git/bin/git.exe" "$@"; }
 
-# gfix - git fix, combine modified files with last commit and force push
+# gfix gfixnp - git fix / git fix no prompt, combine modified files with last commit and force push
 gfix() { grfc && gria && gpush --force --quiet; }
+gfixnp() { grfc && gra && gpush --force --quiet; }
 
 # gdir SERVER - change to the git directory on SERVER for repo creation
 gdir() { cd "$(GitHelper remote dir "$@")"; }

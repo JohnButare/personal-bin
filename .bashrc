@@ -1,6 +1,3 @@
-# timerOn=true
-[[ $timerOn ]] && TimerOn
-
 # source function.sh if needed - don't depend on BIN variable
 { [[ ! $FUNCTIONS ]] || ! declare -f "IsFunction" >& /dev/null; } && { . "/usr/local/data/bin/function.sh" "" || return; }
 
@@ -14,9 +11,13 @@ export LESS='-R'
 # Interactive Configuration
 #
 
-# arguments
-quiet="--quiet"
+# timerOn=true
+# quiet="--quiet"
 # verbose=-vvv verboseLevel=3
+
+[[ $timerOn ]] && TimerOn
+
+# arguments
 ScriptOptForce "$@" || return
 ScriptOptVerbose "$@" || return
 [[ $verbose ]] && unset quiet

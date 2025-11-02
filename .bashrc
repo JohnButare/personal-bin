@@ -597,6 +597,7 @@ FileCheckRw()
 	
 # UnisonClean FILE - remove the specified file from the Unison root directory for the platform
 alias uclean='UnisonClean' ucleanr='UnisonCleanRoot'
+ucd() { cd "$(UnisonConfDir)"; }; ucdr() { cd "$(UnisonRootConfDir)"; }
 
 #
 # find

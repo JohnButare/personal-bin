@@ -658,10 +658,10 @@ alias gah='GitAnnexHelper'
 
 gcd() { ScriptCd GitHelper github dir "$@"; }
 gcdw() { ScriptCd GitHelper github dir --windows "$@"; }
-ghlp() { SshAgentConf && GitHelper "$@"; }
+ghlp() { GitHelper "$@"; }
 ghc() { GitClone "$@"; }
 ghcw() { GitClone --windows "$@"; }
-gg() { SshAgentConf && GitHelper gui "$@"; }
+gg() { GitHelper gui "$@"; }
 gpull() { ghlp pull origin gh wiggin "$@"; }
 gpush() { ghlp push origin gh wiggin "$@"; }
 
@@ -691,7 +691,7 @@ alias eg='GitHelper edit'
 alias lg='lazygit'
 
 # g - git
-g() { local git=git; InPath "$P/Git/bin/git.exe" && drive IsWin . && git="$P/Git/bin/git.exe"; SshAgentConf && $git "$@"; }
+g() { local git=git; InPath "$P/Git/bin/git.exe" && drive IsWin . && git="$P/Git/bin/git.exe"; $git "$@"; }
 gw() { "$P/Git/bin/git.exe" "$@"; }
 
 # gfix gfixnp - git fix / git fix no prompt, combine modified files with last commit and force push
@@ -1480,7 +1480,7 @@ sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using s
 # connect
 sm() { SshHelper connect --mosh "$@"; } # mosh
 ssht() { ssh -t "$@"; } 								# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
-sx() { SshAgentConf --quiet && HashiConf --quiet && SshHelper connect --x-forwarding --hashi "$@"; } # sx - X forwarding and supply passwords where possible
+sx() { SshHelper connect --x-forwarding --hashi "$@"; } # sx - X forwarding and supply passwords where possible
 
 # connect with additional startup scripts
 sshfull() { ssh -t $1 ". /etc/profile; ${@:2}";  } # full environment
@@ -1713,8 +1713,6 @@ SyncInstall()
 # SyncMd [HOST](bl4) - synchronize markdown classify in and out files from a Sandia computer to bc
 SyncMd()
 {
-	SshAgentConf || return
-	
 	local localDir="$cdata/app/Obsidian/personal/other" remote="${1:-bc}" remoteDir="data/app/Obsidian/personal/Personal"
 	local _platformTarget _platformLocal _platformOs _platformIdMain _platformIdLike _platformIdBase _platformIdDetail _platformKernel _machine _data _root _media _public _users _user _home _protocol _busybox _chroot _wsl pd ud udoc uhome udata wroot psm pp ao whome usm up _minimalInstall
 	ScriptEval HostGetInfo "$remote" --detail --local || return; remoteDir="${whome}/${remoteDir}" # Windows home directory

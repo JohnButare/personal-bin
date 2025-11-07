@@ -103,12 +103,21 @@ SourceIfExists "$HOME/.p10k.zsh" || return
 # events
 #
 
+
+lastCheckSeconds="$SECONDS"
 networkLastUpdateSeconds="$(GetSeconds)"
 
 # executeCommand - executed before a command is run, allows command modification to update environment
 function executeCommand {  
 
-  # network change - if the network has changed since we last run a command update the network configuration
+  # periodic checks every 10 seconds
+  (( SECONDS - lastCheckSeconds < 10 )) && { zle accept-line; return; }
+  lastCheckSeconds="$SECONDS"
+
+  # SSH agent
+  ! ssh-add -L >& /dev/null && { BUFFER="SshAgentConf;$BUFFER" }
+
+  # network - check if the network has changed
   if force= UpdateSince "${NETWORK_CACHE:-network}" "$networkLastUpdateSeconds"; then    
     networkLastUpdateSeconds="$(GetSeconds)"
     [[ "$(NetworkCurrent)" != "$(NetworkOld)" ]] && BUFFER="NetworkCurrentConfigShell;$BUFFER"

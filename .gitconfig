@@ -243,6 +243,7 @@
 	directory = %(prefix)//home/jjbutare/data/sync
 	directory = %(prefix)//usr/local/data/bin/.git
 	directory = %(prefix)//opt/rpi-eeprom
+	directory = %(prefix)//opt/pool-dash-panel
 
 # not windows
 [credential "https://ados.sandia.gov"]

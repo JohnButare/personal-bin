@@ -245,6 +245,9 @@
 	directory = %(prefix)//opt/rpi-eeprom
 	directory = %(prefix)//opt/pool-dash-panel
 
+[include]
+	path = ~/.gitconfig-platform
+	
 # not windows
 [credential "https://ados.sandia.gov"]
 	provider = generic
@@ -257,6 +260,3 @@
 	helper = !/usr/local/share/gcm-core/git-credential-manager # mac
 [credential "https://gist.github.com"]
 	helper = !/usr/local/bin/gh auth git-credential
-[credential "https://github.com"]
-	helper = !/usr/local/share/gcm-core/git-credential-manager
-	credentialStore = secretservice

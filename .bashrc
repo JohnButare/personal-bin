@@ -1469,17 +1469,18 @@ SwitchUser() { local user="$1"; cd ~$user; sudo --user=$user --set-home --shell 
 
 alias sconf="SshAgentConfStatus"
 
-alias s=sx													# connect with ssh
+alias q="sq"												# quick ssh connection
+alias s="sx"												# connect with ssh X forwarding
 alias hvs="hyperv connect ssh" 			# connect to a Hyper-V host with ssh
-alias sshconfig='e ~/.ssh/config'
-alias sshkh='e ~/.ssh/known_hosts'
+alias sshconfig='e ~/.ssh/config'		# edit ssh configuration
+alias sshkh='e ~/.ssh/known_hosts'	# edit ssh known hosts
 
-# information
-sshs() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh status
+si() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh information
 
 # connect
-sm() { SshHelper connect --mosh "$@"; } # mosh
+sm() { SshHelper connect --mosh "$@"; } # connect with mosh
 ssht() { ssh -t "$@"; } 								# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
+sq() { ssh "$@"; }											# connect quickly
 sx() { SshHelper connect --x-forwarding --hashi "$@"; } # sx - X forwarding and supply passwords where possible
 
 # connect with additional startup scripts

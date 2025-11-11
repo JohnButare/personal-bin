@@ -17,7 +17,6 @@ IsPlatform parallels && { drive mount all --no-optical || return; }
 [[ "$HOSTNAME" == @(bl?) ]] && st BgInfo "${a[@]}"
 
 # services
-a=(-vvvvv)
 st chrony nix sshd "${a[@]}"
 [[ "$HOSTNAME" == @(bl?) ]] && st docker consul nomad guacamole "${a[@]}"
 

@@ -18,6 +18,8 @@ IsPlatform parallels && { drive mount all --no-optical || return; }
 
 # services
 st chrony nix sshd "${a[@]}"
-[[ "$HOSTNAME" == @(bl?) ]] && st docker consul nomad guacamole "${a[@]}"
+if [[ "$HOSTNAME" == @(bl?) ]]; then
+	st docker consul nomad guacamole "${a[@]}"
+fi
 
 return 0

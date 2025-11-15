@@ -662,8 +662,8 @@ ghlp() { GitHelper "$@"; }
 ghc() { GitClone "$@"; }
 ghcw() { GitClone --windows "$@"; }
 gg() { GitHelper gui "$@"; }
-gpull() { ghlp pull origin gh wiggin "$@"; }
-gpush() { ghlp push origin gh wiggin "$@"; }
+gpull() { ghlp pull origin ados gh gl wiggin "$@"; }
+gpush() { ghlp push origin ados gh gl wiggin "$@"; }
 
 alias ga='g add'
 alias gd='g diff'

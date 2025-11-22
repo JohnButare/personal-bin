@@ -1867,8 +1867,8 @@ fi
 # platform
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 
-# other - NodeConf (.5s)
-RunFunctions DotNetConf GitAnnexConf McflyConf PythonConf SetTextEditor ZoxideConf || return
+# other
+RunFunctions DotNetConf GitAnnexConf McflyConf NodeConf PythonConf SetTextEditor ZoxideConf || return
 
 # run last
 RunFunctions DbusConf || return

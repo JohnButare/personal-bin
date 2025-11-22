@@ -340,8 +340,6 @@ fi
 # Data Types
 #
 
-DumpBytes() { GetArgs; echo -n -e "$@" | ${G}od --address-radix d -t x1 -t c -t a; } # echo -en "01\\n" | DumpBytes
-
 # date/time
 clock() { ClockHelper $@; }
 alias clk="clock"

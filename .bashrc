@@ -378,6 +378,8 @@ alias npmls='npm ls --depth=0'
 alias npmi='sudo npm install -g' # npm install
 alias npmu='sudo npm uninstall -g' # npm uninstall
 
+nvm() { NodeConf; nvm "$@"; }		# nvm - configure nvm when called
+
 # NodeSwitch - emulate n syntax using nvm
 NodeSwitch()
 {
@@ -1588,11 +1590,11 @@ xprac() { if IsPlatform win; then "$P/Xpra/xpra_cmd.exe" "$@"; else xpra "$@"; f
 XpraConnect() { echo "ssh://$USER@$(os name "$1")/$2"; }
 XpraCheck() { plink.exe "$USER@$(os name "$1")"; } # store SSH key in cache
 
-XpraConf() { RunPlatform XpraConf "$@"; }
+XpraConf() { RunPlatformOs XpraConf "$@"; }
 XpraConfMac() { "$P/Xpra.app/Contents/Helpers/Config_info" "$@"; }
 XpraConfWin() { "$P/Xpra/Config_info.exe" "$@"; }
 
-XpraPaths() { RunPlatform XpraPaths "$@"; }
+XpraPaths() { RunPlatformOs XpraPaths "$@"; }
 XpraPathsMac() { "$P/Xpra.app/Contents/Helpers/Path_info" "$@"; }
 XpraPathsWin() { "$P/Xpra/Path_info.exe" "$@"; }
 
@@ -1868,7 +1870,7 @@ fi
 SourceIfExistsPlatform "$UBIN/.bashrc." ".sh" || return
 
 # other
-RunFunctions DotNetConf GitAnnexConf McflyConf NodeConf PythonConf SetTextEditor ZoxideConf || return
+RunFunctions DotNetConf GitAnnexConf McflyConf PythonConf SetTextEditor || return # ZoxideConf
 
 # run last
 RunFunctions DbusConf || return

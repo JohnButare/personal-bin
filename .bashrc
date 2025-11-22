@@ -1809,7 +1809,7 @@ DownInfo()
 	{
 		hilight "name${sep}mac"
 		DomotzHelper down || return
-	} | column -c $(tput cols -T "$TERM") -t -s"${sep}"
+	} | ${G}column -c $(tput cols -T "$TERM") -t -s"${sep}"
 }
 
 # servers

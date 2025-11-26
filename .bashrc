@@ -1805,6 +1805,7 @@ alias nbwv='cat "$(netbootxyz dir win-install)/releases.txt"'		# netbootxyz win 
 
 # network DNS and DHCP configuration
 alias ne='wiggin network edit'								# network edit
+alias ned='wiggin network edit domain'				# network edit domain
 alias ner='wiggin network edit reservations'	# network edit reservations
 alias nep='e $DATA/setup/ports'								# network edit ports
 alias nua='wiggin network update all'					# network update all

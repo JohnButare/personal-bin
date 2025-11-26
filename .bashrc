@@ -1084,6 +1084,14 @@ sol="$CLOUD/project/Solumina" 			# Solumina Root
 sols="$sol/shared/technical" 				# Solumina Shared
 solo="$sols/Documentation/Solumina" # Solumina Obsidian
 
+# ss HOST - ssh solumina-user
+ss()
+{
+	local host="solumina-user@$1" args=(); shift
+	! [[ -S "$HOME/.ssh/sockets/$host:22" ]] && args+=(--password "$(cred get project/solumina solumina-user)")
+	s "$host" "${args[@]}"
+}
+
 #
 # network
 #

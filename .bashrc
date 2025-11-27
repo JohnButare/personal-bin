@@ -378,7 +378,12 @@ alias npmls='npm ls --depth=0'
 alias npmi='sudo npm install -g' # npm install
 alias npmu='sudo npm uninstall -g' # npm uninstall
 
-nvm() { NodeConf; nvm "$@"; }		# nvm - configure nvm when called
+# nvm - configure nvm when called
+nvm()
+{
+	[[ ! -d ~/.nvm ]] && { ScriptErr "nvm is not installed" "nvm"; return 1; }
+	NodeConf --force; nvm "$@"
+}
 
 # NodeSwitch - emulate n syntax using nvm
 NodeSwitch()
@@ -391,7 +396,6 @@ NodeSwitch()
 
 ! InPath n && alias n="NodeSwitch"
 
-nlts() { nvm use --lts "$@"; }
 nlts() { nvm use --lts "$@"; }
 
 alias nodew='start "$P/nodejs/node.exe"'

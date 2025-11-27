@@ -167,10 +167,10 @@ AppDirGet()
 # other
 #
 
-cls() { clear; }																	# clear
-ei() { TextEdit $bin/inst; }											# edit inst
-ehp() { start "$udata/replicate/default.htm"; }		# edit home page
-st() { startup --no-pause "$@"; }									# startup
+cls() { clear; }																			# clear
+ei() { TextEdit $bin/inst; }													# edit inst
+ehp() { TextEdit "$udata/replicate/default.htm"; }		# edit home page
+st() { startup --no-pause "$@"; }											# startup
 
 #
 # applications

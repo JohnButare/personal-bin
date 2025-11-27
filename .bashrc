@@ -396,7 +396,9 @@ NodeSwitch()
 
 ! InPath n && alias n="NodeSwitch"
 
-nlts() { nvm use --lts "$@"; }
+nlts() { nvm use --lts "$@"; }						# nvm lts - use LTS node
+nls() { nvm ls --no-alias "$@"; }					# nvm ls
+nlsr() { nvm ls-remote "$@"; }	# nvm ls-remote
 
 alias nodew='start "$P/nodejs/node.exe"'
 alias npmw='$P/nodejs/npm'

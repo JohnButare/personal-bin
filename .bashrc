@@ -1576,6 +1576,9 @@ alias dkflush2='docker rmi $(docker images --filter "dangling=true" -q --no-trun
 alias dkt='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}"'
 alias dkps="docker ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'"
 
+alias dh='DockerHelper'
+alias de='dh exec'
+
 # hyper-v
 alias hv="hyperv"
 hvc() { hv console  "$1"; } 								# console

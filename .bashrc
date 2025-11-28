@@ -1657,6 +1657,7 @@ WigginServerCount() { hashi nomad node allocs --numeric -H=active "$@"; }
 
 # sync
 sd="$UDATA/sync" 														# sync dir
+sda="$UDATA/sync/srv/apache-web/htdocs" 		# sync dir Apache
 sdn="$UDATA/sync/etc/nginx/sites-available" # sync dir Nginx
 
 # SyncBin - create or merge bin and user bin directories using the cloud download directory

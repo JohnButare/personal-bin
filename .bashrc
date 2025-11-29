@@ -1421,10 +1421,10 @@ PySite() { py -m site; }
 #
 
 PiHosts() { GetAllServers; }
-PiHostsOn() { consul members | grep " alive " | tr -s " " | cut -d" " -f1 | sort -V; } # PiHostsOn - show all pi hosts that are on
-PiHostsOff() { consul members | grep " left " | tr -s " " | cut -d" " -f1 | sort -V; } # PiHostsOff - show all pi hosts that are off
-PiShell() { sx --host=all "$@"; } 																			# PiShell - run a shell on all servers
-PiSsh() { sx --host=all --errors --function --pseudo-terminal "$@"; } 	# PiSsh COMMAND - run a command on all servers
+PiHostsOn() { consul members | grep " alive " | tr -s " " | cut -d" " -f1 | sort -V; } 	# PiHostsOn - show all pi hosts that are on
+PiHostsOff() { consul members | grep " left " | tr -s " " | cut -d" " -f1 | sort -V; } 	# PiHostsOff - show all pi hosts that are off
+PiShell() { sx --host=all "$@"; } 																											# PiShell - run a shell on all servers
+PiSsh() { sm all "$@"; } 																																# PiSsh COMMAND - run a command on all servers
 PiVerifyCert() { PiSsh -- 'openssl x509 -in "'${1:-/opt/nomad/cert/nomad-client.pem}'" -text | grep "Not After"'; }
 
 #
@@ -1492,10 +1492,17 @@ alias sshkh='e ~/.ssh/known_hosts'	# edit ssh known hosts
 si() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh information
 
 # connect
-sm() { SshHelper connect --mosh "$@"; } # connect with mosh
+smosh() { SshHelper connect --mosh "$@"; } # connect with mosh
 ssht() { ssh -t "$@"; } 								# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
 sq() { ssh "$@"; }											# connect quickly
 sx() { SshHelper connect --x-forwarding --hashi "$@"; } # sx - X forwarding and supply passwords where possible
+
+# sm HOSTS COMMAND - run command on a comma separated list of hosts
+sm()
+{
+	local hosts="$1"; shift
+	sx --host="$hosts" --errors --function --pseudo-terminal "$@"
+}
 
 # connect with additional startup scripts
 sshfull() { ssh -t $1 ". /etc/profile; ${@:2}";  } # full environment

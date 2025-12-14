@@ -176,6 +176,7 @@ st() { startup --no-pause "$@"; }											# startup
 # applications
 #
 
+alias 1p='1PasswordHelper'
 alias choco='choco.exe'
 alias code='vsc'
 alias f='firefox'

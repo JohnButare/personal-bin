@@ -6,3 +6,4 @@
 # QNAP Docker
 [[ -d /share/CACHEDEV1_DATA/.qpkg/container-station/bin ]] && PathAdd "/share/CACHEDEV1_DATA/.qpkg/container-station/bin"
 
+return 0

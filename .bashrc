@@ -1814,15 +1814,16 @@ encum() { encrypt unmount "personal" "$@"; }
 
 # netbootxyz
 alias nb='netbootxyz'
-alias nbcd='cd $(netbootxyz dir conf)'																	# netbootxyz cd
-alias nbcda='cd $(netbootxyz dir app)'																	# netbootxyz cd application
-alias nbcdm='cd $(netbootxyz dir app)/roles/netbootxyz/templates/menu'	# netbootxyz cd menu
-alias nbcdws='cd $(netbootxyz dir conf)/web/custom/windows/scripts'			# netbootxyz cd Windows scripts
-alias nbem='netbootxyz edit menu' 																			# netbootxyz edit menu
-alias nbda='netbootxyz deploy all'																			# netbootxyz deploy all
-alias nbt='hyperv create --type=win --start'														# netbootxyz test
-alias nbwu='netbootxyz update win auto'																	# netbootxyz win update
-alias nbwv='cat "$(netbootxyz dir win-install)/README.txt"'							# netbootxyz win versions
+alias nbcd='cd $(nb dir conf)'																	# netbootxyz cd
+alias nbcda='cd $(nb dir app)'																	# netbootxyz cd application
+alias nbcdm='cd $(nb dir app)/roles/netbootxyz/templates/menu'	# netbootxyz cd menu
+alias nbcdws='cd $(nb` dir conf)/web/custom/windows/scripts'		# netbootxyz cd Windows scripts
+alias nbem='nb edit menu' 																			# netbootxyz edit menu
+alias nbda='nb deploy all'																			# netbootxyz deploy all
+alias nbt='hyperv create --type=win --start'										# netbootxyz test
+alias nbwa='nb update win all'																	# netbootxyz win all
+alias nbws='nb update win select'																# netbootxyz win select
+alias nbwv='cat "$(nb dir win-install)/README.txt"'							# netbootxyz win versions
 
 # network DNS and DHCP configuration
 alias ne='wiggin network edit'								# network edit

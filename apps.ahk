@@ -1,9 +1,11 @@
 
 Open1Password()
 {
-	program := EnvGet("APPDATA") "\..\Local\1Password\app\8\1Password.exe"	
+	program := EnvGet("APPDATA") "\..\Local\1Password\app\8\1Password.exe"
 
 	if ! FileExist(program) 
+		program := EnvGet("APPDATA") "\..\Local\Microsoft/WindowsApps/1Password.exe"
+	else
 		program := EnvGet("ProgramFiles") "\1Password\app\8\1Password.exe"
 
 	if ! FileExist(program)

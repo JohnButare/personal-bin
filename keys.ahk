@@ -70,17 +70,17 @@ RShift & q::CenterWindow()
 ; Applications
 ;
 
-;RShift & e::run "explorer.exe  %HOMEDRIVE%%HOMEPATH%"	; Explorer
-RShift & e::OpenExplorer()				; Explorer(e)
 RShift & 1::Open1Password() 			; 1Password(1)
 RShift & 3::OpenTerminal() 				; Terminal(3)
-RShift & b::OpenBrowser() 				; Browser(b)
 RShift & a::OpenTeams() 					; CollAboration(a)
+RShift & b::OpenBrowser() 				; Browser(b)
+RShift & d::OpenRemoteDesktop()		; Remote Desktop(d)
+RShift & e::OpenExplorer()				; Explorer(e)
 RShift & g::Opengit()							; Git(g)
+RShift & i::OpenAi() 							; AI(i)
 RShift & m::OpenMail()						; Mail(m)
 RShift & n::OpenNoteEditor()			; Note Editor(n)
 RShift & p::VpnConnectionToggle()	; VPN(p)
-RShift & d::OpenRemoteDesktop()		; Remote Desktop(d)
 RShift & t::OpenTextEditor()			; Text Editor(t)
 RShift & w::RunWord()							; word(w)
 #=::^=														; map cmd= (magnifier shortcut) to ctrl= (text size increase)

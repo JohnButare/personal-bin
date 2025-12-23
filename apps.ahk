@@ -17,6 +17,17 @@ Open1Password()
 		run program
 }
 
+OpenAi()
+{
+	program := EnvGet("APPDATA") "\..\Local\AnthropicClaude\claude.exe"	
+
+  If WinExist("ahk_exe" "claude.exe")
+  	WinActivate "Claude"
+  else
+		run program
+		;  --squirrel-firstrun
+}
+
 OpenSlack()
 {
 	program := EnvGet("APPDATA") "\..\Local\slack\app-4.28.184\slack.exe"	

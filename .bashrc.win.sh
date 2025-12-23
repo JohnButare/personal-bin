@@ -8,7 +8,6 @@ alias autoruns='start --elevate autoruns.exe'
 alias dm='start DevMgmt.msc'
 alias prog='product gui'
 alias vss='vss.exe'
-alias winget='cmd.exe /c winget.exe'
 alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 alias wt='WindowsTerminal'
 

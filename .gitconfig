@@ -256,7 +256,7 @@
 	helper = !/usr/local/share/gcm-core/git-credential-manager
 	useHttpPath = true
 [credential "https://github.com"]
-	helper = !/usr/local/bin/gh auth git-credential # win
-	helper = !/usr/local/share/gcm-core/git-credential-manager # mac
+	# helper = !/usr/local/share/gcm-core/git-credential-manager 	# mac
+	helper = !/usr/local/bin/gh auth git-credential					# linux
 [credential "https://gist.github.com"]
 	helper = !/usr/local/bin/gh auth git-credential

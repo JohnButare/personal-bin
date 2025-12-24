@@ -2,15 +2,15 @@
 # http://www.bigsmoke.us/readline/shortcuts.pxhtml
 
 # test
-#"\eOP": "F1"  #F1
-#"\e[18~": "F7" #F7
-#"\e[19~": "F8" #F8
+#"\eOP": "F1"                   # F1
+#"\e[18~": "F7"                 # F7
+#"\e[19~": "F8"                 # F8
 
-"\eOP": "gs\015"		#F1
-"\eOQ": "g diff\015"	#F2
+"\eOP": "gs\015"                # F1
+"\eOQ": "g diff\015"            # F2
 
-"\e[15~": shell-expand-line   #F5
-"\e[16~": history-expand-line #F6
+"\e[15~": shell-expand-line     # F5
+"\e[16~": history-expand-line   # F6
 
 # previous positition - ctrl-x
 "\eOH": beginning-of-line   # home, ctrl-a
@@ -29,12 +29,6 @@
 "\C-H": backward-kill-word      # alt-backspace ctrl-backspace (win)
 "\e[3;6~": kill-line            # ctrl-shift-backspace
 "\xC2\x9F": backward-kill-line  # ctrl-u/k, ctrl-shift-delete (win)
-
-# Search command history 
-"\e[A": history-search-backward # up
-"\e[B": history-search-forward  # dn
-"\e[1;5A": history-search-backward  # ctrl-up 
-"\e[1;5B": history-search-forward   # ctrl-dn
 
 $if Bash
 
@@ -56,8 +50,14 @@ $if Bash
   set mark-directories on
   set mark-symlinked-directories on
 
-  # insert a space character then do  a history expansion 
+  # insert a space character then do a history expansion 
   Space: magic-space
 	
+  # Search command history 
+  "\e[A": history-search-backward # up
+  "\e[B": history-search-forward  # dn
+  "\e[1;5A": history-search-backward  # ctrl-up 
+  "\e[1;5B": history-search-forward   # ctrl-dn
+
 $endif
 

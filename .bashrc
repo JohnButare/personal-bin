@@ -1810,8 +1810,8 @@ mcd() { cd "//nas3/data/media"; } 		# mcd - media CD
 bdir() { cd "$(AppGetBackupDir)"; } 	# backup dir
 
 # encrypted files
-encm() { encrypt mount "$cdata/app/CryFS/personal" "$@"; }
-encum() { encrypt unmount "personal" "$@"; }
+encm() { CloudValidate "encm" && encrypt mount "$cdata/app/CryFS/personal" "$@"; }
+encum() { CloudValidate "encm" && encrypt unmount "personal" "$@"; }
 
 # netbootxyz
 alias nb='netbootxyz'

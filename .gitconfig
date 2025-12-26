@@ -247,19 +247,3 @@
 
 [include]
 	path = ~/.gitconfig-platform
-
-# linux only
-
-[credential "https://ados.sandia.gov"]
-	provider = generic
-	helper = !/usr/local/share/gcm-core/git-credential-manager
-
-[credential "https://dev.azure.com"]
-	helper = !/usr/local/share/gcm-core/git-credential-manager
-	useHttpPath = true
-
-[credential "https://github.com"]
-	helper = !/usr/local/bin/gh auth git-credential
-
-[credential "https://gist.github.com"]
-	helper = !/usr/local/bin/gh auth git-credential

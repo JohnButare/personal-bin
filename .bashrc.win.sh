@@ -12,6 +12,7 @@ alias wmic="$WINDIR/system32/wbem/WMIC.exe"
 alias wt='WindowsTerminal'
 
 ahk() { AutoHotKey "$@"; } # AutoHotKey
+cmd() { cmd.exe "$@"; }
 FlipFlopWheel() { RunScript --functions --elevate -- powershell "$(utw "$win/FlipFlopWheel.ps1")"; }
 PortForward() { RunScript --elevate -- powershell.exe WslPortForward.ps1; }
 rdesk() { ( mstsc.exe '/f' '/v:'"${@}" & ) }
@@ -25,7 +26,8 @@ alias NetConfig='control.exe netconnections'
 alias ewhosts='elevate RunScript TextEdit /mnt/c/Windows/System32/drivers/etc/hosts' # edit windows hosts file
 
 # process
-procmon() { start --elevate procmon.exe; }
+procexp() { start --elevate procexp.exe "$@"; }
+procmon() { start --elevate procmon.exe "$@"; }
 
 # VBA
 alias wsr='start wscript.exe /nologo'

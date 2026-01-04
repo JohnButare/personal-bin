@@ -510,10 +510,11 @@ alias ddm='DellDisplayManager'
 FullWakeup() { ssh "$1" caffeinate  -u -w 10; }
 sw() { ddm switch "$@"; } # switch monitor
 
+# mp - monitor profile
 mp()
 {
-	local dir="$UADATA/../Roaming/Realtime Soft/UltraMon/3.4.1/Profiles"
-	local cdir="$CLOUD/data/UltraMon"
+	local dir="$(UltraMonHelper dir profile)"
+	local cdir="$(UltraMonHelper dir cloud)"
 
 	if [[ -f "$dir/$1.umprofile" ]]; then start "$dir/$1.umprofile"
 	elif [[ -f "$dir/study/$1.umprofile" ]]; then start "$dir/study/$1.umprofile"
@@ -522,7 +523,12 @@ mp()
 	fi
 }
 
-mpl() { tree "$UADATA/../Roaming/Realtime Soft/UltraMon/3.4.1/Profiles"	"$CLOUD/data/UltraMon"; }
+# mpd - monitor profile dir
+mpd() { cd "$(UltraMonHelper dir profile)"; }
+mpcd() { cd "$(UltraMonHelper dir cloud)"; }
+
+# mpl - monitor profile list
+mpl() { tree "$(UltraMonHelper dir profile)" "$(UltraMonHelper dir cloud)"; }
 
 # swe - switch monitor to ender
 swe()

@@ -1485,12 +1485,15 @@ alias sshkh='e ~/.ssh/known_hosts'	# edit ssh known hosts
 si() { IsSsh && echo "Logged in from $(RemoteServerName)" || echo "Not using ssh"; } # ssh information
 
 # connect
+HostSsh() { sm "$@"; }
 smosh() { SshHelper connect --mosh "$@"; } # connect with mosh
 ssht() { ssh -t "$@"; } 								# allocate a pseudo-tty for screen based programs like sudo, i.e. ssht sudo ls /
 sq() { ssh "$@"; }											# connect quickly
 sx() { SshHelper connect --x-forwarding --hashi "$@"; } # sx - X forwarding and supply passwords where possible
 
-# sm HOSTS COMMAND - run command on a comma separated list of hosts
+# alias like PiSsh - HostSsh rp1,rp2 -- ls # sx --host=rp2,rp1,rp2,rp3,rp4 --function --pseudo-terminal -- ls /usr/local/data
+
+# sm HOSTS COMMAND - SSH multiple, run command on a comma separated list of hosts
 sm()
 {
 	local hosts="$1"; shift

@@ -489,6 +489,7 @@ pm() { PartitionManager "$@"; }
 
 mp() { UltraMonHelper apply "$@"; }
 mpd() { cd "$(UltraMonHelper dir)"; } 	# mpd - monitor profile dir
+mpe() { UltraMonHelper edit "$@"; } 		# mpe - monitor profile edit
 mpl() { UltraMonHelper ls "$@"; } 			# mpl - monitor profile list
 
 ScreenFix() { os screen resize; }

@@ -487,6 +487,10 @@ pm() { PartitionManager "$@"; }
 # display
 #
 
+mp() { UltraMonHelper apply "$@"; }
+mpd() { cd "$(UltraMonHelper dir)"; } 	# mpd - monitor profile dir
+mpl() { UltraMonHelper ls "$@"; } 			# mpl - monitor profile list
+
 ScreenFix() { os screen resize; }
 ShowFortune() { ! InPath cowsay fortune lolcat && return; cowsay "$(fortune --all)" | lolcat; return 0; }
 ShowHost() { HeaderFancy "$HOSTNAME"; }
@@ -509,26 +513,6 @@ ClearRun()
 alias ddm='DellDisplayManager'
 FullWakeup() { ssh "$1" caffeinate  -u -w 10; }
 sw() { ddm switch "$@"; } # switch monitor
-
-# mp - monitor profile
-mp()
-{
-	local dir="$(UltraMonHelper dir profile)"
-	local cdir="$(UltraMonHelper dir cloud)"
-
-	if [[ -f "$dir/$1.umprofile" ]]; then start "$dir/$1.umprofile"
-	elif [[ -f "$dir/study/$1.umprofile" ]]; then start "$dir/study/$1.umprofile"
-	elif [[ -f "$cdir/$1.umprofile" ]]; then start "$cdir/$1.umprofile"
-	else ScriptErr "mon" "'$1' is not a valid monitor profile"
-	fi
-}
-
-# mpd - monitor profile dir
-mpd() { cd "$(UltraMonHelper dir profile)"; }
-mpcd() { cd "$(UltraMonHelper dir cloud)"; }
-
-# mpl - monitor profile list
-mpl() { tree "$(UltraMonHelper dir profile)" "$(UltraMonHelper dir cloud)"; }
 
 # swe - switch monitor to ender
 swe()

@@ -116,7 +116,7 @@
 	rbon = rebase HEAD~1 --onto # rebase onto
 	rf = "!f() { git commit -m \"fixup! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # fixup [COMMIT] [MESSAGE] - rebase fix, commit staged files as a fixup commit
 	rfc = "!f() { git commit -am \"fixup! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # fixup [COMMIT] [MESSAGE] - rebase fix, commit changed files as a fixup commit
-	rsq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # squash [COMMIT] [MESSAGE] - rebase squas, commit changes as a squash commit
+	rsq = "!f() { git commit -am \"squash! $(git log -1 --format='%s' $1)\n\n$2\"; }; f" # squash [COMMIT] [MESSAGE] - rebase squash, commit changes as a squash commit
 
 	# reset
 	undo2 = reset --soft HEAD@{1} # in git-extras

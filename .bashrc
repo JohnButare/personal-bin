@@ -481,7 +481,7 @@ dus() { ${G}du --summarize --human-readable "$@" |& grep -Ev "Permission denied|
 ListPartitions() { sudo parted -l; }
 ListDisks() { sudo parted -l |& grep -i '^Disk' |& grep -Ev 'Error|Disk Flags' | cut -d' ' -f2 | cut -d: -f1; }
 ListFirstDisk() { ListDisks | head -1; }
-pm() { PartitionManager "$@"; }
+pmgr() { PartitionManager "$@"; }
 
 #
 # display
@@ -1568,19 +1568,41 @@ alias cr="ChrootHelper"
 alias crdown="schroot --all-sessions --end-session"
 
 # docker
-alias dk='docker'
-alias dki='docker images'
-alias dks='docker service'
-alias dkrm='docker rm'
-alias dkl='docker logs'
-alias dklf='docker logs -f'
-alias dkflush='docker rm `docker ps --no-trunc -aq`'
-alias dkflush2='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
-alias dkt='docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}"'
-alias dkps="docker ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'"
+alias dki='dk images'
+alias dks='dk service'
+alias dkrm='dk rm'
+alias dkl='dk logs'
+alias dklf='dk logs -f'
+alias dkflush='dk rm `docker ps --no-trunc -aq`'
+alias dkflush2='dk rmi $(docker images --filter "dangling=true" -q --no-trunc)'
+alias dkt='dk stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}"'
+alias dkps="dk ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'"
 
 alias dh='DockerHelper'
 alias de='dh exec'
+
+# dkpull IMAGE - pull an image
+dkpull()
+{
+	local image="$1"; shift
+	local prefix; IsInDomain sandia && prefix="nexus.web.sandia.gov:8083/"
+	dk pull "${prefix}${image}" "$@"
+}
+
+dkrun()
+{
+	local image="$1"; shift
+	local prefix; IsInDomain sandia && prefix="nexus.web.sandia.gov:8083/"
+	dk run "${prefix}${image}" "$@"
+}
+
+# podman
+alias pm='podman'
+if InPath podman; then dk() { podman "$@"; }
+elif IsPlatform win && [[ -f "$P/RedHat/Podman/podman.exe" ]]; then
+	podman() { "$P/RedHat/Podman/podman.exe" "$@"; }
+	dk() { podman "$@"; }
+fi
 
 # hyper-v
 alias hv="hyperv"

@@ -11,7 +11,7 @@ st network xserver WindowManager
 
 # applications
 st 1Password dropbox OneDrive AnyplaceUSB	"${a[@]}"					# shared
-IsPlatform win && st AutoHotKey UltraMon "${a[@]}"
+IsPlatform win && st AutoHotKey files QuickLook UltraMon "${a[@]}"
 IsPlatform mac && st alfred AltTab bartender moom rectangle shottr "${a[@]}"
 IsPlatform parallels && { drive mount all --no-optical || return; }
 [[ "$HOSTNAME" == @(bl?) ]] && st BgInfo "${a[@]}"

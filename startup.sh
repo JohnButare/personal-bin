@@ -11,15 +11,15 @@ st network xserver WindowManager
 
 # applications
 st 1Password dropbox OneDrive AnyplaceUSB	"${a[@]}"					# shared
-st AutoHotKey UltraMon "${a[@]}"													 	# win
-st alfred AltTab bartender moom rectangle shottr "${a[@]}" 	# mac
+IsPlatform win && st AutoHotKey UltraMon "${a[@]}"
+IsPlatform mac && st alfred AltTab bartender moom rectangle shottr "${a[@]}"
 IsPlatform parallels && { drive mount all --no-optical || return; }
 [[ "$HOSTNAME" == @(bl?) ]] && st BgInfo "${a[@]}"
 
 # services
 st chrony nix sshd "${a[@]}"
 if [[ "$HOSTNAME" == @(bl?) ]]; then
-	st docker consul nomad guacamole "${a[@]}"
+	st PodmanDesktop consul nomad "${a[@]}" # guacamole
 fi
 
 return 0

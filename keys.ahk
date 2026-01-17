@@ -3,6 +3,7 @@
 Init()
 CommonInit()
 GitInit()
+ExplorerInit()
 OfficeInit()
 BrowserInit()
 MailInit()
@@ -17,6 +18,7 @@ WindowInit()
 
 #Include apps.ahk
 #Include browser.ahk
+#Include explorer.ahk
 #Include git.ahk
 #Include mail.ahk
 #Include NoteEditor.ahk

@@ -30,7 +30,7 @@ NewWord()
 ; Requires that the only item in the right context new menu that starts with W is Word
 NewWordDocument()
 {
-	if IsExplorerActive()
+	if IsWindowsExplorerActive()
 		send "+{F10}{up}{up}{right}W{enter}"
 	else
 		NewWord()

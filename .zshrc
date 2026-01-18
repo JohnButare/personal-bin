@@ -51,7 +51,7 @@ SetP10ContextFull() { export PROMPT_CONTEXT_FULL="true"; sp10; }
 SetP10ContextMinimal() { unset PROMPT_CONTEXT_FULL; sp10; }
 
 # show full prompt when logged in locally for single board computers
-IsZsh && [[ "$HOSTNAME" =~ (bl.*|pi.*|rp.*) ]] && export PROMPT_CONTEXT_FULL="true"
+IsZsh && [[ "$(GetHostname)" =~ (bl.*|pi.*|rp.*) ]] && export PROMPT_CONTEXT_FULL="true"
 
 # p10k-on-pre-prompt - run before prompt
 function p10k-on-pre-prompt()

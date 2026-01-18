@@ -494,7 +494,7 @@ mpl() { UltraMonHelper ls "$@"; } 			# mpl - monitor profile list
 
 ScreenFix() { os screen resize; }
 ShowFortune() { ! InPath cowsay fortune lolcat && return; cowsay "$(fortune --all)" | lolcat; return 0; }
-ShowHost() { HeaderFancy "$HOSTNAME"; }
+ShowHost() { HeaderFancy "$(GetHostname)"; }
 
 # clear
 c() { cls; } 											# clear screen
@@ -518,7 +518,7 @@ sw() { ddm switch "$@"; } # switch monitor
 # swe - switch monitor to ender
 swe()
 {
-	[[ "$HOSTNAME" == "ender" ]] && return
+	[[ "$(GetHostname)" == "ender" ]] && return
 	FullWakeup ender &
 	ddm switch
 }
@@ -955,7 +955,7 @@ sysmon()
 
 glances()
 {
-	local args=(); [[ "$HOSTNAME" == @(bl?|vast) ]] && args=(--disable-plugin sensors)
+	local args=(); [[ "$(GetHostname)" == @(bl?|vast) ]] && args=(--disable-plugin sensors)
 	command glances "${args[@]}"
 }
 
@@ -1049,7 +1049,7 @@ DiskTestFio()
 }
 
 # network
-iperfs() { echo iPerf3 server is running on $(hostname); iperf3 -s -p 5002 "$@"; } # server
+iperfs() { echo iPerf3 server is running on $(GetHostname); iperf3 -s -p 5002 "$@"; } # server
 iperfc() { iperf3 -c $1 -p 5002 "$@"; } # client
 
 #
@@ -1109,7 +1109,7 @@ PingFix() { sudoc chmod u+s "$(FindInPath ping)" || return; }
 p()
 {
 	local host="$1"
-	local ip; ip="$(GetIpAddress "$host" --quiet)" || ip="$(GetIpAddress "$HOSTNAME-$host" --quiet)" || { HostUnresolved "$host"; return; }
+	local ip; ip="$(GetIpAddress "$host" --quiet)" || ip="$(GetIpAddress "$(GetHostname)-$host" --quiet)" || { HostUnresolved "$host"; return; }
 	IsAvailable "$ip" && { echo "available"; return 0; } || { echo "not available"; return 1; }
 }
 
@@ -1179,7 +1179,7 @@ LbSync()
 # mDNS
 MdnsList() { avahi-browse  -p --all -c | grep _device-info | cut -d';' -f 4 | sort | uniq; }
 MdnsListFull() { avahi-browse -p --all -c -r; }
-MdnsPublishHostname() { avahi-publish-address -c $HOSTNAME.local "$(GetPrimaryIpAddress eth0)"; }
+MdnsPublishHostname() { avahi-publish-address -c $(GetHostname).local "$(GetPrimaryIpAddress eth0)"; }
 MdnsTest() { local h; for h in $(GetAllServers); do h="$(RemoveDnsSuffix "$h")"; printf "$h: "; MdnsResolve $h.local; done; }
 
 mdnsStart()
@@ -1805,7 +1805,7 @@ alias bh='BorgHelper'
 bconf() { BorgConf "$@" && BorgHelper status; }
 borg() { [[ ! $BORG_REPO ]] && { BorgConf || return; }; command borg "$@"; }
 bb() { BorgHelper backup "$@" --archive="$(RemoveTrailingSlash "$1" | GetFileName)"; } # borg backup
-bcd() { hadcd "${1:-$HOSTNAME}" "borg"; } 								# borg cd [HOST]
+bcd() { hadcd "${1:-$(GetHostname)}" "borg"; } 						# borg cd [HOST]
 bm() { ScriptCd BorgHelper mount "$@"; }									# borg mount
 bum() { BorgHelper unmount "$@"; }												# borg unmount
 clipb() { BorgConf "$@" && clipw "$BORG_PASSPHRASE"; }

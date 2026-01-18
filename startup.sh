@@ -3,6 +3,7 @@ export CACHED_PROCESSES="$(ProcessList)"
 
 # arguments
 a=()
+hostname="$(GetHostname)"
 
 # initial setup
 st network xserver WindowManager
@@ -14,11 +15,11 @@ st 1Password dropbox OneDrive AnyplaceUSB	"${a[@]}"					# shared
 IsPlatform win && st AutoHotKey files QuickLook UltraMon "${a[@]}"
 IsPlatform mac && st alfred AltTab bartender moom rectangle shottr "${a[@]}"
 IsPlatform parallels && { drive mount all --no-optical || return; }
-[[ "$HOSTNAME" == @(bl?) ]] && st BgInfo "${a[@]}"
+[[ "$hostname" == @(bl?) ]] && st BgInfo "${a[@]}"
 
 # services
 st chrony nix sshd "${a[@]}"
-if [[ "$HOSTNAME" == @(bl?) ]]; then
+if [[ "$hostname" == @(bl?) ]]; then
 	st PodmanDesktop consul nomad "${a[@]}" # guacamole
 fi
 

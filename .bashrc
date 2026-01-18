@@ -199,7 +199,7 @@ rdcman() { start RDCMan.exe "$CLOUD/data/app/Remote Desktop Connection Manager/d
 terminator() { coproc /usr/bin/terminator "$@"; }
 
 # application installation
-appd() { inst check | awk '{ if ($3 == "") print $1; }'; } 						# check app downloads
+appd() { inst check "$@" | awk '{ if ($3 == "") print $1; }'; }  # check app downloads
 appv() { inst version "$@"; }
 
 # appc [all|app] - check app versions

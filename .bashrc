@@ -1568,6 +1568,8 @@ alias cr="ChrootHelper"
 alias crdown="schroot --all-sessions --end-session"
 
 # docker
+alias dkd='DockerHelper'		# Docker Desktop
+alias dke='dh exec'
 alias dki='dk images'
 alias dks='dk service'
 alias dkrm='dk rm'
@@ -1578,8 +1580,8 @@ alias dkflush2='dk rmi $(docker images --filter "dangling=true" -q --no-trunc)'
 alias dkt='dk stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}"'
 alias dkps="dk ps --format '{{.ID}} ~ {{.Names}} ~ {{.Status}} ~ {{.Image}}'"
 
-alias dh='DockerHelper'
-alias de='dh exec'
+# dk - docker
+dk() { docker "$@"; }
 
 # dkpull IMAGE - pull an image
 dkpull()
@@ -1597,12 +1599,12 @@ dkrun()
 }
 
 # podman
-alias pm='podman'
-if InPath podman; then dk() { podman "$@"; }
-elif IsPlatform win && [[ -f "$P/RedHat/Podman/podman.exe" ]]; then
+pm() { podman "$@"; }
+pmd() { PodmanDesktopHelper "$@"; }
+if IsPlatform win && [[ -f "$P/RedHat/Podman/podman.exe" ]]; then
 	podman() { "$P/RedHat/Podman/podman.exe" "$@"; }
-	dk() { podman "$@"; }
 fi
+{ InPath podman || IsFunction podman; } && dk() { podman "$@"; }
 
 # hyper-v
 alias hv="hyperv"

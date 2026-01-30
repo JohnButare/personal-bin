@@ -1,6 +1,5 @@
 # mac only
 
-
 [credential "https://ados.sandia.gov"]
 	helper = !/usr/local/share/gcm-core/git-credential-manager
 
